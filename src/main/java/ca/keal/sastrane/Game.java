@@ -1,5 +1,7 @@
 package ca.keal.sastrane;
 
+import ca.keal.sastrane.event.MoveEvent;
+import ca.keal.sastrane.event.TurnEvent;
 import com.google.common.collect.ImmutableMap;
 import lombok.Getter;
 import lombok.NonNull;
@@ -25,10 +27,17 @@ public class Game {
     }
     
     public void nextTurn() {
+        ruleSet.getBus().post(new TurnEvent.Pre(this));
+        
         // We could index turn (as a field) in players and add 1... but ctp.size() % move works better + faster
         Player turn = combatantsToPlayers.get(ruleSet.getCombatants().get(combatantsToPlayers.size() % move));
         Move turnMove = turn.getMove(this);
+        
+        ruleSet.getBus().post(new MoveEvent.Pre(this, turnMove));
         turnMove.move(board);
+        ruleSet.getBus().post(new MoveEvent.Post(this, turnMove));
+        
+        ruleSet.getBus().post(new TurnEvent.Post(this));
         move++;
     }
     
