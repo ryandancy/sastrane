@@ -10,6 +10,14 @@ repositories {
     mavenCentral()
 }
 
-dependencies {
-    compile 'org.projectlombok:lombok:1.16.8'
+configurations {
+    provided
 }
+
+dependencies {
+    provided 'org.projectlombok:lombok:1.16.8'
+//    compile 'com.google.guava:guava:19.0-rc2'
+}
+
+//noinspection GrUnresolvedAccess
+sourceSets.main.compileClasspath += [configurations.provided]

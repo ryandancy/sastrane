@@ -1,11 +1,15 @@
 package ca.keal.sastrane;
 
-import lombok.Data;
+import lombok.Value;
 
-@Data
-public class Square {
+@Value
+public final class Square {
     
-    private int x;
-    private int y;
+    private final int x;
+    private final int y;
+    
+    public Move to(Square to) {
+        return new Move(this, to);
+    }
     
 }
