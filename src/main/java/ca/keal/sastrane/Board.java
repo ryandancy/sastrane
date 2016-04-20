@@ -42,12 +42,12 @@ public class Board {
         squaresToPieces.put(square, value);
     }
     
-    public boolean isOnBoard(Square square) {
+    public boolean isOn(Square square) {
         return squaresToPieces.containsKey(square);
     }
     
     @Value
-    public final class SquareRange implements Iterable<Square> {
+    public static final class SquareRange implements Iterable<Square> {
         
         private final Square a;
         private final Square b;

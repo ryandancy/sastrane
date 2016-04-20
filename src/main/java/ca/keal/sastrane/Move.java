@@ -21,7 +21,7 @@ public final class Move {
             moved = true;
         }
         
-        if (!board.isOnBoard(from) || !board.isOnBoard(to)) {
+        if (!board.isOn(from) || !board.isOn(to)) {
             throw new IllegalArgumentException("Move.move: from & to must be on board");
         }
         
