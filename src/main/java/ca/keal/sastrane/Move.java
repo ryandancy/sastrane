@@ -12,4 +12,21 @@ public final class Move {
     @NonNull
     private final Square to;
     
+    private boolean moved = false;
+    
+    public void move(@NonNull Board board) {
+        if (moved) {
+            throw new IllegalStateException("Move is already moved.");
+        } else {
+            moved = true;
+        }
+        
+        if (!board.isOnBoard(from) || !board.isOnBoard(to)) {
+            throw new IllegalArgumentException("Move.move: from & to must be on board");
+        }
+        
+        board.set(to, board.get(from));
+        board.set(from, null);
+    }
+    
 }

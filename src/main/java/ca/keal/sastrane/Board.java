@@ -38,6 +38,10 @@ public class Board {
         return squaresToPieces.get(square);
     }
     
+    public void set(Square square, Piece value) {
+        squaresToPieces.put(square, value);
+    }
+    
     public boolean isOnBoard(Square square) {
         return squaresToPieces.containsKey(square);
     }
