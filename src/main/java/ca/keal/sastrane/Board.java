@@ -73,7 +73,8 @@ public class Board {
                 public boolean hasNext() {
                     return x <= b.getX() && y <= b.getY();
                 }
-                
+    
+                @NonNull
                 @Override
                 public Square next() {
                     if (!hasNext()) {

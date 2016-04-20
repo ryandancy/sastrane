@@ -1,7 +1,10 @@
 package ca.keal.sastrane;
 
+import lombok.NonNull;
+
 public interface Piece {
     
-    Move[] getPossibleMoves(Board board, Square pos);
+    @NonNull
+    Move[] getPossibleMoves(@NonNull Board board, @NonNull Square pos);
     
 }
