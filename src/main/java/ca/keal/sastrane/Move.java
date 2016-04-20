@@ -1,9 +1,12 @@
 package ca.keal.sastrane;
 
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import lombok.Value;
+import lombok.experimental.NonFinal;
 
 @Value
+@RequiredArgsConstructor
 public final class Move {
     
     @NonNull
@@ -12,6 +15,7 @@ public final class Move {
     @NonNull
     private final Square to;
     
+    @NonFinal
     private boolean moved = false;
     
     public void move(@NonNull Board board) {

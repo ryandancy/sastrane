@@ -22,7 +22,7 @@ public class Game {
             throw new IllegalArgumentException("Game: players' getCombatants()s must = ruleSet.getCombatants()");
         }
         this.ruleSet = ruleSet;
-        this.board = ruleSet.getBoardBuilder().build();
+        this.board = ruleSet.getBoardFactory().create();
         this.combatantsToPlayers = ImmutableMap.copyOf(combatantsToPlayers);
     }
     

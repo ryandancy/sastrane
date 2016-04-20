@@ -19,7 +19,7 @@ public abstract class RuleSet {
     
     private final String name;
     private final List<Combatant> combatants; // TODO support for variable-player games (are those a thing?)
-    private final Board.BoardBuilder boardBuilder;
+    private final BoardFactory boardFactory;
     
     @NonNull
     private final EventBus bus;
@@ -27,8 +27,8 @@ public abstract class RuleSet {
     /**
      * {@code combatants} should be in the order in which the combatants move (e.g. for chess, {@code [White, Black]}).
      */
-    public RuleSet(@NonNull String name, @NonNull List<Combatant> combatants, @NonNull Board.BoardBuilder boardBuilder) {
-        this(name, ImmutableList.copyOf(combatants), boardBuilder, new EventBus(name));
+    public RuleSet(@NonNull String name, @NonNull List<Combatant> combatants, @NonNull BoardFactory boardFactory) {
+        this(name, ImmutableList.copyOf(combatants), boardFactory, new EventBus(name));
     }
     
     public static void registerRuleSet(RuleSet ruleSet) {
