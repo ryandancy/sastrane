@@ -12,6 +12,10 @@ import java.net.URL;
 
 public final class GuiUtils {
     
+    // Is 400x400 the best choice here???
+    public static final int DEFAULT_WIDTH = 400;
+    public static final int DEFAULT_HEIGHT = 400;
+    
     private GuiUtils() {
         throw new RuntimeException("ca.keal.sastrane.gui.GuiUtils is a utility class and cannot be instantiated.");
     }
@@ -40,6 +44,14 @@ public final class GuiUtils {
     
     public static Scene getScene(String filename, int width, int height, ClassLoader loader) throws IOException {
         return new Scene(getFXML(filename, loader), width, height);
+    }
+    
+    public static Scene getScene(String filename, String pkg, ClassLoader loader) throws IOException {
+        return getScene(filename, pkg, DEFAULT_WIDTH, DEFAULT_HEIGHT, loader);
+    }
+    
+    public static Scene getScene(String filename, ClassLoader loader) throws IOException {
+        return getScene(filename, DEFAULT_WIDTH, DEFAULT_HEIGHT, loader);
     }
     
     // Thanks, http://stackoverflow.com/a/12805134

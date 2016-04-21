@@ -14,8 +14,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         // TODO dynamic title
         primaryStage.setTitle("Sastrane");
-        // TODO stop hard-coding dimensions as 400x400
-        primaryStage.setScene(GuiUtils.getScene("main-menu.fxml", 400, 400, getClass().getClassLoader()));
+        primaryStage.setScene(GuiUtils.getScene("main-menu.fxml", getClass().getClassLoader()));
         primaryStage.show();
     }
     
