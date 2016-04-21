@@ -22,7 +22,7 @@ public class Game {
     private int move = 0;
     
     public Game(@NonNull RuleSet ruleSet, @NonNull Map<Combatant, Player> combatantsToPlayers) {
-        if (!Util.areElementsEqual(combatantsToPlayers.keySet(), ruleSet.getCombatants())) {
+        if (!Utils.areElementsEqual(combatantsToPlayers.keySet(), ruleSet.getCombatants())) {
             throw new IllegalArgumentException("Game: players' getCombatants()s must = ruleSet.getCombatants()");
         }
         this.ruleSet = ruleSet;

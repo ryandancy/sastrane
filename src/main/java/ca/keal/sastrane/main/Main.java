@@ -1,6 +1,6 @@
 package ca.keal.sastrane.main;
 
-import ca.keal.sastrane.gui.GuiUtil;
+import ca.keal.sastrane.gui.GuiUtils;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -15,7 +15,7 @@ public class Main extends Application {
         // TODO dynamic title
         primaryStage.setTitle("Sastrane");
         // TODO stop hard-coding dimensions as 400x400
-        primaryStage.setScene(GuiUtil.getScene("main-menu.fxml", 400, 400, getClass().getClassLoader()));
+        primaryStage.setScene(GuiUtils.getScene("main-menu.fxml", 400, 400, getClass().getClassLoader()));
         primaryStage.show();
     }
     

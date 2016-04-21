@@ -4,10 +4,10 @@ import com.google.common.collect.HashMultiset;
 
 import java.util.Collection;
 
-public final class Util {
+public final class Utils {
     
-    private Util() {
-        throw new RuntimeException("ca.keal.sastrane.Util is a utility class and thus cannot be instantiated.");
+    private Utils() {
+        throw new RuntimeException("ca.keal.sastrane.Utils is a utility class and thus cannot be instantiated.");
     }
     
     /**

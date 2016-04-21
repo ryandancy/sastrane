@@ -10,10 +10,10 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 
-public final class GuiUtil {
+public final class GuiUtils {
     
-    private GuiUtil() {
-        throw new RuntimeException("ca.keal.sastrane.gui.GuiUtil is a utility class and cannot be instantiated.");
+    private GuiUtils() {
+        throw new RuntimeException("ca.keal.sastrane.gui.GuiUtils is a utility class and cannot be instantiated.");
     }
     
     /**
