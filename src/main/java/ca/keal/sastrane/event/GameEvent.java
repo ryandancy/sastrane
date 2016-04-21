@@ -9,7 +9,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class GameEvent extends Event {
+public class GameEvent extends RootEvent {
     
     private final Game game;
     
