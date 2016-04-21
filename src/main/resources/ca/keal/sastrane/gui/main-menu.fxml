@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- TODO Improve this, it's just a test layout right now - settings, lang, CSS, etc -->
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="ca.keal.sastrane.gui.MainMenuController"
+      alignment="center" spacing="10">
+    <padding>
+        <Insets top="25" bottom="25" left="75" right="75"/>
+    </padding>
+    
+    <Text text="Sastrane" VBox.vgrow="always">
+        <VBox.margin>
+            <Insets bottom="50"/>
+        </VBox.margin>
+    </Text>
+    <Button text="Singleplayer" onAction="#handleSPButton" />
+    <Button text="Multiplayer" onAction="#handleMPButton" />
+</VBox>
