@@ -1,12 +1,8 @@
 package ca.keal.sastrane.main;
 
+import ca.keal.sastrane.gui.GuiUtil;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
-
-import java.net.URL;
 
 public class Main extends Application {
     
@@ -16,17 +12,10 @@ public class Main extends Application {
     
     @Override
     public void start(Stage primaryStage) throws Exception {
-        // TODO extract into utility method
-        URL fxml = getClass().getClassLoader().getResource("ca/keal/sastrane/gui/main-menu.fxml");
-        if (fxml == null) {
-            // this shouldn't happen
-            throw new RuntimeException("ca/keal/sastrane/gui/main-menu.fxml could not be found");
-        }
-        
-        Parent root = FXMLLoader.load(fxml);
-        Scene mainMenu = new Scene(root, 400, 400); // TODO stop hard-coding dimensions as 400x400; dynamic title?
+        // TODO dynamic title
         primaryStage.setTitle("Sastrane");
-        primaryStage.setScene(mainMenu);
+        // TODO stop hard-coding dimensions as 400x400
+        primaryStage.setScene(GuiUtil.getScene("main-menu.fxml", 400, 400, getClass().getClassLoader()));
         primaryStage.show();
     }
     
