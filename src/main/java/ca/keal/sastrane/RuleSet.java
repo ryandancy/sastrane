@@ -12,6 +12,9 @@ import lombok.ToString;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * All subclasses <strong>MUST</strong> have a no-arguments constructor!
+ */
 // Would be called "Game" (as in "the game of chess") except Game represents a game as in "a game of chess"
 @Getter
 @ToString
