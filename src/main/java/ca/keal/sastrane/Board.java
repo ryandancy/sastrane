@@ -1,9 +1,13 @@
 package ca.keal.sastrane;
 
+import lombok.EqualsAndHashCode;
 import lombok.NonNull;
+import lombok.ToString;
 
 import java.util.Map;
 
+@ToString
+@EqualsAndHashCode
 public class Board {
     
     @NonNull

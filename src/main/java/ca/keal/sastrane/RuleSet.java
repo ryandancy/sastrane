@@ -3,15 +3,19 @@ package ca.keal.sastrane;
 import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
 
 // Would be called "Game" (as in "the game of chess") except Game represents a game as in "a game of chess"
 @Getter
+@ToString
+@EqualsAndHashCode
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public abstract class RuleSet {
     

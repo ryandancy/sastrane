@@ -1,8 +1,10 @@
 package ca.keal.sastrane;
 
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.NonNull;
 import lombok.Singular;
+import lombok.ToString;
 import lombok.Value;
 
 import java.util.HashMap;
@@ -12,6 +14,8 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
+@ToString
+@EqualsAndHashCode
 public class BoardFactory {
     
     private final Map<Square, Piece> squaresToPieces = new HashMap<>();

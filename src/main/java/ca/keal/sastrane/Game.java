@@ -3,12 +3,16 @@ package ca.keal.sastrane;
 import ca.keal.sastrane.event.MoveEvent;
 import ca.keal.sastrane.event.TurnEvent;
 import com.google.common.collect.ImmutableMap;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NonNull;
+import lombok.ToString;
 
 import java.util.Map;
 
 @Getter
+@ToString
+@EqualsAndHashCode
 public class Game {
     
     private final RuleSet ruleSet;
