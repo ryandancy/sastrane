@@ -19,6 +19,7 @@ public class Main extends Application {
         // TODO splash screen
         
         // Load all classes, find all subclasses of Game, register each
+        // @Game annotation???
         for (ClassPath.ClassInfo classInfo : ClassPath.from(getClass().getClassLoader()).getAllClasses()) {
             // Exclude lombok, guava
             String pkg = classInfo.getPackageName();
