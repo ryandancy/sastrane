@@ -5,6 +5,6 @@ import lombok.NonNull;
 public interface Piece {
     
     @NonNull
-    Move[] getPossibleMoves(@NonNull Game game, @NonNull Square boardPos);
+    Move[] getPossibleMoves(@NonNull Round round, @NonNull Square boardPos);
     
 }

@@ -1,6 +1,6 @@
 package ca.keal.sastrane.event;
 
-import ca.keal.sastrane.Game;
+import ca.keal.sastrane.Round;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -11,6 +11,6 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 public class GameEvent extends RootEvent {
     
-    private final Game game;
+    private final Round round;
     
 }

@@ -1,7 +1,8 @@
 package ca.keal.sastrane.event;
 
-import ca.keal.sastrane.Game;
+import ca.keal.sastrane.Round;
 import ca.keal.sastrane.Move;
+import ca.keal.sastrane.Round;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -14,8 +15,8 @@ public class MoveEvent extends TurnEvent {
     
     private final Move move;
     
-    public MoveEvent(Game game, Move move) {
-        super(game);
+    public MoveEvent(Round round, Move move) {
+        super(round);
         this.move = move;
     }
     
@@ -26,8 +27,8 @@ public class MoveEvent extends TurnEvent {
     @EqualsAndHashCode(callSuper = true)
     public static class Pre extends MoveEvent {
         
-        public Pre(Game game, Move move) {
-            super(game, move);
+        public Pre(Round round, Move move) {
+            super(round, move);
         }
         
     }
@@ -39,8 +40,8 @@ public class MoveEvent extends TurnEvent {
     @EqualsAndHashCode(callSuper = true)
     public static class Post extends MoveEvent {
         
-        public Post(Game game, Move move) {
-            super(game, move);
+        public Post(Round round, Move move) {
+            super(round, move);
         }
         
     }

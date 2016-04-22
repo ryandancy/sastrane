@@ -1,7 +1,7 @@
 package ca.keal.sastrane.event;
 
 import ca.keal.sastrane.Combatant;
-import ca.keal.sastrane.Game;
+import ca.keal.sastrane.Round;
 import ca.keal.sastrane.Player;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -16,10 +16,10 @@ public class TurnEvent extends GameEvent {
     private final Combatant combatant;
     private final Player player;
     
-    public TurnEvent(Game game) {
-        super(game);
-        combatant = game.getCurrentTurn();
-        player = game.getCombatantsToPlayers().get(combatant);
+    public TurnEvent(Round round) {
+        super(round);
+        combatant = round.getCurrentTurn();
+        player = round.getCombatantsToPlayers().get(combatant);
     }
     
     /**
@@ -29,8 +29,8 @@ public class TurnEvent extends GameEvent {
     @EqualsAndHashCode(callSuper = true)
     public static class Pre extends TurnEvent {
         
-        public Pre(Game game) {
-            super(game);
+        public Pre(Round round) {
+            super(round);
         }
         
     }
@@ -42,8 +42,8 @@ public class TurnEvent extends GameEvent {
     @EqualsAndHashCode(callSuper = true)
     public static class Post extends TurnEvent {
         
-        public Post(Game game) {
-            super(game);
+        public Post(Round round) {
+            super(round);
         }
         
     }

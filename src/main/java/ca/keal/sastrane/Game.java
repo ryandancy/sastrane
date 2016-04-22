@@ -1,52 +1,48 @@
 package ca.keal.sastrane;
 
-import ca.keal.sastrane.event.MoveEvent;
-import ca.keal.sastrane.event.TurnEvent;
-import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableList;
+import com.google.common.eventbus.EventBus;
+import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
+/**
+ * All subclasses <strong>MUST</strong> have a no-arguments constructor!
+ */
 @Getter
 @ToString
 @EqualsAndHashCode
-public class Game {
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+public abstract class Game {
     
-    private final RuleSet ruleSet;
-    private final Map<Combatant, Player> combatantsToPlayers;
-    private final Board board;
+    private static final List<Game> RULE_SETS = new ArrayList<>();
     
-    private int move = 0;
+    private final String name;
+    private final List<Combatant> combatants; // TODO support for variable-player games (are those a thing?)
+    private final BoardFactory boardFactory;
     
-    public Game(@NonNull RuleSet ruleSet, @NonNull Map<Combatant, Player> combatantsToPlayers) {
-        if (!Utils.areElementsEqual(combatantsToPlayers.keySet(), ruleSet.getCombatants())) {
-            throw new IllegalArgumentException("Game: players' getCombatants()s must = ruleSet.getCombatants()");
-        }
-        this.ruleSet = ruleSet;
-        this.board = ruleSet.getBoardFactory().create();
-        this.combatantsToPlayers = ImmutableMap.copyOf(combatantsToPlayers);
+    @NonNull
+    private final EventBus bus;
+    
+    /**
+     * {@code combatants} should be in the order in which the combatants move (e.g. for chess, {@code [White, Black]}).
+     */
+    public Game(@NonNull String name, @NonNull List<Combatant> combatants, @NonNull BoardFactory boardFactory) {
+        this(name, ImmutableList.copyOf(combatants), boardFactory, new EventBus(name));
     }
     
-    public void nextTurn() {
-        ruleSet.getBus().post(new TurnEvent.Pre(this));
-        
-        // We could index turn (as a field) in players and add 1... but ctp.size() % move works better + faster
-        Player turn = combatantsToPlayers.get(ruleSet.getCombatants().get(combatantsToPlayers.size() % move));
-        Move turnMove = turn.getMove(this);
-        
-        ruleSet.getBus().post(new MoveEvent.Pre(this, turnMove));
-        turnMove.move(board);
-        ruleSet.getBus().post(new MoveEvent.Post(this, turnMove));
-        
-        ruleSet.getBus().post(new TurnEvent.Post(this));
-        move++;
+    public static void registerGame(Game game) {
+        RULE_SETS.add(game);
     }
     
-    public Combatant getCurrentTurn() {
-        return ruleSet.getCombatants().get(combatantsToPlayers.size() % move);
+    public static List<Game> getGames() {
+        return ImmutableList.copyOf(RULE_SETS);
     }
     
 }

@@ -11,6 +11,6 @@ import lombok.NonNull;
 public interface Player {
     
     @NonNull
-    Move getMove(@NonNull Game game);
+    Move getMove(@NonNull Round round);
     
 }
