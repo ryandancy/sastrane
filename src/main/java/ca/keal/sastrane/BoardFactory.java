@@ -19,7 +19,7 @@ import java.util.Set;
 @EqualsAndHashCode
 public class BoardFactory {
     
-    private final Map<Square, Pair<Piece, Combatant>> squaresToPieces = new HashMap<>();
+    private final Map<Square, Pair<Piece, Player>> squaresToPieces = new HashMap<>();
     
     @Builder(builderMethodName = "squareBuilder", builderClassName = "SquareBuilder")
     public BoardFactory(@Singular @NonNull Set<Square> squares, @Singular @NonNull Set<SquareRange> ranges) {
@@ -40,7 +40,7 @@ public class BoardFactory {
      */
     @Builder(builderMethodName = "rowBuilder", builderClassName = "RowBuilder")
     public BoardFactory(@Singular @NonNull List<String> rows,
-                        @Singular @NonNull Map<Character, Pair<Piece, Combatant>> pieces) {
+                        @Singular @NonNull Map<Character, Pair<Piece, Player>> pieces) {
         if (pieces.containsKey(' ') || pieces.containsKey('_')) {
             throw new IllegalArgumentException("Space and underscore are reserved in pieces; space is null piece "
                     + "and underscore is not-on-board.");

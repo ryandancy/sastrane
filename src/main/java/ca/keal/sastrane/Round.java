@@ -17,13 +17,13 @@ import java.util.Map;
 public class Round {
     
     private final Game game;
-    private final Map<Combatant, Player> combatantsToPlayers;
+    private final Map<Player, Mover> combatantsToPlayers;
     private final Board board;
     
     private int move = 0;
     
-    public Round(@NonNull Game game, @NonNull Map<Combatant, Player> combatantsToPlayers) {
-        if (!Utils.areElementsEqual(combatantsToPlayers.keySet(), game.getCombatants())) {
+    public Round(@NonNull Game game, @NonNull Map<Player, Mover> combatantsToPlayers) {
+        if (!Utils.areElementsEqual(combatantsToPlayers.keySet(), game.getPlayers())) {
             throw new IllegalArgumentException("Game: combatantsToPlayers.keySet() must = game.getCombatants()");
         }
         this.game = game;
@@ -35,7 +35,7 @@ public class Round {
         game.getBus().post(new TurnEvent.Pre(this));
         
         // We could index turn (as a field) in players and add 1... but ctp.size() % move works better + faster
-        Player turn = combatantsToPlayers.get(game.getCombatants().get(combatantsToPlayers.size() % move));
+        Mover turn = combatantsToPlayers.get(game.getPlayers().get(combatantsToPlayers.size() % move));
         Move turnMove = turn.getMove(this);
         
         game.getBus().post(new MoveEvent.Pre(this, turnMove));
@@ -46,8 +46,8 @@ public class Round {
         move++;
     }
     
-    public Combatant getCurrentTurn() {
-        return game.getCombatants().get(combatantsToPlayers.size() % move);
+    public Player getCurrentTurn() {
+        return game.getPlayers().get(combatantsToPlayers.size() % move);
     }
     
 }

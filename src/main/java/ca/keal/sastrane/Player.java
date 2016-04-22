@@ -1,16 +1,16 @@
 package ca.keal.sastrane;
 
-import lombok.NonNull;
+import lombok.Data;
 
 /**
- * An object that returns the result of a combatant's move, whether that be from an AI, user input, or
- * something else entirely. If you're looking for a general description of a side, go to {@link Combatant}.
- *
- * @see Combatant
+ * A general description of a player/team/side/whatever. If you're looking for an AI-or-user input class,
+ * go to {@link Mover}.
+ * 
+ * @see Mover
  */
-public interface Player {
+@Data
+public class Player {
     
-    @NonNull
-    Move getMove(@NonNull Round round);
+    private final String name;
     
 }

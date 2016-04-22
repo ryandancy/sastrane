@@ -1,8 +1,8 @@
 package ca.keal.sastrane.event;
 
-import ca.keal.sastrane.Combatant;
-import ca.keal.sastrane.Round;
 import ca.keal.sastrane.Player;
+import ca.keal.sastrane.Round;
+import ca.keal.sastrane.Mover;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -13,13 +13,13 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 public class TurnEvent extends RoundEvent {
     
-    private final Combatant combatant;
     private final Player player;
+    private final Mover mover;
     
     public TurnEvent(Round round) {
         super(round);
-        combatant = round.getCurrentTurn();
-        player = round.getCombatantsToPlayers().get(combatant);
+        player = round.getCurrentTurn();
+        mover = round.getCombatantsToPlayers().get(player);
     }
     
     /**

@@ -24,7 +24,7 @@ public abstract class Game {
     private static final List<Game> RULE_SETS = new ArrayList<>();
     
     private final String name;
-    private final List<Combatant> combatants; // TODO support for variable-player games (are those a thing?)
+    private final List<Player> players; // TODO support for variable-player games (are those a thing?)
     private final BoardFactory boardFactory;
     
     @NonNull
@@ -33,8 +33,8 @@ public abstract class Game {
     /**
      * {@code combatants} should be in the order in which the combatants move (e.g. for chess, {@code [White, Black]}).
      */
-    public Game(@NonNull String name, @NonNull List<Combatant> combatants, @NonNull BoardFactory boardFactory) {
-        this(name, ImmutableList.copyOf(combatants), boardFactory, new EventBus(name));
+    public Game(@NonNull String name, @NonNull List<Player> players, @NonNull BoardFactory boardFactory) {
+        this(name, ImmutableList.copyOf(players), boardFactory, new EventBus(name));
     }
     
     public static void registerGame(Game game) {

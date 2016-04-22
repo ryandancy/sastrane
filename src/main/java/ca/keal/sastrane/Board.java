@@ -14,13 +14,13 @@ import java.util.Map;
 public class Board {
     
     @NonNull
-    private final Map<Square, Pair<Piece, Combatant>> squaresToPieces; // TODO more dimensions?
+    private final Map<Square, Pair<Piece, Player>> squaresToPieces; // TODO more dimensions?
     
-    public Pair<Piece, Combatant> get(Square square) {
+    public Pair<Piece, Player> get(Square square) {
         return squaresToPieces.get(square);
     }
     
-    public void set(Square square, Pair<Piece, Combatant> value) {
+    public void set(Square square, Pair<Piece, Player> value) {
         squaresToPieces.put(square, value);
     }
     
