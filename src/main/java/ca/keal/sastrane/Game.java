@@ -25,7 +25,7 @@ public abstract class Game {
     
     private final String name;
     private final List<Player> players; // TODO support for variable-player games (are those a thing?)
-    private final BoardFactory boardFactory;
+    private final Board.Factory boardFactory;
     
     @NonNull
     private final EventBus bus;
@@ -33,7 +33,7 @@ public abstract class Game {
     /**
      * {@code combatants} should be in the order in which the combatants move (e.g. for chess, {@code [White, Black]}).
      */
-    public Game(@NonNull String name, @NonNull List<Player> players, @NonNull BoardFactory boardFactory) {
+    public Game(@NonNull String name, @NonNull List<Player> players, @NonNull Board.Factory boardFactory) {
         this(name, ImmutableList.copyOf(players), boardFactory, new EventBus(name));
     }
     
