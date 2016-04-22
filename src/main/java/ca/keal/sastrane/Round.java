@@ -2,6 +2,7 @@ package ca.keal.sastrane;
 
 import ca.keal.sastrane.event.MoveEvent;
 import ca.keal.sastrane.event.TurnEvent;
+import ca.keal.sastrane.util.Utils;
 import com.google.common.collect.ImmutableMap;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

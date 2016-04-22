@@ -1,4 +1,4 @@
-package ca.keal.sastrane;
+package ca.keal.sastrane.util;
 
 import com.google.common.collect.HashMultiset;
 
@@ -7,7 +7,7 @@ import java.util.Collection;
 public final class Utils {
     
     private Utils() {
-        throw new RuntimeException("ca.keal.sastrane.Utils is a utility class and thus cannot be instantiated.");
+        throw new RuntimeException("ca.keal.sastrane.util.Utils is a utility class and thus cannot be instantiated.");
     }
     
     /**

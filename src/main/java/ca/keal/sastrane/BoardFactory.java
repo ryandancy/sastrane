@@ -1,5 +1,6 @@
 package ca.keal.sastrane;
 
+import ca.keal.sastrane.util.Pair;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.NonNull;
@@ -18,14 +19,14 @@ import java.util.Set;
 @EqualsAndHashCode
 public class BoardFactory {
     
-    private final Map<Square, Piece> squaresToPieces = new HashMap<>();
+    private final Map<Square, Pair<Piece, Combatant>> squaresToPieces = new HashMap<>();
     
     @Builder(builderMethodName = "squareBuilder", builderClassName = "SquareBuilder")
     public BoardFactory(@Singular @NonNull Set<Square> squares, @Singular @NonNull Set<SquareRange> ranges) {
         for (Square square : squares) {
             squaresToPieces.put(square, null);
         }
-    
+        
         // Can't use addAll because SquareRange isn't a Collection
         for (SquareRange range : ranges) {
             for (Square square : range) {
@@ -38,9 +39,10 @@ public class BoardFactory {
      * ' ' = null piece, '_' = not on board, is error if either used in pieces.
      */
     @Builder(builderMethodName = "rowBuilder", builderClassName = "RowBuilder")
-    public BoardFactory(@Singular @NonNull List<String> rows, @Singular @NonNull Map<Character, Piece> pieces) {
+    public BoardFactory(@Singular @NonNull List<String> rows,
+                        @Singular @NonNull Map<Character, Pair<Piece, Combatant>> pieces) {
         if (pieces.containsKey(' ') || pieces.containsKey('_')) {
-            throw new IllegalArgumentException("Space and underscore are reserved in pieces; space is null piece " 
+            throw new IllegalArgumentException("Space and underscore are reserved in pieces; space is null piece "
                     + "and underscore is not-on-board.");
         }
         
