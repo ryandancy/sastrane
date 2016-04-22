@@ -1,14 +1,17 @@
 package ca.keal.sastrane.gui;
 
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 
 public class MainMenuController {
     
-    public void handleSPButton(ActionEvent e) {
+    @FXML
+    private void handleSPButton(ActionEvent e) {
         // TODO SP menu
     }
     
-    public void handleMPButton(ActionEvent e) {
+    @FXML
+    private void handleMPButton(ActionEvent e) {
         // TODO MP menu
     }
     
