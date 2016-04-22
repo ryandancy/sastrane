@@ -11,7 +11,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class TurnEvent extends GameEvent {
+public class TurnEvent extends RoundEvent {
     
     private final Combatant combatant;
     private final Player player;
