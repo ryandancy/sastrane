@@ -3,10 +3,12 @@ package ca.keal.sastrane;
 import ca.keal.sastrane.util.Pair;
 import lombok.NonNull;
 
+import java.util.List;
+
 public interface Piece {
     
     @NonNull
-    Move[] getPossibleMoves(@NonNull Round round, @NonNull Square boardPos, @NonNull Player allegiance);
+    List<Move> getPossibleMoves(@NonNull Round round, @NonNull Square boardPos, @NonNull Player allegiance);
     
     /**
      * <strong>Excludes file extension!!!</strong> File extension is assumed to be .png; it + the player's name
