@@ -6,7 +6,7 @@ import lombok.NonNull;
 public interface Piece {
     
     @NonNull
-    Move[] getPossibleMoves(@NonNull Round round, @NonNull Square boardPos);
+    Move[] getPossibleMoves(@NonNull Round round, @NonNull Square boardPos, @NonNull Player allegiance);
     
     /**
      * <strong>Excludes file extension!!!</strong> File extension is assumed to be .png; it + the player's name
