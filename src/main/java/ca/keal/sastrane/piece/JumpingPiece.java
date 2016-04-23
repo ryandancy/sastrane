@@ -70,7 +70,7 @@ public abstract class JumpingPiece implements Piece {
                                                                 int quadrants) {
         List<Pair<Integer, Integer>> offsets = new ArrayList<>();
         for (int x = xOffset, y = yOffset, i = 0; i < (mirror ? 1 : 2); x = -x, y = -y, i++) {
-            for (int j = 1; j <= quadrantsToSigns.size(); j++) {
+            for (int j = 0; j < quadrantsToSigns.size(); j++) {
                 if ((quadrants & (1 << j)) != 0) {
                     Pair<Integer, Integer> signs = quadrantsToSigns.get(1 << j);
                     offsets.add(Pair.of(signs.getLeft() * xOffset, signs.getRight() * yOffset));

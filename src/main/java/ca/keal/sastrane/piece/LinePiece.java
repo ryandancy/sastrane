@@ -83,7 +83,7 @@ public abstract class LinePiece implements Piece {
                                               @NonNull Player allegiance, boolean stopOnHitPiece,
                                               boolean takeOpposingPieces, int directions) {
         List<Move> res = new ArrayList<>();
-        for (int i = 1; i <= directionToDxAndDy.size(); i++) {
+        for (int i = 0; i < directionToDxAndDy.size(); i++) {
             if ((directions & (1 << i)) != 0) {
                 res.addAll(getMovesInLine(directionToDxAndDy.get(1 << i), round, boardPos, allegiance, stopOnHitPiece,
                         takeOpposingPieces));
