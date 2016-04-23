@@ -6,8 +6,9 @@ import lombok.Value;
 import lombok.experimental.NonFinal;
 
 @Value
+@NonFinal
 @RequiredArgsConstructor
-public final class Move {
+public class Move {
     
     @NonNull
     private final Square from;
