@@ -38,28 +38,37 @@ public final class Utils {
     }
     
     /**
-     * Returns whether any piece on {@code board} can be moved to {@code square}.
+     * Returns whether any piece on {@code board} belonging to {@code player} (or not) can be moved to {@code square}.
+     * {@code player == null} means any player is acceptable. If invert, then any player <i>not</i> the specified
+     * player's pieces will be matched; else, <i>only</i> the specified player's pieces will be matched.
      */
-    public static boolean canBeMovedTo(Round round, Square square) {
+    public static boolean canBeMovedTo(Round round, Square square, Player player, boolean invert) {
         for (Square pos : round.getBoard()) {
             Pair<Piece, Player> posData = round.getBoard().get(pos);
             if (posData != null) {
                 Piece piece = posData.getLeft();
-                Player player = posData.getRight();
+                Player piecePlayer = posData.getRight();
                 
-                List<Move> moves;
-                if (piece instanceof RecursiveMoveResolvingPiece) {
-                    moves = ((RecursiveMoveResolvingPiece) piece).getPossibleMovesNonRecursive(round, square, player);
-                } else {
-                    moves = piece.getPossibleMoves(round, square, player);
-                }
-                
-                if (moves.stream().map(Move::getTo).anyMatch(square::equals)) {
-                    return true;
+                if (player == null || (invert ? player != piecePlayer : player == piecePlayer)) {
+                    List<Move> moves;
+                    if (piece instanceof RecursiveMoveResolvingPiece) {
+                        moves = ((RecursiveMoveResolvingPiece) piece)
+                                .getPossibleMovesNonRecursive(round, square, piecePlayer);
+                    } else {
+                        moves = piece.getPossibleMoves(round, square, piecePlayer);
+                    }
+    
+                    if (moves.stream().map(Move::getTo).anyMatch(square::equals)) {
+                        return true;
+                    }
                 }
             }
         }
         return false;
+    }
+    
+    public static boolean canBeMovedTo(Round round, Square square) {
+        return canBeMovedTo(round, square, null, true);
     }
     
 }
