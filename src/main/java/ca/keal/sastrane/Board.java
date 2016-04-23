@@ -58,6 +58,10 @@ public class Board implements Iterable<Square> {
         }
     }
     
+    public Board(@NonNull Board board) {
+        this(board.squaresToPieces);
+    }
+    
     public Pair<Piece, Player> get(Square square) {
         return squaresToPieces.get(square);
     }

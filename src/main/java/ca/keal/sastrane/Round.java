@@ -4,6 +4,8 @@ import ca.keal.sastrane.event.MoveEvent;
 import ca.keal.sastrane.event.TurnEvent;
 import ca.keal.sastrane.util.Utils;
 import com.google.common.collect.ImmutableMap;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NonNull;
@@ -14,6 +16,7 @@ import java.util.Map;
 @Getter
 @ToString
 @EqualsAndHashCode
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Round {
     
     private final Game game;
@@ -29,6 +32,10 @@ public class Round {
         this.game = game;
         this.board = game.getBoardFactory().build();
         this.combatantsToPlayers = ImmutableMap.copyOf(combatantsToPlayers);
+    }
+    
+    public Round(@NonNull Round round) {
+        this(round.getGame(), round.getCombatantsToPlayers(), round.getBoard(), round.getMove());
     }
     
     public void nextTurn() {
