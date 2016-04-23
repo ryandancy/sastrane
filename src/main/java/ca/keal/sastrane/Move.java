@@ -16,16 +16,7 @@ public class Move {
     @NonNull
     private final Square to;
     
-    @NonFinal
-    private boolean moved = false;
-    
     public void move(@NonNull Board board) {
-        if (moved) {
-            throw new IllegalStateException("Move is already moved.");
-        } else {
-            moved = true;
-        }
-        
         if (!board.isOn(from) || !board.isOn(to)) {
             throw new IllegalArgumentException("Move.move: from & to must be on board");
         }

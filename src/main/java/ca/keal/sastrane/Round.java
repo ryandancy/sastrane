@@ -35,7 +35,7 @@ public class Round {
     }
     
     public Round(@NonNull Round round) {
-        this(round.getGame(), round.getCombatantsToPlayers(), round.getBoard(), round.getMove());
+        this(round.getGame(), round.getCombatantsToPlayers(), new Board(round.getBoard()), round.getMove());
     }
     
     public void nextTurn() {
@@ -55,6 +55,13 @@ public class Round {
     
     public Player getCurrentTurn() {
         return game.getPlayers().get(combatantsToPlayers.size() % move);
+    }
+    
+    @NonNull
+    public Round copyWithMove(@NonNull Move move) {
+        Round newRound = new Round(this);
+        move.move(newRound.getBoard());
+        return newRound;
     }
     
 }
