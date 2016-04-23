@@ -21,7 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public abstract class Game {
     
-    private static final List<Game> RULE_SETS = new ArrayList<>();
+    private static final List<Game> GAMES = new ArrayList<>();
     
     private final String name;
     private final List<Player> players; // TODO support for variable-player games (are those a thing?)
@@ -36,11 +36,11 @@ public abstract class Game {
     }
     
     public static void registerGame(Game game) {
-        RULE_SETS.add(game);
+        GAMES.add(game);
     }
     
     public static List<Game> getGames() {
-        return ImmutableList.copyOf(RULE_SETS);
+        return ImmutableList.copyOf(GAMES);
     }
     
 }
