@@ -2,6 +2,7 @@ package ca.keal.sastrane.util;
 
 import com.google.common.collect.HashMultiset;
 
+import java.net.URL;
 import java.util.Collection;
 
 public final class Utils {
@@ -16,6 +17,10 @@ public final class Utils {
      */
     public static <E> boolean areElementsEqual(Collection<E> a, Collection<E> b) {
         return HashMultiset.create(a).equals(HashMultiset.create(b));
+    }
+    
+    public static URL getResource(String filename, String pkg, ClassLoader loader) {
+        return loader.getResource(pkg.replace('.', '/') + filename);
     }
     
 }

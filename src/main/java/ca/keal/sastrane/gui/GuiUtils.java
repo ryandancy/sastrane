@@ -1,5 +1,6 @@
 package ca.keal.sastrane.gui;
 
+import ca.keal.sastrane.util.Utils;
 import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -24,9 +25,8 @@ public final class GuiUtils {
      * getFXML("foo.fxml", "com.foo.bar", getClass().getClassLoader()) gets com/foo/bar/foo.fxml.
      */
     public static Parent getFXML(String filename, String pkg, ClassLoader loader) throws IOException {
-        String fqn = pkg.replace('.', '/') + "/" + filename;
-        URL fxml = loader.getResource(fqn);
-        if (fxml == null) throw new IOException(fqn + " could not be accessed.");
+        URL fxml = Utils.getResource(filename, pkg, loader);
+        if (fxml == null) throw new IOException(pkg + "/" + filename + " could not be accessed.");
         return FXMLLoader.load(fxml);
     }
     
