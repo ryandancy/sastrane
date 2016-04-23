@@ -11,6 +11,7 @@ import lombok.ToString;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -20,7 +21,7 @@ import java.util.stream.Collectors;
 @ToString
 @EqualsAndHashCode
 @RequiredArgsConstructor
-public class Board {
+public class Board implements Iterable<Square> {
     
     @NonNull
     private final Map<Square, Pair<Piece, Player>> squaresToPieces; // TODO more dimensions?
@@ -74,6 +75,11 @@ public class Board {
      */
     private int getMaxDimen(Function<Square, Integer> map) {
         return Collections.min(squaresToPieces.keySet().stream().map(map).collect(Collectors.toList()));
+    }
+    
+    @Override
+    public Iterator<Square> iterator() {
+        return squaresToPieces.keySet().iterator();
     }
     
 }
