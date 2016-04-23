@@ -9,6 +9,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +25,7 @@ public abstract class Game {
     private static final List<Game> GAMES = new ArrayList<>();
     
     private final String name;
-    private final String iconURL;
+    private final InputStream iconStream;
     private final List<Player> players; // TODO support for variable-player games (are those a thing?)
     private final Board.Factory boardFactory;
     private final EventBus bus;
@@ -32,9 +33,9 @@ public abstract class Game {
     /**
      * {@code combatants} should be in the order in which the combatants move (e.g. for chess, {@code [White, Black]}).
      */
-    public Game(@NonNull String name, @NonNull String iconURL, @NonNull List<Player> players,
+    public Game(@NonNull String name, @NonNull InputStream iconStream, @NonNull List<Player> players,
                 @NonNull Board.Factory boardFactory) {
-        this(name, iconURL, ImmutableList.copyOf(players), boardFactory, new EventBus(name));
+        this(name, iconStream, ImmutableList.copyOf(players), boardFactory, new EventBus(name));
     }
     
     public static void registerGame(Game game) {
