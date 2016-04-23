@@ -1,7 +1,11 @@
 package ca.keal.sastrane.util;
 
 import ca.keal.sastrane.Move;
+import ca.keal.sastrane.Piece;
 import ca.keal.sastrane.Player;
+import ca.keal.sastrane.RecursiveMoveResolvingPiece;
+import ca.keal.sastrane.Round;
+import ca.keal.sastrane.Square;
 import com.google.common.collect.HashMultiset;
 
 import java.net.URL;
@@ -16,8 +20,8 @@ public final class Utils {
     }
     
     /**
-     * Returns whether the two collections have equal elements; that is, the same number of elements, and
-     * all elements have an equal counterpart on the other set. Disregards order.
+     * Returns whether the two collections have equal elements; that is, the same number of elements, and all elements
+     * have an equal counterpart on the other set. Disregards order.
      */
     public static <E> boolean areElementsEqual(Collection<E> a, Collection<E> b) {
         return HashMultiset.create(a).equals(HashMultiset.create(b));
@@ -31,6 +35,31 @@ public final class Utils {
         return moves.stream()
                 .map(move -> move.getFrom().to(allegiance.perspectivize(move.getFrom(), move.getTo())))
                 .collect(Collectors.toList());
+    }
+    
+    /**
+     * Returns whether any piece on {@code board} can be moved to {@code square}.
+     */
+    public static boolean canBeMovedTo(Round round, Square square) {
+        for (Square pos : round.getBoard()) {
+            Pair<Piece, Player> posData = round.getBoard().get(pos);
+            if (posData != null) {
+                Piece piece = posData.getLeft();
+                Player player = posData.getRight();
+                
+                List<Move> moves;
+                if (piece instanceof RecursiveMoveResolvingPiece) {
+                    moves = ((RecursiveMoveResolvingPiece) piece).getPossibleMovesNonRecursive(round, square, player);
+                } else {
+                    moves = piece.getPossibleMoves(round, square, player);
+                }
+                
+                if (moves.stream().map(Move::getTo).anyMatch(square::equals)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
     
 }
