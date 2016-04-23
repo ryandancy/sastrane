@@ -17,4 +17,12 @@ public class Pair<L, R> {
         return new Pair<>(left, right);
     }
     
+    public <T> Pair<T, R> withLeft(T newLeft) {
+        return new Pair<>(newLeft, right);
+    }
+    
+    public <T> Pair<L, T> withRight(T newRight) {
+        return new Pair<>(left, newRight);
+    }
+    
 }

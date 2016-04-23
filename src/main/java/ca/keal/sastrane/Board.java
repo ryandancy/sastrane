@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 @ToString
@@ -35,7 +36,7 @@ public class Board {
      */
     @Builder(builderClassName = "Factory")
     public Board(@Singular @NonNull List<String> rows,
-                 @Singular @NonNull Map<Character, Pair<Piece, Player>> pieces) {
+                 @Singular @NonNull Map<Character, Pair<Supplier<Piece>, Player>> pieces) {
         if (pieces.containsKey(' ') || pieces.containsKey('_')) {
             throw new IllegalArgumentException("Space and underscore are reserved in pieces; space is null piece "
                     + "and underscore is not-on-board.");
@@ -51,7 +52,7 @@ public class Board {
                     throw new IllegalArgumentException("Undeclared piece char '" + piece + "' at row " + i
                             + ", column " + j);
                 }
-                squaresToPieces.put(new Square(i, j), pieces.get(piece));
+                squaresToPieces.put(new Square(i, j), pieces.get(piece).withLeft(pieces.get(piece).getLeft().get()));
             }
         }
     }
