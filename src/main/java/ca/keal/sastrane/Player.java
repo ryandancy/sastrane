@@ -14,11 +14,11 @@ import lombok.NonNull;
  *         PLAYERA("a", Player::flipNone), PLAYERB("b", Player::flipY);
  *         
  *         private String name;
- *         private BinaryOperator&lt;Square&gt; perspectiveChanger;
+ *         private BinaryOperator&lt;Square&gt; perspectivizer;
  *         
- *         FooPlayer(String name, BinaryOperator&lt;Square&gt; perspectiveChanger) {
+ *         FooPlayer(String name, BinaryOperator&lt;Square&gt; perspectivizer) {
  *             this.name = name;
- *             this.perspectiveChanger = perspectiveChanger;
+ *             this.perspectivizer = perspectivizer;
  *         }
  *         
  *        {@literal @}Override
@@ -27,8 +27,8 @@ import lombok.NonNull;
  *         }
  *         
  *        {@literal @}Override
- *         public Square toPerspective(Square pos, Square original) {
- *             return perspectiveChanger.apply(pos, original);
+ *         public Square perspectivize(Square pos, Square original) {
+ *             return perspectivizer.apply(pos, original);
  *         }
  *         
  *     }
@@ -47,10 +47,10 @@ public interface Player {
      * {@link Piece#getPossibleMoves} returns how the piece would move, assuming that the piece is
      * facing forwards (+y). However, for some players, this is not the case. For example, in chess, white is facing
      * forwards (+y) and black is facing towards the back of the board (-y). A black pawn will return the square
-     * [x, y+1]; however, this would have it move towards its own side! To counteract this, {@code toPerspective}
+     * [x, y+1]; however, this would have it move towards its own side! To counteract this, {@code perspectivize}
      * is called on each result, and the black pawn now moves towards white's side.
      * <p />
-     * Multiple static utility functions are provided as implementations of toPerspective: {@link #flipBoth},
+     * Multiple static utility functions are provided as implementations of perspectivize: {@link #flipBoth},
      * {@link #flipX}, {@link #flipY}, and {@link #flipNone}.
      * 
      * @param pos The base position in question; most implementations will "flip" over this.
@@ -61,9 +61,9 @@ public interface Player {
      * @see #flipY(Square, Square)
      * @see #flipNone(Square, Square)
      */
-    // TODO some form of full-board toPerspective
+    // TODO some form of full-board perspectivize
     @NonNull
-    Square toPerspective(@NonNull Square pos, @NonNull Square original);
+    Square perspectivize(@NonNull Square pos, @NonNull Square original);
     
     @NonNull
     static Square flipNone(@SuppressWarnings("UnusedParameters") @NonNull Square pos, @NonNull Square original) {

@@ -19,7 +19,7 @@ public enum ChessPlayer implements Player {
     
     @Override
     @NonNull
-    public Square toPerspective(@NonNull Square pos, @NonNull Square original) {
+    public Square perspectivize(@NonNull Square pos, @NonNull Square original) {
         return perspectivizer.apply(pos, original);
     }
     

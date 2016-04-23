@@ -6,6 +6,7 @@ import ca.keal.sastrane.Player;
 import ca.keal.sastrane.Round;
 import ca.keal.sastrane.Square;
 import ca.keal.sastrane.util.Pair;
+import ca.keal.sastrane.util.Utils;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 
@@ -13,7 +14,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * A piece that moves in a straight line (possibly diagonally), possibly stopping when it hits a piece and possibly
@@ -89,9 +89,7 @@ public abstract class LinePiece implements Piece {
                         takeOpposingPieces));
             }
         }
-        return res.stream()
-                .map(move -> move.getFrom().to(allegiance.toPerspective(move.getFrom(), move.getTo())))
-                .collect(Collectors.toList());
+        return Utils.perspectivizeAll(res, allegiance);
     }
     
     @NonNull

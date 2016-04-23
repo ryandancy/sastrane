@@ -6,13 +6,13 @@ import ca.keal.sastrane.Player;
 import ca.keal.sastrane.Round;
 import ca.keal.sastrane.Square;
 import ca.keal.sastrane.util.Pair;
+import ca.keal.sastrane.util.Utils;
 import lombok.NonNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public abstract class JumpingPiece implements Piece {
     
@@ -92,9 +92,7 @@ public abstract class JumpingPiece implements Piece {
                 res.add(boardPos.to(deltaPos));
             }
         }
-        return res.stream()
-                .map(move -> move.getFrom().to(allegiance.toPerspective(move.getFrom(), move.getTo())))
-                .collect(Collectors.toList());
+        return Utils.perspectivizeAll(res, allegiance);
     }
     
     @NonNull
