@@ -5,6 +5,9 @@ import lombok.NonNull;
 
 import java.util.List;
 
+/**
+ * <strong>ALL IMPLEMENTATIONS MUST BE IMMUTABLE!!!</strong>
+ */
 public interface Piece {
     
     @NonNull
