@@ -1,18 +1,30 @@
 package ca.keal.sastrane.gui;
 
-import javafx.event.ActionEvent;
+import ca.keal.sastrane.Game;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.FlowPane;
 
-public class MainMenuController {
+import java.net.URL;
+import java.util.ResourceBundle;
+import java.util.stream.Collectors;
+
+public class MainMenuController implements Initializable {
     
     @FXML
-    private void handleSPButton(ActionEvent e) {
-        // TODO SP menu
+    private FlowPane tiles;
+    
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        tiles.getChildren().addAll(Game.getGames().stream()
+                .map(GameTile::forGame)
+                .peek(tile -> tile.setOnMouseClicked(this::handleTileClick))
+                .collect(Collectors.toList()));
     }
     
-    @FXML
-    private void handleMPButton(ActionEvent e) {
-        // TODO MP menu
+    private void handleTileClick(MouseEvent e) {
+        // TODO send to settings screen
     }
     
 }

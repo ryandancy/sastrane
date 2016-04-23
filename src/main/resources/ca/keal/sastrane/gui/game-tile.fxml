@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.VBox?>
+<fx:root xmlns:fx="http://javafx.com/fxml" type="javafx.scene.layout.VBox">
+    <ImageView VBox.vgrow="always">
+        <Image fx:id="img"/>
+    </ImageView>
+    <Label fx:id="displayName" />
+</fx:root>
