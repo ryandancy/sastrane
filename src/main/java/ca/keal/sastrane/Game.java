@@ -26,8 +26,6 @@ public abstract class Game {
     private final String name;
     private final List<Player> players; // TODO support for variable-player games (are those a thing?)
     private final Board.Factory boardFactory;
-    
-    @NonNull
     private final EventBus bus;
     
     /**

@@ -27,7 +27,7 @@ public class Round {
             throw new IllegalArgumentException("Game: combatantsToPlayers.keySet() must = game.getCombatants()");
         }
         this.game = game;
-        this.board = game.getBoardFactory().create();
+        this.board = game.getBoardFactory().build();
         this.combatantsToPlayers = ImmutableMap.copyOf(combatantsToPlayers);
     }
     
