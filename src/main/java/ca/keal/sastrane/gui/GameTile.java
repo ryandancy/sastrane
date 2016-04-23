@@ -29,7 +29,7 @@ public class GameTile extends VBox {
     
     public static GameTile forGame(Game game) {
         GameTile tile = new GameTile();
-        tile.setImg(new Image(game.getIconURL()));
+        tile.setImg(new Image(game.getIconStream()));
         tile.setDisplayName(new Label(game.getName()));
         return tile;
     }
