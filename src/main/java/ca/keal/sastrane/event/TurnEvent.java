@@ -19,7 +19,7 @@ public class TurnEvent extends RoundEvent {
     public TurnEvent(Round round) {
         super(round);
         player = round.getCurrentTurn();
-        mover = round.getCombatantsToPlayers().get(player);
+        mover = round.getPlayersToMovers().get(player);
     }
     
     /**

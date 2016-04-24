@@ -21,22 +21,22 @@ import java.util.Map;
 public class Round {
     
     private final Game game;
-    private final Map<Player, Mover> combatantsToPlayers;
+    private final Map<Player, Mover> playersToMovers;
     private final Board board;
     
     private int move = 0;
     
-    public Round(@NonNull Game game, @NonNull Map<Player, Mover> combatantsToPlayers) {
-        if (!Utils.areElementsEqual(combatantsToPlayers.keySet(), game.getPlayers())) {
-            throw new IllegalArgumentException("Game: combatantsToPlayers.keySet() must = game.getCombatants()");
+    public Round(@NonNull Game game, @NonNull Map<Player, Mover> playersToMovers) {
+        if (!Utils.areElementsEqual(playersToMovers.keySet(), game.getPlayers())) {
+            throw new IllegalArgumentException("Game: playersToMovers.keySet() must = game.getCombatants()");
         }
         this.game = game;
+        this.playersToMovers = ImmutableMap.copyOf(playersToMovers);
         this.board = game.getBoardFactory().build();
-        this.combatantsToPlayers = ImmutableMap.copyOf(combatantsToPlayers);
     }
     
     public Round(@NonNull Round round) {
-        this(round.getGame(), round.getCombatantsToPlayers(), new Board(round.getBoard()), round.getMove());
+        this(round.getGame(), round.getPlayersToMovers(), new Board(round.getBoard()), round.getMove());
     }
     
     public void nextTurn() {
@@ -46,8 +46,8 @@ public class Round {
         
         game.getBus().post(new TurnEvent.Pre(this));
         
-        // We could index turn (as a field) in players and add 1... but ctp.size() % move works better + faster
-        Mover turn = combatantsToPlayers.get(game.getPlayers().get(combatantsToPlayers.size() % move));
+        // We could index turn (as a field) in players and add 1... but ptm.size() % move works better + faster
+        Mover turn = playersToMovers.get(game.getPlayers().get(playersToMovers.size() % move));
         Move turnMove = turn.getMove(this);
         
         game.getBus().post(new MoveEvent.Pre(this, turnMove));
@@ -59,7 +59,7 @@ public class Round {
     }
     
     public Player getCurrentTurn() {
-        return game.getPlayers().get(combatantsToPlayers.size() % move);
+        return game.getPlayers().get(playersToMovers.size() % move);
     }
     
     @NonNull
