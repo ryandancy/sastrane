@@ -30,6 +30,8 @@ public class Round {
     
     private int move = 0;
     private boolean ended = false;
+    
+    @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
     private Deque<Move> moves = new ArrayDeque<>();
     
     public Round(@NonNull Game game, @NonNull Map<Player, Mover> playersToMovers) {

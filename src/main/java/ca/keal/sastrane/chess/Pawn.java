@@ -8,8 +8,10 @@ import ca.keal.sastrane.Piece;
 import ca.keal.sastrane.Player;
 import ca.keal.sastrane.Round;
 import ca.keal.sastrane.Square;
+import ca.keal.sastrane.event.MoveEvent;
 import ca.keal.sastrane.util.Pair;
 import ca.keal.sastrane.util.Utils;
+import com.google.common.eventbus.Subscribe;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -21,7 +23,7 @@ import java.util.List;
 @Setter
 public class Pawn implements MovingPiece {
     
-    // TODO: add MoveEvent event handler, check for double step by pawn, set, reset, hasMoved, promotion
+    // TODO: add MoveEvent event handler, check for double step by pawn, set, reset, hasMoved
     private boolean lastMoveDouble;
     private boolean moved;
     
@@ -83,6 +85,16 @@ public class Pawn implements MovingPiece {
     public Pair<String, String> getPackageAndImageName() {
         // TODO Pawn's icon
         return Pair.of("ca.keal.sastrane.chess.icon", "TODO_pawn");
+    }
+    
+    @Subscribe
+    public void afterMove(MoveEvent.Post e) {
+        Square endPos = e.getMove().getEndPos();
+        Pair<Piece, Player> atEndPos = e.getRound().getBoard().get(endPos);
+        if (atEndPos != null && atEndPos.getLeft() instanceof Pawn
+                && (endPos.getY() == 0 || endPos.getY() == e.getRound().getBoard().getMaxY())) {
+            e.getMover().decide(PromotionDecision.class).onChoose(e.getRound());
+        }
     }
     
 }
