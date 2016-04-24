@@ -1,6 +1,7 @@
 package ca.keal.sastrane;
 
 import ca.keal.sastrane.event.MoveEvent;
+import ca.keal.sastrane.event.RoundEvent;
 import ca.keal.sastrane.event.TurnEvent;
 import ca.keal.sastrane.util.Utils;
 import com.google.common.collect.ImmutableMap;
@@ -39,6 +40,10 @@ public class Round {
     }
     
     public void nextTurn() {
+        if (move == 0) {
+            game.getBus().post(new RoundEvent.Pre(this));
+        }
+        
         game.getBus().post(new TurnEvent.Pre(this));
         
         // We could index turn (as a field) in players and add 1... but ctp.size() % move works better + faster
