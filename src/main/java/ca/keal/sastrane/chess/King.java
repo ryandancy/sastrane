@@ -16,6 +16,8 @@ import lombok.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class King implements RecursiveMovingPiece {
     
@@ -24,10 +26,13 @@ public class King implements RecursiveMovingPiece {
     @Override
     public List<Move> getPossibleMoves(@NonNull Round round, @NonNull Square boardPos, @NonNull Player player) {
         // All 8 surrounding squares that aren't in the path of any player other than player
-        return getPossibleMovesNonRecursive(round, boardPos, player).stream()
-                .filter(move -> !Utils.canBeMovedTo(round.copyWithMove(move), move.getEndPos(), player, true))
-                .collect(() -> getCastlingMoves(round, boardPos, player), List::add, List::addAll);
-    }
+        // It'd be a shame to ruin this beautifullly formatted piece of code, Intellij formatter: @formatter:off
+        return Stream.concat(
+                    getPossibleMovesNonRecursive(round, boardPos, player).stream(),
+                    getCastlingMoves(round, boardPos, player).stream())
+                .filter(KingInCheckUtils.checkKing(round, player))
+                .collect(Collectors.toList());
+    } // @f:y
     
     // https://en.wikipedia.org/wiki/Castling#Requirements
     private List<Move> getCastlingMoves(Round round, Square boardPos, Player player) {
@@ -41,7 +46,7 @@ public class King implements RecursiveMovingPiece {
                 int inc = (int) Math.signum(boardPos.getX() - rookX);
                 final int rookXFinal = rookX; // required because rookX isn't effectively final
                 
-                moves.add(new MovingMove(boardPos, boardPos.withX(boardPos.getX() + 2*inc)) {
+                moves.add(new MovingMove(boardPos, boardPos.withX(boardPos.getX() + 2 * inc)) {
                     @Override
                     public void move(@NonNull Board board) {
                         super.move(board);

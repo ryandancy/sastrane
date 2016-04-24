@@ -17,6 +17,7 @@ import lombok.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 public class Pawn implements MovingPiece {
@@ -27,7 +28,7 @@ public class Pawn implements MovingPiece {
     @Override
     @NonNull
     public List<Move> getPossibleMoves(@NonNull Round round, @NonNull Square boardPos,
-                                       @NonNull Player allegiance) {
+                                       @NonNull Player player) {
         List<Move> moves = new ArrayList<>();
         
         // One in front if not occupied; two in front if first and not occupied
@@ -44,7 +45,7 @@ public class Pawn implements MovingPiece {
             Square diagonal = new Square(boardPos.getX() + i, boardPos.getY() + 1);
             if (round.getBoard().isOn(diagonal)) {
                 Pair<Piece, Player> diagonalOnBoard = round.getBoard().get(diagonal);
-                if (diagonalOnBoard != null && allegiance != diagonalOnBoard.getRight()) {
+                if (diagonalOnBoard != null && player != diagonalOnBoard.getRight()) {
                     moves.add(boardPos.to(diagonal));
                 }
             }
@@ -52,11 +53,11 @@ public class Pawn implements MovingPiece {
         
         // En passent (https://en.wikipedia.org/wiki/En_passent)
         for (int i = -1; i <= 1; i += 2) {
-            // Check for opposite-allegiance pawn at side that just moved a double step
+            // Check for opposite-player pawn at side that just moved a double step
             Square side = boardPos.withX(boardPos.getX() + i);
             if (round.getBoard().isOn(side)) {
                 Pair<Piece, Player> sidePiecePlayer = round.getBoard().get(side);
-                if (allegiance != sidePiecePlayer.getRight() && sidePiecePlayer.getLeft() instanceof Pawn
+                if (player != sidePiecePlayer.getRight() && sidePiecePlayer.getLeft() instanceof Pawn
                         && ((Pawn) sidePiecePlayer.getLeft()).isLastMoveDouble()) {
                     // Check that the diagonal on that side is clear
                     Square diagonal = new Square(boardPos.getX() + i, boardPos.getY() + 1);
@@ -75,7 +76,9 @@ public class Pawn implements MovingPiece {
             }
         }
         
-        return Utils.perspectivizeAll(moves, allegiance);
+        return Utils.perspectivize(moves.stream(), player)
+                .filter(KingInCheckUtils.checkKing(round, player))
+                .collect(Collectors.toList());
     }
     
     @Override

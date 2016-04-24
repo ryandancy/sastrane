@@ -14,6 +14,7 @@ import java.net.URL;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @UtilityClass
 public final class Utils {
@@ -32,10 +33,12 @@ public final class Utils {
         return loader.getResource(pkg.replace('.', '/') + "/" + filename);
     }
     
-    public static List<Move> perspectivizeAll(List<? extends Move> moves, Player allegiance) {
-        return moves.stream()
-                .map(move -> move.perspectivize(allegiance))
-                .collect(Collectors.toList());
+    public static List<Move> perspectivizeAll(List<? extends Move> moves, Player player) {
+        return perspectivize(moves.stream(), player).collect(Collectors.toList());
+    }
+    
+    public static Stream<Move> perspectivize(Stream<? extends Move> moves, Player player) {
+        return moves.map(move -> move.perspectivize(player));
     }
     
     /**
