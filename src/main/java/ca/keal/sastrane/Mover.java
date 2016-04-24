@@ -14,6 +14,6 @@ public interface Mover {
     Move getMove(@NonNull Round round);
     
     @NonNull
-    <T extends Enum<T> & Decision> T decide(Class<T> decision);
+    Decision decide(Decision[] decision);
     
 }

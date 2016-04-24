@@ -94,7 +94,7 @@ public class Pawn implements MovingPiece {
         if (atEndPos != null && atEndPos.getLeft() instanceof Pawn) {
             // Promotion
             if (endPos.getY() == 0 || endPos.getY() == e.getRound().getBoard().getMaxY()) {
-                e.getMover().decide(PromotionDecision.class).onChoose(e.getRound());
+                e.getMover().decide(PromotionDecision.values()).onChoose(e.getRound());
             }
             
             Pawn pawn = (Pawn) atEndPos.getLeft();

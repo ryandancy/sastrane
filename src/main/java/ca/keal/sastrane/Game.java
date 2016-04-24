@@ -31,7 +31,7 @@ public abstract class Game {
     private final EventBus bus;
     
     /**
-     * {@code combatants} should be in the order in which the combatants move (e.g. for chess, {@code [White, Black]}).
+     * {@code players} should be in the order in which the players move (e.g. for chess, {@code [White, Black]}).
      */
     public Game(@NonNull String name, @NonNull InputStream iconStream, @NonNull List<Player> players,
                 @NonNull Board.Factory boardFactory) {
