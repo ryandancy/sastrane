@@ -28,7 +28,7 @@ public final class Utils {
     }
     
     public static URL getResource(String filename, String pkg, ClassLoader loader) {
-        return loader.getResource(pkg.replace('.', '/') + filename);
+        return loader.getResource(pkg.replace('.', '/') + "/" + filename);
     }
     
     public static List<Move> perspectivizeAll(List<Move> moves, Player allegiance) {
