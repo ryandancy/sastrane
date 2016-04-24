@@ -3,9 +3,13 @@ package ca.keal.sastrane.chess;
 import ca.keal.sastrane.Board;
 import ca.keal.sastrane.Game;
 import ca.keal.sastrane.util.Pair;
+import lombok.Getter;
 
 @SuppressWarnings("unused")
 public class Chess extends Game {
+    
+    @Getter
+    private static final Chess instance = new Chess();
     
     public Chess() {
         super("Chess", Pair.of("ca.keal.sastrane.chess", "chess.png"), ChessPlayer.values(), Board.factory()

@@ -1,12 +1,9 @@
 package ca.keal.sastrane.main;
 
-import ca.keal.sastrane.Game;
 import ca.keal.sastrane.gui.GuiUtils;
 import com.google.common.reflect.ClassPath;
 import javafx.application.Application;
 import javafx.stage.Stage;
-
-import java.lang.reflect.Modifier;
 
 public class Main extends Application {
     
@@ -18,15 +15,9 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         // TODO splash screen
         
-        // Load all classes, find all subclasses of Game, register each
+        // Load all classes so that singleton Game subclass instances will be created.
         // @Game annotation???
-        for (ClassPath.ClassInfo classInfo : ClassPath.from(getClass().getClassLoader()).getAllClasses()) {
-            Class<?> cls = classInfo.load();
-            if (Game.class.isAssignableFrom(cls) && !Modifier.isAbstract(cls.getModifiers())) {
-                @SuppressWarnings("unchecked") Game game = ((Class<? extends Game>) cls).newInstance();
-                Game.registerGame(game);
-            }
-        }
+        ClassPath.from(getClass().getClassLoader()).getAllClasses().forEach(ClassPath.ClassInfo::load);
         
         // TODO dynamic title
         primaryStage.setTitle("Sastrane");

@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * All subclasses <strong>MUST</strong> have a no-arguments constructor!
+ * All subclasses must create instances of themselves on load; most will implement this as a singleton.
  */
 @Getter
 @ToString
@@ -36,6 +36,7 @@ public abstract class Game {
     public Game(@NonNull String name, @NonNull Pair<String, String> iconPackageAndName, @NonNull Player[] players,
                 @NonNull Board.Factory boardFactory) {
         this(name, iconPackageAndName, players, boardFactory, new EventBus(name));
+        registerGame(this);
     }
     
     public static void registerGame(Game game) {
