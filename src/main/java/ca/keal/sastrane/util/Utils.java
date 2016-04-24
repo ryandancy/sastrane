@@ -8,7 +8,6 @@ import ca.keal.sastrane.RecursiveMovingPiece;
 import ca.keal.sastrane.Round;
 import ca.keal.sastrane.Square;
 import com.google.common.collect.HashMultiset;
-import lombok.experimental.UtilityClass;
 
 import java.net.URL;
 import java.util.Collection;
@@ -16,7 +15,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@UtilityClass
 public final class Utils {
     
     private Utils() {}

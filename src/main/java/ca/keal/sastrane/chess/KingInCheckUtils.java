@@ -7,13 +7,11 @@ import ca.keal.sastrane.Round;
 import ca.keal.sastrane.Square;
 import ca.keal.sastrane.util.Utils;
 import lombok.NonNull;
-import lombok.experimental.UtilityClass;
 
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-@UtilityClass
 public class KingInCheckUtils {
     
     private KingInCheckUtils() {}
