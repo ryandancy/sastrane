@@ -35,7 +35,7 @@ public class Board implements Iterable<Square> {
     /**
      * ' ' = null piece, '_' = not on board, is error if either used in pieces.
      */
-    @Builder(builderClassName = "Factory")
+    @Builder(builderClassName = "Factory", builderMethodName = "factory")
     public Board(@Singular @NonNull List<String> rows,
                  @Singular @NonNull Map<Character, Pair<Supplier<Piece>, Player>> pieces) {
         if (pieces.containsKey(' ') || pieces.containsKey('_')) {
