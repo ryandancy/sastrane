@@ -1,6 +1,5 @@
 package ca.keal.sastrane.event;
 
-import ca.keal.sastrane.Round;
 import ca.keal.sastrane.Move;
 import ca.keal.sastrane.Round;
 import lombok.Data;

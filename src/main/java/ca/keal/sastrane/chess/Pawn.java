@@ -2,6 +2,8 @@ package ca.keal.sastrane.chess;
 
 import ca.keal.sastrane.Board;
 import ca.keal.sastrane.Move;
+import ca.keal.sastrane.MovingMove;
+import ca.keal.sastrane.MovingPiece;
 import ca.keal.sastrane.Piece;
 import ca.keal.sastrane.Player;
 import ca.keal.sastrane.Round;
@@ -17,7 +19,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class Pawn implements Piece {
+public class Pawn implements MovingPiece {
     
     // TODO: add MoveEvent event handler, check for double step by pawn, set, reset, hasMoved, promotion
     private boolean lastMoveDouble;
@@ -25,7 +27,8 @@ public class Pawn implements Piece {
     
     @Override
     @NonNull
-    public List<Move> getPossibleMoves(@NonNull Round round, @NonNull Square boardPos, @NonNull Player allegiance) {
+    public List<Move> getPossibleMoves(@NonNull Round round, @NonNull Square boardPos,
+                                       @NonNull Player allegiance) {
         List<Move> moves = new ArrayList<>();
         
         // One in front if not occupied; two in front if first and not occupied
@@ -60,8 +63,8 @@ public class Pawn implements Piece {
                     Square diagonal = new Square(boardPos.getX() + i, boardPos.getY() + 1);
                     // round.getBoard().isOn(diagonal) should always be true - simplify???
                     if (round.getBoard().isOn(diagonal) && round.getBoard().get(diagonal) == null) {
-                        // Use Move subclass to kill side piece when moved
-                        moves.add(new Move(boardPos, diagonal) {
+                        // Use MovingMove subclass to kill side piece when moved
+                        moves.add(new MovingMove(boardPos, diagonal) {
                             @Override
                             public void move(@NonNull Board board) {
                                 super.move(board);

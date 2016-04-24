@@ -19,7 +19,7 @@ public class King implements RecursiveMoveResolvingPiece {
     public List<Move> getPossibleMoves(@NonNull Round round, @NonNull Square boardPos, @NonNull Player allegiance) {
         // All 8 surrounding squares that aren't in the path of any player other than allegiance
         return getPossibleMovesNonRecursive(round, boardPos, allegiance).stream()
-                .filter(move -> Utils.canBeMovedTo(round.copyWithMove(move), move.getTo(), allegiance, true))
+                .filter(move -> Utils.canBeMovedTo(round.copyWithMove(move), move.getEndPos(), allegiance, true))
                 .collect(Collectors.toList());
     }
     

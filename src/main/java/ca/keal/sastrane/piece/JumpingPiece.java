@@ -1,6 +1,7 @@
 package ca.keal.sastrane.piece;
 
 import ca.keal.sastrane.Move;
+import ca.keal.sastrane.MovingPiece;
 import ca.keal.sastrane.Piece;
 import ca.keal.sastrane.Player;
 import ca.keal.sastrane.Round;
@@ -14,7 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public abstract class JumpingPiece implements Piece {
+public abstract class JumpingPiece implements MovingPiece {
     
     private static final Map<Integer, Pair<Integer, Integer>> quadrantsToSigns = new HashMap<>();
     

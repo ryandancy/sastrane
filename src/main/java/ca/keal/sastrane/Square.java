@@ -12,8 +12,8 @@ public final class Square {
     private final int y;
     
     @NonNull
-    public Move to(@NonNull Square to) {
-        return new Move(this, to);
+    public MovingMove to(@NonNull Square to) {
+        return new MovingMove(this, to);
     }
     
 }

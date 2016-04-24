@@ -1,28 +1,20 @@
 package ca.keal.sastrane;
 
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-import lombok.Value;
-import lombok.experimental.NonFinal;
 
-@Value
-@NonFinal
-@RequiredArgsConstructor
-public class Move {
+public interface Move {
+    
+    void move(@NonNull Board board);
     
     @NonNull
-    private final Square from;
+    Move perspectivize(@NonNull Player player);
     
+    /**
+     * Returns the ending position of the move; that is, the position this move's affected piece will have. Foe example,
+     * in chess, the {@code getEndPos} of the {@link Move} that describes the pawn's single space move forwards will
+     * return the {@link Square} that represents the space in front of the pawn.
+     */
     @NonNull
-    private final Square to;
-    
-    public void move(@NonNull Board board) {
-        if (!board.isOn(from) || !board.isOn(to)) {
-            throw new IllegalArgumentException("Move.move: from & to must be on board");
-        }
-        
-        board.set(to, board.get(from));
-        board.set(from, null);
-    }
+    Square getEndPos();
     
 }

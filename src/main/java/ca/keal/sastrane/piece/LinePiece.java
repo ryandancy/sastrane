@@ -1,6 +1,7 @@
 package ca.keal.sastrane.piece;
 
 import ca.keal.sastrane.Move;
+import ca.keal.sastrane.MovingPiece;
 import ca.keal.sastrane.Piece;
 import ca.keal.sastrane.Player;
 import ca.keal.sastrane.Round;
@@ -18,13 +19,13 @@ import java.util.Map;
 /**
  * A piece that moves in a straight line (possibly diagonally), possibly stopping when it hits a piece and possibly
  * taking an opponent's piece.
- * <p />
- * This class provides both an instance and a static implementation of {@code getPossibleMoves}; the static
- * version is only provided such that this class can be used with another piece utility-type class, as Java
- * does not support multiple inheritance.
+ * <p>
+ * This class provides both an instance and a static implementation of {@code getPossibleMoves}; the static version is
+ * only provided such that this class can be used with another piece utility-type class, as Java does not support
+ * multiple inheritance.
  */
 @AllArgsConstructor
-public abstract class LinePiece implements Piece {
+public abstract class LinePiece implements MovingPiece {
     
     private static final Map<Integer, Pair<Integer, Integer>> directionToDxAndDy = new HashMap<>();
     

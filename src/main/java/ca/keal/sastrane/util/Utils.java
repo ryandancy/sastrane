@@ -1,6 +1,7 @@
 package ca.keal.sastrane.util;
 
 import ca.keal.sastrane.Move;
+import ca.keal.sastrane.MovingPiece;
 import ca.keal.sastrane.Piece;
 import ca.keal.sastrane.Player;
 import ca.keal.sastrane.RecursiveMoveResolvingPiece;
@@ -31,9 +32,9 @@ public final class Utils {
         return loader.getResource(pkg.replace('.', '/') + "/" + filename);
     }
     
-    public static List<Move> perspectivizeAll(List<Move> moves, Player allegiance) {
+    public static List<Move> perspectivizeAll(List<? extends Move> moves, Player allegiance) {
         return moves.stream()
-                .map(move -> move.getFrom().to(allegiance.perspectivize(move.getFrom(), move.getTo())))
+                .map(move -> move.perspectivize(allegiance))
                 .collect(Collectors.toList());
     }
     
@@ -49,16 +50,17 @@ public final class Utils {
                 Piece piece = posData.getLeft();
                 Player piecePlayer = posData.getRight();
                 
-                if (player == null || (invert ? player != piecePlayer : player == piecePlayer)) {
+                if (piece instanceof MovingPiece && (player == null || (invert ? player != piecePlayer
+                        : player == piecePlayer))) {
                     List<Move> moves;
                     if (piece instanceof RecursiveMoveResolvingPiece) {
                         moves = ((RecursiveMoveResolvingPiece) piece)
                                 .getPossibleMovesNonRecursive(round, square, piecePlayer);
                     } else {
-                        moves = piece.getPossibleMoves(round, square, piecePlayer);
+                        moves = ((MovingPiece) piece).getPossibleMoves(round, square, piecePlayer);
                     }
-    
-                    if (moves.stream().map(Move::getTo).anyMatch(square::equals)) {
+                    
+                    if (moves.stream().map(Move::getEndPos).anyMatch(square::equals)) {
                         return true;
                     }
                 }
