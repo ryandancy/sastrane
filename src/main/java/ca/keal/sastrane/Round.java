@@ -86,7 +86,7 @@ public class Round {
     @Subscribe
     public void onWin(WinEvent e) {
         ended = true;
-        game.getBus().unregister(this);
+        game.refreshBus();
     }
     
 }
