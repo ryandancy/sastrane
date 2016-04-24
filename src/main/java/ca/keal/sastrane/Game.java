@@ -24,18 +24,18 @@ public abstract class Game {
     
     private static final List<Game> GAMES = new ArrayList<>();
     
-    private final String name;
+    private final String name; // TODO i18n
     private final InputStream iconStream;
-    private final List<Player> players; // TODO support for variable-player games (are those a thing?)
+    private final Player[] players; // TODO support for variable-player games (are those a thing?)
     private final Board.Factory boardFactory;
     private final EventBus bus;
     
     /**
      * {@code players} should be in the order in which the players move (e.g. for chess, {@code [White, Black]}).
      */
-    public Game(@NonNull String name, @NonNull InputStream iconStream, @NonNull List<Player> players,
+    public Game(@NonNull String name, @NonNull InputStream iconStream, @NonNull Player[] players,
                 @NonNull Board.Factory boardFactory) {
-        this(name, iconStream, ImmutableList.copyOf(players), boardFactory, new EventBus(name));
+        this(name, iconStream, players, boardFactory, new EventBus(name));
     }
     
     public static void registerGame(Game game) {

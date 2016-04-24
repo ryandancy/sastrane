@@ -15,6 +15,7 @@ import lombok.NonNull;
 import lombok.ToString;
 
 import java.util.ArrayDeque;
+import java.util.Arrays;
 import java.util.Deque;
 import java.util.Map;
 
@@ -35,7 +36,7 @@ public class Round {
     private Deque<Move> moves = new ArrayDeque<>();
     
     public Round(@NonNull Game game, @NonNull Map<Player, Mover> playersToMovers) {
-        if (!Utils.areElementsEqual(playersToMovers.keySet(), game.getPlayers())) {
+        if (!Utils.areElementsEqual(playersToMovers.keySet(), Arrays.asList(game.getPlayers()))) {
             throw new IllegalArgumentException("Round: playersToMovers.keySet() must = game.getCombatants()");
         }
         this.game = game;
@@ -59,7 +60,7 @@ public class Round {
         game.getBus().post(new TurnEvent.Pre(this));
         
         // We could index turn (as a field) in players and add 1... but ptm.size() % move works better + faster
-        Mover turn = playersToMovers.get(game.getPlayers().get(playersToMovers.size() % move));
+        Mover turn = playersToMovers.get(game.getPlayers()[playersToMovers.size() % move]);
         Move turnMove = turn.getMove(this);
         
         game.getBus().post(new MoveEvent.Pre(this, turnMove));
@@ -72,7 +73,7 @@ public class Round {
     }
     
     public Player getCurrentTurn() {
-        return game.getPlayers().get(playersToMovers.size() % move);
+        return game.getPlayers()[playersToMovers.size() % move];
     }
     
     @NonNull
