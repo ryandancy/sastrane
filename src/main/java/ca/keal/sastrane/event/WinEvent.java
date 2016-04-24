@@ -1,6 +1,7 @@
 package ca.keal.sastrane.event;
 
 import ca.keal.sastrane.Player;
+import ca.keal.sastrane.Round;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -16,5 +17,10 @@ public class WinEvent extends RoundEvent {
      * The winner of the game. {@code null} means the game was a tie.
      */
     private final Player winner;
+    
+    public WinEvent(Round round, Player winner) {
+        super(round);
+        this.winner = winner;
+    }
     
 }
