@@ -15,7 +15,7 @@ public interface MoveCountingPiece extends MovingPiece {
     @Subscribe
     default void afterMove(MoveEvent.Post e) {
         Pair<Piece, Player> atEndPos = e.getRound().getBoard().get(e.getMove().getEndPos());
-        if (atEndPos != null && atEndPos.getLeft().getClass() == getClass()) {
+        if (atEndPos != null && this == atEndPos.getLeft()) {
             ((MoveCountingPiece) atEndPos).incrementMoveCount();
         }
     }
