@@ -14,6 +14,8 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.ToString;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.Map;
 
 @Getter
@@ -28,6 +30,7 @@ public class Round {
     
     private int move = 0;
     private boolean ended = false;
+    private Deque<Move> moves = new ArrayDeque<>();
     
     public Round(@NonNull Game game, @NonNull Map<Player, Mover> playersToMovers) {
         if (!Utils.areElementsEqual(playersToMovers.keySet(), game.getPlayers())) {
@@ -41,7 +44,7 @@ public class Round {
     
     public Round(@NonNull Round round) {
         this(round.getGame(), round.getPlayersToMovers(), new Board(round.getBoard()), round.getMove(),
-                round.isEnded());
+                round.isEnded(), round.getMoves());
     }
     
     public void nextTurn() {
@@ -59,6 +62,7 @@ public class Round {
         
         game.getBus().post(new MoveEvent.Pre(this, turnMove));
         turnMove.move(board);
+        moves.add(turnMove);
         game.getBus().post(new MoveEvent.Post(this, turnMove));
         
         game.getBus().post(new TurnEvent.Post(this));
