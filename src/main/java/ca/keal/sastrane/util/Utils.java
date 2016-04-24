@@ -4,7 +4,7 @@ import ca.keal.sastrane.Move;
 import ca.keal.sastrane.MovingPiece;
 import ca.keal.sastrane.Piece;
 import ca.keal.sastrane.Player;
-import ca.keal.sastrane.RecursiveMoveResolvingPiece;
+import ca.keal.sastrane.RecursiveMovingPiece;
 import ca.keal.sastrane.Round;
 import ca.keal.sastrane.Square;
 import com.google.common.collect.HashMultiset;
@@ -53,8 +53,8 @@ public final class Utils {
                 if (piece instanceof MovingPiece && (player == null || (invert ? player != piecePlayer
                         : player == piecePlayer))) {
                     List<Move> moves;
-                    if (piece instanceof RecursiveMoveResolvingPiece) {
-                        moves = ((RecursiveMoveResolvingPiece) piece)
+                    if (piece instanceof RecursiveMovingPiece) {
+                        moves = ((RecursiveMovingPiece) piece)
                                 .getPossibleMovesNonRecursive(round, square, piecePlayer);
                     } else {
                         moves = ((MovingPiece) piece).getPossibleMoves(round, square, piecePlayer);

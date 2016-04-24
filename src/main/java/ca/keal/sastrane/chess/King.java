@@ -2,7 +2,7 @@ package ca.keal.sastrane.chess;
 
 import ca.keal.sastrane.Move;
 import ca.keal.sastrane.Player;
-import ca.keal.sastrane.RecursiveMoveResolvingPiece;
+import ca.keal.sastrane.RecursiveMovingPiece;
 import ca.keal.sastrane.Round;
 import ca.keal.sastrane.Square;
 import ca.keal.sastrane.util.Pair;
@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class King implements RecursiveMoveResolvingPiece {
+public class King implements RecursiveMovingPiece {
     
     @Override
     public List<Move> getPossibleMoves(@NonNull Round round, @NonNull Square boardPos, @NonNull Player allegiance) {
