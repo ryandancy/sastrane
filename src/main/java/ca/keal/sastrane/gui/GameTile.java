@@ -1,6 +1,7 @@
 package ca.keal.sastrane.gui;
 
 import ca.keal.sastrane.Game;
+import ca.keal.sastrane.util.Utils;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
@@ -27,9 +28,11 @@ public class GameTile extends VBox {
         loader.load();
     }
     
+    @SneakyThrows
     public static GameTile forGame(Game game) {
         GameTile tile = new GameTile();
-        tile.setImg(new Image(game.getIconStream()));
+        tile.setImg(new Image(Utils.getResource(game.getIconPackageAndName(), ClassLoader.getSystemClassLoader())
+                .openStream()));
         tile.setDisplayName(new Label(game.getName()));
         return tile;
     }

@@ -31,6 +31,10 @@ public final class Utils {
         return loader.getResource(pkg.replace('.', '/') + "/" + filename);
     }
     
+    public static URL getResource(Pair<String, String> pkgAndFilename, ClassLoader loader) {
+        return getResource(pkgAndFilename.getLeft(), pkgAndFilename.getRight(), loader);
+    }
+    
     public static List<Move> perspectivizeAll(List<? extends Move> moves, Player player) {
         return perspectivize(moves.stream(), player).collect(Collectors.toList());
     }
