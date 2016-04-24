@@ -2,6 +2,7 @@ group 'ca.keal'
 version '1.0-SNAPSHOT'
 
 apply plugin: 'java'
+apply plugin: 'idea'
 
 //noinspection GroovyUnusedAssignment
 sourceCompatibility = 1.8
@@ -21,3 +22,24 @@ dependencies {
 
 //noinspection GrUnresolvedAccess
 sourceSets.main.compileClasspath += [configurations.provided]
+
+idea {
+    module {
+        //noinspection GrUnresolvedAccess
+        scopes.PROVIDED.plus += [configurations.provided]
+    }
+    // https://discuss.gradle.org/t/the-idea-plugin-breaks-the-new-intellij-13-iml-configuration/2456/13
+    module.iml.withXml {
+        def testAtts = it.asNode().component.content.sourceFolder.find {
+            it.@url == 'file://$MODULE_DIR$/src/test/resources'
+        }.attributes()
+        testAtts.remove('isTestSource')
+        testAtts.put('type', 'java-test-resource')
+        
+        def atts = it.asNode().component.content.sourceFolder.find {
+            it.@url == 'file://$MODULE_DIR$/src/main/resources'
+        }.attributes()
+        atts.remove('isTestSource')
+        atts.put('type', 'java-resource')
+    }
+}
