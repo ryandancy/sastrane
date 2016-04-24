@@ -2,16 +2,15 @@ package ca.keal.sastrane.chess;
 
 import ca.keal.sastrane.Board;
 import ca.keal.sastrane.Move;
+import ca.keal.sastrane.MoveCountingPiece;
 import ca.keal.sastrane.MovingMove;
 import ca.keal.sastrane.Piece;
 import ca.keal.sastrane.Player;
 import ca.keal.sastrane.RecursiveMovingPiece;
 import ca.keal.sastrane.Round;
 import ca.keal.sastrane.Square;
-import ca.keal.sastrane.event.MoveEvent;
 import ca.keal.sastrane.util.Pair;
 import ca.keal.sastrane.util.Utils;
-import com.google.common.eventbus.Subscribe;
 import lombok.NonNull;
 
 import java.util.ArrayList;
@@ -19,7 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class King implements RecursiveMovingPiece {
+public class King implements RecursiveMovingPiece, MoveCountingPiece {
     
     private int numMoves = 0;
     
@@ -104,12 +103,9 @@ public class King implements RecursiveMovingPiece {
         return Pair.of("ca.keal.sastrane.chess.icon", "TODO_king");
     }
     
-    @Subscribe
-    public void afterMove(MoveEvent.Post e) {
-        Pair<Piece, Player> atEndPos = e.getRound().getBoard().get(e.getMove().getEndPos());
-        if (atEndPos != null && atEndPos.getLeft() instanceof King) {
-            ((King) atEndPos.getLeft()).numMoves++;
-        }
+    @Override
+    public void incrementMoveCount() {
+        numMoves++;
     }
     
 }

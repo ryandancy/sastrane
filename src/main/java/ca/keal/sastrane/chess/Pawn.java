@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+// Doesn't implement MoveCountingPiece because it handles MoveEvent.Post itself
 @Getter
 public class Pawn implements MovingPiece {
     
