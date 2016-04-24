@@ -14,18 +14,15 @@ import ca.keal.sastrane.util.Utils;
 import com.google.common.eventbus.Subscribe;
 import lombok.Getter;
 import lombok.NonNull;
-import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-@Setter
 public class Pawn implements MovingPiece {
     
-    // TODO: add MoveEvent event handler, check for double step by pawn, set, reset, hasMoved
     private boolean lastMoveDouble;
-    private boolean moved;
+    private int numMoves;
     
     @Override
     @NonNull
@@ -34,7 +31,7 @@ public class Pawn implements MovingPiece {
         List<Move> moves = new ArrayList<>();
         
         // One in front if not occupied; two in front if first and not occupied
-        for (int n = 1; n <= (moved ? 1 : 2); n++) {
+        for (int n = 1; n <= (numMoves == 0 ? 1 : 2); n++) {
             Square nInFront = boardPos.withY(boardPos.getY() + n);
             // round.getBoard().isOn(nInFront) shouldn't be possible b/c promotions... handle as special case???
             if (round.getBoard().isOn(nInFront) && round.getBoard().get(nInFront) == null) {
@@ -91,9 +88,17 @@ public class Pawn implements MovingPiece {
     public void afterMove(MoveEvent.Post e) {
         Square endPos = e.getMove().getEndPos();
         Pair<Piece, Player> atEndPos = e.getRound().getBoard().get(endPos);
-        if (atEndPos != null && atEndPos.getLeft() instanceof Pawn
-                && (endPos.getY() == 0 || endPos.getY() == e.getRound().getBoard().getMaxY())) {
-            e.getMover().decide(PromotionDecision.class).onChoose(e.getRound());
+        if (atEndPos != null && atEndPos.getLeft() instanceof Pawn) {
+            // Promotion
+            if (endPos.getY() == 0 || endPos.getY() == e.getRound().getBoard().getMaxY()) {
+                e.getMover().decide(PromotionDecision.class).onChoose(e.getRound());
+            }
+            
+            Pawn pawn = (Pawn) atEndPos.getLeft();
+            pawn.numMoves++;
+            // last move is double if this is its first move and it's on the 3rd/maxyY-3rd rank (with zeroth rank)
+            pawn.lastMoveDouble = pawn.numMoves == 1
+                    && (endPos.getY() == 3 || endPos.getY() == e.getRound().getBoard().getMaxY() - 3);
         }
     }
     
