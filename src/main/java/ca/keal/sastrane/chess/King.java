@@ -1,26 +1,77 @@
 package ca.keal.sastrane.chess;
 
+import ca.keal.sastrane.Board;
 import ca.keal.sastrane.Move;
+import ca.keal.sastrane.MovingMove;
+import ca.keal.sastrane.Piece;
 import ca.keal.sastrane.Player;
 import ca.keal.sastrane.RecursiveMovingPiece;
 import ca.keal.sastrane.Round;
 import ca.keal.sastrane.Square;
+import ca.keal.sastrane.event.MoveEvent;
 import ca.keal.sastrane.util.Pair;
 import ca.keal.sastrane.util.Utils;
+import com.google.common.eventbus.Subscribe;
 import lombok.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class King implements RecursiveMovingPiece {
     
+    private int numMoves = 0;
+    
     @Override
-    public List<Move> getPossibleMoves(@NonNull Round round, @NonNull Square boardPos, @NonNull Player allegiance) {
-        // All 8 surrounding squares that aren't in the path of any player other than allegiance
-        return getPossibleMovesNonRecursive(round, boardPos, allegiance).stream()
-                .filter(move -> Utils.canBeMovedTo(round.copyWithMove(move), move.getEndPos(), allegiance, true))
-                .collect(Collectors.toList());
+    public List<Move> getPossibleMoves(@NonNull Round round, @NonNull Square boardPos, @NonNull Player player) {
+        // All 8 surrounding squares that aren't in the path of any player other than player
+        return getPossibleMovesNonRecursive(round, boardPos, player).stream()
+                .filter(move -> !Utils.canBeMovedTo(round.copyWithMove(move), move.getEndPos(), player, true))
+                .collect(() -> getCastlingMoves(round, boardPos, player), List::add, List::addAll);
+    }
+    
+    // https://en.wikipedia.org/wiki/Castling#Requirements
+    private List<Move> getCastlingMoves(Round round, Square boardPos, Player player) {
+        // Don't need to check for king on first rank because numMoves == 0 implies so
+        if (numMoves != 0 || Utils.canBeMovedTo(round, boardPos, player)) return new ArrayList<>();
+        List<Move> moves = new ArrayList<>();
+        
+        for (int rookX = 0; rookX <= round.getBoard().getMaxX(); rookX += round.getBoard().getMaxX()) {
+            if (canCastle(round, boardPos, player, rookX)) {
+                // Use MovingMove subclass to move rook too
+                int inc = (int) Math.signum(boardPos.getX() - rookX);
+                final int rookXFinal = rookX; // required because rookX isn't effectively final
+                
+                moves.add(new MovingMove(boardPos, boardPos.withX(boardPos.getX() + 2*inc)) {
+                    @Override
+                    public void move(@NonNull Board board) {
+                        super.move(board);
+                        
+                        Square rookPos = boardPos.withX(rookXFinal);
+                        board.set(boardPos.withX(boardPos.getX() + inc), board.get(rookPos));
+                        board.set(rookPos, null);
+                    }
+                });
+            }
+        }
+        
+        return moves;
+    }
+    
+    private boolean canCastle(Round round, Square boardPos, Player player, int rookX) {
+        Pair<Piece, Player> pieceAtX = round.getBoard().get(boardPos.withX(rookX));
+        if (pieceAtX == null || !(pieceAtX.getLeft() instanceof Rook)) return false;
+        Rook rook = (Rook) pieceAtX.getLeft();
+        if (rook.getNumMoves() != 0) return false;
+        
+        // Ensure there are no pieces between rook & king
+        int inc = (int) Math.signum(boardPos.getX() - rookX);
+        for (int x = boardPos.getX() + inc; x != rookX; x += inc) {
+            Square between = boardPos.withX(x);
+            if (!round.getBoard().isOn(between) || round.getBoard().get(between) != null) return false;
+        }
+        
+        // Ensure that the position the king will 'pass through' is not in check
+        return Utils.canBeMovedTo(round, boardPos.withX(boardPos.getX() + inc), player);
     }
     
     @Override
@@ -42,6 +93,14 @@ public class King implements RecursiveMovingPiece {
     public Pair<String, String> getPackageAndImageName() {
         // TODO King's icon
         return Pair.of("ca.keal.sastrane.chess.icon", "TODO_king");
+    }
+    
+    @Subscribe
+    public void afterMove(MoveEvent.Post e) {
+        Pair<Piece, Player> atEndPos = e.getRound().getBoard().get(e.getMove().getEndPos());
+        if (atEndPos != null && atEndPos.getLeft() instanceof King) {
+            ((King) atEndPos.getLeft()).numMoves++;
+        }
     }
     
 }

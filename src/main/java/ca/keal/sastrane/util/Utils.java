@@ -69,6 +69,10 @@ public final class Utils {
         return false;
     }
     
+    public static boolean canBeMovedTo(Round round, Square square, Player player) {
+        return canBeMovedTo(round, square, player, true);
+    }
+    
     public static boolean canBeMovedTo(Round round, Square square) {
         return canBeMovedTo(round, square, null, true);
     }
