@@ -8,17 +8,17 @@ import ca.keal.sastrane.RecursiveMovingPiece;
 import ca.keal.sastrane.Round;
 import ca.keal.sastrane.Square;
 import com.google.common.collect.HashMultiset;
+import lombok.experimental.UtilityClass;
 
 import java.net.URL;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@UtilityClass
 public final class Utils {
     
-    private Utils() {
-        throw new RuntimeException("ca.keal.sastrane.util.Utils is a utility class and thus cannot be instantiated.");
-    }
+    private Utils() {}
     
     /**
      * Returns whether the two collections have equal elements; that is, the same number of elements, and all elements
