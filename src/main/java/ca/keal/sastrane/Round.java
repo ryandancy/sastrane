@@ -3,8 +3,10 @@ package ca.keal.sastrane;
 import ca.keal.sastrane.event.MoveEvent;
 import ca.keal.sastrane.event.RoundEvent;
 import ca.keal.sastrane.event.TurnEvent;
+import ca.keal.sastrane.event.WinEvent;
 import ca.keal.sastrane.util.Utils;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.eventbus.Subscribe;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -25,21 +27,26 @@ public class Round {
     private final Board board;
     
     private int move = 0;
+    private boolean ended = false;
     
     public Round(@NonNull Game game, @NonNull Map<Player, Mover> playersToMovers) {
         if (!Utils.areElementsEqual(playersToMovers.keySet(), game.getPlayers())) {
-            throw new IllegalArgumentException("Game: playersToMovers.keySet() must = game.getCombatants()");
+            throw new IllegalArgumentException("Round: playersToMovers.keySet() must = game.getCombatants()");
         }
         this.game = game;
         this.playersToMovers = ImmutableMap.copyOf(playersToMovers);
         this.board = game.getBoardFactory().build();
+        game.getBus().register(this);
     }
     
     public Round(@NonNull Round round) {
-        this(round.getGame(), round.getPlayersToMovers(), new Board(round.getBoard()), round.getMove());
+        this(round.getGame(), round.getPlayersToMovers(), new Board(round.getBoard()), round.getMove(),
+                round.isEnded());
     }
     
     public void nextTurn() {
+        if (ended) throw new IllegalStateException("nextTurn() cannot be called on a Round that is already ended");
+        
         if (move == 0) {
             game.getBus().post(new RoundEvent.Pre(this));
         }
@@ -67,6 +74,12 @@ public class Round {
         Round newRound = new Round(this);
         move.move(newRound.getBoard());
         return newRound;
+    }
+    
+    @Subscribe
+    public void onWin(WinEvent e) {
+        ended = true;
+        game.getBus().unregister(this);
     }
     
 }
