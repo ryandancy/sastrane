@@ -21,14 +21,10 @@ public class Main extends Application {
         // Load all classes, find all subclasses of Game, register each
         // @Game annotation???
         for (ClassPath.ClassInfo classInfo : ClassPath.from(getClass().getClassLoader()).getAllClasses()) {
-            // Exclude lombok, guava
-            String pkg = classInfo.getPackageName();
-            if (!pkg.startsWith("lombok") && !pkg.startsWith("com.google.common")) {
-                Class<?> cls = classInfo.load();
-                if (Game.class.isAssignableFrom(cls) && !Modifier.isAbstract(cls.getModifiers())) {
-                    @SuppressWarnings("unchecked") Game game = ((Class<? extends Game>) cls).newInstance();
-                    Game.registerGame(game);
-                }
+            Class<?> cls = classInfo.load();
+            if (Game.class.isAssignableFrom(cls) && !Modifier.isAbstract(cls.getModifiers())) {
+                @SuppressWarnings("unchecked") Game game = ((Class<? extends Game>) cls).newInstance();
+                Game.registerGame(game);
             }
         }
         
