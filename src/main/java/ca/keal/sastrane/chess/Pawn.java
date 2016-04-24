@@ -22,7 +22,7 @@ import java.util.List;
 public class Pawn implements MovingPiece {
     
     private boolean lastMoveDouble;
-    private int numMoves;
+    private int numMoves = 0;
     
     @Override
     @NonNull
