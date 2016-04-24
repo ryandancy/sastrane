@@ -23,6 +23,10 @@ public class King implements RecursiveMovingPiece {
     
     private int numMoves = 0;
     
+    public King() {
+        Chess.getInstance().getBus().register(this);
+    }
+    
     @Override
     public List<Move> getPossibleMoves(@NonNull Round round, @NonNull Square boardPos, @NonNull Player player) {
         // All 8 surrounding squares that aren't in the path of any player other than player

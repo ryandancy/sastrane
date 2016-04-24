@@ -25,6 +25,10 @@ public class Pawn implements MovingPiece {
     private boolean lastMoveDouble;
     private int numMoves = 0;
     
+    public Pawn() {
+        Chess.getInstance().getBus().register(this);
+    }
+    
     @Override
     @NonNull
     public List<Move> getPossibleMoves(@NonNull Round round, @NonNull Square boardPos,

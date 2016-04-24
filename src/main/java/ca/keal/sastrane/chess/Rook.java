@@ -21,6 +21,7 @@ public class Rook extends LinePiece {
     
     public Rook() {
         super(UP | LEFT | DOWN | RIGHT);
+        Chess.getInstance().getBus().register(this);
     }
     
     @Override
