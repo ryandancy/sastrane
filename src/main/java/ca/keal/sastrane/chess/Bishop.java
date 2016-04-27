@@ -5,7 +5,7 @@ import ca.keal.sastrane.Player;
 import ca.keal.sastrane.Round;
 import ca.keal.sastrane.Square;
 import ca.keal.sastrane.piece.LinePiece;
-import ca.keal.sastrane.util.Pair;
+import ca.keal.sastrane.util.Resource;
 import lombok.NonNull;
 
 import java.util.List;
@@ -22,8 +22,8 @@ public class Bishop extends LinePiece {
     }
     
     @Override
-    public Pair<String, String> getPackageAndImageName() {
-        return Pair.of("ca.keal.sastrane.chess.icon", "bishop");
+    public Resource getImage() {
+        return new Resource("ca.keal.sastrane.chess.icon", "bishop");
     }
     
 }

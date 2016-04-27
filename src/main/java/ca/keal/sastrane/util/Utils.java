@@ -9,7 +9,6 @@ import ca.keal.sastrane.Round;
 import ca.keal.sastrane.Square;
 import com.google.common.collect.HashMultiset;
 
-import java.net.URL;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,14 +24,6 @@ public final class Utils {
      */
     public static <E> boolean areElementsEqual(Collection<E> a, Collection<E> b) {
         return HashMultiset.create(a).equals(HashMultiset.create(b));
-    }
-    
-    public static URL getResource(String filename, String pkg, ClassLoader loader) {
-        return loader.getResource(pkg.replace('.', '/') + "/" + filename);
-    }
-    
-    public static URL getResource(Pair<String, String> pkgAndFilename, ClassLoader loader) {
-        return getResource(pkgAndFilename.getLeft(), pkgAndFilename.getRight(), loader);
     }
     
     public static List<Move> perspectivizeAll(List<? extends Move> moves, Player player) {

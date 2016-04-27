@@ -1,6 +1,7 @@
 package ca.keal.sastrane.main;
 
 import ca.keal.sastrane.gui.GuiUtils;
+import ca.keal.sastrane.util.Resource;
 import com.google.common.reflect.ClassPath;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -21,7 +22,7 @@ public class Main extends Application {
         
         // TODO dynamic title
         primaryStage.setTitle("Sastrane");
-        primaryStage.setScene(GuiUtils.getScene("main-menu.fxml", getClass().getClassLoader()));
+        primaryStage.setScene(GuiUtils.getScene(new Resource("ca.keal.sastrane.gui", "main-menu.fxml")));
         primaryStage.show();
     }
     

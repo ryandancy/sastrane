@@ -1,6 +1,6 @@
 package ca.keal.sastrane;
 
-import ca.keal.sastrane.util.Pair;
+import ca.keal.sastrane.util.Resource;
 import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
 import lombok.EqualsAndHashCode;
@@ -22,7 +22,7 @@ public abstract class Game {
     private static final List<Game> GAMES = new ArrayList<>();
     
     private final String name; // TODO i18n
-    private final Pair<String, String> iconPackageAndName;
+    private final Resource icon;
     private final Player[] players; // TODO support for variable-player games (are those a thing?)
     private final Board.Factory boardFactory;
     private EventBus bus;
@@ -30,10 +30,10 @@ public abstract class Game {
     /**
      * {@code players} should be in the order in which the players move (e.g. for chess, {@code [White, Black]}).
      */
-    public Game(@NonNull String name, @NonNull Pair<String, String> iconPackageAndName, @NonNull Player[] players,
+    public Game(@NonNull String name, @NonNull Resource icon, @NonNull Player[] players,
                 @NonNull Board.Factory boardFactory) {
         this.name = name;
-        this.iconPackageAndName = iconPackageAndName;
+        this.icon = icon;
         this.players = players;
         this.boardFactory = boardFactory;
         bus = new EventBus(name);

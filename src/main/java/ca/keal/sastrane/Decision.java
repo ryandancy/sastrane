@@ -1,6 +1,6 @@
 package ca.keal.sastrane;
 
-import ca.keal.sastrane.util.Pair;
+import ca.keal.sastrane.util.Resource;
 import lombok.NonNull;
 
 /**
@@ -13,7 +13,7 @@ public interface Decision {
     void onChoose(@NonNull Round round);
     
     @NonNull
-    Pair<String, String> getPackageAndIcon();
+    Resource getIcon();
     
     @NonNull
     String getName();

@@ -10,6 +10,7 @@ import ca.keal.sastrane.Round;
 import ca.keal.sastrane.Square;
 import ca.keal.sastrane.event.MoveEvent;
 import ca.keal.sastrane.util.Pair;
+import ca.keal.sastrane.util.Resource;
 import ca.keal.sastrane.util.Utils;
 import com.google.common.eventbus.Subscribe;
 import lombok.Getter;
@@ -87,8 +88,8 @@ public class Pawn implements MovingPiece {
     }
     
     @Override
-    public Pair<String, String> getPackageAndImageName() {
-        return Pair.of("ca.keal.sastrane.chess.icon", "pawn");
+    public Resource getImage() {
+        return new Resource("ca.keal.sastrane.chess.icon", "pawn");
     }
     
     @Subscribe

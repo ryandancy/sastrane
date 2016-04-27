@@ -10,6 +10,7 @@ import ca.keal.sastrane.RecursiveMovingPiece;
 import ca.keal.sastrane.Round;
 import ca.keal.sastrane.Square;
 import ca.keal.sastrane.util.Pair;
+import ca.keal.sastrane.util.Resource;
 import ca.keal.sastrane.util.Utils;
 import lombok.NonNull;
 
@@ -98,8 +99,8 @@ public class King implements RecursiveMovingPiece, MoveCountingPiece {
     }
     
     @Override
-    public Pair<String, String> getPackageAndImageName() {
-        return Pair.of("ca.keal.sastrane.chess.icon", "king");
+    public Resource getImage() {
+        return new Resource("ca.keal.sastrane.chess.icon", "king");
     }
     
     @Override

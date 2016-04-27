@@ -1,6 +1,6 @@
 package ca.keal.sastrane;
 
-import ca.keal.sastrane.util.Pair;
+import ca.keal.sastrane.util.Resource;
 import lombok.NonNull;
 
 public interface Piece {
@@ -14,6 +14,6 @@ public interface Piece {
      * @return (packageName, filename) of the piece's icon, with the file name <strong>without the extension!</strong>
      */
     @NonNull
-    Pair<String, String> getPackageAndImageName();
+    Resource getImage();
     
 }
