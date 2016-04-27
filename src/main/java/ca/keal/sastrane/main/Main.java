@@ -5,6 +5,7 @@ import ca.keal.sastrane.util.Resource;
 import com.google.common.reflect.ClassPath;
 import javafx.application.Application;
 import javafx.stage.Stage;
+import lombok.SneakyThrows;
 
 public class Main extends Application {
     
@@ -18,12 +19,17 @@ public class Main extends Application {
         
         // Load all classes so that singleton Game subclass instances will be created.
         // @Game annotation???
-        ClassPath.from(getClass().getClassLoader()).getAllClasses().forEach(ClassPath.ClassInfo::load);
+        ClassPath.from(getClass().getClassLoader()).getAllClasses().forEach(this::initializeClass);
         
         // TODO dynamic title
         primaryStage.setTitle("Sastrane");
         primaryStage.setScene(GuiUtils.getScene(new Resource("ca.keal.sastrane.gui", "main-menu.fxml")));
         primaryStage.show();
+    }
+    
+    @SneakyThrows
+    private void initializeClass(ClassPath.ClassInfo cls) {
+        Class.forName(cls.getName());
     }
     
 }
