@@ -4,36 +4,44 @@ import ca.keal.sastrane.Game;
 import ca.keal.sastrane.util.Resource;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
 @Getter
 @Setter
-public class GameTile extends VBox {
+public class GameTile extends VBox implements Initializable {
     
     @FXML
-    private Image img;
+    private ImageView imgView;
     
     @FXML
     private Label displayName;
     
+    private final Game game;
+    
     @SneakyThrows
-    public GameTile() {
+    public GameTile(Game game) {
+        this.game = game;
         FXMLLoader loader = new FXMLLoader(new Resource("ca.keal.sastrane.gui", "game-tile.fxml").get());
         loader.setRoot(this);
+        loader.setController(this);
         loader.load();
     }
     
+    @Override
     @SneakyThrows
-    public static GameTile forGame(Game game) {
-        GameTile tile = new GameTile();
-        tile.setImg(new Image(game.getIcon().get().openStream()));
-        tile.setDisplayName(new Label(game.getName()));
-        return tile;
+    public void initialize(URL location, ResourceBundle resources) {
+        imgView.setImage(new Image(game.getIcon().get().openStream()));
+        displayName.setText(game.getName());
     }
     
 }

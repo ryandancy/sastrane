@@ -18,7 +18,7 @@ public class MainMenuController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         tiles.getChildren().addAll(Game.getGames().stream()
-                .map(GameTile::forGame)
+                .map(GameTile::new)
                 .peek(tile -> tile.setOnMouseClicked(this::handleTileClick))
                 .collect(Collectors.toList()));
     }
