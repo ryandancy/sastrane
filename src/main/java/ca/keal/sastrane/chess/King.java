@@ -99,8 +99,7 @@ public class King implements RecursiveMovingPiece, MoveCountingPiece {
     
     @Override
     public Pair<String, String> getPackageAndImageName() {
-        // TODO King's icon
-        return Pair.of("ca.keal.sastrane.chess.icon", "TODO_king");
+        return Pair.of("ca.keal.sastrane.chess.icon", "king");
     }
     
     @Override

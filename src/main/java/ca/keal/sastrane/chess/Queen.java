@@ -23,8 +23,7 @@ public class Queen extends LinePiece {
     
     @Override
     public Pair<String, String> getPackageAndImageName() {
-        // TODO Queen's icon
-        return Pair.of("ca.keal.sastrane.chess.icon", "TODO_queen");
+        return Pair.of("ca.keal.sastrane.chess.icon", "queen");
     }
     
 }

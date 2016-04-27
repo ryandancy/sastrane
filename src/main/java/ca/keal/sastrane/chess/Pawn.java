@@ -88,8 +88,7 @@ public class Pawn implements MovingPiece {
     
     @Override
     public Pair<String, String> getPackageAndImageName() {
-        // TODO Pawn's icon
-        return Pair.of("ca.keal.sastrane.chess.icon", "TODO_pawn");
+        return Pair.of("ca.keal.sastrane.chess.icon", "pawn");
     }
     
     @Subscribe

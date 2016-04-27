@@ -23,8 +23,7 @@ public class Bishop extends LinePiece {
     
     @Override
     public Pair<String, String> getPackageAndImageName() {
-        // TODO Bishop's icon
-        return Pair.of("ca.keal.sastrane.chess.icon", "TODO_bishop");
+        return Pair.of("ca.keal.sastrane.chess.icon", "bishop");
     }
     
 }

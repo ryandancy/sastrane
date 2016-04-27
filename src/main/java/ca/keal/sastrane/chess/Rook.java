@@ -29,8 +29,7 @@ public class Rook extends LinePiece implements MoveCountingPiece {
     
     @Override
     public Pair<String, String> getPackageAndImageName() {
-        // TODO Rook's icon
-        return Pair.of("ca.keal.sastrane.chess.icon", "TODO_rook");
+        return Pair.of("ca.keal.sastrane.chess.icon", "rook");
     }
     
     @Override

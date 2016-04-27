@@ -24,8 +24,7 @@ public class Knight extends JumpingPiece {
     
     @Override
     public Pair<String, String> getPackageAndImageName() {
-        // TODO Knight's icon
-        return Pair.of("ca.keal.sastrane.chess.icon", "TODO_knight");
+        return Pair.of("ca.keal.sastrane.chess.icon", "knight");
     }
     
 }
