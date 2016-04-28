@@ -20,6 +20,10 @@
     -fx-alignment: center;
 }
 
+.game-tile:hover {
+    -fx-cursor: hand;
+}
+
 .game-tile Label {
     -fx-text-fill: black;
     -fx-font-size: 1.4em;

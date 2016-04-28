@@ -1,5 +1,6 @@
 package ca.keal.sastrane;
 
+import ca.keal.sastrane.util.Resource;
 import lombok.NonNull;
 
 /**
@@ -40,6 +41,9 @@ public interface Player {
     
     @NonNull
     String getName();
+    
+    @NonNull
+    Resource getIcon();
     
     /**
      * Returns the square from this player's "perspective".
