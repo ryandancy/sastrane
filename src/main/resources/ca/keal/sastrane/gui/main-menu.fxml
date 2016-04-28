@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.HBox?>
 <!--suppress JavaFxUnresolvedFxIdReference -->
 <BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="ca.keal.sastrane.gui.MainMenuController"
-        stylesheets="@chess.css">
+        stylesheets="@sastrane.css">
     <top>
         <HBox alignment="center">
             <Label text="Sastrane" id="app-logo" textAlignment="center" />

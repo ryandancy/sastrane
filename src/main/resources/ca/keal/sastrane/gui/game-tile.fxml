@@ -3,7 +3,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.VBox?>
-<fx:root xmlns:fx="http://javafx.com/fxml" type="javafx.scene.layout.VBox" fx:id="gameTile" stylesheets="@chess.css"
+<fx:root xmlns:fx="http://javafx.com/fxml" type="javafx.scene.layout.VBox" fx:id="gameTile" stylesheets="@sastrane.css"
          styleClass="game-tile" minWidth="100" minHeight="100">
     <!-- the following line has no errors, but Intellij is convinced that ${} expressions must be coerced to Double -->
     <ImageView fx:id="imgView" VBox.vgrow="always" fitWidth="${gameTile.minWidth}" fitHeight="${gameTile.minHeight}" />
