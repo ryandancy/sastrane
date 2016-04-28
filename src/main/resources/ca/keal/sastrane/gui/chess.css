@@ -1,0 +1,27 @@
+.root {
+    -fx-background-color: #A88C27;
+}
+
+#app-logo {
+    -fx-font-weight: 800;
+    -fx-text-fill: linear-gradient(#E7BC3C, #BD8522);
+    -fx-effect: dropshadow(gaussian, dimgrey, 10, 0.5, 2, 2);
+    -fx-font-size: 60;
+    -fx-font-style: italic;
+}
+
+#game-tiles {
+    -fx-padding: 40;
+    -fx-alignment: center;
+}
+
+.game-tile {
+    -fx-padding: 5;
+    -fx-alignment: center;
+}
+
+.game-tile Label {
+    -fx-text-fill: black;
+    -fx-font-size: 1.4em;
+    -fx-label-padding: 3 0 0 0;
+}

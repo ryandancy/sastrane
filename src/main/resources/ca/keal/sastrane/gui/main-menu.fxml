@@ -2,23 +2,20 @@
 
 <!-- TODO Improve this, it's just a test layout right now - settings, lang, CSS, etc -->
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
-<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="ca.keal.sastrane.gui.MainMenuController">
-    <padding>
-        <Insets top="25" bottom="25" left="75" right="75"/>
-    </padding>
-    
+<!--suppress JavaFxUnresolvedFxIdReference -->
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="ca.keal.sastrane.gui.MainMenuController"
+        stylesheets="@chess.css">
     <top>
         <HBox alignment="center">
-            <Label text="Sastrane" textAlignment="center" />
+            <Label text="Sastrane" id="app-logo" textAlignment="center" />
         </HBox>
     </top>
     
     <center>
-        <FlowPane fx:id="tiles" vgap="10" hgap="10" />
+        <FlowPane fx:id="tiles" id="game-tiles" vgap="10" hgap="10" />
     </center>
 </BorderPane>
