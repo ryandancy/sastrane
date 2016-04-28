@@ -20,7 +20,7 @@
     -fx-alignment: center;
 }
 
-.game-tile:hover {
+.game-tile:hover, Button:hover {
     -fx-cursor: hand;
 }
 
@@ -31,6 +31,15 @@
 }
 
 .back {
-    -fx-alignment: center-left;
-    -fx-background-color: transparent;
+    -fx-background-color: #927921;
+    -fx-text-fill: black;
+    -fx-padding: 8;
+    -fx-border-insets: 5;
+    -fx-background-insets: 5;
+}
+
+.screen-title {
+    -fx-font-size: 2em;
+    -fx-text-fill: black;
+    -fx-text-alignment: center;
 }
