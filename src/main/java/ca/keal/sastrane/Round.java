@@ -4,6 +4,7 @@ import ca.keal.sastrane.event.MoveEvent;
 import ca.keal.sastrane.event.RoundEvent;
 import ca.keal.sastrane.event.TurnEvent;
 import ca.keal.sastrane.event.WinEvent;
+import ca.keal.sastrane.util.Pair;
 import ca.keal.sastrane.util.Utils;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.eventbus.Subscribe;
@@ -15,8 +16,10 @@ import lombok.NonNull;
 import lombok.ToString;
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Deque;
+import java.util.List;
 import java.util.Map;
 
 @Getter
@@ -81,6 +84,21 @@ public class Round {
         Round newRound = new Round(this);
         move.move(newRound.getBoard());
         return newRound;
+    }
+    
+    @NonNull
+    public List<Move> getAllPossibleMoves() {
+        List<Move> moves = new ArrayList<>();
+        for (Square square : board) {
+            Pair<Piece, Player> atSquare = board.get(square);
+            if (atSquare != null && atSquare.getLeft() instanceof MovingPiece) {
+                moves.addAll(((MovingPiece) atSquare.getLeft()).getPossibleMoves(this, square, atSquare.getRight()));
+            }
+        }
+        for (PlacingPiece placingPiece : game.getPlacingPieces()) {
+            moves.addAll(placingPiece.getPossiblePlacements(this));
+        }
+        return moves;
     }
     
     @Subscribe

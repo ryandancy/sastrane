@@ -25,17 +25,19 @@ public abstract class Game {
     private final Resource icon;
     private final Player[] players; // TODO support for variable-player games (are those a thing?)
     private final Board.Factory boardFactory;
+    private final PlacingPiece[] placingPieces;
     private EventBus bus;
     
     /**
      * {@code players} should be in the order in which the players move (e.g. for chess, {@code [White, Black]}).
      */
     public Game(@NonNull String name, @NonNull Resource icon, @NonNull Player[] players,
-                @NonNull Board.Factory boardFactory) {
+                @NonNull Board.Factory boardFactory, @NonNull PlacingPiece... placingPieces) {
         this.name = name;
         this.icon = icon;
         this.players = players;
         this.boardFactory = boardFactory;
+        this.placingPieces = placingPieces;
         bus = new EventBus(name);
         registerGame(this);
     }
