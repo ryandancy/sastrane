@@ -29,3 +29,8 @@
     -fx-font-size: 1.4em;
     -fx-label-padding: 3 0 0 0;
 }
+
+.back {
+    -fx-alignment: center-left;
+    -fx-background-color: transparent;
+}

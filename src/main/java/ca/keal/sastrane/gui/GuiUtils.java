@@ -22,16 +22,24 @@ public final class GuiUtils {
     }
     
     /**
-     * getFXML("foo.fxml", "com.foo.bar", getClass().getClassLoader()) gets com/foo/bar/foo.fxml.
+     * loadFXML("foo.fxml", "com.foo.bar", getClass().getClassLoader()) gets com/foo/bar/foo.fxml.
      */
-    public static Parent getFXML(Resource resource) throws IOException {
+    public static Parent loadFXML(Resource resource) throws IOException {
         URL fxml = resource.get();
         if (fxml == null) throw new IOException(resource + " could not be accessed.");
         return FXMLLoader.load(fxml);
     }
     
+    public static Scene getScene(Parent parent, int width, int height) throws IOException {
+        return new Scene(parent, width, height);
+    }
+    
+    public static Scene getScene(Parent parent) throws IOException {
+        return getScene(parent, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+    }
+    
     public static Scene getScene(Resource resource, int width, int height) throws IOException {
-        return new Scene(getFXML(resource), width, height);
+        return getScene(loadFXML(resource), width, height);
     }
     
     public static Scene getScene(Resource resource) throws IOException {
