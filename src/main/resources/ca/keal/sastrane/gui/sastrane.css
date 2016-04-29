@@ -10,7 +10,7 @@
     -fx-font-style: italic;
 }
 
-#game-tiles {
+#game-tiles, #player-settings {
     -fx-padding: 40;
     -fx-alignment: center;
 }
@@ -46,6 +46,7 @@
 
 .player-settings {
     -fx-alignment: center;
+    -fx-padding: 10;
 }
 
 .player-name {
