@@ -22,24 +22,26 @@ public abstract class AI implements Mover {
     private final double difficulty;
     
     public int minimaxAlphaBeta(@NonNull Round round, int depth, @NonNull Player player) {
-        return minimaxAlphaBeta(new MoveTreeNode(round, player), depth, Integer.MIN_VALUE, Integer.MAX_VALUE, true);
+        return minimaxAlphaBeta(new MoveTreeNode(round, player), depth, Integer.MIN_VALUE, Integer.MAX_VALUE, true,
+                player);
     }
     
     public int minimaxAlphaBeta(@NonNull Round round, @NonNull Move move, int depth, @NonNull Player player) {
         return minimaxAlphaBeta(new MoveTreeNode(round, move, player), depth, Integer.MIN_VALUE, Integer.MAX_VALUE,
-                true);
+                true, player);
     }
     
     // https://en.wikipedia.org/wiki/Alpha-beta_pruning#Pseudocode
-    private int minimaxAlphaBeta(@NonNull MoveTreeNode node, int depth, int a, int b, boolean maximizingPlayer) {
+    private int minimaxAlphaBeta(@NonNull MoveTreeNode node, int depth, int a, int b, boolean maximizingPlayer,
+                                 @NonNull Player player) {
         if (depth == 0 || node.isTerminal()) {
-            return heuristic(node.getRound());
+            return heuristic(node.getRound(), player);
         }
         
         if (maximizingPlayer) {
             int v = Integer.MIN_VALUE;
             for (MoveTreeNode child : node) {
-                v = Math.max(v, minimaxAlphaBeta(child, depth - 1, a, b, false));
+                v = Math.max(v, minimaxAlphaBeta(child, depth - 1, a, b, false, player));
                 a = Math.max(a, v);
                 if (b <= a) break;
             }
@@ -47,7 +49,7 @@ public abstract class AI implements Mover {
         } else {
             int v = Integer.MAX_VALUE;
             for (MoveTreeNode child : node) {
-                v = Math.min(v, minimaxAlphaBeta(child, depth - 1, a, b, true));
+                v = Math.min(v, minimaxAlphaBeta(child, depth - 1, a, b, true, player));
                 b = Math.min(b, v);
                 if (b <= a) break;
             }
@@ -78,7 +80,7 @@ public abstract class AI implements Mover {
         return (int) (5 * difficulty) + 3;
     }
     
-    public abstract int heuristic(@NonNull Round round);
+    public abstract int heuristic(@NonNull Round round, @NonNull Player player);
     
     @Getter
     public static class MoveTreeNode implements Iterable<MoveTreeNode> {
