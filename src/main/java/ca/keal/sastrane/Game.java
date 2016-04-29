@@ -58,4 +58,7 @@ public abstract class Game {
         bus = new EventBus(name);
     }
     
+    @NonNull
+    public abstract Result getResult(@NonNull Round round);
+    
 }
