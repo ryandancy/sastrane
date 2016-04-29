@@ -55,4 +55,11 @@ public final class GuiUtils {
         return (Stage) node.getScene().getWindow();
     }
     
+    public static void loadCustom(Node custom, Resource resource) throws IOException {
+        FXMLLoader loader = new FXMLLoader(resource.get());
+        loader.setRoot(custom);
+        loader.setController(custom);
+        loader.load();
+    }
+    
 }
