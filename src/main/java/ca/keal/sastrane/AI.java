@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public abstract class AI implements Mover {
     
-    /** in (0.0, 1.0] */
+    /** 1 >= difficulty >= 0 */
     private final double difficulty;
     
     public double minimaxAlphaBeta(@NonNull Round round, int depth, @NonNull Player player) {
