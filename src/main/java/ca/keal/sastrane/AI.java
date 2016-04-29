@@ -21,25 +21,25 @@ public abstract class AI implements Mover {
     /** in (0.0, 1.0] */
     private final double difficulty;
     
-    public int minimaxAlphaBeta(@NonNull Round round, int depth, @NonNull Player player) {
+    public double minimaxAlphaBeta(@NonNull Round round, int depth, @NonNull Player player) {
         return minimaxAlphaBeta(new MoveTreeNode(round, player), depth, Integer.MIN_VALUE, Integer.MAX_VALUE, true,
                 player);
     }
     
-    public int minimaxAlphaBeta(@NonNull Round round, @NonNull Move move, int depth, @NonNull Player player) {
-        return minimaxAlphaBeta(new MoveTreeNode(round, move, player), depth, Integer.MIN_VALUE, Integer.MAX_VALUE,
+    public double minimaxAlphaBeta(@NonNull Round round, @NonNull Move move, int depth, @NonNull Player player) {
+        return minimaxAlphaBeta(new MoveTreeNode(round, move, player), depth, Double.MIN_VALUE, Double.MAX_VALUE,
                 true, player);
     }
     
     // https://en.wikipedia.org/wiki/Alpha-beta_pruning#Pseudocode
-    private int minimaxAlphaBeta(@NonNull MoveTreeNode node, int depth, int a, int b, boolean maximizingPlayer,
-                                 @NonNull Player player) {
+    private double minimaxAlphaBeta(@NonNull MoveTreeNode node, int depth, double a, double b,
+                                    boolean maximizingPlayer, @NonNull Player player) {
         if (depth == 0 || node.isTerminal()) {
             return heuristic(node.getRound(), player);
         }
         
         if (maximizingPlayer) {
-            int v = Integer.MIN_VALUE;
+            double v = Double.MIN_VALUE;
             for (MoveTreeNode child : node) {
                 v = Math.max(v, minimaxAlphaBeta(child, depth - 1, a, b, false, player));
                 a = Math.max(a, v);
@@ -47,7 +47,7 @@ public abstract class AI implements Mover {
             }
             return v;
         } else {
-            int v = Integer.MAX_VALUE;
+            double v = Double.MAX_VALUE;
             for (MoveTreeNode child : node) {
                 v = Math.min(v, minimaxAlphaBeta(child, depth - 1, a, b, true, player));
                 b = Math.min(b, v);
@@ -62,7 +62,7 @@ public abstract class AI implements Mover {
     public Move getMove(@NonNull Round round, @NonNull Player player) {
         return round.getAllPossibleMoves(player).stream()
                 .max(Comparator.comparing(move -> minimaxAlphaBeta(round, move, getDepth(), player),
-                        Integer::compare))
+                        Double::compare))
                 .get();
     }
     
@@ -71,7 +71,7 @@ public abstract class AI implements Mover {
     public Decision decide(@NonNull Decision[] options, @NonNull Round round, @NonNull Player player) {
         return Arrays.stream(options)
                 .max(Comparator.comparing(option -> minimaxAlphaBeta(option.whatIf(round), getDepth(), player),
-                        Integer::compare))
+                        Double::compare))
                 .get();
     }
     
@@ -80,7 +80,7 @@ public abstract class AI implements Mover {
         return (int) (5 * difficulty) + 3;
     }
     
-    public abstract int heuristic(@NonNull Round round, @NonNull Player player);
+    public abstract double heuristic(@NonNull Round round, @NonNull Player player);
     
     @Getter
     public static class MoveTreeNode implements Iterable<MoveTreeNode> {
