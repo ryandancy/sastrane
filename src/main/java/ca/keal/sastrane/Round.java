@@ -62,9 +62,9 @@ public class Round {
         
         game.getBus().post(new TurnEvent.Pre(this));
         
-        // We could index turn (as a field) in players and add 1... but ptm.size() % move works better + faster
-        Mover turn = playersToMovers.get(game.getPlayers()[playersToMovers.size() % move]);
-        Move turnMove = turn.getMove(this);
+        Player player = getCurrentTurn();
+        Mover turn = playersToMovers.get(player);
+        Move turnMove = turn.getMove(this, player);
         
         game.getBus().post(new MoveEvent.Pre(this, turnMove));
         turnMove.move(board);
@@ -76,6 +76,7 @@ public class Round {
     }
     
     public Player getCurrentTurn() {
+        // We could index turn (as a field) in players and add 1... but ptm.size() % move works better + faster
         return game.getPlayers()[playersToMovers.size() % move];
     }
     
@@ -86,17 +87,19 @@ public class Round {
         return newRound;
     }
     
+    /** player == null => any player */
     @NonNull
-    public List<Move> getAllPossibleMoves() {
+    public List<Move> getAllPossibleMoves(Player player) {
         List<Move> moves = new ArrayList<>();
         for (Square square : board) {
             Pair<Piece, Player> atSquare = board.get(square);
-            if (atSquare != null && atSquare.getLeft() instanceof MovingPiece) {
+            if (atSquare != null && atSquare.getLeft() instanceof MovingPiece
+                    && (player == null || atSquare.getRight() == player)) {
                 moves.addAll(((MovingPiece) atSquare.getLeft()).getPossibleMoves(this, square, atSquare.getRight()));
             }
         }
         for (PlacingPiece placingPiece : game.getPlacingPieces()) {
-            moves.addAll(placingPiece.getPossiblePlacements(this));
+            moves.addAll(placingPiece.getPossiblePlacements(this, player));
         }
         return moves;
     }

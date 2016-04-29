@@ -13,6 +13,13 @@ public interface Decision {
     void onChoose(@NonNull Round round);
     
     @NonNull
+    default Round whatIf(@NonNull Round round) {
+        Round newRound = new Round(round);
+        onChoose(newRound);
+        return newRound;
+    }
+    
+    @NonNull
     Resource getIcon();
     
     @NonNull

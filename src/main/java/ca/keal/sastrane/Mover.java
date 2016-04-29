@@ -11,9 +11,9 @@ import lombok.NonNull;
 public interface Mover {
     
     @NonNull
-    Move getMove(@NonNull Round round);
+    Move getMove(@NonNull Round round, @NonNull Player player);
     
     @NonNull
-    Decision decide(Decision[] decision);
+    Decision decide(@NonNull Decision[] options, @NonNull Round round, @NonNull Player player);
     
 }
