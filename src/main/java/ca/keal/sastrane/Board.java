@@ -90,7 +90,7 @@ public class Board implements Iterable<Square> {
      * Pass Square::getX for maxX, or Square::getY for maxY
      */
     private int getMaxDimen(Function<Square, Integer> map) {
-        return Collections.min(squaresToPieces.keySet().stream().map(map).collect(Collectors.toList()));
+        return Collections.max(squaresToPieces.keySet().stream().map(map).collect(Collectors.toList()));
     }
     
     @Override
