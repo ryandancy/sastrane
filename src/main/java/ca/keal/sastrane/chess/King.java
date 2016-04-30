@@ -100,7 +100,7 @@ public class King implements RecursiveMovingPiece, MoveCountingPiece {
     
     @Override
     public Resource.Unmangled getImage() {
-        return new Resource.Unmangled("ca.keal.sastrane.chess.icon", "king");
+        return new Resource.Unmangled("ca.keal.sastrane.chess.icon", "king.png");
     }
     
     @Override

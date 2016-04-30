@@ -38,12 +38,12 @@ public class Resource {
                 ext = "";
             } else {
                 this.unmangled = unmangled.substring(0, unmangled.lastIndexOf('.'));
-                ext = unmangled.substring(unmangled.lastIndexOf('.') + 1);
+                ext = unmangled.substring(unmangled.lastIndexOf('.'));
             }
         }
         
         public Resource mangle(@NonNull String mangler) {
-            return new Resource(pkg, unmangled + "_" + mangler + "." + ext);
+            return new Resource(pkg, unmangled + "_" + mangler + ext);
         }
         
     }

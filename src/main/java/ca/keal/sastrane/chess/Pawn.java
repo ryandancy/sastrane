@@ -89,7 +89,7 @@ public class Pawn implements MovingPiece {
     
     @Override
     public Resource.Unmangled getImage() {
-        return new Resource.Unmangled("ca.keal.sastrane.chess.icon", "pawn");
+        return new Resource.Unmangled("ca.keal.sastrane.chess.icon", "pawn.png");
     }
     
     @Subscribe

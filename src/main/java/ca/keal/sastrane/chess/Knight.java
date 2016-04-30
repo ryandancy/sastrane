@@ -24,7 +24,7 @@ public class Knight extends JumpingPiece {
     
     @Override
     public Resource.Unmangled getImage() {
-        return new Resource.Unmangled("ca.keal.sastrane.chess.icon", "knight");
+        return new Resource.Unmangled("ca.keal.sastrane.chess.icon", "knight.png");
     }
     
 }

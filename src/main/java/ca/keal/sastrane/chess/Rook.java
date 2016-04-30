@@ -29,7 +29,7 @@ public class Rook extends LinePiece implements MoveCountingPiece {
     
     @Override
     public Resource.Unmangled getImage() {
-        return new Resource.Unmangled("ca.keal.sastrane.chess.icon", "rook");
+        return new Resource.Unmangled("ca.keal.sastrane.chess.icon", "rook.png");
     }
     
     @Override
