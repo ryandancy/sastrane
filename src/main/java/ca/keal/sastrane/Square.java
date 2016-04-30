@@ -16,4 +16,8 @@ public final class Square {
         return new MovingMove(this, to);
     }
     
+    public int getYFlipped(@NonNull Board board) {
+        return board.getMaxY() - y;
+    }
+    
 }

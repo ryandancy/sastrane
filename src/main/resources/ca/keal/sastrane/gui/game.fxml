@@ -4,8 +4,10 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.StackPane?>
-<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="ca.keal.sastrane.gui.GameController"
+<!--suppress JavaFxUnresolvedFxIdReference -->
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="ca.keal.sastrane.gui.GameController" fx:id="game"
             stylesheets="@sastrane.css">
     <top>
         <StackPane>
@@ -14,6 +16,14 @@
         </StackPane>
     </top>
     <center>
-        <GridPane fx:id="boardGrid" id="board" />
+        <GridPane fx:id="boardGrid" id="board" prefWidth="${game.width * 0.75}" prefHeight="${game.height * 0.75}"
+                  minWidth="0" minHeight="0">
+            <maxWidth>
+                <Region fx:constant="USE_PREF_SIZE" />
+            </maxWidth>
+            <maxHeight>
+                <Region fx:constant="USE_PREF_SIZE" />
+            </maxHeight>
+        </GridPane>
     </center>
 </BorderPane>

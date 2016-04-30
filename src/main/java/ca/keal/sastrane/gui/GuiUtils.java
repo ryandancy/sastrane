@@ -66,7 +66,8 @@ public final class GuiUtils {
     // http://stackoverflow.com/a/20656861
     public static Node getNodeFromGridPane(GridPane gridPane, int col, int row) {
         for (Node node : gridPane.getChildren()) {
-            if (GridPane.getColumnIndex(node) == col && GridPane.getRowIndex(node) == row) {
+            if (Integer.valueOf(col).equals(GridPane.getColumnIndex(node))
+                    && Integer.valueOf(row).equals(GridPane.getRowIndex(node))) {
                 return node;
             }
         }
