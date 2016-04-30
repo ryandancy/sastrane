@@ -53,11 +53,13 @@ public class Board implements Iterable<Square> {
             String row = rows.get(i);
             for (int j = 0; j < row.length(); j++) {
                 char piece = row.charAt(j);
-                if (!pieces.containsKey(piece)) {
+                if (piece == '_') continue;
+                if (piece != ' ' && !pieces.containsKey(piece)) {
                     throw new IllegalArgumentException("Undeclared piece char '" + piece + "' at row " + i
                             + ", column " + j);
                 }
-                squaresToPieces.put(new Square(i, j), pieces.get(piece).withLeft(pieces.get(piece).getLeft().get()));
+                squaresToPieces.put(new Square(i, j), piece == ' ' ? null
+                        : pieces.get(piece).withLeft(pieces.get(piece).getLeft().get()));
             }
         }
         
