@@ -9,8 +9,8 @@
             stylesheets="@sastrane.css">
     <top>
         <StackPane>
-            <Button text="Back" onAction="#onBack" styleClass="back" StackPane.alignment="center_left" />
-            <Label text="New Game" fx:id="title" styleClass="screen-title" StackPane.alignment="center" />
+            <Button text="Back" onAction="#onBack" StackPane.alignment="center_left" />
+            <Label fx:id="title" styleClass="screen-title" text="New Game" StackPane.alignment="center" />
         </StackPane>
     </top>
     <center>
