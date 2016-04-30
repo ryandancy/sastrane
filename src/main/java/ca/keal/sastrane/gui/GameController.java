@@ -16,12 +16,14 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 import lombok.SneakyThrows;
 
 public class GameController {
     
+    @FXML private BorderPane game;
     @FXML private Label title;
     @FXML private GridPane boardGrid;
     
@@ -29,8 +31,9 @@ public class GameController {
     
     public void setRound(Round round) {
         this.round = round;
-        this.title.setText(round.getGame().getName());
         this.round.getBoard().addListener(change -> updateBoardGrid());
+        title.setText(round.getGame().getName());
+        game.getStylesheets().add(round.getGame().getCss().getFilename());
         
         for (int x = 0; x <= round.getBoard().getMaxX(); x++) {
             for (int y = 0; y <= round.getBoard().getMaxY(); y++) {

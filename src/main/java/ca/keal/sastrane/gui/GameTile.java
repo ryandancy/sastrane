@@ -28,6 +28,7 @@ public class GameTile extends VBox implements Initializable {
     public GameTile(Game game) {
         this.game = game;
         GuiUtils.loadCustom(this, new Resource("ca.keal.sastrane.gui", "game-tile.fxml"));
+        getStylesheets().add(game.getCss().getFilename());
     }
     
     @Override

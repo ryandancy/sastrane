@@ -6,7 +6,6 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.StackPane?>
-<!--suppress JavaFxUnresolvedFxIdReference -->
 <BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="ca.keal.sastrane.gui.GameController" fx:id="game"
             stylesheets="@sastrane.css">
     <top>

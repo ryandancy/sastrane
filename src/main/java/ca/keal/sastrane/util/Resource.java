@@ -15,7 +15,12 @@ public class Resource {
     private final String filename;
     
     public URL get() {
-        return ClassLoader.getSystemResource(pkg.replace('.', '/') + "/" + filename);
+        return ClassLoader.getSystemResource(getFilename());
+    }
+    
+    @NonNull
+    public String getFilename() {
+        return toString();
     }
     
     @Override

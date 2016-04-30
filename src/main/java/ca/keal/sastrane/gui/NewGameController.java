@@ -11,6 +11,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,6 +25,7 @@ import java.util.stream.Collectors;
 @Setter
 public class NewGameController {
     
+    @FXML private BorderPane container;
     @FXML private Label title;
     @FXML private FlowPane playerSettingsContainer;
     
@@ -31,9 +33,11 @@ public class NewGameController {
     
     public void setGame(Game game) {
         this.game = game;
-        this.title.setText("New " + game.getName() + " Game");
+        container.getStylesheets().add(game.getCss().getFilename());
+        title.setText("New " + game.getName() + " Game");
         playerSettingsContainer.getChildren().addAll(Arrays.stream(game.getPlayers())
                 .map(PlayerSettings::new)
+                .peek(settings -> settings.getStylesheets().add(game.getCss().getFilename()))
                 .collect(Collectors.toList()));
     }
     
