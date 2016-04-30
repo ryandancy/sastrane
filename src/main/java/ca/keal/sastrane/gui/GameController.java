@@ -19,6 +19,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
 import lombok.SneakyThrows;
 
 public class GameController {
@@ -41,15 +42,18 @@ public class GameController {
                 NumberBinding cellDimen = Bindings.min(boardGrid.widthProperty().divide(round.getBoard().getMaxX() + 1),
                         boardGrid.heightProperty().divide(round.getBoard().getMaxY() + 1));
                 if (round.getBoard().isOn(new Square(x, y))) {
+                    StackPane imgPane = new StackPane();
                     ImageView img = new ImageView();
-                    img.getStyleClass().addAll("square", (x + (round.getBoard().getMaxY() - y) % 2) % 2 == 0
+                    imgPane.getStyleClass().addAll("square", (x + (round.getBoard().getMaxY() - y) % 2) % 2 == 0
                             ? "even" : "odd", "x" + x, "y" + y);
+                    img.getStyleClass().add("img");
                     img.fitHeightProperty().bind(cellDimen);
                     img.fitWidthProperty().bind(cellDimen);
                     img.setPreserveRatio(true);
                     GridPane.setHalignment(img, HPos.CENTER);
                     GridPane.setValignment(img, VPos.CENTER);
-                    cell = img;
+                    imgPane.getChildren().add(img);
+                    cell = imgPane;
                 } else {
                     Region filler = new Region();
                     filler.setVisible(false);
@@ -68,8 +72,12 @@ public class GameController {
         for (Square square : round.getBoard()) {
             Node squareNode = GuiUtils.getNodeFromGridPane(boardGrid,
                     square.getYFlipped(round.getBoard()), square.getX());
-            if (!(squareNode instanceof ImageView)) continue;
-            ImageView squareImage = (ImageView) squareNode;
+            if (!(squareNode instanceof StackPane)) continue;
+            StackPane squarePane = (StackPane) squareNode;
+            if (!(squarePane.getChildren().size() == 1 && squarePane.getChildren().get(0) instanceof ImageView)) {
+                continue;
+            }
+            ImageView squareImage = (ImageView) squarePane.getChildren().get(0);
             
             Pair<Piece, Player> atSquare = round.getBoard().get(square);
             squareImage.setImage((atSquare == null) ? null : new Image(atSquare.getLeft().getImage()

@@ -1,1 +1,7 @@
-/* TODO chess.css */
+.square.odd {
+    -fx-background-image: url('black-tile.png');
+}
+
+.square.even {
+    -fx-background-color: #F2D7AC;
+}

@@ -100,6 +100,8 @@
 
 #board {
     -fx-alignment: center;
-    -fx-hgap: 5;
-    -fx-vgap: 5;
+}
+
+#board > .square {
+    -fx-padding: 5;
 }

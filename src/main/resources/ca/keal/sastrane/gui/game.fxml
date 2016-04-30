@@ -15,7 +15,7 @@
         </StackPane>
     </top>
     <center>
-        <GridPane fx:id="boardGrid" id="board" prefWidth="${game.width * 0.75}" prefHeight="${game.height * 0.75}"
+        <GridPane fx:id="boardGrid" id="board" prefWidth="${game.width * 0.6}" prefHeight="${game.height * 0.6}"
                   minWidth="0" minHeight="0">
             <maxWidth>
                 <Region fx:constant="USE_PREF_SIZE" />
