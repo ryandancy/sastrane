@@ -37,6 +37,12 @@ public class PlayerSettings extends VBox implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         img.setImage(new Image(player.getIcon().get().openStream()));
         playerName.setText(player.getName());
+        
+        aiOrHumanButtons.selectedToggleProperty().addListener((ov, toggle, newToggle) -> {
+            if (newToggle == null) {
+                toggle.setSelected(true);
+            }
+        });
     }
     
 }

@@ -2,6 +2,10 @@
     -fx-background-color: #A88C27;
 }
 
+* {
+    -fx-text-fill: black;
+}
+
 #app-logo {
     -fx-font-weight: 800;
     -fx-text-fill: linear-gradient(#E7BC3C, #BD8522);
@@ -20,27 +24,58 @@
     -fx-alignment: center;
 }
 
-.game-tile:hover, Button:hover {
+.game-tile:hover, .button:hover {
     -fx-cursor: hand;
 }
 
 .game-tile Label {
-    -fx-text-fill: black;
     -fx-font-size: 1.4em;
     -fx-label-padding: 3 0 0 0;
 }
 
-.back {
+.button {
     -fx-background-color: #927921;
-    -fx-text-fill: black;
     -fx-padding: 8;
     -fx-border-insets: 5;
     -fx-background-insets: 5;
 }
 
+.button, .toggle-button, .slider .thumb {
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+.toggle-button:focused, .toggle-button:selected:focused {
+    /* from modena.css */
+    -fx-background-insets: 0 0 -1 0, 0, 1;
+}
+
+.toggle-button:selected:focused {
+    /* from modena.css */
+    -fx-background-color:
+        -fx-shadow-highlight-color,
+        linear-gradient(to bottom, derive(-fx-outer-border, -20%), -fx-outer-border),
+        linear-gradient(to bottom, 
+            derive(-fx-color, -22%) 0%,
+            derive(-fx-color, -13%) 20%,
+            derive(-fx-color, -11%) 50%);
+}
+
+.slider:focused .thumb {
+    /* from modena.css */
+    -fx-background-color:
+        linear-gradient(to bottom, derive(-fx-text-box-border, -20%), derive(-fx-text-box-border, -30%)),
+        -fx-inner-border,
+        -fx-body-color;
+    -fx-effect: dropshadow(two-pass-box, rgba(0, 0, 0, 0.1), 5, 0.0 , 0, 2);
+}
+
+#create-game {
+    -fx-background-color: #725D1D;
+}
+
 .screen-title {
     -fx-font-size: 2em;
-    -fx-text-fill: black;
     -fx-text-alignment: center;
 }
 

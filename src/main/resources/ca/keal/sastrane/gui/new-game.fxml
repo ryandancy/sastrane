@@ -17,6 +17,6 @@
         <FlowPane fx:id="playerSettingsContainer" id="player-settings" />
     </center>
     <bottom>
-        <Button text="Create Game" onAction="#onCreateGame" />
+        <Button id="create-game" text="Create Game" onAction="#onCreateGame" maxWidth="Infinity" />
     </bottom>
 </BorderPane>
