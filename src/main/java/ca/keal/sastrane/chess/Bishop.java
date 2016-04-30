@@ -22,8 +22,8 @@ public class Bishop extends LinePiece {
     }
     
     @Override
-    public Resource getImage() {
-        return new Resource("ca.keal.sastrane.chess.icon", "bishop");
+    public Resource.Unmangled getImage() {
+        return new Resource.Unmangled("ca.keal.sastrane.chess.icon", "bishop");
     }
     
 }

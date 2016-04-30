@@ -22,8 +22,8 @@ public class Queen extends LinePiece {
     }
     
     @Override
-    public Resource getImage() {
-        return new Resource("ca.keal.sastrane.chess.icon", "queen");
+    public Resource.Unmangled getImage() {
+        return new Resource.Unmangled("ca.keal.sastrane.chess.icon", "queen");
     }
     
 }

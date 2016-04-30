@@ -14,6 +14,6 @@ public interface Piece {
      * @return (packageName, filename) of the piece's icon, with the file name <strong>without the extension!</strong>
      */
     @NonNull
-    Resource getImage();
+    Resource.Unmangled getImage();
     
 }

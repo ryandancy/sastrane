@@ -1,6 +1,9 @@
 package ca.keal.sastrane;
 
 import ca.keal.sastrane.util.Pair;
+import javafx.collections.FXCollections;
+import javafx.collections.MapChangeListener;
+import javafx.collections.ObservableMap;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -23,8 +26,9 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class Board implements Iterable<Square> {
     
+    // Use JavaFX ObservableMap so that listeners can be added
     @NonNull
-    private final Map<Square, Pair<Piece, Player>> squaresToPieces; // TODO more dimensions?
+    private final ObservableMap<Square, Pair<Piece, Player>> squaresToPieces; // TODO more dimensions?
     
     @Getter(lazy = true)
     private final int maxX = getMaxDimen(Square::getX);
@@ -43,7 +47,7 @@ public class Board implements Iterable<Square> {
                     + "and underscore is not-on-board.");
         }
         
-        squaresToPieces = new HashMap<>();
+        Map<Square, Pair<Piece, Player>> squaresToPieces = new HashMap<>();
         
         for (int i = 0; i < rows.size(); i++) {
             String row = rows.get(i);
@@ -56,6 +60,8 @@ public class Board implements Iterable<Square> {
                 squaresToPieces.put(new Square(i, j), pieces.get(piece).withLeft(pieces.get(piece).getLeft().get()));
             }
         }
+        
+        this.squaresToPieces = FXCollections.observableMap(squaresToPieces);
     }
     
     public Board(@NonNull Board board) {
@@ -68,6 +74,10 @@ public class Board implements Iterable<Square> {
     
     public void set(Square square, Pair<Piece, Player> value) {
         squaresToPieces.put(square, value);
+    }
+    
+    public void addListener(MapChangeListener<Square, Pair<Piece, Player>> listener) {
+        squaresToPieces.addListener(listener);
     }
     
     public boolean isOn(Square square) {
