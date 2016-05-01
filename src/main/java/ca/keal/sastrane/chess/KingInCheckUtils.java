@@ -32,18 +32,14 @@ public class KingInCheckUtils {
     }
     
     public static boolean isKingInCheck(@NonNull Round round, @NonNull Player player) {
-        // Find king
-        Square kingSquare = null;
+        // Find king, check if in check
         for (Square square : round.getBoard()) {
             Pair<Piece, Player> atSquare = round.getBoard().get(square);
             if (atSquare != null && atSquare.getRight() == player && atSquare.getLeft() instanceof King) {
-                kingSquare = square;
-                break;
+                return Utils.canBeMovedTo(round, square, player);
             }
         }
-        
-        // Check for whether it's in check
-        return Utils.canBeMovedTo(round, kingSquare, player);
+        return false;
     }
     
 }
