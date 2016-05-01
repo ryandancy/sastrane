@@ -31,6 +31,6 @@
         </StackPane>
     </center>
     <right>
-        <TilePane fx:id="pieceChooser" styleClass="piece-chooser" visible="false" />
+        <TilePane fx:id="pieceChooser" styleClass="piece-chooser" />
     </right>
 </BorderPane>

@@ -129,3 +129,22 @@
     -fx-border-radius: 2; /* rounded corners... maybe */
     -fx-border-width: 2;
 }
+
+#decision {
+    -fx-alignment: center;
+    -fx-hgap: 20;
+    -fx-vgap: 20;
+    visibility: hidden;
+    -fx-padding: 20;
+}
+
+#decision .option {
+    -fx-background-color: hsba(0, 90%, 100%, .8);
+    -fx-padding: 10;
+    -fx-alignment: center;
+    -fx-spacing: 5;
+}
+
+#decision .option .text {
+    -fx-font-weight: 600;
+}

@@ -32,10 +32,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
+import javafx.scene.layout.VBox;
 import lombok.NonNull;
 import lombok.Setter;
 import lombok.SneakyThrows;
@@ -228,12 +228,20 @@ public class GameController {
         deciding = true;
         
         for (Decision option : options) {
-            HBox optionBox = new HBox();
+            VBox optionBox = new VBox();
             optionBox.getStyleClass().add("option");
             optionBox.setOnMouseClicked(e -> onDecide(option));
+            optionBox.prefWidthProperty().bind(boardGrid.widthProperty().multiply(.5));
+            optionBox.prefHeightProperty().bind(optionBox.prefWidthProperty());
+            optionBox.setMaxWidth(Region.USE_PREF_SIZE);
+            optionBox.setMaxHeight(Region.USE_PREF_SIZE);
+            optionBox.setMinWidth(Region.USE_PREF_SIZE);
+            optionBox.setMinHeight(Region.USE_PREF_SIZE);
             
             ImageView img = new ImageView(new Image(option.getIcon().get().openStream()));
             img.getStyleClass().add("img");
+            img.fitHeightProperty().bind(optionBox.heightProperty().multiply(.6));
+            img.setPreserveRatio(true);
             
             Label label = new Label(option.getName());
             label.getStyleClass().add("text");
