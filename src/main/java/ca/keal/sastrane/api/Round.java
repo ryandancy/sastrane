@@ -36,7 +36,7 @@ public class Round {
     private final Map<Player, Mover> playersToMovers;
     private final Board board;
     
-    private int move = 0;
+    private int moveNum = 0;
     private boolean ended = false;
     
     @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
@@ -54,40 +54,37 @@ public class Round {
     
     public Round(@NonNull Round round) {
         this(round.getGame(), ImmutableMap.copyOf(round.getPlayersToMovers()), new Board(round.getBoard()),
-                round.getMove(), round.isEnded(), new ArrayDeque<>(round.getMoves()));
+                round.getMoveNum(), round.isEnded(), new ArrayDeque<>(round.getMoves()));
     }
     
     public void nextTurn() {
         if (ended) throw new IllegalStateException("nextTurn() cannot be called on a Round that is already ended");
-        
-        if (move == 0) {
-            game.getBus().post(new RoundEvent.Pre(this));
-        }
-        
         game.getBus().post(new TurnEvent.Pre(this));
         
         Player player = getCurrentTurn();
-        Mover turn = playersToMovers.get(player);
-        Move turnMove = turn.getMove(this, player);
+        Mover mover = playersToMovers.get(player);
+        Move move = mover.getMove(this, player);
         
-        game.getBus().post(new MoveEvent.Pre(this, turnMove));
-        turnMove.move(board);
-        moves.add(turnMove);
-        game.getBus().post(new MoveEvent.Post(this, turnMove));
+        game.getBus().post(new MoveEvent.Pre(this, move));
+        move.move(board);
+        moves.add(move);
+        game.getBus().post(new MoveEvent.Post(this, move));
         
         game.getBus().post(new TurnEvent.Post(this));
-        move++;
+        moveNum++;
     }
     
     public void start() {
+        game.getBus().post(new RoundEvent.Pre(this));
         while (!ended) {
             nextTurn();
         }
+        game.getBus().post(new RoundEvent.Post(this));
+        game.refreshBus();
     }
     
     public Player getCurrentTurn() {
-        // We could index turn (as a field) in players and add 1... but ptm.size() % move works better + faster
-        return game.getPlayers()[move == 0 ? 0 : playersToMovers.size() % move];
+        return game.getPlayers()[moveNum == 0 ? 0 : game.getPlayers().length % moveNum];
     }
     
     @NonNull
@@ -117,7 +114,6 @@ public class Round {
     @Subscribe
     public void onWin(WinEvent e) {
         ended = true;
-        game.refreshBus();
     }
     
 }
