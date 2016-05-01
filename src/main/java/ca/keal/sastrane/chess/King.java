@@ -91,8 +91,9 @@ public class King implements RecursiveMovingPiece, MoveCountingPiece {
         List<Move> moves = new ArrayList<>();
         for (int x = -1; x <= 1; x++) {
             for (int y = -1; y <= 1; y++) {
-                Square square = allegiance.perspectivize(new Square(x, y), boardPos);
-                if (!(x == 0 && y == 0) && round.getBoard().isOn(square)) {
+                Square square = allegiance.perspectivize(new Square(boardPos.getX() + x, boardPos.getY() + y),
+                        boardPos);
+                if (!(square.getX() == 0 && square.getY() == 0) && round.getBoard().isOn(square)) {
                     moves.add(boardPos.to(square));
                 }
             }
