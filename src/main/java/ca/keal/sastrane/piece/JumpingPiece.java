@@ -88,6 +88,8 @@ public abstract class JumpingPiece implements MovingPiece {
         for (Pair<Integer, Integer> offset : offsets) {
             Square deltaPos = allegiance.perspectivize(new Square(boardPos.getX() + offset.getLeft(),
                     boardPos.getY() + offset.getRight()), boardPos);
+            if (!round.getBoard().isOn(deltaPos)) continue;
+            
             Pair<Piece, Player> atDelta = round.getBoard().get(deltaPos);
             if (atDelta == null || (allegiance != atDelta.getRight() && takeOpposingPieces)) {
                 res.add(boardPos.to(deltaPos));
