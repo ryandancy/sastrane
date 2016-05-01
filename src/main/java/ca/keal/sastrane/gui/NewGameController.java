@@ -1,9 +1,9 @@
 package ca.keal.sastrane.gui;
 
-import ca.keal.sastrane.Game;
-import ca.keal.sastrane.Mover;
-import ca.keal.sastrane.Player;
-import ca.keal.sastrane.Round;
+import ca.keal.sastrane.api.Game;
+import ca.keal.sastrane.api.Mover;
+import ca.keal.sastrane.api.Player;
+import ca.keal.sastrane.api.Round;
 import ca.keal.sastrane.util.Resource;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

@@ -1,11 +1,11 @@
 package ca.keal.sastrane.chess;
 
-import ca.keal.sastrane.AI;
-import ca.keal.sastrane.Piece;
-import ca.keal.sastrane.Player;
-import ca.keal.sastrane.Result;
-import ca.keal.sastrane.Round;
-import ca.keal.sastrane.Square;
+import ca.keal.sastrane.api.AI;
+import ca.keal.sastrane.api.piece.Piece;
+import ca.keal.sastrane.api.Player;
+import ca.keal.sastrane.api.Result;
+import ca.keal.sastrane.api.Round;
+import ca.keal.sastrane.api.Square;
 import ca.keal.sastrane.util.Pair;
 import lombok.NonNull;
 

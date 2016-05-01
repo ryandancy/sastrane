@@ -1,5 +1,6 @@
-package ca.keal.sastrane;
+package ca.keal.sastrane.api;
 
+import ca.keal.sastrane.api.piece.Piece;
 import ca.keal.sastrane.util.Pair;
 import javafx.collections.FXCollections;
 import javafx.collections.MapChangeListener;

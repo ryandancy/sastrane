@@ -1,7 +1,7 @@
 package ca.keal.sastrane.chess;
 
-import ca.keal.sastrane.Player;
-import ca.keal.sastrane.Square;
+import ca.keal.sastrane.api.Player;
+import ca.keal.sastrane.api.Square;
 import ca.keal.sastrane.util.Resource;
 import lombok.Getter;
 import lombok.NonNull;

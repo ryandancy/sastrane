@@ -1,5 +1,9 @@
-package ca.keal.sastrane;
+package ca.keal.sastrane.api.piece;
 
+import ca.keal.sastrane.api.move.Move;
+import ca.keal.sastrane.api.Player;
+import ca.keal.sastrane.api.Round;
+import ca.keal.sastrane.api.Square;
 import lombok.NonNull;
 
 import java.util.List;

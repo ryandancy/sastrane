@@ -1,6 +1,6 @@
 package ca.keal.sastrane.gui;
 
-import ca.keal.sastrane.Game;
+import ca.keal.sastrane.api.Game;
 import ca.keal.sastrane.util.Resource;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

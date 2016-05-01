@@ -1,9 +1,9 @@
 package ca.keal.sastrane.chess;
 
-import ca.keal.sastrane.Decision;
-import ca.keal.sastrane.Piece;
-import ca.keal.sastrane.Round;
-import ca.keal.sastrane.Square;
+import ca.keal.sastrane.api.Decision;
+import ca.keal.sastrane.api.piece.Piece;
+import ca.keal.sastrane.api.Round;
+import ca.keal.sastrane.api.Square;
 import ca.keal.sastrane.util.Pair;
 import ca.keal.sastrane.util.Resource;
 import lombok.Getter;

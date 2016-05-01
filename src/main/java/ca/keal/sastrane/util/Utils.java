@@ -1,12 +1,12 @@
 package ca.keal.sastrane.util;
 
-import ca.keal.sastrane.Move;
-import ca.keal.sastrane.MovingPiece;
-import ca.keal.sastrane.Piece;
-import ca.keal.sastrane.Player;
-import ca.keal.sastrane.RecursiveMovingPiece;
-import ca.keal.sastrane.Round;
-import ca.keal.sastrane.Square;
+import ca.keal.sastrane.api.move.Move;
+import ca.keal.sastrane.api.piece.MovingPiece;
+import ca.keal.sastrane.api.piece.Piece;
+import ca.keal.sastrane.api.Player;
+import ca.keal.sastrane.api.piece.RecursiveMovingPiece;
+import ca.keal.sastrane.api.Round;
+import ca.keal.sastrane.api.Square;
 import com.google.common.collect.HashMultiset;
 
 import java.util.Collection;

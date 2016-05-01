@@ -1,8 +1,8 @@
-package ca.keal.sastrane.event;
+package ca.keal.sastrane.api.event;
 
-import ca.keal.sastrane.Mover;
-import ca.keal.sastrane.Player;
-import ca.keal.sastrane.Round;
+import ca.keal.sastrane.api.Mover;
+import ca.keal.sastrane.api.Player;
+import ca.keal.sastrane.api.Round;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

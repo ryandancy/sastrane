@@ -1,5 +1,6 @@
-package ca.keal.sastrane;
+package ca.keal.sastrane.api;
 
+import ca.keal.sastrane.api.piece.MovingPiece;
 import ca.keal.sastrane.util.Resource;
 import lombok.NonNull;
 

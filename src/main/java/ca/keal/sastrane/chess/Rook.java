@@ -1,12 +1,12 @@
 package ca.keal.sastrane.chess;
 
-import ca.keal.sastrane.Move;
-import ca.keal.sastrane.MoveCountingPiece;
-import ca.keal.sastrane.Player;
-import ca.keal.sastrane.RecursiveMovingPiece;
-import ca.keal.sastrane.Round;
-import ca.keal.sastrane.Square;
-import ca.keal.sastrane.piece.LinePiece;
+import ca.keal.sastrane.api.move.Move;
+import ca.keal.sastrane.api.piece.MoveCountingPiece;
+import ca.keal.sastrane.api.Player;
+import ca.keal.sastrane.api.piece.RecursiveMovingPiece;
+import ca.keal.sastrane.api.Round;
+import ca.keal.sastrane.api.Square;
+import ca.keal.sastrane.api.piece.LinePiece;
 import ca.keal.sastrane.util.Resource;
 import lombok.Getter;
 import lombok.NonNull;

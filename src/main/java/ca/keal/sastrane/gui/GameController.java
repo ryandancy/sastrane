@@ -1,15 +1,15 @@
 package ca.keal.sastrane.gui;
 
-import ca.keal.sastrane.Move;
-import ca.keal.sastrane.MovingPiece;
-import ca.keal.sastrane.Piece;
-import ca.keal.sastrane.PlacingMove;
-import ca.keal.sastrane.PlacingPiece;
-import ca.keal.sastrane.Player;
-import ca.keal.sastrane.Round;
-import ca.keal.sastrane.Square;
-import ca.keal.sastrane.event.TurnEvent;
-import ca.keal.sastrane.event.UserMoveEvent;
+import ca.keal.sastrane.api.move.Move;
+import ca.keal.sastrane.api.piece.MovingPiece;
+import ca.keal.sastrane.api.piece.Piece;
+import ca.keal.sastrane.api.move.PlacingMove;
+import ca.keal.sastrane.api.piece.PlacingPiece;
+import ca.keal.sastrane.api.Player;
+import ca.keal.sastrane.api.Round;
+import ca.keal.sastrane.api.Square;
+import ca.keal.sastrane.api.event.TurnEvent;
+import ca.keal.sastrane.api.event.UserMoveEvent;
 import ca.keal.sastrane.util.Pair;
 import ca.keal.sastrane.util.Resource;
 import com.google.common.eventbus.Subscribe;

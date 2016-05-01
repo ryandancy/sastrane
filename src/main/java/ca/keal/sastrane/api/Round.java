@@ -1,9 +1,13 @@
-package ca.keal.sastrane;
+package ca.keal.sastrane.api;
 
-import ca.keal.sastrane.event.MoveEvent;
-import ca.keal.sastrane.event.RoundEvent;
-import ca.keal.sastrane.event.TurnEvent;
-import ca.keal.sastrane.event.WinEvent;
+import ca.keal.sastrane.api.move.Move;
+import ca.keal.sastrane.api.piece.MovingPiece;
+import ca.keal.sastrane.api.piece.Piece;
+import ca.keal.sastrane.api.piece.PlacingPiece;
+import ca.keal.sastrane.api.event.MoveEvent;
+import ca.keal.sastrane.api.event.RoundEvent;
+import ca.keal.sastrane.api.event.TurnEvent;
+import ca.keal.sastrane.api.event.WinEvent;
 import ca.keal.sastrane.util.Pair;
 import ca.keal.sastrane.util.Utils;
 import com.google.common.collect.ImmutableMap;

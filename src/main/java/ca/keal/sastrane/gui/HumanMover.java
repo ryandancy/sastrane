@@ -1,11 +1,11 @@
 package ca.keal.sastrane.gui;
 
-import ca.keal.sastrane.Decision;
-import ca.keal.sastrane.Move;
-import ca.keal.sastrane.Mover;
-import ca.keal.sastrane.Player;
-import ca.keal.sastrane.Round;
-import ca.keal.sastrane.event.UserMoveEvent;
+import ca.keal.sastrane.api.Decision;
+import ca.keal.sastrane.api.move.Move;
+import ca.keal.sastrane.api.Mover;
+import ca.keal.sastrane.api.Player;
+import ca.keal.sastrane.api.Round;
+import ca.keal.sastrane.api.event.UserMoveEvent;
 import com.google.common.eventbus.Subscribe;
 import javafx.application.Platform;
 import lombok.NonNull;

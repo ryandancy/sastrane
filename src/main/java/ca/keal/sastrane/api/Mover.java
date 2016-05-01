@@ -1,5 +1,6 @@
-package ca.keal.sastrane;
+package ca.keal.sastrane.api;
 
+import ca.keal.sastrane.api.move.Move;
 import lombok.NonNull;
 
 /**

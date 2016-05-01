@@ -1,10 +1,10 @@
 package ca.keal.sastrane.chess;
 
-import ca.keal.sastrane.Move;
-import ca.keal.sastrane.Piece;
-import ca.keal.sastrane.Player;
-import ca.keal.sastrane.Round;
-import ca.keal.sastrane.Square;
+import ca.keal.sastrane.api.move.Move;
+import ca.keal.sastrane.api.piece.Piece;
+import ca.keal.sastrane.api.Player;
+import ca.keal.sastrane.api.Round;
+import ca.keal.sastrane.api.Square;
 import ca.keal.sastrane.util.Pair;
 import ca.keal.sastrane.util.TriFunction;
 import ca.keal.sastrane.util.Utils;

@@ -1,4 +1,4 @@
-package ca.keal.sastrane;
+package ca.keal.sastrane.api;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

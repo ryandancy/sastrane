@@ -1,4 +1,4 @@
-package ca.keal.sastrane.event;
+package ca.keal.sastrane.api.event;
 
 import lombok.Data;
 

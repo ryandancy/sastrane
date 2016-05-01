@@ -1,5 +1,6 @@
-package ca.keal.sastrane;
+package ca.keal.sastrane.api;
 
+import ca.keal.sastrane.api.piece.PlacingPiece;
 import ca.keal.sastrane.util.Resource;
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;

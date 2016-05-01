@@ -1,5 +1,6 @@
-package ca.keal.sastrane;
+package ca.keal.sastrane.api.piece;
 
+import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.util.Resource;
 import lombok.NonNull;
 

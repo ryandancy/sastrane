@@ -1,6 +1,7 @@
-package ca.keal.sastrane;
+package ca.keal.sastrane.api.piece;
 
-import ca.keal.sastrane.event.MoveEvent;
+import ca.keal.sastrane.api.Player;
+import ca.keal.sastrane.api.event.MoveEvent;
 import ca.keal.sastrane.util.Pair;
 import com.google.common.eventbus.Subscribe;
 
