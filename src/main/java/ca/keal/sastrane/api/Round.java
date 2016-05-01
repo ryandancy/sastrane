@@ -84,7 +84,7 @@ public class Round {
     }
     
     public Player getCurrentTurn() {
-        return game.getPlayers()[moveNum == 0 ? 0 : game.getPlayers().length % moveNum];
+        return game.getPlayers()[moveNum % game.getPlayers().length];
     }
     
     @NonNull
