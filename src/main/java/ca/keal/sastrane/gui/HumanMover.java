@@ -20,10 +20,13 @@ public class HumanMover implements Mover {
     private final GameController controller;
     private AtomicReference<Move> move = new AtomicReference<>(null);
     
+    private final Object lock = new Object();
+    
     @Override
     @SneakyThrows
     public Move getMove(@NonNull Round round, @NonNull Player player) {
         move.set(null);
+        
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -37,11 +40,19 @@ public class HumanMover implements Mover {
                     controller.setInputting(false);
                     move.set(e.getMove());
                     round.getGame().getBus().unregister(this);
-                    HumanMover.this.notifyAll();
+                    
+                    // Wake up HumanMover
+                    synchronized (lock) {
+                        lock.notifyAll();
+                    }
                 }
             }
         });
-        wait();
+        
+        synchronized (lock) {
+            lock.wait(); // Wait for the user to move
+        }
+        
         return move.get();
     }
     
