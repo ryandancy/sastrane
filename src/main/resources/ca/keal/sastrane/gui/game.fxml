@@ -27,7 +27,7 @@
                     <Region fx:constant="USE_PREF_SIZE" />
                 </maxHeight>
             </GridPane>
-            <FlowPane fx:id="decisionPane" id="decision" />
+            <FlowPane fx:id="decisionPane" id="decision" mouseTransparent="true" />
         </StackPane>
     </center>
     <right>

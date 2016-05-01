@@ -1,11 +1,12 @@
 package ca.keal.sastrane.gui;
 
 import ca.keal.sastrane.api.Decision;
-import ca.keal.sastrane.api.move.Move;
 import ca.keal.sastrane.api.Mover;
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.Round;
+import ca.keal.sastrane.api.event.UserDecideEvent;
 import ca.keal.sastrane.api.event.UserMoveEvent;
+import ca.keal.sastrane.api.move.Move;
 import com.google.common.eventbus.Subscribe;
 import javafx.application.Platform;
 import lombok.NonNull;
@@ -14,11 +15,14 @@ import lombok.SneakyThrows;
 
 import java.util.concurrent.atomic.AtomicReference;
 
+// TODO reduce repitition here - there's a *lot* of similarity between getMove() and decide()
 @RequiredArgsConstructor
 public class HumanMover implements Mover {
     
     private final GameController controller;
+    
     private AtomicReference<Move> move = new AtomicReference<>(null);
+    private AtomicReference<Decision> decision = new AtomicReference<>(null);
     
     private final Object lock = new Object();
     
@@ -45,7 +49,7 @@ public class HumanMover implements Mover {
                     synchronized (lock) {
                         lock.notifyAll();
                     }
-                }
+                } // log on else (it's really really bad, there's >1 HumanMover)???
             }
         });
         
@@ -57,8 +61,36 @@ public class HumanMover implements Mover {
     }
     
     @Override
+    @SneakyThrows
     public Decision decide(@NonNull Decision[] options, @NonNull Round round, @NonNull Player player) {
-        return null;
+        decision.set(null);
+        
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                round.getGame().getBus().register(this);
+                controller.displayDecision(options);
+            }
+            
+            @Subscribe
+            public void onUserDecide(UserDecideEvent e) {
+                if (e.getMover() == HumanMover.this) { // again, just to be safe
+                    decision.set(e.getDecision());
+                    round.getGame().getBus().unregister(this);
+                    
+                    // Wake up HumanMover
+                    synchronized (lock) {
+                        lock.notifyAll();
+                    }
+                } // log on else here too???
+            }
+        });
+        
+        synchronized (lock) {
+            lock.wait(); // Wait for the user to decide
+        }
+        
+        return decision.get();
     }
     
 }

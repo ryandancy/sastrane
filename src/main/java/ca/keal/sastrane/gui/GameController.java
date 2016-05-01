@@ -242,6 +242,7 @@ public class GameController {
             optionBox.getChildren().addAll(img, label);
             decisionPane.getChildren().add(optionBox);
             decisionPane.setVisible(true);
+            decisionPane.setMouseTransparent(false);
         }
     }
     
@@ -249,6 +250,7 @@ public class GameController {
         deciding = false;
         decisionPane.getChildren().clear();
         decisionPane.setVisible(false);
+        decisionPane.setMouseTransparent(true);
         
         round.getGame().getBus().post(new UserDecideEvent(round, option));
     }
