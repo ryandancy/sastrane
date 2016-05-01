@@ -70,23 +70,23 @@ public interface Player {
     
     @NonNull
     static Square flipNone(@SuppressWarnings("UnusedParameters") @NonNull Square pos, @NonNull Square original) {
-        return original;
+        return pos;
     }
     
     // DRY violated???
     @NonNull
     static Square flipX(@NonNull Square pos, @NonNull Square original) {
-        return new Square(pos.getX() - (pos.getX() - original.getX()), original.getY());
+        return new Square(2 * original.getX() - pos.getX(), pos.getY());
     }
     
     @NonNull
     static Square flipY(@NonNull Square pos, @NonNull Square original) {
-        return new Square(original.getX(), pos.getY() - (pos.getY() - original.getY()));
+        return new Square(pos.getX(), 2 * original.getY() - pos.getY());
     }
     
     @NonNull
     static Square flipBoth(@NonNull Square pos, @NonNull Square original) {
-        return new Square(pos.getX() - (pos.getX() - original.getX()), pos.getY() - (pos.getY() - original.getY()));
+        return new Square(2 * original.getX() - pos.getX(), 2 * original.getY() - pos.getY());
     }
     
 }
