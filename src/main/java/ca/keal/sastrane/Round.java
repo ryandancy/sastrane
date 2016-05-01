@@ -75,9 +75,15 @@ public class Round {
         move++;
     }
     
+    public void start() {
+        while (!ended) {
+            nextTurn();
+        }
+    }
+    
     public Player getCurrentTurn() {
         // We could index turn (as a field) in players and add 1... but ptm.size() % move works better + faster
-        return game.getPlayers()[playersToMovers.size() % move];
+        return game.getPlayers()[move == 0 ? 0 : playersToMovers.size() % move];
     }
     
     @NonNull

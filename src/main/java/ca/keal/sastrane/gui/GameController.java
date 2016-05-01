@@ -114,6 +114,8 @@ public class GameController {
             }
         }
         updateBoardGrid();
+        
+        round.start();
     }
     
     @SneakyThrows
