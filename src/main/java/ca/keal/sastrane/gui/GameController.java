@@ -123,7 +123,7 @@ public class GameController {
                     square.getYFlipped(round.getBoard()), square.getX());
             if (!(squareNode instanceof StackPane)) continue;
             StackPane squarePane = (StackPane) squareNode;
-            if (!(squarePane.getChildren().size() == 1 && squarePane.getChildren().get(0) instanceof ImageView)) {
+            if (!(squarePane.getChildren().size() >= 1 && squarePane.getChildren().get(0) instanceof ImageView)) {
                 continue;
             }
             ImageView squareImage = (ImageView) squarePane.getChildren().get(0);
