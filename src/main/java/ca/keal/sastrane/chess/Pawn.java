@@ -11,7 +11,6 @@ import ca.keal.sastrane.Square;
 import ca.keal.sastrane.event.MoveEvent;
 import ca.keal.sastrane.util.Pair;
 import ca.keal.sastrane.util.Resource;
-import ca.keal.sastrane.util.Utils;
 import com.google.common.eventbus.Subscribe;
 import lombok.Getter;
 import lombok.NonNull;
@@ -39,7 +38,7 @@ public class Pawn implements MovingPiece {
         
         // One in front if not occupied; two in front if first and not occupied
         for (int n = 1; n <= (numMoves == 0 ? 1 : 2); n++) {
-            Square nInFront = boardPos.withY(boardPos.getY() + n);
+            Square nInFront = player.perspectivize(boardPos.withY(boardPos.getY() + n), boardPos);
             // round.getBoard().isOn(nInFront) shouldn't be possible b/c promotions... handle as special case???
             if (round.getBoard().isOn(nInFront) && round.getBoard().get(nInFront) == null) {
                 moves.add(boardPos.to(nInFront));
@@ -48,7 +47,7 @@ public class Pawn implements MovingPiece {
         
         // Diagonally if occupied by opposite player
         for (int i = -1; i <= 1; i += 2) {
-            Square diagonal = new Square(boardPos.getX() + i, boardPos.getY() + 1);
+            Square diagonal = player.perspectivize(new Square(boardPos.getX() + i, boardPos.getY() + 1), boardPos);
             if (round.getBoard().isOn(diagonal)) {
                 Pair<Piece, Player> diagonalOnBoard = round.getBoard().get(diagonal);
                 if (diagonalOnBoard != null && player != diagonalOnBoard.getRight()) {
@@ -60,13 +59,14 @@ public class Pawn implements MovingPiece {
         // En passent (https://en.wikipedia.org/wiki/En_passent)
         for (int i = -1; i <= 1; i += 2) {
             // Check for opposite-player pawn at side that just moved a double step
-            Square side = boardPos.withX(boardPos.getX() + i);
+            Square side = player.perspectivize(boardPos.withX(boardPos.getX() + i), boardPos);
             if (round.getBoard().isOn(side)) {
                 Pair<Piece, Player> sidePiecePlayer = round.getBoard().get(side);
                 if (player != sidePiecePlayer.getRight() && sidePiecePlayer.getLeft() instanceof Pawn
                         && ((Pawn) sidePiecePlayer.getLeft()).isLastMoveDouble()) {
                     // Check that the diagonal on that side is clear
-                    Square diagonal = new Square(boardPos.getX() + i, boardPos.getY() + 1);
+                    Square diagonal = player.perspectivize(new Square(boardPos.getX() + i, boardPos.getY() + 1),
+                            boardPos);
                     // round.getBoard().isOn(diagonal) should always be true - simplify???
                     if (round.getBoard().isOn(diagonal) && round.getBoard().get(diagonal) == null) {
                         // Use MovingMove subclass to kill side piece when moved
@@ -82,7 +82,7 @@ public class Pawn implements MovingPiece {
             }
         }
         
-        return Utils.perspectivize(moves.stream(), player)
+        return moves.stream()
                 .filter(KingInCheckUtils.checkKing(round, player))
                 .collect(Collectors.toList());
     }

@@ -19,7 +19,7 @@ public class Knight extends JumpingPiece {
     
     @Override
     public List<Move> getPossibleMoves(@NonNull Round round, @NonNull Square boardPos, @NonNull Player player) {
-        return KingInCheckUtils.getPossibleMoves(this, round, boardPos, player);
+        return KingInCheckUtils.getPossibleMoves(super::getPossibleMoves, round, boardPos, player);
     }
     
     @Override

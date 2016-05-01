@@ -7,7 +7,6 @@ import ca.keal.sastrane.Player;
 import ca.keal.sastrane.Round;
 import ca.keal.sastrane.Square;
 import ca.keal.sastrane.util.Pair;
-import ca.keal.sastrane.util.Utils;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 
@@ -90,7 +89,7 @@ public abstract class LinePiece implements MovingPiece {
                         takeOpposingPieces));
             }
         }
-        return Utils.perspectivizeAll(res, allegiance);
+        return res;
     }
     
     @NonNull
@@ -101,14 +100,15 @@ public abstract class LinePiece implements MovingPiece {
         List<Move> res = new ArrayList<>();
         
         for (int x = boardPos.getX() + dx, y = boardPos.getY() + dy;
-             round.getBoard().isOn(new Square(x, y));
+             round.getBoard().isOn(allegiance.perspectivize(new Square(x, y), boardPos));
              x += dx, y += dy) {
-            Pair<Piece, Player> atSquare = round.getBoard().get(new Square(x, y));
+            Square square = allegiance.perspectivize(new Square(x, y), boardPos);
+            Pair<Piece, Player> atSquare = round.getBoard().get(square);
             if (atSquare == null) {
-                res.add(boardPos.to(new Square(x, y)));
+                res.add(boardPos.to(square));
             } else {
                 if (allegiance != atSquare.getRight() && takeOpposingPieces) {
-                    res.add(boardPos.to(new Square(x, y)));
+                    res.add(boardPos.to(square));
                 }
                 if (stopOnHitPiece) break;
             }

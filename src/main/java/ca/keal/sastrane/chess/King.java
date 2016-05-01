@@ -50,7 +50,8 @@ public class King implements RecursiveMovingPiece, MoveCountingPiece {
                 int inc = (int) Math.signum(boardPos.getX() - rookX);
                 final int rookXFinal = rookX; // required because rookX isn't effectively final
                 
-                moves.add(new MovingMove(boardPos, boardPos.withX(boardPos.getX() + 2 * inc)) {
+                moves.add(new MovingMove(boardPos, player.perspectivize(boardPos.withX(boardPos.getX() + 2 * inc), 
+                        boardPos)) {
                     @Override
                     public void move(@NonNull Board board) {
                         super.move(board);
@@ -67,7 +68,7 @@ public class King implements RecursiveMovingPiece, MoveCountingPiece {
     }
     
     private boolean canCastle(Round round, Square boardPos, Player player, int rookX) {
-        Pair<Piece, Player> pieceAtX = round.getBoard().get(boardPos.withX(rookX));
+        Pair<Piece, Player> pieceAtX = round.getBoard().get(player.perspectivize(boardPos.withX(rookX), boardPos));
         if (pieceAtX == null || !(pieceAtX.getLeft() instanceof Rook)) return false;
         Rook rook = (Rook) pieceAtX.getLeft();
         if (rook.getNumMoves() != 0) return false;
@@ -75,12 +76,12 @@ public class King implements RecursiveMovingPiece, MoveCountingPiece {
         // Ensure there are no pieces between rook & king
         int inc = (int) Math.signum(boardPos.getX() - rookX);
         for (int x = boardPos.getX() + inc; x != rookX; x += inc) {
-            Square between = boardPos.withX(x);
+            Square between = player.perspectivize(boardPos.withX(x), boardPos);
             if (!round.getBoard().isOn(between) || round.getBoard().get(between) != null) return false;
         }
         
         // Ensure that the position the king will 'pass through' is not in check
-        return Utils.canBeMovedTo(round, boardPos.withX(boardPos.getX() + inc), player);
+        return Utils.canBeMovedTo(round, player.perspectivize(boardPos.withX(boardPos.getX() + inc), boardPos), player);
     }
     
     @Override
@@ -90,8 +91,9 @@ public class King implements RecursiveMovingPiece, MoveCountingPiece {
         List<Move> moves = new ArrayList<>();
         for (int x = -1; x <= 1; x++) {
             for (int y = -1; y <= 1; y++) {
-                if (!(x == 0 && y == 0) && round.getBoard().isOn(new Square(x, y))) {
-                    moves.add(boardPos.to(new Square(x, y)));
+                Square square = allegiance.perspectivize(new Square(x, y), boardPos);
+                if (!(x == 0 && y == 0) && round.getBoard().isOn(square)) {
+                    moves.add(boardPos.to(square));
                 }
             }
         }

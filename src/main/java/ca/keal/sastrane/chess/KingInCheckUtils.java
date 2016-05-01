@@ -1,12 +1,12 @@
 package ca.keal.sastrane.chess;
 
 import ca.keal.sastrane.Move;
-import ca.keal.sastrane.MovingPiece;
 import ca.keal.sastrane.Piece;
 import ca.keal.sastrane.Player;
 import ca.keal.sastrane.Round;
 import ca.keal.sastrane.Square;
 import ca.keal.sastrane.util.Pair;
+import ca.keal.sastrane.util.TriFunction;
 import ca.keal.sastrane.util.Utils;
 import lombok.NonNull;
 
@@ -24,9 +24,9 @@ public class KingInCheckUtils {
     }
     
     @NonNull
-    public static List<Move> getPossibleMoves(@NonNull MovingPiece piece, @NonNull Round round,
-                                              @NonNull Square boardPos, @NonNull Player player) {
-        return piece.getPossibleMoves(round, boardPos, player).stream()
+    public static List<Move> getPossibleMoves(@NonNull TriFunction<Round, Square, Player, List<Move>> possibleMovesFunc,
+                                              @NonNull Round round, @NonNull Square boardPos, @NonNull Player player) {
+        return possibleMovesFunc.apply(round, boardPos, player).stream()
                 .filter(checkKing(round, player))
                 .collect(Collectors.toList());
     }
