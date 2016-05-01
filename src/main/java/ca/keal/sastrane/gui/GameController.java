@@ -183,7 +183,8 @@ public class GameController {
         if (placingPiece == null) {
             // selecting
             Pair<Piece, Player> atCoords = round.getBoard().get(square);
-            if (atCoords == null || !(atCoords.getLeft() instanceof MovingPiece)) return;
+            if (atCoords == null || !(atCoords.getLeft() instanceof MovingPiece)
+                    || atCoords.getRight() != round.getCurrentTurn()) return;
             List<Move> possibleMoves = ((MovingPiece) atCoords.getLeft()).getPossibleMoves(round, square,
                     atCoords.getRight());
             if (possibleMoves.size() == 0) return;
