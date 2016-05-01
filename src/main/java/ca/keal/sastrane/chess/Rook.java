@@ -36,7 +36,7 @@ public class Rook extends LinePiece implements MoveCountingPiece, RecursiveMovin
     
     @Override
     public Resource.Unmangled getImage() {
-        return new Resource.Unmangled("ca.keal.sastrane.chess.icon", "rook.png");
+        return new Resource.Unmangled("ca.keal.sastrane.chess.piece", "rook.png");
     }
     
     @Override

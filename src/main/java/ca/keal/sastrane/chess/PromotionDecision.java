@@ -16,10 +16,10 @@ import java.util.function.Supplier;
 public enum PromotionDecision implements Decision {
     
     // TODO find a way to refer to piece classes' icons? i18n?
-    QUEEN(new Resource("ca.keal.sastrane.chess.icon", "queen_white.png"), "Promote to Queen", Queen::new),
-    ROOK(new Resource("ca.keal.sastrane.chess.icon", "rook_white.png"), "Promote to Rook", Rook::new),
-    BISHOP(new Resource("ca.keal.sastrane.chess.icon", "bishop_white.png"), "Promote to Bishop", Bishop::new),
-    KNIGHT(new Resource("ca.keal.sastrane.chess.icon", "knight_white.png"), "Promote to Knight", Knight::new);
+    QUEEN(new Resource("ca.keal.sastrane.chess.piece", "queen_white.png"), "Promote to Queen", Queen::new),
+    ROOK(new Resource("ca.keal.sastrane.chess.piece", "rook_white.png"), "Promote to Rook", Rook::new),
+    BISHOP(new Resource("ca.keal.sastrane.chess.piece", "bishop_white.png"), "Promote to Bishop", Bishop::new),
+    KNIGHT(new Resource("ca.keal.sastrane.chess.piece", "knight_white.png"), "Promote to Knight", Knight::new);
     
     @NonNull
     @Getter

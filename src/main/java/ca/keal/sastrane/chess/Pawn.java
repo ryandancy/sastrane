@@ -97,7 +97,7 @@ public class Pawn implements RecursiveMovingPiece {
     
     @Override
     public Resource.Unmangled getImage() {
-        return new Resource.Unmangled("ca.keal.sastrane.chess.icon", "pawn.png");
+        return new Resource.Unmangled("ca.keal.sastrane.chess.piece", "pawn.png");
     }
     
     @Subscribe

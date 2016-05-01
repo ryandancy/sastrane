@@ -30,7 +30,7 @@ public class Queen extends LinePiece implements RecursiveMovingPiece {
     
     @Override
     public Resource.Unmangled getImage() {
-        return new Resource.Unmangled("ca.keal.sastrane.chess.icon", "queen.png");
+        return new Resource.Unmangled("ca.keal.sastrane.chess.piece", "queen.png");
     }
     
 }

@@ -30,7 +30,7 @@ public class Bishop extends LinePiece implements RecursiveMovingPiece {
     
     @Override
     public Resource.Unmangled getImage() {
-        return new Resource.Unmangled("ca.keal.sastrane.chess.icon", "bishop.png");
+        return new Resource.Unmangled("ca.keal.sastrane.chess.piece", "bishop.png");
     }
     
 }
