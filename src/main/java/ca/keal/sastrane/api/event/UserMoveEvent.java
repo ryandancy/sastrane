@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NonNull;
 
 /**
- * Posted when the user decides on a move.
+ * Posted when the user chooses a move.
  */
 @Data
 @EqualsAndHashCode(callSuper = true)

@@ -1,15 +1,17 @@
 package ca.keal.sastrane.gui;
 
-import ca.keal.sastrane.api.move.Move;
-import ca.keal.sastrane.api.piece.MovingPiece;
-import ca.keal.sastrane.api.piece.Piece;
-import ca.keal.sastrane.api.move.PlacingMove;
-import ca.keal.sastrane.api.piece.PlacingPiece;
+import ca.keal.sastrane.api.Decision;
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.Round;
 import ca.keal.sastrane.api.Square;
 import ca.keal.sastrane.api.event.TurnEvent;
+import ca.keal.sastrane.api.event.UserDecideEvent;
 import ca.keal.sastrane.api.event.UserMoveEvent;
+import ca.keal.sastrane.api.move.Move;
+import ca.keal.sastrane.api.move.PlacingMove;
+import ca.keal.sastrane.api.piece.MovingPiece;
+import ca.keal.sastrane.api.piece.Piece;
+import ca.keal.sastrane.api.piece.PlacingPiece;
 import ca.keal.sastrane.util.Pair;
 import ca.keal.sastrane.util.Resource;
 import com.google.common.eventbus.Subscribe;
@@ -28,10 +30,13 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
+import lombok.NonNull;
 import lombok.Setter;
 import lombok.SneakyThrows;
 
@@ -47,15 +52,17 @@ public class GameController {
     @FXML private Label title;
     @FXML private GridPane boardGrid;
     @FXML private TilePane pieceChooser;
+    @FXML private FlowPane decisionPane;
     
     private Round round;
     private Map<Player, ToggleGroup> playersToPieceChooserGroups = null;
     @Setter private boolean inputting = false;
+    private boolean deciding = false;
     
     private Square selectionBase = null;
     private List<Square> selection = new ArrayList<>();
     
-    public void setRound(Round round) {
+    public void setRound(@NonNull Round round) {
         this.round = round;
         this.round.getBoard().addListener(change -> updateBoardGrid());
         title.setText(round.getGame().getName());
@@ -161,7 +168,7 @@ public class GameController {
     }
     
     private void onTileClick(int x, int y) {
-        if (!inputting) return;
+        if (!inputting || deciding) return;
     
         Square square = new Square(x, y);
         if (selection.size() > 0) {
@@ -213,6 +220,37 @@ public class GameController {
         
         selectionBase = null;
         selection.clear();
+    }
+    
+    @NonNull
+    @SneakyThrows
+    public void displayDecision(@NonNull Decision[] options) {
+        deciding = true;
+        
+        for (Decision option : options) {
+            HBox optionBox = new HBox();
+            optionBox.getStyleClass().add("option");
+            optionBox.setOnMouseClicked(e -> onDecide(option));
+            
+            ImageView img = new ImageView(new Image(option.getIcon().get().openStream()));
+            img.getStyleClass().add("img");
+            
+            Label label = new Label(option.getName());
+            label.getStyleClass().add("text");
+            label.setLabelFor(img);
+            
+            optionBox.getChildren().addAll(img, label);
+            decisionPane.getChildren().add(optionBox);
+            decisionPane.setVisible(true);
+        }
+    }
+    
+    private void onDecide(Decision option) {
+        deciding = false;
+        decisionPane.getChildren().clear();
+        decisionPane.setVisible(false);
+        
+        round.getGame().getBus().post(new UserDecideEvent(round, option));
     }
     
     private Node lookup(Square square) {
