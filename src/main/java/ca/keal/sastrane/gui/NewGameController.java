@@ -53,6 +53,7 @@ public class NewGameController {
     private void onCreateGame(ActionEvent e) {
         FXMLLoader loader = new FXMLLoader(new Resource("ca.keal.sastrane.gui", "game.fxml").get());
         Scene scene = GuiUtils.getScene((Parent) loader.load());
+        GameController controller = loader.getController();
         
         // Get data from player settings
         Map<Player, Mover> playersToMovers = playerSettingsContainer.getChildren().stream()
@@ -63,12 +64,11 @@ public class NewGameController {
                         return game.getAi().apply(settings.getAiDifficulty().getValue());
                     } else {
                         // Human player
-                        // TODO human mover
-                        return null;
+                        return new HumanMover(controller);
                     }
                 }));
         
-        ((GameController) loader.getController()).setRound(new Round(game, playersToMovers));
+        controller.setRound(new Round(game, playersToMovers));
         GuiUtils.getStage(e).setScene(scene);
     }
     

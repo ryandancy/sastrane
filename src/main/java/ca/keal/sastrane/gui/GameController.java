@@ -1,16 +1,21 @@
 package ca.keal.sastrane.gui;
 
+import ca.keal.sastrane.Move;
+import ca.keal.sastrane.MovingPiece;
 import ca.keal.sastrane.Piece;
+import ca.keal.sastrane.PlacingMove;
 import ca.keal.sastrane.PlacingPiece;
 import ca.keal.sastrane.Player;
 import ca.keal.sastrane.Round;
 import ca.keal.sastrane.Square;
 import ca.keal.sastrane.event.TurnEvent;
+import ca.keal.sastrane.event.UserMoveEvent;
 import ca.keal.sastrane.util.Pair;
 import ca.keal.sastrane.util.Resource;
 import com.google.common.eventbus.Subscribe;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.NumberBinding;
+import javafx.css.PseudoClass;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
@@ -26,9 +31,12 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
+import lombok.Setter;
 import lombok.SneakyThrows;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -41,6 +49,10 @@ public class GameController {
     
     private Round round;
     private Map<Player, ToggleGroup> playersToPieceChooserGroups = null;
+    @Setter private boolean inputting = false;
+    
+    private Square selectionBase = null;
+    private List<Square> selection = new ArrayList<>();
     
     public void setRound(Round round) {
         this.round = round;
@@ -79,6 +91,8 @@ public class GameController {
                     GridPane.setHalignment(img, HPos.CENTER);
                     GridPane.setValignment(img, VPos.CENTER);
                     imgPane.getChildren().add(img);
+                    final int finalX = x, finalY = y;
+                    imgPane.setOnMouseClicked(e -> onTileClick(finalX, finalY));
                     cell = imgPane;
                 } else {
                     Region filler = new Region();
@@ -122,10 +136,80 @@ public class GameController {
         } else {
             pieceButton.setGraphic(new ImageView(new Image(piece.getImage().mangle(player.getName()).get()
                     .openStream())));
-            pieceButton.setUserData(piece.getImage().getUnmangled());
+            pieceButton.setUserData(piece);
         }
         pieceButton.getStyleClass().add("placing-piece-button");
         group.getToggles().add(pieceButton);
+    }
+    
+    private void onTileClick(int x, int y) {
+        if (!inputting) return;
+    
+        Square square = new Square(x, y);
+        if (selection.size() > 0) {
+            if (selection.contains(square)) {
+                round.getGame().getBus().post(new UserMoveEvent(round, selectionBase.to(square)));
+            } else {
+                deselect();
+            }
+            return;
+        }
+        
+        PlacingPiece placingPiece = getCurrentPlacingPiece();
+        if (placingPiece == null) {
+            // selecting
+            Pair<Piece, Player> atCoords = round.getBoard().get(square);
+            if (atCoords == null || !(atCoords.getLeft() instanceof MovingPiece)) return;
+            List<Move> possibleMoves = ((MovingPiece) atCoords.getLeft()).getPossibleMoves(round, square,
+                    atCoords.getRight());
+            if (possibleMoves.size() == 0) return;
+            select(square, possibleMoves.stream()
+                    .map(Move::getEndPos)
+                    .collect(Collectors.toList()));
+        } else {
+            // placing
+            List<Square> placements = placingPiece.getPossiblePlacements(round, round.getCurrentTurn()).stream()
+                    .map(PlacingMove::getPos)
+                    .collect(Collectors.toList());
+            if (placements.contains(square)) {
+                round.getGame().getBus().post(new UserMoveEvent(round, new PlacingMove(Pair.of(placingPiece,
+                        round.getCurrentTurn()), square)));
+            }
+        }
+    }
+    
+    private void select(Square selectionBase, List<Square> selection) {
+        this.selectionBase = selectionBase;
+        this.selection = selection;
+        
+        lookup(selectionBase).getPseudoClassStates().add(PseudoClass.getPseudoClass("selected-base"));
+        for (Square square : selection) {
+            lookup(square).getPseudoClassStates().add(PseudoClass.getPseudoClass("selected"));
+        }
+    }
+    
+    private void deselect() {
+        lookup(selectionBase).getPseudoClassStates().remove(PseudoClass.getPseudoClass("selected-base"));
+        for (Square square : selection) {
+            lookup(square).getPseudoClassStates().remove(PseudoClass.getPseudoClass("selected"));
+        }
+        
+        selectionBase = null;
+        selection.clear();
+    }
+    
+    private Node lookup(Square square) {
+        return game.getScene().lookup(getLookupString(square));
+    }
+    
+    private String getLookupString(Square square) {
+        return String.format(".x%d.y%d", square.getX(), square.getY());
+    }
+    
+    private PlacingPiece getCurrentPlacingPiece() {
+        if (round.getGame().getPlacingPieces().length == 0) return null;
+        if (playersToPieceChooserGroups == null) return round.getGame().getPlacingPieces()[0];
+        return (PlacingPiece) playersToPieceChooserGroups.get(round.getCurrentTurn()).getUserData();
     }
     
     @Subscribe
@@ -135,8 +219,8 @@ public class GameController {
                 && e.getRound().getPlayersToMovers().get(current) instanceof HumanMover) {
             pieceChooser.getChildren().clear();
             pieceChooser.getChildren().addAll(playersToPieceChooserGroups.get(current).getToggles().stream()
-                .map(toggle -> (Node) toggle)
-                .collect(Collectors.toList()));
+                    .map(toggle -> (Node) toggle)
+                    .collect(Collectors.toList()));
         }
     }
     
