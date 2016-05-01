@@ -81,16 +81,25 @@ public class GameController {
                         boardGrid.heightProperty().divide(round.getBoard().getMaxY() + 1));
                 if (round.getBoard().isOn(new Square(x, y))) {
                     StackPane imgPane = new StackPane();
-                    ImageView img = new ImageView();
                     imgPane.getStyleClass().addAll("square", (x + (round.getBoard().getMaxY() - y) % 2) % 2 == 0
                             ? "even" : "odd", "x" + x, "y" + y);
+                    
+                    ImageView img = new ImageView();
                     img.getStyleClass().add("img");
                     img.fitHeightProperty().bind(cellDimen);
                     img.fitWidthProperty().bind(cellDimen);
                     img.setPreserveRatio(true);
                     GridPane.setHalignment(img, HPos.CENTER);
                     GridPane.setValignment(img, VPos.CENTER);
-                    imgPane.getChildren().add(img);
+                    
+                    // Overlay for styling with CSS
+                    Region overlay = new Region();
+                    overlay.getStyleClass().add("overlay");
+                    overlay.minHeightProperty().bind(cellDimen);
+                    overlay.minWidthProperty().bind(cellDimen);
+                    
+                    imgPane.getChildren().addAll(img, overlay);
+                    
                     final int finalX = x, finalY = y;
                     imgPane.setOnMouseClicked(e -> onTileClick(finalX, finalY));
                     cell = imgPane;
