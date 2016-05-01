@@ -64,17 +64,21 @@ public abstract class JumpingPiece implements MovingPiece {
     }
     
     @NonNull
+    @SuppressWarnings("SuspiciousNameCombination")
     public static List<Pair<Integer, Integer>> calculateOffsets(int xOffset, int yOffset, boolean mirror,
                                                                 int quadrants) {
         List<Pair<Integer, Integer>> offsets = new ArrayList<>();
-        for (int x = xOffset, y = yOffset, i = 0; i < (mirror ? 1 : 2); x = -x, y = -y, i++) {
+        
+        // The ^= stuff swaps x and y
+        for (int x = xOffset, y = yOffset, i = 0; i < (mirror ? 2 : 1); x ^= y, y ^= x, x ^= y, i++) {
             for (int j = 0; j < quadrantsToSigns.size(); j++) {
                 if ((quadrants & (1 << j)) != 0) {
                     Pair<Integer, Integer> signs = quadrantsToSigns.get(1 << j);
-                    offsets.add(Pair.of(signs.getLeft() * xOffset, signs.getRight() * yOffset));
+                    offsets.add(Pair.of(signs.getLeft() * x, signs.getRight() * y));
                 }
             }
         }
+        
         return offsets;
     }
     
