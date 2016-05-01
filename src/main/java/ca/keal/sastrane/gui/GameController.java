@@ -167,9 +167,8 @@ public class GameController {
         if (selection.size() > 0) {
             if (selection.contains(square)) {
                 round.getGame().getBus().post(new UserMoveEvent(round, selectionBase.to(square)));
-            } else {
-                deselect();
             }
+            deselect();
             return;
         }
         
@@ -200,14 +199,14 @@ public class GameController {
         this.selectionBase = selectionBase;
         this.selection = selection;
         
-        lookup(selectionBase).pseudoClassStateChanged(PseudoClass.getPseudoClass("selected-base"), true);
+        lookup(selectionBase).pseudoClassStateChanged(PseudoClass.getPseudoClass("selection-base"), true);
         for (Square square : selection) {
             lookup(square).pseudoClassStateChanged(PseudoClass.getPseudoClass("selected"), true);
         }
     }
     
     private void deselect() {
-        lookup(selectionBase).pseudoClassStateChanged(PseudoClass.getPseudoClass("selected-base"), false);
+        lookup(selectionBase).pseudoClassStateChanged(PseudoClass.getPseudoClass("selection-base"), false);
         for (Square square : selection) {
             lookup(square).pseudoClassStateChanged(PseudoClass.getPseudoClass("selected"), false);
         }

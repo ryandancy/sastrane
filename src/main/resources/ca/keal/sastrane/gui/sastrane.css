@@ -103,8 +103,12 @@
     -fx-alignment: center;
 }
 
-#board > .square {
+.square {
     -fx-padding: 5;
+}
+
+.square .overlay {
+    -fx-background-insets: -5;
 }
 
 /* FIXME piece chooser is probably broken, it's completely untested */
