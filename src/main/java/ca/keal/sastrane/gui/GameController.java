@@ -75,15 +75,14 @@ public class GameController {
             pieceChooser.setVisible(true);
         }
         
-        for (int x = 0; x <= round.getBoard().getMaxX(); x++) {
-            for (int y = 0; y <= round.getBoard().getMaxY(); y++) {
+        for (int y = 0; y <= round.getBoard().getMaxX(); y++) {
+            for (int x = 0; x <= round.getBoard().getMaxY(); x++) {
                 Node cell;
                 NumberBinding cellDimen = Bindings.min(boardGrid.widthProperty().divide(round.getBoard().getMaxX() + 1),
                         boardGrid.heightProperty().divide(round.getBoard().getMaxY() + 1));
                 if (round.getBoard().isOn(new Square(x, y))) {
                     StackPane imgPane = new StackPane();
-                    imgPane.getStyleClass().addAll("square", (x + (round.getBoard().getMaxY() - y) % 2) % 2 == 0
-                            ? "even" : "odd", "x" + x, "y" + y);
+                    imgPane.getStyleClass().addAll("square", (x + y % 2) % 2 == 0 ? "even" : "odd", "x" + x, "y" + y);
                     
                     ImageView img = new ImageView();
                     img.getStyleClass().add("img");
@@ -111,7 +110,7 @@ public class GameController {
                     filler.minWidthProperty().bind(cellDimen);
                     cell = filler;
                 }
-                boardGrid.add(cell, round.getBoard().getMaxY() - y, x);
+                boardGrid.add(cell, x, y);
             }
         }
         updateBoardGrid();
@@ -130,8 +129,7 @@ public class GameController {
     @SneakyThrows
     private void updateBoardGrid() {
         for (Square square : round.getBoard()) {
-            Node squareNode = GuiUtils.getNodeFromGridPane(boardGrid,
-                    square.getYFlipped(round.getBoard()), square.getX());
+            Node squareNode = GuiUtils.getNodeFromGridPane(boardGrid, square.getX(), square.getY());
             if (!(squareNode instanceof StackPane)) continue;
             StackPane squarePane = (StackPane) squareNode;
             if (!(squarePane.getChildren().size() >= 1 && squarePane.getChildren().get(0) instanceof ImageView)) {

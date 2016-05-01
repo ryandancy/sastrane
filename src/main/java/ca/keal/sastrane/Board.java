@@ -49,16 +49,16 @@ public class Board implements Iterable<Square> {
         
         Map<Square, Pair<Piece, Player>> squaresToPieces = new HashMap<>();
         
-        for (int i = 0; i < rows.size(); i++) {
-            String row = rows.get(i);
-            for (int j = 0; j < row.length(); j++) {
-                char piece = row.charAt(j);
+        for (int y = 0; y < rows.size(); y++) {
+            String row = rows.get(y);
+            for (int x = 0; x < row.length(); x++) {
+                char piece = row.charAt(x);
                 if (piece == '_') continue;
                 if (piece != ' ' && !pieces.containsKey(piece)) {
-                    throw new IllegalArgumentException("Undeclared piece char '" + piece + "' at row " + i
-                            + ", column " + j);
+                    throw new IllegalArgumentException("Undeclared piece char '" + piece + "' at row " + y
+                            + ", column " + x);
                 }
-                squaresToPieces.put(new Square(i, j), piece == ' ' ? null
+                squaresToPieces.put(new Square(x, y), piece == ' ' ? null
                         : pieces.get(piece).withLeft(pieces.get(piece).getLeft().get()));
             }
         }
