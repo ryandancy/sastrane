@@ -200,16 +200,16 @@ public class GameController {
         this.selectionBase = selectionBase;
         this.selection = selection;
         
-        lookup(selectionBase).getPseudoClassStates().add(PseudoClass.getPseudoClass("selected-base"));
+        lookup(selectionBase).pseudoClassStateChanged(PseudoClass.getPseudoClass("selected-base"), true);
         for (Square square : selection) {
-            lookup(square).getPseudoClassStates().add(PseudoClass.getPseudoClass("selected"));
+            lookup(square).pseudoClassStateChanged(PseudoClass.getPseudoClass("selected"), true);
         }
     }
     
     private void deselect() {
-        lookup(selectionBase).getPseudoClassStates().remove(PseudoClass.getPseudoClass("selected-base"));
+        lookup(selectionBase).pseudoClassStateChanged(PseudoClass.getPseudoClass("selected-base"), false);
         for (Square square : selection) {
-            lookup(square).getPseudoClassStates().remove(PseudoClass.getPseudoClass("selected"));
+            lookup(square).pseudoClassStateChanged(PseudoClass.getPseudoClass("selected"), false);
         }
         
         selectionBase = null;
