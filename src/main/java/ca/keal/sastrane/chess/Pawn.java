@@ -37,7 +37,7 @@ public class Pawn implements MovingPiece {
         List<Move> moves = new ArrayList<>();
         
         // One in front if not occupied; two in front if first and not occupied
-        for (int n = 1; n <= (numMoves == 0 ? 1 : 2); n++) {
+        for (int n = 1; n <= (numMoves == 0 ? 2 : 1); n++) {
             Square nInFront = player.perspectivize(boardPos.withY(boardPos.getY() + n), boardPos);
             // round.getBoard().isOn(nInFront) shouldn't be possible b/c promotions... handle as special case???
             if (round.getBoard().isOn(nInFront) && round.getBoard().get(nInFront) == null) {
