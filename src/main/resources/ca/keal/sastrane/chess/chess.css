@@ -1,5 +1,5 @@
 .square.odd {
-    -fx-background-image: url('black-tile.png');
+    -fx-background-image: url(/ca/keal/sastrane/chess/icon/black-tile.png);
 }
 
 .square.even {

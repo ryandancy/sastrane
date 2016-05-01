@@ -16,7 +16,7 @@ public class Chess extends Game {
     private static final Chess instance = new Chess();
     
     public Chess() {
-        super("Chess", new Resource("ca.keal.sastrane.chess", "chess.png"),
+        super("Chess", new Resource("ca.keal.sastrane.chess.icon", "chess.png"),
                 new Resource("ca.keal.sastrane.chess", "chess.css"), ChessPlayer.values(), ChessAI::new, Board.factory()
                 .row("RNBQKBNR")
                 .row("PPPPPPPP")
