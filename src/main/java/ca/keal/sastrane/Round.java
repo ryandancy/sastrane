@@ -49,8 +49,8 @@ public class Round {
     }
     
     public Round(@NonNull Round round) {
-        this(round.getGame(), round.getPlayersToMovers(), new Board(round.getBoard()), round.getMove(),
-                round.isEnded(), round.getMoves());
+        this(round.getGame(), ImmutableMap.copyOf(round.getPlayersToMovers()), new Board(round.getBoard()),
+                round.getMove(), round.isEnded(), new ArrayDeque<>(round.getMoves()));
     }
     
     public void nextTurn() {

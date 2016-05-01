@@ -12,8 +12,9 @@ import java.util.function.BinaryOperator;
 @RequiredArgsConstructor
 public enum ChessPlayer implements Player {
     
-    WHITE("white", new Resource("ca.keal.sastrane.chess.icon", "king_white.png"), Player::flipNone),
-    BLACK("black", new Resource("ca.keal.sastrane.chess.icon", "king_black.png"), Player::flipY);
+    // y = 0 is at top
+    WHITE("white", new Resource("ca.keal.sastrane.chess.icon", "king_white.png"), Player::flipY),
+    BLACK("black", new Resource("ca.keal.sastrane.chess.icon", "king_black.png"), Player::flipNone);
     
     @Getter
     private final String name;

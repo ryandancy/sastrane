@@ -67,7 +67,7 @@ public class Board implements Iterable<Square> {
     }
     
     public Board(@NonNull Board board) {
-        this(board.squaresToPieces);
+        this(FXCollections.observableMap(new HashMap<>(board.squaresToPieces)));
     }
     
     public Pair<Piece, Player> get(Square square) {
