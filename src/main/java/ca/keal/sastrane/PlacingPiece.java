@@ -4,7 +4,7 @@ import lombok.NonNull;
 
 import java.util.List;
 
-public interface PlacingPiece {
+public interface PlacingPiece extends Piece {
     
     /** player == null => any player */
     @NonNull

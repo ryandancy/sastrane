@@ -31,6 +31,7 @@ public abstract class Game {
     private final Player[] players; // TODO support for variable-player games (are those a thing?)
     private final Function<Double, AI> ai;
     private final Board.Factory boardFactory;
+    private final boolean placeOnly;
     private final PlacingPiece[] placingPieces;
     private EventBus bus;
     
@@ -38,11 +39,23 @@ public abstract class Game {
      * {@code players} should be in the order in which the players move (e.g. for chess, {@code [White, Black]}).
      * {@code css} should be a css file, which will be applied to this game's tile, new-game screen, player settings
      * things, and game screen.
+     * {@code placeOnly} is whether this game is place-only (i.e. it has no moving pieces).
+     */
+    public Game(@NonNull String name, @NonNull Resource icon, @NonNull Resource css, @NonNull Player[] players,
+                @NonNull Function<Double, AI> ai, @NonNull Board.Factory boardFactory, boolean placeOnly,
+                @NonNull PlacingPiece... placingPieces) {
+        this(name, icon, css, players, ai, boardFactory, placeOnly, placingPieces, new EventBus(name));
+        registerGame(this);
+    }
+    
+    /**
+     * Same as {@link #Game(String, Resource, Resource, Player[], Function, Board.Factory, boolean, PlacingPiece...)}
+     * except that {@code placeOnly} defaults to {@code placingPieces.length > 0}.
      */
     public Game(@NonNull String name, @NonNull Resource icon, @NonNull Resource css, @NonNull Player[] players,
                 @NonNull Function<Double, AI> ai, @NonNull Board.Factory boardFactory,
                 @NonNull PlacingPiece... placingPieces) {
-        this(name, icon, css, players, ai, boardFactory, placingPieces, new EventBus(name));
+        this(name, icon, css, players, ai, boardFactory, placingPieces.length > 0, placingPieces, new EventBus(name));
         registerGame(this);
     }
     

@@ -1,5 +1,6 @@
 .root {
     -fx-background-color: #A88C27;
+    button-background: #927921;
 }
 
 * {
@@ -34,7 +35,7 @@
 }
 
 .button {
-    -fx-background-color: #927921;
+    -fx-background-color: button-background;
     -fx-padding: 8;
     -fx-border-insets: 5;
     -fx-background-insets: 5;
@@ -45,12 +46,12 @@
     -fx-faint-focus-color: transparent;
 }
 
-.toggle-button:focused, .toggle-button:selected:focused {
+.ai-or-human:focused, .ai-or-human:selected:focused {
     /* from modena.css */
     -fx-background-insets: 0 0 -1 0, 0, 1;
 }
 
-.toggle-button:selected:focused {
+.ai-or-human:selected:focused {
     /* from modena.css */
     -fx-background-color:
         -fx-shadow-highlight-color,
@@ -104,4 +105,23 @@
 
 #board > .square {
     -fx-padding: 5;
+}
+
+/* FIXME piece chooser is probably broken, it's completely untested */
+.piece-chooser {
+    -fx-orientation: vertical;
+    -fx-hgap: 5;
+    -fx-vgap: 5;
+    -fx-pref-rows: 7;
+    -fx-background-color: button-background;
+}
+
+.piece-chooser .placing-piece-button {
+    -fx-background-color: transparent;
+}
+
+.piece-chooser .placing-piece-button:selected {
+    -fx-border-color: black;
+    -fx-border-radius: 2; /* rounded corners... maybe */
+    -fx-border-width: 2;
 }

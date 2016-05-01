@@ -1,11 +1,14 @@
 package ca.keal.sastrane.gui;
 
 import ca.keal.sastrane.Piece;
+import ca.keal.sastrane.PlacingPiece;
 import ca.keal.sastrane.Player;
 import ca.keal.sastrane.Round;
 import ca.keal.sastrane.Square;
+import ca.keal.sastrane.event.TurnEvent;
 import ca.keal.sastrane.util.Pair;
 import ca.keal.sastrane.util.Resource;
+import com.google.common.eventbus.Subscribe;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.NumberBinding;
 import javafx.event.ActionEvent;
@@ -14,27 +17,50 @@ import javafx.geometry.HPos;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.TilePane;
 import lombok.SneakyThrows;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class GameController {
     
     @FXML private BorderPane game;
     @FXML private Label title;
     @FXML private GridPane boardGrid;
+    @FXML private TilePane pieceChooser;
     
     private Round round;
+    private Map<Player, ToggleGroup> playersToPieceChooserGroups = null;
     
     public void setRound(Round round) {
         this.round = round;
         this.round.getBoard().addListener(change -> updateBoardGrid());
         title.setText(round.getGame().getName());
         game.getStylesheets().add(round.getGame().getCss().getFilename());
+        
+        int numPlacingPieces = round.getGame().getPlacingPieces().length;
+        if (numPlacingPieces > 1 || (numPlacingPieces == 1 && !round.getGame().isPlaceOnly())) {
+            playersToPieceChooserGroups = new HashMap<>();
+            for (Player player : round.getGame().getPlayers()) {
+                ToggleGroup pieceChooserGroup = new ToggleGroup();
+                for (PlacingPiece piece : round.getGame().getPlacingPieces()) {
+                    addPlacingPiece(piece, player, pieceChooserGroup);
+                }
+                playersToPieceChooserGroups.put(player, pieceChooserGroup);
+            }
+            round.getGame().getBus().register(this);
+            pieceChooser.setVisible(true);
+        }
         
         for (int x = 0; x <= round.getBoard().getMaxX(); x++) {
             for (int y = 0; y <= round.getBoard().getMaxY(); y++) {
@@ -82,6 +108,35 @@ public class GameController {
             Pair<Piece, Player> atSquare = round.getBoard().get(square);
             squareImage.setImage((atSquare == null) ? null : new Image(atSquare.getLeft().getImage()
                     .mangle(atSquare.getRight().getName()).get().openStream()));
+        }
+    }
+    
+    /** {@code piece == null} => "hand" with null player */
+    @SneakyThrows
+    private void addPlacingPiece(PlacingPiece piece, Player player, ToggleGroup group) {
+        ToggleButton pieceButton = new ToggleButton();
+        if (piece == null) {
+            pieceButton.setGraphic(new ImageView(new Image(new Resource("ca.keal.sastrane.icon", "cursor.png").get()
+                    .openStream())));
+            pieceButton.setUserData(null);
+        } else {
+            pieceButton.setGraphic(new ImageView(new Image(piece.getImage().mangle(player.getName()).get()
+                    .openStream())));
+            pieceButton.setUserData(piece.getImage().getUnmangled());
+        }
+        pieceButton.getStyleClass().add("placing-piece-button");
+        group.getToggles().add(pieceButton);
+    }
+    
+    @Subscribe
+    public void beforeTurn(TurnEvent.Pre e) {
+        Player current = e.getRound().getCurrentTurn();
+        if (playersToPieceChooserGroups != null
+                && e.getRound().getPlayersToMovers().get(current) instanceof HumanMover) {
+            pieceChooser.getChildren().clear();
+            pieceChooser.getChildren().addAll(playersToPieceChooserGroups.get(current).getToggles().stream()
+                .map(toggle -> (Node) toggle)
+                .collect(Collectors.toList()));
         }
     }
     
