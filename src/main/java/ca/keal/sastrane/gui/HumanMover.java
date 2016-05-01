@@ -7,38 +7,47 @@ import ca.keal.sastrane.Player;
 import ca.keal.sastrane.Round;
 import ca.keal.sastrane.event.UserMoveEvent;
 import com.google.common.eventbus.Subscribe;
+import javafx.application.Platform;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 @RequiredArgsConstructor
 public class HumanMover implements Mover {
     
     private final GameController controller;
-    private Move move = null;
+    private AtomicReference<Move> move = new AtomicReference<>(null);
     
     @Override
+    @SneakyThrows
     public Move getMove(@NonNull Round round, @NonNull Player player) {
-        move = null;
-        round.getGame().getBus().register(this);
-        
-        controller.setInputting(true);
-        //noinspection StatementWithEmptyBody
-        while (move == null);
-        
-        round.getGame().getBus().unregister(this);
-        return move;
+        move.set(null);
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                round.getGame().getBus().register(this);
+                controller.setInputting(true);
+            }
+            
+            @Subscribe
+            public void onUserMove(UserMoveEvent e) {
+                if (e.getMover() == HumanMover.this) { // just to be safe
+                    controller.setInputting(false);
+                    move.set(e.getMove());
+                    round.getGame().getBus().unregister(this);
+                    HumanMover.this.notifyAll();
+                }
+            }
+        });
+        wait();
+        return move.get();
     }
     
     @Override
     public Decision decide(@NonNull Decision[] options, @NonNull Round round, @NonNull Player player) {
         return null;
-    }
-    
-    @Subscribe
-    public void onUserMove(UserMoveEvent e) {
-        if (e.getMover() == this) { // just to be safe
-            move = e.getMove();
-        }
     }
     
 }

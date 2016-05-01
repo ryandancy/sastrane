@@ -15,6 +15,7 @@ import ca.keal.sastrane.util.Resource;
 import com.google.common.eventbus.Subscribe;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.NumberBinding;
+import javafx.concurrent.Task;
 import javafx.css.PseudoClass;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -115,7 +116,15 @@ public class GameController {
         }
         updateBoardGrid();
         
-        round.start();
+        Thread worker = new Thread(new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                round.start();
+                return null;
+            }
+        });
+        worker.setDaemon(true);
+        worker.start();
     }
     
     @SneakyThrows
