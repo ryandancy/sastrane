@@ -3,9 +3,9 @@ package ca.keal.sastrane.chess;
 import ca.keal.sastrane.Board;
 import ca.keal.sastrane.Move;
 import ca.keal.sastrane.MovingMove;
-import ca.keal.sastrane.MovingPiece;
 import ca.keal.sastrane.Piece;
 import ca.keal.sastrane.Player;
+import ca.keal.sastrane.RecursiveMovingPiece;
 import ca.keal.sastrane.Round;
 import ca.keal.sastrane.Square;
 import ca.keal.sastrane.event.MoveEvent;
@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 
 // Doesn't implement MoveCountingPiece because it handles MoveEvent.Post itself
 @Getter
-public class Pawn implements MovingPiece {
+public class Pawn implements RecursiveMovingPiece {
     
     private boolean lastMoveDouble;
     private int numMoves = 0;
@@ -31,9 +31,16 @@ public class Pawn implements MovingPiece {
     }
     
     @Override
+    public List<Move> getPossibleMoves(@NonNull Round round, @NonNull Square boardPos, @NonNull Player player) {
+        return getPossibleMovesNonRecursive(round, boardPos, player).stream()
+                .filter(KingInCheckUtils.checkKing(round, player))
+                .collect(Collectors.toList());
+    }
+    
+    @Override
     @NonNull
-    public List<Move> getPossibleMoves(@NonNull Round round, @NonNull Square boardPos,
-                                       @NonNull Player player) {
+    public List<Move> getPossibleMovesNonRecursive(@NonNull Round round, @NonNull Square boardPos,
+                                                   @NonNull Player player) {
         List<Move> moves = new ArrayList<>();
         
         // One in front if not occupied; two in front if first and not occupied
@@ -85,9 +92,7 @@ public class Pawn implements MovingPiece {
             }
         }
         
-        return moves.stream()
-                .filter(KingInCheckUtils.checkKing(round, player))
-                .collect(Collectors.toList());
+        return moves;
     }
     
     @Override

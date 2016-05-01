@@ -16,6 +16,6 @@ public interface RecursiveMovingPiece extends MovingPiece {
      * Square)}.
      */
     @NonNull
-    List<Move> getPossibleMovesNonRecursive(@NonNull Round round, @NonNull Square boardPos, @NonNull Player allegiance);
+    List<Move> getPossibleMovesNonRecursive(@NonNull Round round, @NonNull Square boardPos, @NonNull Player player);
     
 }

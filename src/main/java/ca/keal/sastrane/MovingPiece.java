@@ -7,6 +7,6 @@ import java.util.List;
 public interface MovingPiece extends Piece {
     
     @NonNull
-    List<Move> getPossibleMoves(@NonNull Round round, @NonNull Square boardPos, @NonNull Player allegiance);
+    List<Move> getPossibleMoves(@NonNull Round round, @NonNull Square boardPos, @NonNull Player player);
     
 }

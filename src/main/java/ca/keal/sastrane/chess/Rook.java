@@ -3,6 +3,7 @@ package ca.keal.sastrane.chess;
 import ca.keal.sastrane.Move;
 import ca.keal.sastrane.MoveCountingPiece;
 import ca.keal.sastrane.Player;
+import ca.keal.sastrane.RecursiveMovingPiece;
 import ca.keal.sastrane.Round;
 import ca.keal.sastrane.Square;
 import ca.keal.sastrane.piece.LinePiece;
@@ -13,7 +14,7 @@ import lombok.NonNull;
 import java.util.List;
 
 @Getter
-public class Rook extends LinePiece implements MoveCountingPiece {
+public class Rook extends LinePiece implements MoveCountingPiece, RecursiveMovingPiece {
     
     private int numMoves = 0;
     
@@ -25,6 +26,12 @@ public class Rook extends LinePiece implements MoveCountingPiece {
     @Override
     public List<Move> getPossibleMoves(@NonNull Round round, @NonNull Square boardPos, @NonNull Player player) {
         return KingInCheckUtils.getPossibleMoves(super::getPossibleMoves, round, boardPos, player);
+    }
+    
+    @Override
+    public List<Move> getPossibleMovesNonRecursive(@NonNull Round round, @NonNull Square boardPos,
+                                                   @NonNull Player player) {
+        return super.getPossibleMoves(round, boardPos, player);
     }
     
     @Override
