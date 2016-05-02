@@ -18,6 +18,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
+import javax.annotation.Nullable;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -93,7 +94,7 @@ public class Round {
     }
     
     /** player == null => any player */
-    public List<Move> getAllPossibleMoves(Player player) {
+    public List<Move> getAllPossibleMoves(@Nullable Player player) {
         List<Move> moves = new ArrayList<>();
         for (Square square : board) {
             Pair<Piece, Player> atSquare = board.get(square);

@@ -152,7 +152,7 @@ public class GameController {
     
     /** {@code piece == null} => "hand" with null player */
     @SneakyThrows
-    private void addPlacingPiece(PlacingPiece piece, Player player, ToggleGroup group) {
+    private void addPlacingPiece(@Nullable PlacingPiece piece, Player player, ToggleGroup group) {
         ToggleButton pieceButton = new ToggleButton();
         if (piece == null) {
             pieceButton.setGraphic(new ImageView(new Image(new Resource("ca.keal.sastrane.icon", "cursor.png").get()
@@ -171,7 +171,7 @@ public class GameController {
         if (!inputting || deciding) return;
         
         Square square = new Square(x, y);
-        if (selection.size() > 0) {
+        if (selection.size() > 0 && selectionBase != null) {
             if (selection.contains(square)) {
                 round.getGame().getBus().post(new UserMoveEvent(round, selectionBase.to(square)));
             }

@@ -12,8 +12,14 @@ public class Resource {
     
     private final String filename;
     
-    @Nullable
     public URL get() {
+        URL url = getNullable();
+        if (url == null) throw new NullPointerException(getFilename() + " not found");
+        return url;
+    }
+    
+    @Nullable
+    public URL getNullable() {
         return ClassLoader.getSystemResource(getFilename());
     }
     

@@ -11,7 +11,6 @@ import javafx.stage.Stage;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
-import java.net.URL;
 
 public final class GuiUtils {
     
@@ -27,9 +26,7 @@ public final class GuiUtils {
      * loadFXML("foo.fxml", "com.foo.bar", getClass().getClassLoader()) gets com/foo/bar/foo.fxml.
      */
     public static Parent loadFXML(Resource resource) throws IOException {
-        URL fxml = resource.get();
-        if (fxml == null) throw new IOException(resource + " could not be accessed.");
-        return FXMLLoader.load(fxml);
+        return FXMLLoader.load(resource.get());
     }
     
     public static Scene getScene(Parent parent, int width, int height) throws IOException {
