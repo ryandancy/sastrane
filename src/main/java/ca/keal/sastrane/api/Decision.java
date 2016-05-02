@@ -1,7 +1,6 @@
 package ca.keal.sastrane.api;
 
 import ca.keal.sastrane.util.Resource;
-import lombok.NonNull;
 
 /**
  * An interface representing a decision, such as a pawn promotion in chess.
@@ -10,19 +9,16 @@ import lombok.NonNull;
  */
 public interface Decision {
     
-    void onChoose(@NonNull Round round);
+    void onChoose(Round round);
     
-    @NonNull
-    default Round whatIf(@NonNull Round round) {
+    default Round whatIf(Round round) {
         Round newRound = new Round(round);
         onChoose(newRound);
         return newRound;
     }
     
-    @NonNull
     Resource getIcon();
     
-    @NonNull
     String getName();
     
 }

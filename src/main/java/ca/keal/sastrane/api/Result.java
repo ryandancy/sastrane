@@ -12,6 +12,7 @@ public abstract class Result {
     @Data
     @EqualsAndHashCode(callSuper = true)
     public static class Win extends Result {
+        
         private final Player player;
     }
     

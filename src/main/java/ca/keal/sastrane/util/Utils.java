@@ -1,14 +1,15 @@
 package ca.keal.sastrane.util;
 
+import ca.keal.sastrane.api.Player;
+import ca.keal.sastrane.api.Round;
+import ca.keal.sastrane.api.Square;
 import ca.keal.sastrane.api.move.Move;
 import ca.keal.sastrane.api.piece.MovingPiece;
 import ca.keal.sastrane.api.piece.Piece;
-import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.piece.RecursiveMovingPiece;
-import ca.keal.sastrane.api.Round;
-import ca.keal.sastrane.api.Square;
 import com.google.common.collect.HashMultiset;
 
+import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -39,7 +40,7 @@ public final class Utils {
      * {@code player == null} means any player is acceptable. If invert, then any player <i>not</i> the specified
      * player's pieces will be matched; else, <i>only</i> the specified player's pieces will be matched.
      */
-    public static boolean canBeMovedTo(Round round, Square square, Player player, boolean invert) {
+    public static boolean canBeMovedTo(Round round, Square square, @Nullable Player player, boolean invert) {
         for (Square pos : round.getBoard()) {
             Pair<Piece, Player> posData = round.getBoard().get(pos);
             if (posData != null) {

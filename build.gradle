@@ -17,6 +17,8 @@ configurations {
 
 dependencies {
     provided 'org.projectlombok:lombok:1.16.8'
+    provided 'com.google.code.findbugs:findbugs-annotations:3.0.1'
+    provided 'com.google.code.findbugs:jsr305:3.0.1'
     compile 'com.google.guava:guava:19.0-rc2'
 }
 

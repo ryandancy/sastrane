@@ -9,7 +9,6 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.ToString;
 
 import java.util.ArrayList;
@@ -37,14 +36,12 @@ public abstract class Game {
     private EventBus bus;
     
     /**
-     * {@code players} should be in the order in which the players move (e.g. for chess, {@code [White, Black]}).
-     * {@code css} should be a css file, which will be applied to this game's tile, new-game screen, player settings
-     * things, and game screen.
-     * {@code placeOnly} is whether this game is place-only (i.e. it has no moving pieces).
+     * {@code players} should be in the order in which the players move (e.g. for chess, {@code [White, Black]}). {@code
+     * css} should be a css file, which will be applied to this game's tile, new-game screen, player settings things,
+     * and game screen. {@code placeOnly} is whether this game is place-only (i.e. it has no moving pieces).
      */
-    public Game(@NonNull String name, @NonNull Resource icon, @NonNull Resource css, @NonNull Player[] players,
-                @NonNull Function<Double, AI> ai, @NonNull Board.Factory boardFactory, boolean placeOnly,
-                @NonNull PlacingPiece... placingPieces) {
+    public Game(String name, Resource icon, Resource css, Player[] players, Function<Double, AI> ai,
+                Board.Factory boardFactory, boolean placeOnly, PlacingPiece... placingPieces) {
         this(name, icon, css, players, ai, boardFactory, placeOnly, placingPieces, new EventBus(name));
         registerGame(this);
     }
@@ -53,9 +50,8 @@ public abstract class Game {
      * Same as {@link #Game(String, Resource, Resource, Player[], Function, Board.Factory, boolean, PlacingPiece...)}
      * except that {@code placeOnly} defaults to {@code placingPieces.length > 0}.
      */
-    public Game(@NonNull String name, @NonNull Resource icon, @NonNull Resource css, @NonNull Player[] players,
-                @NonNull Function<Double, AI> ai, @NonNull Board.Factory boardFactory,
-                @NonNull PlacingPiece... placingPieces) {
+    public Game(String name, Resource icon, Resource css, Player[] players, Function<Double, AI> ai,
+                Board.Factory boardFactory, PlacingPiece... placingPieces) {
         this(name, icon, css, players, ai, boardFactory, placingPieces.length > 0, placingPieces, new EventBus(name));
         registerGame(this);
     }
@@ -75,7 +71,6 @@ public abstract class Game {
         bus = new EventBus(name);
     }
     
-    @NonNull
-    public abstract Result getResult(@NonNull Round round);
+    public abstract Result getResult(Round round);
     
 }

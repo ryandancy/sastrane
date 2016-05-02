@@ -1,7 +1,6 @@
 package ca.keal.sastrane.api;
 
 import ca.keal.sastrane.api.move.Move;
-import lombok.NonNull;
 
 /**
  * An object that returns the result of a player's move, whether that be from an AI, user input, or something else
@@ -11,10 +10,8 @@ import lombok.NonNull;
  */
 public interface Mover {
     
-    @NonNull
-    Move getMove(@NonNull Round round, @NonNull Player player);
+    Move getMove(Round round, Player player);
     
-    @NonNull
-    Decision decide(@NonNull Decision[] options, @NonNull Round round, @NonNull Player player);
+    Decision decide(Decision[] options, Round round, Player player);
     
 }

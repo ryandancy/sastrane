@@ -1,7 +1,7 @@
 package ca.keal.sastrane.api.event;
 
-import ca.keal.sastrane.api.move.Move;
 import ca.keal.sastrane.api.Round;
+import ca.keal.sastrane.api.move.Move;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

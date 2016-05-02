@@ -1,13 +1,12 @@
 package ca.keal.sastrane.chess;
 
 import ca.keal.sastrane.api.AI;
-import ca.keal.sastrane.api.piece.Piece;
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.Result;
 import ca.keal.sastrane.api.Round;
 import ca.keal.sastrane.api.Square;
+import ca.keal.sastrane.api.piece.Piece;
 import ca.keal.sastrane.util.Pair;
-import lombok.NonNull;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,7 +29,7 @@ public class ChessAI extends AI {
     }
     
     @Override
-    public double heuristic(@NonNull Round round, @NonNull Player player) {
+    public double heuristic(Round round, Player player) {
         // draw => MIN_VALUE/2, win => MAX_VALUE, lose => MIN_VALUE, else: naive piece value method
         // TODO improve piece valuation over naive method
         Result result = Chess.getInstance().getResult(round);

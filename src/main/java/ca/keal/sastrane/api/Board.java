@@ -8,11 +8,11 @@ import javafx.collections.ObservableMap;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Singular;
 import lombok.ToString;
 
+import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -28,7 +28,6 @@ import java.util.stream.Collectors;
 public class Board implements Iterable<Square> {
     
     // Use JavaFX ObservableMap so that listeners can be added
-    @NonNull
     private final ObservableMap<Square, Pair<Piece, Player>> squaresToPieces; // TODO more dimensions?
     
     @Getter(lazy = true)
@@ -41,8 +40,7 @@ public class Board implements Iterable<Square> {
      * ' ' = null piece, '_' = not on board, is error if either used in pieces.
      */
     @Builder(builderClassName = "Factory", builderMethodName = "factory")
-    public Board(@Singular @NonNull List<String> rows,
-                 @Singular @NonNull Map<Character, Pair<Supplier<Piece>, Player>> pieces) {
+    public Board(@Singular List<String> rows, @Singular Map<Character, Pair<Supplier<Piece>, Player>> pieces) {
         if (pieces.containsKey(' ') || pieces.containsKey('_')) {
             throw new IllegalArgumentException("Space and underscore are reserved in pieces; space is null piece "
                     + "and underscore is not-on-board.");
@@ -67,15 +65,16 @@ public class Board implements Iterable<Square> {
         this.squaresToPieces = FXCollections.observableMap(squaresToPieces);
     }
     
-    public Board(@NonNull Board board) {
+    public Board(Board board) {
         this(FXCollections.observableMap(new HashMap<>(board.squaresToPieces)));
     }
     
+    @Nullable
     public Pair<Piece, Player> get(Square square) {
         return squaresToPieces.get(square);
     }
     
-    public void set(Square square, Pair<Piece, Player> value) {
+    public void set(Square square, @Nullable Pair<Piece, Player> value) {
         squaresToPieces.put(square, value);
     }
     

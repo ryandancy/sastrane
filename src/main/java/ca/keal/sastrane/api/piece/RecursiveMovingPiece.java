@@ -1,11 +1,10 @@
 package ca.keal.sastrane.api.piece;
 
-import ca.keal.sastrane.api.move.Move;
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.Round;
 import ca.keal.sastrane.api.Square;
+import ca.keal.sastrane.api.move.Move;
 import ca.keal.sastrane.util.Utils;
-import lombok.NonNull;
 
 import java.util.List;
 
@@ -19,7 +18,6 @@ public interface RecursiveMovingPiece extends MovingPiece {
      * Returns all possible moves this piece could make, without using recursion/{@link Utils#canBeMovedTo(Round,
      * Square)}.
      */
-    @NonNull
-    List<Move> getPossibleMovesNonRecursive(@NonNull Round round, @NonNull Square boardPos, @NonNull Player player);
+    List<Move> getPossibleMovesNonRecursive(Round round, Square boardPos, Player player);
     
 }

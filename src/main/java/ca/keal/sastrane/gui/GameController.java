@@ -36,10 +36,10 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
-import lombok.NonNull;
 import lombok.Setter;
 import lombok.SneakyThrows;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -55,14 +55,14 @@ public class GameController {
     @FXML private FlowPane decisionPane;
     
     private Round round;
-    private Map<Player, ToggleGroup> playersToPieceChooserGroups = null;
+    @Nullable private Map<Player, ToggleGroup> playersToPieceChooserGroups = null;
     @Setter private boolean inputting = false;
     private boolean deciding = false;
     
-    private Square selectionBase = null;
+    @Nullable private Square selectionBase = null;
     private List<Square> selection = new ArrayList<>();
     
-    public void setRound(@NonNull Round round) {
+    public void setRound(Round round) {
         this.round = round;
         this.round.getBoard().addListener(change -> updateBoardGrid());
         title.setText(round.getGame().getName());
@@ -169,7 +169,7 @@ public class GameController {
     
     private void onTileClick(int x, int y) {
         if (!inputting || deciding) return;
-    
+        
         Square square = new Square(x, y);
         if (selection.size() > 0) {
             if (selection.contains(square)) {
@@ -214,6 +214,7 @@ public class GameController {
     }
     
     private void deselect() {
+        assert selectionBase != null;
         lookup(selectionBase).pseudoClassStateChanged(PseudoClass.getPseudoClass("selection-base"), false);
         for (Square square : selection) {
             lookup(square).pseudoClassStateChanged(PseudoClass.getPseudoClass("selected"), false);
@@ -223,9 +224,8 @@ public class GameController {
         selection.clear();
     }
     
-    @NonNull
     @SneakyThrows
-    public void displayDecision(@NonNull Decision[] options) {
+    public void displayDecision(Decision[] options) {
         deciding = true;
         
         for (Decision option : options) {
@@ -272,6 +272,7 @@ public class GameController {
         return String.format(".x%d.y%d", square.getX(), square.getY());
     }
     
+    @Nullable
     private PlacingPiece getCurrentPlacingPiece() {
         if (round.getGame().getPlacingPieces().length == 0) return null;
         if (playersToPieceChooserGroups == null) return round.getGame().getPlacingPieces()[0];

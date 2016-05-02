@@ -1,30 +1,27 @@
 package ca.keal.sastrane.util;
 
 import lombok.Data;
-import lombok.NonNull;
 
+import javax.annotation.Nullable;
 import java.net.URL;
 
 @Data
 public class Resource {
     
-    @NonNull
     private final String pkg;
     
-    @NonNull
     private final String filename;
     
+    @Nullable
     public URL get() {
         return ClassLoader.getSystemResource(getFilename());
     }
     
-    @NonNull
     public String getFilename() {
         return toString();
     }
     
     @Override
-    @NonNull
     public String toString() {
         return pkg.replace('.', '/') + "/" + filename;
     }
@@ -36,7 +33,7 @@ public class Resource {
         private final String unmangled;
         private final String ext;
         
-        public Unmangled(@NonNull String pkg, @NonNull String unmangled) {
+        public Unmangled(String pkg, String unmangled) {
             this.pkg = pkg;
             if (unmangled.lastIndexOf('.') == -1) {
                 this.unmangled = unmangled;
@@ -47,7 +44,7 @@ public class Resource {
             }
         }
         
-        public Resource mangle(@NonNull String mangler) {
+        public Resource mangle(String mangler) {
             return new Resource(pkg, unmangled + "_" + mangler + ext);
         }
         

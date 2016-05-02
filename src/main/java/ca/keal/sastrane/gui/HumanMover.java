@@ -9,7 +9,6 @@ import ca.keal.sastrane.api.event.UserMoveEvent;
 import ca.keal.sastrane.api.move.Move;
 import com.google.common.eventbus.Subscribe;
 import javafx.application.Platform;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 
@@ -28,7 +27,7 @@ public class HumanMover implements Mover {
     
     @Override
     @SneakyThrows
-    public Move getMove(@NonNull Round round, @NonNull Player player) {
+    public Move getMove(Round round, Player player) {
         move.set(null);
         
         Platform.runLater(new Runnable() {
@@ -62,7 +61,7 @@ public class HumanMover implements Mover {
     
     @Override
     @SneakyThrows
-    public Decision decide(@NonNull Decision[] options, @NonNull Round round, @NonNull Player player) {
+    public Decision decide(Decision[] options, Round round, Player player) {
         decision.set(null);
         
         Platform.runLater(new Runnable() {

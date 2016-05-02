@@ -1,18 +1,17 @@
 package ca.keal.sastrane.chess;
 
 import ca.keal.sastrane.api.Board;
-import ca.keal.sastrane.api.move.Move;
-import ca.keal.sastrane.api.piece.MoveCountingPiece;
-import ca.keal.sastrane.api.move.MovingMove;
-import ca.keal.sastrane.api.piece.Piece;
 import ca.keal.sastrane.api.Player;
-import ca.keal.sastrane.api.piece.RecursiveMovingPiece;
 import ca.keal.sastrane.api.Round;
 import ca.keal.sastrane.api.Square;
+import ca.keal.sastrane.api.move.Move;
+import ca.keal.sastrane.api.move.MovingMove;
+import ca.keal.sastrane.api.piece.MoveCountingPiece;
+import ca.keal.sastrane.api.piece.Piece;
+import ca.keal.sastrane.api.piece.RecursiveMovingPiece;
 import ca.keal.sastrane.util.Pair;
 import ca.keal.sastrane.util.Resource;
 import ca.keal.sastrane.util.Utils;
-import lombok.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +27,7 @@ public class King implements RecursiveMovingPiece, MoveCountingPiece {
     }
     
     @Override
-    public List<Move> getPossibleMoves(@NonNull Round round, @NonNull Square boardPos, @NonNull Player player) {
+    public List<Move> getPossibleMoves(Round round, Square boardPos, Player player) {
         // All 8 surrounding squares that aren't in the path of any player other than player
         // It'd be a shame to ruin this beautifullly formatted piece of code, Intellij formatter: @formatter:off
         return Stream.concat(
@@ -50,10 +49,10 @@ public class King implements RecursiveMovingPiece, MoveCountingPiece {
                 int inc = (int) Math.signum(boardPos.getX() - rookX);
                 final int rookXFinal = rookX; // required because rookX isn't effectively final
                 
-                moves.add(new MovingMove(boardPos, player.perspectivize(boardPos.withX(boardPos.getX() + 2 * inc), 
+                moves.add(new MovingMove(boardPos, player.perspectivize(boardPos.withX(boardPos.getX() + 2 * inc),
                         boardPos)) {
                     @Override
-                    public void move(@NonNull Board board) {
+                    public void move(Board board) {
                         super.move(board);
                         
                         Square rookPos = boardPos.withX(rookXFinal);
@@ -85,8 +84,8 @@ public class King implements RecursiveMovingPiece, MoveCountingPiece {
     }
     
     @Override
-    public List<Move> getPossibleMovesNonRecursive(@NonNull Round round, @NonNull Square boardPos,
-                                                   @NonNull Player player) {
+    public List<Move> getPossibleMovesNonRecursive(Round round, Square boardPos,
+                                                   Player player) {
         // All 8 surrounding squares
         List<Move> moves = new ArrayList<>();
         for (int x = -1; x <= 1; x++) {

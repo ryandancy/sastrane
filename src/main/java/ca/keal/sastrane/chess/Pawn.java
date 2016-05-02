@@ -1,19 +1,18 @@
 package ca.keal.sastrane.chess;
 
 import ca.keal.sastrane.api.Board;
-import ca.keal.sastrane.api.move.Move;
-import ca.keal.sastrane.api.move.MovingMove;
-import ca.keal.sastrane.api.piece.Piece;
 import ca.keal.sastrane.api.Player;
-import ca.keal.sastrane.api.piece.RecursiveMovingPiece;
 import ca.keal.sastrane.api.Round;
 import ca.keal.sastrane.api.Square;
 import ca.keal.sastrane.api.event.MoveEvent;
+import ca.keal.sastrane.api.move.Move;
+import ca.keal.sastrane.api.move.MovingMove;
+import ca.keal.sastrane.api.piece.Piece;
+import ca.keal.sastrane.api.piece.RecursiveMovingPiece;
 import ca.keal.sastrane.util.Pair;
 import ca.keal.sastrane.util.Resource;
 import com.google.common.eventbus.Subscribe;
 import lombok.Getter;
-import lombok.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,16 +30,15 @@ public class Pawn implements RecursiveMovingPiece {
     }
     
     @Override
-    public List<Move> getPossibleMoves(@NonNull Round round, @NonNull Square boardPos, @NonNull Player player) {
+    public List<Move> getPossibleMoves(Round round, Square boardPos, Player player) {
         return getPossibleMovesNonRecursive(round, boardPos, player).stream()
                 .filter(KingInCheckUtils.checkKing(round, player))
                 .collect(Collectors.toList());
     }
     
     @Override
-    @NonNull
-    public List<Move> getPossibleMovesNonRecursive(@NonNull Round round, @NonNull Square boardPos,
-                                                   @NonNull Player player) {
+    public List<Move> getPossibleMovesNonRecursive(Round round, Square boardPos,
+                                                   Player player) {
         List<Move> moves = new ArrayList<>();
         
         // One in front if not occupied; two in front if first and not occupied
@@ -84,7 +82,7 @@ public class Pawn implements RecursiveMovingPiece {
                 // Use MovingMove subclass to kill side piece when moved
                 moves.add(new MovingMove(boardPos, diagonal) {
                     @Override
-                    public void move(@NonNull Board board) {
+                    public void move(Board board) {
                         super.move(board);
                         board.set(side, null);
                     }

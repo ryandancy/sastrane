@@ -1,12 +1,11 @@
 package ca.keal.sastrane.api.piece;
 
-import ca.keal.sastrane.api.move.Move;
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.Round;
 import ca.keal.sastrane.api.Square;
+import ca.keal.sastrane.api.move.Move;
 import ca.keal.sastrane.util.Pair;
 import lombok.AllArgsConstructor;
-import lombok.NonNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -71,14 +70,12 @@ public abstract class LinePiece implements MovingPiece {
     }
     
     @Override
-    @NonNull
-    public List<Move> getPossibleMoves(@NonNull Round round, @NonNull Square boardPos, @NonNull Player player) {
+    public List<Move> getPossibleMoves(Round round, Square boardPos, Player player) {
         return getPossibleMoves(round, boardPos, player, stopOnHitPiece, takeOpposingPieces, directions);
     }
     
-    @NonNull
-    public static List<Move> getPossibleMoves(@NonNull Round round, @NonNull Square boardPos,
-                                              @NonNull Player player, boolean stopOnHitPiece,
+    public static List<Move> getPossibleMoves(Round round, Square boardPos,
+                                              Player player, boolean stopOnHitPiece,
                                               boolean takeOpposingPieces, int directions) {
         List<Move> res = new ArrayList<>();
         for (int i = 0; i < directionToDxAndDy.size(); i++) {
@@ -90,7 +87,6 @@ public abstract class LinePiece implements MovingPiece {
         return res;
     }
     
-    @NonNull
     private static List<Move> getMovesInLine(Pair<Integer, Integer> dxy, Round round, Square boardPos,
                                              Player player, boolean stopOnHitPiece, boolean takeOpposingPieces) {
         int dx = dxy.getLeft();
@@ -115,15 +111,13 @@ public abstract class LinePiece implements MovingPiece {
         return res;
     }
     
-    @NonNull
-    public static List<Move> getPossibleMoves(@NonNull Round round, @NonNull Square boardPos,
-                                              @NonNull Player player, boolean stopOnHitPiece, int directions) {
+    public static List<Move> getPossibleMoves(Round round, Square boardPos,
+                                              Player player, boolean stopOnHitPiece, int directions) {
         return getPossibleMoves(round, boardPos, player, stopOnHitPiece, true, directions);
     }
     
-    @NonNull
-    public static List<Move> getPossibleMoves(@NonNull Round round, @NonNull Square boardPos,
-                                              @NonNull Player player, int directions) {
+    public static List<Move> getPossibleMoves(Round round, Square boardPos,
+                                              Player player, int directions) {
         return getPossibleMoves(round, boardPos, player, true, directions);
     }
     

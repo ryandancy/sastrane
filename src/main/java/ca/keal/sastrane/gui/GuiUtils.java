@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
+import javax.annotation.Nullable;
 import java.io.IOException;
 import java.net.URL;
 
@@ -64,6 +65,7 @@ public final class GuiUtils {
     }
     
     // http://stackoverflow.com/a/20656861
+    @Nullable
     public static Node getNodeFromGridPane(GridPane gridPane, int col, int row) {
         for (Node node : gridPane.getChildren()) {
             if (Integer.valueOf(col).equals(GridPane.getColumnIndex(node))

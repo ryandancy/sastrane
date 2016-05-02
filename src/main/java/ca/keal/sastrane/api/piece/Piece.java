@@ -2,7 +2,6 @@ package ca.keal.sastrane.api.piece;
 
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.util.Resource;
-import lombok.NonNull;
 
 public interface Piece {
     
@@ -14,7 +13,6 @@ public interface Piece {
      *
      * @return (packageName, filename) of the piece's icon, with the file name <strong>without the extension!</strong>
      */
-    @NonNull
     Resource.Unmangled getImage();
     
 }

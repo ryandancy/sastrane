@@ -4,7 +4,6 @@ import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.Square;
 import ca.keal.sastrane.util.Resource;
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 import java.util.function.BinaryOperator;
@@ -23,8 +22,7 @@ public enum ChessPlayer implements Player {
     private final BinaryOperator<Square> perspectivizer;
     
     @Override
-    @NonNull
-    public Square perspectivize(@NonNull Square pos, @NonNull Square original) {
+    public Square perspectivize(Square pos, Square original) {
         return perspectivizer.apply(pos, original);
     }
     

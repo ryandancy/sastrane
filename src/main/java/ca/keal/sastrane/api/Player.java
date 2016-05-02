@@ -2,7 +2,6 @@ package ca.keal.sastrane.api;
 
 import ca.keal.sastrane.api.piece.MovingPiece;
 import ca.keal.sastrane.util.Resource;
-import lombok.NonNull;
 
 /**
  * A general description of a player/team/side/whatever. If you're looking for an AI-or-user input type, go to {@link
@@ -40,10 +39,8 @@ import lombok.NonNull;
  */
 public interface Player {
     
-    @NonNull
     String getName();
     
-    @NonNull
     Resource getIcon();
     
     /**
@@ -66,27 +63,22 @@ public interface Player {
      * @see #flipY(Square, Square)
      * @see #flipNone(Square, Square)
      */
-    @NonNull
-    Square perspectivize(@NonNull Square pos, @NonNull Square original);
+    Square perspectivize(Square pos, Square original);
     
-    @NonNull
-    static Square flipNone(@SuppressWarnings("UnusedParameters") @NonNull Square pos, @NonNull Square original) {
+    static Square flipNone(@SuppressWarnings("UnusedParameters") Square pos, Square original) {
         return pos;
     }
     
     // DRY violated???
-    @NonNull
-    static Square flipX(@NonNull Square pos, @NonNull Square original) {
+    static Square flipX(Square pos, Square original) {
         return new Square(2 * original.getX() - pos.getX(), pos.getY());
     }
     
-    @NonNull
-    static Square flipY(@NonNull Square pos, @NonNull Square original) {
+    static Square flipY(Square pos, Square original) {
         return new Square(pos.getX(), 2 * original.getY() - pos.getY());
     }
     
-    @NonNull
-    static Square flipBoth(@NonNull Square pos, @NonNull Square original) {
+    static Square flipBoth(Square pos, Square original) {
         return new Square(2 * original.getX() - pos.getX(), 2 * original.getY() - pos.getY());
     }
     

@@ -1,11 +1,10 @@
 package ca.keal.sastrane.api.piece;
 
-import ca.keal.sastrane.api.move.Move;
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.Round;
 import ca.keal.sastrane.api.Square;
+import ca.keal.sastrane.api.move.Move;
 import ca.keal.sastrane.util.Pair;
-import lombok.NonNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -58,12 +57,10 @@ public abstract class JumpingPiece implements MovingPiece {
     }
     
     @Override
-    @NonNull
-    public List<Move> getPossibleMoves(@NonNull Round round, @NonNull Square boardPos, @NonNull Player player) {
+    public List<Move> getPossibleMoves(Round round, Square boardPos, Player player) {
         return getPossibleMoves(round, boardPos, player, takeOpposingPieces, offsets);
     }
     
-    @NonNull
     @SuppressWarnings("SuspiciousNameCombination")
     public static List<Pair<Integer, Integer>> calculateOffsets(int xOffset, int yOffset, boolean mirror,
                                                                 int quadrants) {
@@ -82,10 +79,9 @@ public abstract class JumpingPiece implements MovingPiece {
         return offsets;
     }
     
-    @NonNull
-    public static List<Move> getPossibleMoves(@NonNull Round round, @NonNull Square boardPos,
-                                              @NonNull Player player, boolean takeOpposingPieces,
-                                              @NonNull List<Pair<Integer, Integer>> offsets) {
+    public static List<Move> getPossibleMoves(Round round, Square boardPos,
+                                              Player player, boolean takeOpposingPieces,
+                                              List<Pair<Integer, Integer>> offsets) {
         List<Move> res = new ArrayList<>();
         for (Pair<Integer, Integer> offset : offsets) {
             Square deltaPos = player.perspectivize(new Square(boardPos.getX() + offset.getLeft(),
@@ -100,43 +96,37 @@ public abstract class JumpingPiece implements MovingPiece {
         return res;
     }
     
-    @NonNull
-    public static List<Move> getPossibleMoves(@NonNull Round round, @NonNull Square boardPos,
-                                              @NonNull Player player,
-                                              @NonNull List<Pair<Integer, Integer>> offsets) {
+    public static List<Move> getPossibleMoves(Round round, Square boardPos,
+                                              Player player,
+                                              List<Pair<Integer, Integer>> offsets) {
         return getPossibleMoves(round, boardPos, player, true, offsets);
     }
     
-    @NonNull
-    public static List<Move> getPossibleMoves(@NonNull Round round, @NonNull Square boardPos,
-                                              @NonNull Player player, int xOffset, int yOffset, boolean mirror,
+    public static List<Move> getPossibleMoves(Round round, Square boardPos,
+                                              Player player, int xOffset, int yOffset, boolean mirror,
                                               boolean takeOpposingPieces, int quadrants) {
         return getPossibleMoves(round, boardPos, player, takeOpposingPieces,
                 calculateOffsets(xOffset, yOffset, mirror, quadrants));
     }
     
-    @NonNull
-    public static List<Move> getPossibleMoves(@NonNull Round round, @NonNull Square boardPos,
-                                              @NonNull Player player, int xOffset, int yOffset, boolean mirror,
+    public static List<Move> getPossibleMoves(Round round, Square boardPos,
+                                              Player player, int xOffset, int yOffset, boolean mirror,
                                               int quadrants) {
         return getPossibleMoves(round, boardPos, player, calculateOffsets(xOffset, yOffset, mirror, quadrants));
     }
     
-    @NonNull
-    public static List<Move> getPossibleMoves(@NonNull Round round, @NonNull Square boardPos,
-                                              @NonNull Player player, int xOffset, int yOffset, int quadrants) {
+    public static List<Move> getPossibleMoves(Round round, Square boardPos,
+                                              Player player, int xOffset, int yOffset, int quadrants) {
         return getPossibleMoves(round, boardPos, player, xOffset, yOffset, true, quadrants);
     }
     
-    @NonNull
-    public static List<Move> getPossibleMoves(@NonNull Round round, @NonNull Square boardPos,
-                                              @NonNull Player player, int xOffset, int yOffset, boolean mirror) {
+    public static List<Move> getPossibleMoves(Round round, Square boardPos,
+                                              Player player, int xOffset, int yOffset, boolean mirror) {
         return getPossibleMoves(round, boardPos, player, xOffset, yOffset, mirror, QI | QII | QIII | QIV);
     }
     
-    @NonNull
-    public static List<Move> getPossibleMoves(@NonNull Round round, @NonNull Square boardPos,
-                                              @NonNull Player player, int xOffset, int yOffset) {
+    public static List<Move> getPossibleMoves(Round round, Square boardPos,
+                                              Player player, int xOffset, int yOffset) {
         return getPossibleMoves(round, boardPos, player, xOffset, yOffset, true);
     }
     

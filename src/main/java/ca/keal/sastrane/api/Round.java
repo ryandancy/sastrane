@@ -1,13 +1,13 @@
 package ca.keal.sastrane.api;
 
-import ca.keal.sastrane.api.move.Move;
-import ca.keal.sastrane.api.piece.MovingPiece;
-import ca.keal.sastrane.api.piece.Piece;
-import ca.keal.sastrane.api.piece.PlacingPiece;
 import ca.keal.sastrane.api.event.MoveEvent;
 import ca.keal.sastrane.api.event.RoundEvent;
 import ca.keal.sastrane.api.event.TurnEvent;
 import ca.keal.sastrane.api.event.WinEvent;
+import ca.keal.sastrane.api.move.Move;
+import ca.keal.sastrane.api.piece.MovingPiece;
+import ca.keal.sastrane.api.piece.Piece;
+import ca.keal.sastrane.api.piece.PlacingPiece;
 import ca.keal.sastrane.util.Pair;
 import ca.keal.sastrane.util.Utils;
 import com.google.common.collect.ImmutableMap;
@@ -16,7 +16,6 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.ToString;
 
 import java.util.ArrayDeque;
@@ -42,7 +41,7 @@ public class Round {
     @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
     private Deque<Move> moves = new ArrayDeque<>();
     
-    public Round(@NonNull Game game, @NonNull Map<Player, Mover> playersToMovers) {
+    public Round(Game game, Map<Player, Mover> playersToMovers) {
         if (!Utils.areElementsEqual(playersToMovers.keySet(), Arrays.asList(game.getPlayers()))) {
             throw new IllegalArgumentException("Round: playersToMovers.keySet() must = game.getCombatants()");
         }
@@ -52,7 +51,7 @@ public class Round {
         game.getBus().register(this);
     }
     
-    public Round(@NonNull Round round) {
+    public Round(Round round) {
         this(round.getGame(), ImmutableMap.copyOf(round.getPlayersToMovers()), new Board(round.getBoard()),
                 round.getMoveNum(), round.isEnded(), new ArrayDeque<>(round.getMoves()));
     }
@@ -87,15 +86,13 @@ public class Round {
         return game.getPlayers()[moveNum % game.getPlayers().length];
     }
     
-    @NonNull
-    public Round copyWithMove(@NonNull Move move) {
+    public Round copyWithMove(Move move) {
         Round newRound = new Round(this);
         move.move(newRound.getBoard());
         return newRound;
     }
     
     /** player == null => any player */
-    @NonNull
     public List<Move> getAllPossibleMoves(Player player) {
         List<Move> moves = new ArrayList<>();
         for (Square square : board) {
