@@ -72,18 +72,18 @@ public abstract class LinePiece implements MovingPiece {
     
     @Override
     @NonNull
-    public List<Move> getPossibleMoves(@NonNull Round round, @NonNull Square boardPos, @NonNull Player allegiance) {
-        return getPossibleMoves(round, boardPos, allegiance, stopOnHitPiece, takeOpposingPieces, directions);
+    public List<Move> getPossibleMoves(@NonNull Round round, @NonNull Square boardPos, @NonNull Player player) {
+        return getPossibleMoves(round, boardPos, player, stopOnHitPiece, takeOpposingPieces, directions);
     }
     
     @NonNull
     public static List<Move> getPossibleMoves(@NonNull Round round, @NonNull Square boardPos,
-                                              @NonNull Player allegiance, boolean stopOnHitPiece,
+                                              @NonNull Player player, boolean stopOnHitPiece,
                                               boolean takeOpposingPieces, int directions) {
         List<Move> res = new ArrayList<>();
         for (int i = 0; i < directionToDxAndDy.size(); i++) {
             if ((directions & (1 << i)) != 0) {
-                res.addAll(getMovesInLine(directionToDxAndDy.get(1 << i), round, boardPos, allegiance, stopOnHitPiece,
+                res.addAll(getMovesInLine(directionToDxAndDy.get(1 << i), round, boardPos, player, stopOnHitPiece,
                         takeOpposingPieces));
             }
         }
@@ -92,20 +92,20 @@ public abstract class LinePiece implements MovingPiece {
     
     @NonNull
     private static List<Move> getMovesInLine(Pair<Integer, Integer> dxy, Round round, Square boardPos,
-                                             Player allegiance, boolean stopOnHitPiece, boolean takeOpposingPieces) {
+                                             Player player, boolean stopOnHitPiece, boolean takeOpposingPieces) {
         int dx = dxy.getLeft();
         int dy = dxy.getRight();
         List<Move> res = new ArrayList<>();
         
         for (int x = boardPos.getX() + dx, y = boardPos.getY() + dy;
-             round.getBoard().isOn(allegiance.perspectivize(new Square(x, y), boardPos));
+             round.getBoard().isOn(player.perspectivize(new Square(x, y), boardPos));
              x += dx, y += dy) {
-            Square square = allegiance.perspectivize(new Square(x, y), boardPos);
+            Square square = player.perspectivize(new Square(x, y), boardPos);
             Pair<Piece, Player> atSquare = round.getBoard().get(square);
             if (atSquare == null) {
                 res.add(boardPos.to(square));
             } else {
-                if (allegiance != atSquare.getRight() && takeOpposingPieces) {
+                if (player != atSquare.getRight() && takeOpposingPieces) {
                     res.add(boardPos.to(square));
                 }
                 if (stopOnHitPiece) break;
@@ -117,14 +117,14 @@ public abstract class LinePiece implements MovingPiece {
     
     @NonNull
     public static List<Move> getPossibleMoves(@NonNull Round round, @NonNull Square boardPos,
-                                              @NonNull Player allegiance, boolean stopOnHitPiece, int directions) {
-        return getPossibleMoves(round, boardPos, allegiance, stopOnHitPiece, true, directions);
+                                              @NonNull Player player, boolean stopOnHitPiece, int directions) {
+        return getPossibleMoves(round, boardPos, player, stopOnHitPiece, true, directions);
     }
     
     @NonNull
     public static List<Move> getPossibleMoves(@NonNull Round round, @NonNull Square boardPos,
-                                              @NonNull Player allegiance, int directions) {
-        return getPossibleMoves(round, boardPos, allegiance, true, directions);
+                                              @NonNull Player player, int directions) {
+        return getPossibleMoves(round, boardPos, player, true, directions);
     }
     
 }

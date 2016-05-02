@@ -59,8 +59,8 @@ public abstract class JumpingPiece implements MovingPiece {
     
     @Override
     @NonNull
-    public List<Move> getPossibleMoves(@NonNull Round round, @NonNull Square boardPos, @NonNull Player allegiance) {
-        return getPossibleMoves(round, boardPos, allegiance, takeOpposingPieces, offsets);
+    public List<Move> getPossibleMoves(@NonNull Round round, @NonNull Square boardPos, @NonNull Player player) {
+        return getPossibleMoves(round, boardPos, player, takeOpposingPieces, offsets);
     }
     
     @NonNull
@@ -84,16 +84,16 @@ public abstract class JumpingPiece implements MovingPiece {
     
     @NonNull
     public static List<Move> getPossibleMoves(@NonNull Round round, @NonNull Square boardPos,
-                                              @NonNull Player allegiance, boolean takeOpposingPieces,
+                                              @NonNull Player player, boolean takeOpposingPieces,
                                               @NonNull List<Pair<Integer, Integer>> offsets) {
         List<Move> res = new ArrayList<>();
         for (Pair<Integer, Integer> offset : offsets) {
-            Square deltaPos = allegiance.perspectivize(new Square(boardPos.getX() + offset.getLeft(),
+            Square deltaPos = player.perspectivize(new Square(boardPos.getX() + offset.getLeft(),
                     boardPos.getY() + offset.getRight()), boardPos);
             if (!round.getBoard().isOn(deltaPos)) continue;
             
             Pair<Piece, Player> atDelta = round.getBoard().get(deltaPos);
-            if (atDelta == null || (allegiance != atDelta.getRight() && takeOpposingPieces)) {
+            if (atDelta == null || (player != atDelta.getRight() && takeOpposingPieces)) {
                 res.add(boardPos.to(deltaPos));
             }
         }
@@ -102,42 +102,42 @@ public abstract class JumpingPiece implements MovingPiece {
     
     @NonNull
     public static List<Move> getPossibleMoves(@NonNull Round round, @NonNull Square boardPos,
-                                              @NonNull Player allegiance,
+                                              @NonNull Player player,
                                               @NonNull List<Pair<Integer, Integer>> offsets) {
-        return getPossibleMoves(round, boardPos, allegiance, true, offsets);
+        return getPossibleMoves(round, boardPos, player, true, offsets);
     }
     
     @NonNull
     public static List<Move> getPossibleMoves(@NonNull Round round, @NonNull Square boardPos,
-                                              @NonNull Player allegiance, int xOffset, int yOffset, boolean mirror,
+                                              @NonNull Player player, int xOffset, int yOffset, boolean mirror,
                                               boolean takeOpposingPieces, int quadrants) {
-        return getPossibleMoves(round, boardPos, allegiance, takeOpposingPieces,
+        return getPossibleMoves(round, boardPos, player, takeOpposingPieces,
                 calculateOffsets(xOffset, yOffset, mirror, quadrants));
     }
     
     @NonNull
     public static List<Move> getPossibleMoves(@NonNull Round round, @NonNull Square boardPos,
-                                              @NonNull Player allegiance, int xOffset, int yOffset, boolean mirror,
+                                              @NonNull Player player, int xOffset, int yOffset, boolean mirror,
                                               int quadrants) {
-        return getPossibleMoves(round, boardPos, allegiance, calculateOffsets(xOffset, yOffset, mirror, quadrants));
+        return getPossibleMoves(round, boardPos, player, calculateOffsets(xOffset, yOffset, mirror, quadrants));
     }
     
     @NonNull
     public static List<Move> getPossibleMoves(@NonNull Round round, @NonNull Square boardPos,
-                                              @NonNull Player allegiance, int xOffset, int yOffset, int quadrants) {
-        return getPossibleMoves(round, boardPos, allegiance, xOffset, yOffset, true, quadrants);
+                                              @NonNull Player player, int xOffset, int yOffset, int quadrants) {
+        return getPossibleMoves(round, boardPos, player, xOffset, yOffset, true, quadrants);
     }
     
     @NonNull
     public static List<Move> getPossibleMoves(@NonNull Round round, @NonNull Square boardPos,
-                                              @NonNull Player allegiance, int xOffset, int yOffset, boolean mirror) {
-        return getPossibleMoves(round, boardPos, allegiance, xOffset, yOffset, mirror, QI | QII | QIII | QIV);
+                                              @NonNull Player player, int xOffset, int yOffset, boolean mirror) {
+        return getPossibleMoves(round, boardPos, player, xOffset, yOffset, mirror, QI | QII | QIII | QIV);
     }
     
     @NonNull
     public static List<Move> getPossibleMoves(@NonNull Round round, @NonNull Square boardPos,
-                                              @NonNull Player allegiance, int xOffset, int yOffset) {
-        return getPossibleMoves(round, boardPos, allegiance, xOffset, yOffset, true);
+                                              @NonNull Player player, int xOffset, int yOffset) {
+        return getPossibleMoves(round, boardPos, player, xOffset, yOffset, true);
     }
     
 }
