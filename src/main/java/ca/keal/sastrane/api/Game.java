@@ -56,7 +56,7 @@ public abstract class Game {
         registerGame(this);
     }
     
-    public static void registerGame(Game game) {
+    private static void registerGame(Game game) {
         GAMES.add(game);
     }
     

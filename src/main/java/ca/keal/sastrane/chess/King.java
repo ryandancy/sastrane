@@ -7,9 +7,8 @@ import ca.keal.sastrane.api.Square;
 import ca.keal.sastrane.api.move.Move;
 import ca.keal.sastrane.api.move.MovingMove;
 import ca.keal.sastrane.api.piece.MoveCountingPiece;
-import ca.keal.sastrane.api.piece.Piece;
+import ca.keal.sastrane.api.piece.OwnedPiece;
 import ca.keal.sastrane.api.piece.RecursiveMovingPiece;
-import ca.keal.sastrane.util.Pair;
 import ca.keal.sastrane.util.Resource;
 import ca.keal.sastrane.util.Utils;
 
@@ -67,9 +66,9 @@ public class King implements RecursiveMovingPiece, MoveCountingPiece {
     }
     
     private boolean canCastle(Round round, Square boardPos, Player player, int rookX) {
-        Pair<Piece, Player> pieceAtX = round.getBoard().get(player.perspectivize(boardPos.withX(rookX), boardPos));
-        if (pieceAtX == null || !(pieceAtX.getLeft() instanceof Rook)) return false;
-        Rook rook = (Rook) pieceAtX.getLeft();
+        OwnedPiece pieceAtX = round.getBoard().get(player.perspectivize(boardPos.withX(rookX), boardPos));
+        if (pieceAtX == null || !(pieceAtX.getPiece() instanceof Rook)) return false;
+        Rook rook = (Rook) pieceAtX.getPiece();
         if (rook.getNumMoves() != 0) return false;
         
         // Ensure there are no pieces between rook & king
@@ -93,8 +92,8 @@ public class King implements RecursiveMovingPiece, MoveCountingPiece {
                 Square square = player.perspectivize(new Square(boardPos.getX() + x, boardPos.getY() + y), boardPos);
                 if ((square.getX() == 0 && square.getY() == 0) || !round.getBoard().isOn(square)) continue;
                 
-                Pair<Piece, Player> atSquare = round.getBoard().get(square);
-                if (atSquare == null || atSquare.getRight() == player) continue;
+                OwnedPiece atSquare = round.getBoard().get(square);
+                if (atSquare == null || atSquare.getOwner() == player) continue;
                 
                 moves.add(boardPos.to(square));
             }

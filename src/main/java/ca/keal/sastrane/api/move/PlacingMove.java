@@ -3,8 +3,7 @@ package ca.keal.sastrane.api.move;
 import ca.keal.sastrane.api.Board;
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.Square;
-import ca.keal.sastrane.api.piece.Piece;
-import ca.keal.sastrane.util.Pair;
+import ca.keal.sastrane.api.piece.OwnedPiece;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import lombok.experimental.NonFinal;
@@ -14,7 +13,7 @@ import lombok.experimental.NonFinal;
 @RequiredArgsConstructor
 public class PlacingMove implements Move {
     
-    private final Pair<Piece, Player> placement;
+    private final OwnedPiece placement;
     private final Square pos;
     
     @Override

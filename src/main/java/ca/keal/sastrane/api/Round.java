@@ -6,9 +6,8 @@ import ca.keal.sastrane.api.event.TurnEvent;
 import ca.keal.sastrane.api.event.WinEvent;
 import ca.keal.sastrane.api.move.Move;
 import ca.keal.sastrane.api.piece.MovingPiece;
-import ca.keal.sastrane.api.piece.Piece;
+import ca.keal.sastrane.api.piece.OwnedPiece;
 import ca.keal.sastrane.api.piece.PlacingPiece;
-import ca.keal.sastrane.util.Pair;
 import ca.keal.sastrane.util.Utils;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.eventbus.Subscribe;
@@ -97,10 +96,10 @@ public class Round {
     public List<Move> getAllPossibleMoves(@Nullable Player player) {
         List<Move> moves = new ArrayList<>();
         for (Square square : board) {
-            Pair<Piece, Player> atSquare = board.get(square);
-            if (atSquare != null && atSquare.getLeft() instanceof MovingPiece
-                    && (player == null || atSquare.getRight() == player)) {
-                moves.addAll(((MovingPiece) atSquare.getLeft()).getPossibleMoves(this, square, atSquare.getRight()));
+            OwnedPiece atSquare = board.get(square);
+            if (atSquare != null && atSquare.getPiece() instanceof MovingPiece
+                    && (player == null || atSquare.getOwner() == player)) {
+                moves.addAll(((MovingPiece) atSquare.getPiece()).getPossibleMoves(this, square, atSquare.getOwner()));
             }
         }
         for (PlacingPiece placingPiece : game.getPlacingPieces()) {

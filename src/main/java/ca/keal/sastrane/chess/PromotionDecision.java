@@ -3,8 +3,8 @@ package ca.keal.sastrane.chess;
 import ca.keal.sastrane.api.Decision;
 import ca.keal.sastrane.api.Round;
 import ca.keal.sastrane.api.Square;
+import ca.keal.sastrane.api.piece.OwnedPiece;
 import ca.keal.sastrane.api.piece.Piece;
-import ca.keal.sastrane.util.Pair;
 import ca.keal.sastrane.util.Resource;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +32,9 @@ public enum PromotionDecision implements Decision {
     public void onChoose(Round round) {
         Square lastMovePos = round.getMoves().peekLast().getEndPos();
         // If there's nothing at lastMovePos, we'll get an NPE - but that should be impossible
-        round.getBoard().set(lastMovePos, Pair.of(pieceSupplier.get(), round.getBoard().get(lastMovePos).getRight()));
+        //noinspection ConstantConditions
+        round.getBoard().set(lastMovePos, new OwnedPiece(pieceSupplier.get(),
+                round.getBoard().get(lastMovePos).getOwner()));
     }
     
 }

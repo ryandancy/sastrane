@@ -21,8 +21,8 @@ public class HumanMover implements Mover {
     
     private final GameController controller;
     
-    private AtomicReference<Move> move = new AtomicReference<>(null);
-    private AtomicReference<Decision> decision = new AtomicReference<>(null);
+    private final AtomicReference<Move> move = new AtomicReference<>(null);
+    private final AtomicReference<Decision> decision = new AtomicReference<>(null);
     
     private final Object lock = new Object();
     

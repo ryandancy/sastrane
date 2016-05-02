@@ -4,8 +4,7 @@ import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.Round;
 import ca.keal.sastrane.api.Square;
 import ca.keal.sastrane.api.move.Move;
-import ca.keal.sastrane.api.piece.Piece;
-import ca.keal.sastrane.util.Pair;
+import ca.keal.sastrane.api.piece.OwnedPiece;
 import ca.keal.sastrane.util.TriFunction;
 import ca.keal.sastrane.util.Utils;
 
@@ -31,8 +30,8 @@ public class KingInCheckUtils {
     public static boolean isKingInCheck(Round round, Player player) {
         // Find king, check if in check
         for (Square square : round.getBoard()) {
-            Pair<Piece, Player> atSquare = round.getBoard().get(square);
-            if (atSquare != null && atSquare.getRight() == player && atSquare.getLeft() instanceof King) {
+            OwnedPiece atSquare = round.getBoard().get(square);
+            if (atSquare != null && atSquare.getOwner() == player && atSquare.getPiece() instanceof King) {
                 return Utils.canBeMovedTo(round, square, player);
             }
         }

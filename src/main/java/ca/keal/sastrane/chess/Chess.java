@@ -5,7 +5,7 @@ import ca.keal.sastrane.api.Game;
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.Result;
 import ca.keal.sastrane.api.Round;
-import ca.keal.sastrane.util.Pair;
+import ca.keal.sastrane.api.piece.OwnedPieceFactory;
 import ca.keal.sastrane.util.Resource;
 import lombok.Getter;
 
@@ -14,7 +14,7 @@ public class Chess extends Game {
     @Getter
     private static final Chess instance = new Chess();
     
-    public Chess() {
+    private Chess() {
         super("Chess", new Resource("ca.keal.sastrane.chess.icon", "chess.png"),
                 new Resource("ca.keal.sastrane.chess", "chess.css"), ChessPlayer.values(), ChessAI::new, Board.factory()
                         .row("RNBQKBNR")
@@ -25,18 +25,18 @@ public class Chess extends Game {
                         .row("        ")
                         .row("pppppppp")
                         .row("rnbqkbnr")
-                        .piece('R', Pair.of(Rook::new, ChessPlayer.BLACK))
-                        .piece('N', Pair.of(Knight::new, ChessPlayer.BLACK))
-                        .piece('B', Pair.of(Bishop::new, ChessPlayer.BLACK))
-                        .piece('Q', Pair.of(Queen::new, ChessPlayer.BLACK))
-                        .piece('K', Pair.of(King::new, ChessPlayer.BLACK))
-                        .piece('P', Pair.of(Pawn::new, ChessPlayer.BLACK))
-                        .piece('n', Pair.of(Knight::new, ChessPlayer.WHITE))
-                        .piece('r', Pair.of(Rook::new, ChessPlayer.WHITE))
-                        .piece('b', Pair.of(Bishop::new, ChessPlayer.WHITE))
-                        .piece('q', Pair.of(Queen::new, ChessPlayer.WHITE))
-                        .piece('k', Pair.of(King::new, ChessPlayer.WHITE))
-                        .piece('p', Pair.of(Pawn::new, ChessPlayer.WHITE)));
+                        .piece('R', new OwnedPieceFactory(Rook::new, ChessPlayer.BLACK))
+                        .piece('N', new OwnedPieceFactory(Knight::new, ChessPlayer.BLACK))
+                        .piece('B', new OwnedPieceFactory(Bishop::new, ChessPlayer.BLACK))
+                        .piece('Q', new OwnedPieceFactory(Queen::new, ChessPlayer.BLACK))
+                        .piece('K', new OwnedPieceFactory(King::new, ChessPlayer.BLACK))
+                        .piece('P', new OwnedPieceFactory(Pawn::new, ChessPlayer.BLACK))
+                        .piece('n', new OwnedPieceFactory(Knight::new, ChessPlayer.WHITE))
+                        .piece('r', new OwnedPieceFactory(Rook::new, ChessPlayer.WHITE))
+                        .piece('b', new OwnedPieceFactory(Bishop::new, ChessPlayer.WHITE))
+                        .piece('q', new OwnedPieceFactory(Queen::new, ChessPlayer.WHITE))
+                        .piece('k', new OwnedPieceFactory(King::new, ChessPlayer.WHITE))
+                        .piece('p', new OwnedPieceFactory(Pawn::new, ChessPlayer.WHITE)));
     }
     
     @Override

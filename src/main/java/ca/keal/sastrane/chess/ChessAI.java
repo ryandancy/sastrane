@@ -5,8 +5,8 @@ import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.Result;
 import ca.keal.sastrane.api.Round;
 import ca.keal.sastrane.api.Square;
+import ca.keal.sastrane.api.piece.OwnedPiece;
 import ca.keal.sastrane.api.piece.Piece;
-import ca.keal.sastrane.util.Pair;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,7 +29,7 @@ public class ChessAI extends AI {
     }
     
     @Override
-    public double heuristic(Round round, Player player) {
+    protected double heuristic(Round round, Player player) {
         // draw => MIN_VALUE/2, win => MAX_VALUE, lose => MIN_VALUE, else: naive piece value method
         // TODO improve piece valuation over naive method
         Result result = Chess.getInstance().getResult(round);
@@ -43,10 +43,10 @@ public class ChessAI extends AI {
         double sumOwnPieces = 0;
         double sumOpponentPieces = 0;
         for (Square square : round.getBoard()) {
-            Pair<Piece, Player> atSquare = round.getBoard().get(square);
+            OwnedPiece atSquare = round.getBoard().get(square);
             if (atSquare != null) {
-                double naiveValue = pieceToNaiveValue.get(atSquare.getLeft().getClass());
-                if (atSquare.getRight() == player) {
+                double naiveValue = pieceToNaiveValue.get(atSquare.getPiece().getClass());
+                if (atSquare.getOwner() == player) {
                     sumOwnPieces += naiveValue;
                 } else {
                     sumOpponentPieces += naiveValue;

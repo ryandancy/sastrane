@@ -21,12 +21,12 @@ public abstract class AI implements Mover {
     /** 1 >= difficulty >= 0 */
     private final double difficulty;
     
-    public double minimaxAlphaBeta(Round round, int depth, Player player) {
+    private double minimaxAlphaBeta(Round round, int depth, Player player) {
         return minimaxAlphaBeta(new MoveTreeNode(round, player), depth, Integer.MIN_VALUE, Integer.MAX_VALUE, true,
                 player);
     }
     
-    public double minimaxAlphaBeta(Round round, Move move, int depth, Player player) {
+    private double minimaxAlphaBeta(Round round, Move move, int depth, Player player) {
         return minimaxAlphaBeta(new MoveTreeNode(round, move, player), depth, Double.MIN_VALUE, Double.MAX_VALUE,
                 true, player);
     }
@@ -74,11 +74,11 @@ public abstract class AI implements Mover {
     }
     
     /** depth = 5*difficulty + 3 */
-    public int getDepth() {
+    private int getDepth() {
         return (int) (5 * difficulty) + 3;
     }
     
-    public abstract double heuristic(Round round, Player player);
+    protected abstract double heuristic(Round round, Player player);
     
     @Getter
     public static class MoveTreeNode implements Iterable<MoveTreeNode> {

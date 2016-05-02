@@ -1,7 +1,7 @@
 package ca.keal.sastrane.api;
 
-import ca.keal.sastrane.api.piece.Piece;
-import ca.keal.sastrane.util.Pair;
+import ca.keal.sastrane.api.piece.OwnedPiece;
+import ca.keal.sastrane.api.piece.OwnedPieceFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.MapChangeListener;
 import javafx.collections.ObservableMap;
@@ -19,7 +19,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 @ToString
@@ -28,7 +27,7 @@ import java.util.stream.Collectors;
 public class Board implements Iterable<Square> {
     
     // Use JavaFX ObservableMap so that listeners can be added
-    private final ObservableMap<Square, Pair<Piece, Player>> squaresToPieces; // TODO more dimensions?
+    private final ObservableMap<Square, OwnedPiece> squaresToPieces; // TODO more dimensions?
     
     @Getter(lazy = true)
     private final int maxX = getMaxDimen(Square::getX);
@@ -40,13 +39,13 @@ public class Board implements Iterable<Square> {
      * ' ' = null piece, '_' = not on board, is error if either used in pieces.
      */
     @Builder(builderClassName = "Factory", builderMethodName = "factory")
-    public Board(@Singular List<String> rows, @Singular Map<Character, Pair<Supplier<Piece>, Player>> pieces) {
+    public Board(@Singular List<String> rows, @Singular Map<Character, OwnedPieceFactory> pieces) {
         if (pieces.containsKey(' ') || pieces.containsKey('_')) {
             throw new IllegalArgumentException("Space and underscore are reserved in pieces; space is null piece "
                     + "and underscore is not-on-board.");
         }
         
-        Map<Square, Pair<Piece, Player>> squaresToPieces = new HashMap<>();
+        Map<Square, OwnedPiece> squaresToPieces = new HashMap<>();
         
         for (int y = 0; y < rows.size(); y++) {
             String row = rows.get(y);
@@ -58,7 +57,7 @@ public class Board implements Iterable<Square> {
                             + ", column " + x);
                 }
                 squaresToPieces.put(new Square(x, y), piece == ' ' ? null
-                        : pieces.get(piece).withLeft(pieces.get(piece).getLeft().get()));
+                        : new OwnedPiece(pieces.get(piece).getPieceFactory().get(), pieces.get(piece).getPlayer()));
             }
         }
         
@@ -70,15 +69,15 @@ public class Board implements Iterable<Square> {
     }
     
     @Nullable
-    public Pair<Piece, Player> get(Square square) {
+    public OwnedPiece get(Square square) {
         return squaresToPieces.get(square);
     }
     
-    public void set(Square square, @Nullable Pair<Piece, Player> value) {
+    public void set(Square square, @Nullable OwnedPiece value) {
         squaresToPieces.put(square, value);
     }
     
-    public void addListener(MapChangeListener<Square, Pair<Piece, Player>> listener) {
+    public void addListener(MapChangeListener<Square, OwnedPiece> listener) {
         squaresToPieces.addListener(listener);
     }
     

@@ -5,6 +5,7 @@ import ca.keal.sastrane.api.Round;
 import ca.keal.sastrane.api.Square;
 import ca.keal.sastrane.api.move.Move;
 import ca.keal.sastrane.api.piece.MovingPiece;
+import ca.keal.sastrane.api.piece.OwnedPiece;
 import ca.keal.sastrane.api.piece.Piece;
 import ca.keal.sastrane.api.piece.RecursiveMovingPiece;
 import com.google.common.collect.HashMultiset;
@@ -42,10 +43,10 @@ public final class Utils {
      */
     public static boolean canBeMovedTo(Round round, Square square, @Nullable Player player, boolean invert) {
         for (Square pos : round.getBoard()) {
-            Pair<Piece, Player> posData = round.getBoard().get(pos);
+            OwnedPiece posData = round.getBoard().get(pos);
             if (posData != null) {
-                Piece piece = posData.getLeft();
-                Player piecePlayer = posData.getRight();
+                Piece piece = posData.getPiece();
+                Player piecePlayer = posData.getOwner();
                 
                 if (piece instanceof MovingPiece && (player == null || (invert ? player != piecePlayer
                         : player == piecePlayer))) {

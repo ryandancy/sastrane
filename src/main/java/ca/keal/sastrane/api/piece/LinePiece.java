@@ -4,7 +4,6 @@ import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.Round;
 import ca.keal.sastrane.api.Square;
 import ca.keal.sastrane.api.move.Move;
-import ca.keal.sastrane.util.Pair;
 import lombok.AllArgsConstructor;
 
 import java.util.ArrayList;
@@ -23,7 +22,7 @@ import java.util.Map;
 @AllArgsConstructor
 public abstract class LinePiece implements MovingPiece {
     
-    private static final Map<Integer, Pair<Integer, Integer>> directionToDxAndDy = new HashMap<>();
+    private static final Map<Integer, Offset> directionToOffset = new HashMap<>();
     
     /** +y */
     public static final int UP = 0x01;
@@ -43,14 +42,14 @@ public abstract class LinePiece implements MovingPiece {
     public static final int UP_LEFT = 0x80;
     
     static {
-        directionToDxAndDy.put(UP, Pair.of(0, +1));
-        directionToDxAndDy.put(UP_RIGHT, Pair.of(+1, +1));
-        directionToDxAndDy.put(RIGHT, Pair.of(+1, 0));
-        directionToDxAndDy.put(DOWN_RIGHT, Pair.of(+1, -1));
-        directionToDxAndDy.put(DOWN, Pair.of(0, -1));
-        directionToDxAndDy.put(DOWN_LEFT, Pair.of(-1, -1));
-        directionToDxAndDy.put(LEFT, Pair.of(-1, 0));
-        directionToDxAndDy.put(UP_LEFT, Pair.of(-1, +1));
+        directionToOffset.put(UP, new Offset(0, +1));
+        directionToOffset.put(UP_RIGHT, new Offset(+1, +1));
+        directionToOffset.put(RIGHT, new Offset(+1, 0));
+        directionToOffset.put(DOWN_RIGHT, new Offset(+1, -1));
+        directionToOffset.put(DOWN, new Offset(0, -1));
+        directionToOffset.put(DOWN_LEFT, new Offset(-1, -1));
+        directionToOffset.put(LEFT, new Offset(-1, 0));
+        directionToOffset.put(UP_LEFT, new Offset(-1, +1));
     }
     
     private final boolean stopOnHitPiece;
@@ -78,30 +77,30 @@ public abstract class LinePiece implements MovingPiece {
                                               Player player, boolean stopOnHitPiece,
                                               boolean takeOpposingPieces, int directions) {
         List<Move> res = new ArrayList<>();
-        for (int i = 0; i < directionToDxAndDy.size(); i++) {
+        for (int i = 0; i < directionToOffset.size(); i++) {
             if ((directions & (1 << i)) != 0) {
-                res.addAll(getMovesInLine(directionToDxAndDy.get(1 << i), round, boardPos, player, stopOnHitPiece,
+                res.addAll(getMovesInLine(directionToOffset.get(1 << i), round, boardPos, player, stopOnHitPiece,
                         takeOpposingPieces));
             }
         }
         return res;
     }
     
-    private static List<Move> getMovesInLine(Pair<Integer, Integer> dxy, Round round, Square boardPos,
-                                             Player player, boolean stopOnHitPiece, boolean takeOpposingPieces) {
-        int dx = dxy.getLeft();
-        int dy = dxy.getRight();
+    private static List<Move> getMovesInLine(Offset offset, Round round, Square boardPos, Player player,
+                                             boolean stopOnHitPiece, boolean takeOpposingPieces) {
+        int dx = offset.getDx();
+        int dy = offset.getDy();
         List<Move> res = new ArrayList<>();
         
         for (int x = boardPos.getX() + dx, y = boardPos.getY() + dy;
              round.getBoard().isOn(player.perspectivize(new Square(x, y), boardPos));
              x += dx, y += dy) {
             Square square = player.perspectivize(new Square(x, y), boardPos);
-            Pair<Piece, Player> atSquare = round.getBoard().get(square);
+            OwnedPiece atSquare = round.getBoard().get(square);
             if (atSquare == null) {
                 res.add(boardPos.to(square));
             } else {
-                if (player != atSquare.getRight() && takeOpposingPieces) {
+                if (player != atSquare.getOwner() && takeOpposingPieces) {
                     res.add(boardPos.to(square));
                 }
                 if (stopOnHitPiece) break;
@@ -111,13 +110,12 @@ public abstract class LinePiece implements MovingPiece {
         return res;
     }
     
-    public static List<Move> getPossibleMoves(Round round, Square boardPos,
-                                              Player player, boolean stopOnHitPiece, int directions) {
+    public static List<Move> getPossibleMoves(Round round, Square boardPos, Player player, boolean stopOnHitPiece,
+                                              int directions) {
         return getPossibleMoves(round, boardPos, player, stopOnHitPiece, true, directions);
     }
     
-    public static List<Move> getPossibleMoves(Round round, Square boardPos,
-                                              Player player, int directions) {
+    public static List<Move> getPossibleMoves(Round round, Square boardPos, Player player, int directions) {
         return getPossibleMoves(round, boardPos, player, true, directions);
     }
     

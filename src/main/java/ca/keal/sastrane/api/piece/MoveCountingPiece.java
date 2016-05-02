@@ -1,8 +1,6 @@
 package ca.keal.sastrane.api.piece;
 
-import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.event.MoveEvent;
-import ca.keal.sastrane.util.Pair;
 import com.google.common.eventbus.Subscribe;
 
 /**
@@ -15,8 +13,8 @@ public interface MoveCountingPiece extends MovingPiece {
     
     @Subscribe
     default void afterMove(MoveEvent.Post e) {
-        Pair<Piece, Player> atEndPos = e.getRound().getBoard().get(e.getMove().getEndPos());
-        if (atEndPos != null && this == atEndPos.getLeft()) {
+        OwnedPiece atEndPos = e.getRound().getBoard().get(e.getMove().getEndPos());
+        if (atEndPos != null && this == atEndPos.getPiece()) {
             ((MoveCountingPiece) atEndPos).incrementMoveCount();
         }
     }

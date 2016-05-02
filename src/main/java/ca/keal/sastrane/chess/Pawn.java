@@ -7,9 +7,8 @@ import ca.keal.sastrane.api.Square;
 import ca.keal.sastrane.api.event.MoveEvent;
 import ca.keal.sastrane.api.move.Move;
 import ca.keal.sastrane.api.move.MovingMove;
-import ca.keal.sastrane.api.piece.Piece;
+import ca.keal.sastrane.api.piece.OwnedPiece;
 import ca.keal.sastrane.api.piece.RecursiveMovingPiece;
-import ca.keal.sastrane.util.Pair;
 import ca.keal.sastrane.util.Resource;
 import com.google.common.eventbus.Subscribe;
 import lombok.Getter;
@@ -55,8 +54,8 @@ public class Pawn implements RecursiveMovingPiece {
             Square diagonal = player.perspectivize(new Square(boardPos.getX() + i, boardPos.getY() + 1), boardPos);
             if (!round.getBoard().isOn(diagonal)) continue;
             
-            Pair<Piece, Player> diagonalOnBoard = round.getBoard().get(diagonal);
-            if (diagonalOnBoard != null && player != diagonalOnBoard.getRight()) {
+            OwnedPiece diagonalOnBoard = round.getBoard().get(diagonal);
+            if (diagonalOnBoard != null && player != diagonalOnBoard.getOwner()) {
                 moves.add(boardPos.to(diagonal));
             }
         }
@@ -67,11 +66,11 @@ public class Pawn implements RecursiveMovingPiece {
             Square side = player.perspectivize(boardPos.withX(boardPos.getX() + i), boardPos);
             if (!round.getBoard().isOn(side)) continue;
             
-            Pair<Piece, Player> sidePiecePlayer = round.getBoard().get(side);
+            OwnedPiece sidePiecePlayer = round.getBoard().get(side);
             if (sidePiecePlayer == null
-                    || player == sidePiecePlayer.getRight()
-                    || !(sidePiecePlayer.getLeft() instanceof Pawn)
-                    || !((Pawn) sidePiecePlayer.getLeft()).isLastMoveDouble()) {
+                    || player == sidePiecePlayer.getOwner()
+                    || !(sidePiecePlayer.getPiece() instanceof Pawn)
+                    || !((Pawn) sidePiecePlayer.getPiece()).isLastMoveDouble()) {
                 continue;
             }
             
@@ -101,15 +100,15 @@ public class Pawn implements RecursiveMovingPiece {
     @Subscribe
     public void afterMove(MoveEvent.Post e) {
         Square endPos = e.getMove().getEndPos();
-        Pair<Piece, Player> atEndPos = e.getRound().getBoard().get(endPos);
-        if (atEndPos != null && atEndPos.getLeft() instanceof Pawn) {
+        OwnedPiece atEndPos = e.getRound().getBoard().get(endPos);
+        if (atEndPos != null && atEndPos.getPiece() instanceof Pawn) {
             // Promotion
             if (endPos.getY() == 0 || endPos.getY() == e.getRound().getBoard().getMaxY()) {
-                e.getMover().decide(PromotionDecision.values(), e.getRound(), atEndPos.getRight())
+                e.getMover().decide(PromotionDecision.values(), e.getRound(), atEndPos.getOwner())
                         .onChoose(e.getRound());
             }
             
-            Pawn pawn = (Pawn) atEndPos.getLeft();
+            Pawn pawn = (Pawn) atEndPos.getPiece();
             pawn.numMoves++;
             // last move is double if this is its first move and it's on the 3rd/maxyY-3rd rank (with zeroth rank)
             pawn.lastMoveDouble = pawn.numMoves == 1

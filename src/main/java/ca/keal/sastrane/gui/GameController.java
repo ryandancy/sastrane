@@ -10,9 +10,8 @@ import ca.keal.sastrane.api.event.UserMoveEvent;
 import ca.keal.sastrane.api.move.Move;
 import ca.keal.sastrane.api.move.PlacingMove;
 import ca.keal.sastrane.api.piece.MovingPiece;
-import ca.keal.sastrane.api.piece.Piece;
+import ca.keal.sastrane.api.piece.OwnedPiece;
 import ca.keal.sastrane.api.piece.PlacingPiece;
-import ca.keal.sastrane.util.Pair;
 import ca.keal.sastrane.util.Resource;
 import com.google.common.eventbus.Subscribe;
 import javafx.beans.binding.Bindings;
@@ -144,9 +143,9 @@ public class GameController {
             }
             ImageView squareImage = (ImageView) squarePane.getChildren().get(0);
             
-            Pair<Piece, Player> atSquare = round.getBoard().get(square);
-            squareImage.setImage((atSquare == null) ? null : new Image(atSquare.getLeft().getImage()
-                    .mangle(atSquare.getRight().getName()).get().openStream()));
+            OwnedPiece atSquare = round.getBoard().get(square);
+            squareImage.setImage((atSquare == null) ? null : new Image(atSquare.getPiece().getImage()
+                    .mangle(atSquare.getOwner().getName()).get().openStream()));
         }
     }
     
@@ -182,11 +181,11 @@ public class GameController {
         PlacingPiece placingPiece = getCurrentPlacingPiece();
         if (placingPiece == null) {
             // selecting
-            Pair<Piece, Player> atCoords = round.getBoard().get(square);
-            if (atCoords == null || !(atCoords.getLeft() instanceof MovingPiece)
-                    || atCoords.getRight() != round.getCurrentTurn()) return;
-            List<Move> possibleMoves = ((MovingPiece) atCoords.getLeft()).getPossibleMoves(round, square,
-                    atCoords.getRight());
+            OwnedPiece atCoords = round.getBoard().get(square);
+            if (atCoords == null || !(atCoords.getPiece() instanceof MovingPiece)
+                    || atCoords.getOwner() != round.getCurrentTurn()) return;
+            List<Move> possibleMoves = ((MovingPiece) atCoords.getPiece()).getPossibleMoves(round, square,
+                    atCoords.getOwner());
             if (possibleMoves.size() == 0) return;
             select(square, possibleMoves.stream()
                     .map(Move::getEndPos)
@@ -197,7 +196,7 @@ public class GameController {
                     .map(PlacingMove::getPos)
                     .collect(Collectors.toList());
             if (placements.contains(square)) {
-                round.getGame().getBus().post(new UserMoveEvent(round, new PlacingMove(Pair.of(placingPiece,
+                round.getGame().getBus().post(new UserMoveEvent(round, new PlacingMove(new OwnedPiece(placingPiece,
                         round.getCurrentTurn()), square)));
             }
         }

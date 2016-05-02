@@ -29,11 +29,11 @@ public final class GuiUtils {
         return FXMLLoader.load(resource.get());
     }
     
-    public static Scene getScene(Parent parent, int width, int height) throws IOException {
+    public static Scene getScene(Parent parent, int width, int height) {
         return new Scene(parent, width, height);
     }
     
-    public static Scene getScene(Parent parent) throws IOException {
+    public static Scene getScene(Parent parent) {
         return getScene(parent, DEFAULT_WIDTH, DEFAULT_HEIGHT);
     }
     

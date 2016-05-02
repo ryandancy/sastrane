@@ -4,7 +4,6 @@ import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.Round;
 import ca.keal.sastrane.api.Square;
 import ca.keal.sastrane.api.move.Move;
-import ca.keal.sastrane.util.Pair;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,7 +12,7 @@ import java.util.Map;
 
 public abstract class JumpingPiece implements MovingPiece {
     
-    private static final Map<Integer, Pair<Integer, Integer>> quadrantsToSigns = new HashMap<>();
+    private static final Map<Integer, Offset> quadrantsToSigns = new HashMap<>();
     
     // https://commons.wikimedia.org/wiki/File:Cartesian-coordinate-system-with-quadrant.svg
     /** Quadrant I: +x, +y */
@@ -26,13 +25,13 @@ public abstract class JumpingPiece implements MovingPiece {
     public static final int QIV = 0x8;
     
     static {
-        quadrantsToSigns.put(QI, Pair.of(+1, +1));
-        quadrantsToSigns.put(QII, Pair.of(-1, +1));
-        quadrantsToSigns.put(QIII, Pair.of(-1, -1));
-        quadrantsToSigns.put(QIV, Pair.of(+1, -1));
+        quadrantsToSigns.put(QI, new Offset(+1, +1));
+        quadrantsToSigns.put(QII, new Offset(-1, +1));
+        quadrantsToSigns.put(QIII, new Offset(-1, -1));
+        quadrantsToSigns.put(QIV, new Offset(+1, -1));
     }
     
-    private final List<Pair<Integer, Integer>> offsets;
+    private final List<Offset> offsets;
     private final boolean takeOpposingPieces;
     
     public JumpingPiece(int xOffset, int yOffset, boolean mirror, boolean takeOpposingPieces, int quadrants) {
@@ -62,16 +61,15 @@ public abstract class JumpingPiece implements MovingPiece {
     }
     
     @SuppressWarnings("SuspiciousNameCombination")
-    public static List<Pair<Integer, Integer>> calculateOffsets(int xOffset, int yOffset, boolean mirror,
-                                                                int quadrants) {
-        List<Pair<Integer, Integer>> offsets = new ArrayList<>();
+    private static List<Offset> calculateOffsets(int xOffset, int yOffset, boolean mirror, int quadrants) {
+        List<Offset> offsets = new ArrayList<>();
         
         // The ^= stuff swaps x and y
         for (int x = xOffset, y = yOffset, i = 0; i < (mirror ? 2 : 1); x ^= y, y ^= x, x ^= y, i++) {
             for (int j = 0; j < quadrantsToSigns.size(); j++) {
                 if ((quadrants & (1 << j)) != 0) {
-                    Pair<Integer, Integer> signs = quadrantsToSigns.get(1 << j);
-                    offsets.add(Pair.of(signs.getLeft() * x, signs.getRight() * y));
+                    Offset signs = quadrantsToSigns.get(1 << j);
+                    offsets.add(new Offset(signs.getDx() * x, signs.getDy() * y));
                 }
             }
         }
@@ -79,26 +77,23 @@ public abstract class JumpingPiece implements MovingPiece {
         return offsets;
     }
     
-    public static List<Move> getPossibleMoves(Round round, Square boardPos,
-                                              Player player, boolean takeOpposingPieces,
-                                              List<Pair<Integer, Integer>> offsets) {
+    public static List<Move> getPossibleMoves(Round round, Square boardPos, Player player, boolean takeOpposingPieces,
+                                              List<Offset> offsets) {
         List<Move> res = new ArrayList<>();
-        for (Pair<Integer, Integer> offset : offsets) {
-            Square deltaPos = player.perspectivize(new Square(boardPos.getX() + offset.getLeft(),
-                    boardPos.getY() + offset.getRight()), boardPos);
+        for (Offset offset : offsets) {
+            Square deltaPos = player.perspectivize(new Square(boardPos.getX() + offset.getDx(),
+                    boardPos.getY() + offset.getDy()), boardPos);
             if (!round.getBoard().isOn(deltaPos)) continue;
             
-            Pair<Piece, Player> atDelta = round.getBoard().get(deltaPos);
-            if (atDelta == null || (player != atDelta.getRight() && takeOpposingPieces)) {
+            OwnedPiece atDelta = round.getBoard().get(deltaPos);
+            if (atDelta == null || (player != atDelta.getOwner() && takeOpposingPieces)) {
                 res.add(boardPos.to(deltaPos));
             }
         }
         return res;
     }
     
-    public static List<Move> getPossibleMoves(Round round, Square boardPos,
-                                              Player player,
-                                              List<Pair<Integer, Integer>> offsets) {
+    public static List<Move> getPossibleMoves(Round round, Square boardPos, Player player, List<Offset> offsets) {
         return getPossibleMoves(round, boardPos, player, true, offsets);
     }
     
