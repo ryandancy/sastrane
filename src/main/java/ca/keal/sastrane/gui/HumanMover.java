@@ -8,6 +8,7 @@ import ca.keal.sastrane.api.event.UserDecideEvent;
 import ca.keal.sastrane.api.event.UserMoveEvent;
 import ca.keal.sastrane.api.move.Move;
 import com.google.common.eventbus.Subscribe;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import javafx.application.Platform;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -38,6 +39,7 @@ public class HumanMover implements Mover {
             }
             
             @Subscribe
+            @SuppressFBWarnings("UMAC_UNCALLABLE_METHOD_OF_ANONYMOUS_CLASS")
             public void onUserMove(UserMoveEvent e) {
                 if (e.getMover() == HumanMover.this) { // just to be safe
                     controller.setInputting(false);
@@ -53,7 +55,9 @@ public class HumanMover implements Mover {
         });
         
         synchronized (lock) {
-            lock.wait(); // Wait for the user to move
+            while (move.get() == null) {
+                lock.wait(); // Wait for the user to decide
+            }
         }
         
         return move.get();
@@ -72,6 +76,7 @@ public class HumanMover implements Mover {
             }
             
             @Subscribe
+            @SuppressFBWarnings("UMAC_UNCALLABLE_METHOD_OF_ANONYMOUS_CLASS")
             public void onUserDecide(UserDecideEvent e) {
                 if (e.getMover() == HumanMover.this) { // again, just to be safe
                     decision.set(e.getDecision());
@@ -86,7 +91,9 @@ public class HumanMover implements Mover {
         });
         
         synchronized (lock) {
-            lock.wait(); // Wait for the user to decide
+             while (decision.get() == null) {
+                lock.wait(); // Wait for the user to decide
+            }
         }
         
         return decision.get();
