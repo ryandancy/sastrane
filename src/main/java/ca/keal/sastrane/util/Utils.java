@@ -50,10 +50,9 @@ public final class Utils {
                         : player == piecePlayer))) {
                     List<Move> moves;
                     if (piece instanceof RecursiveMovingPiece) {
-                        moves = ((RecursiveMovingPiece) piece)
-                                .getPossibleMovesNonRecursive(round, square, piecePlayer);
+                        moves = ((RecursiveMovingPiece) piece).getPossibleMovesNonRecursive(round, pos, piecePlayer);
                     } else {
-                        moves = ((MovingPiece) piece).getPossibleMoves(round, square, piecePlayer);
+                        moves = ((MovingPiece) piece).getPossibleMoves(round, pos, piecePlayer);
                     }
                     
                     if (moves.stream().map(Move::getEndPos).anyMatch(square::equals)) {
