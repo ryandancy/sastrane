@@ -10,7 +10,6 @@ import ca.keal.sastrane.api.piece.OwnedPiece;
 import ca.keal.sastrane.api.piece.PlacingPiece;
 import ca.keal.sastrane.util.Utils;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.eventbus.Subscribe;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -48,7 +47,6 @@ public class Round {
         this.game = game;
         this.playersToMovers = ImmutableMap.copyOf(playersToMovers);
         this.board = game.getBoardFactory().build();
-        game.getBus().register(this);
     }
     
     public Round(Round round) {
@@ -70,6 +68,13 @@ public class Round {
         game.getBus().post(new MoveEvent.Post(this, move));
         
         game.getBus().post(new TurnEvent.Post(this));
+        
+        Result result = game.getResult(this);
+        if (result != Result.NOT_OVER) {
+            game.getBus().post(new WinEvent(this, result));
+            ended = true;
+        }
+        
         moveNum++;
     }
     
@@ -106,11 +111,6 @@ public class Round {
             moves.addAll(placingPiece.getPossiblePlacements(this, player));
         }
         return moves;
-    }
-    
-    @Subscribe
-    public void onWin(WinEvent e) {
-        ended = true;
     }
     
 }

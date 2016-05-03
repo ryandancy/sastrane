@@ -148,3 +148,8 @@
 #decision .option .text {
     -fx-font-weight: 600;
 }
+
+#win {
+    visibility: hidden;
+    -fx-alignment: center;
+}

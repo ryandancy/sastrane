@@ -8,6 +8,8 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.TilePane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.image.ImageView?>
 <BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="ca.keal.sastrane.gui.GameController" fx:id="game"
             stylesheets="@sastrane.css">
     <top>
@@ -28,6 +30,11 @@
                 </maxHeight>
             </GridPane>
             <FlowPane fx:id="decisionPane" id="decision" mouseTransparent="true" />
+            <VBox fx:id="winPane" id="win" mouseTransparent="true">
+                <ImageView fx:id="winImg" styleClass="img" />
+                <Label fx:id="winText" styleClass="who-won" labelFor="$winImg" />
+                <Button styleClass="main-menu" text="Main Menu" onAction="#onQuit" />
+            </VBox>
         </StackPane>
     </center>
     <right>

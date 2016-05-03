@@ -7,6 +7,7 @@ import ca.keal.sastrane.api.Square;
 import ca.keal.sastrane.api.event.TurnEvent;
 import ca.keal.sastrane.api.event.UserDecideEvent;
 import ca.keal.sastrane.api.event.UserMoveEvent;
+import ca.keal.sastrane.api.event.WinEvent;
 import ca.keal.sastrane.api.move.Move;
 import ca.keal.sastrane.api.move.PlacingMove;
 import ca.keal.sastrane.api.piece.MovingPiece;
@@ -51,7 +52,12 @@ public class GameController {
     @FXML private Label title;
     @FXML private GridPane boardGrid;
     @FXML private TilePane pieceChooser;
+    
     @FXML private FlowPane decisionPane;
+    
+    @FXML private VBox winPane;
+    @FXML private ImageView winImg;
+    @FXML private Label winText;
     
     private Round round;
     @Nullable private Map<Player, ToggleGroup> playersToPieceChooserGroups = null;
@@ -288,6 +294,21 @@ public class GameController {
                     .map(toggle -> (Node) toggle)
                     .collect(Collectors.toList()));
         }
+    }
+    
+    @Subscribe
+    @SneakyThrows
+    public void onWin(WinEvent e) {
+        Player winner = e.getWinner();
+        if (winner == null) {
+            winImg.setImage(new Image(new Resource("ca.keal.sastrane.icon", "draw.png").get().openStream()));
+            winText.setText("Draw...");
+        } else {
+            winImg.setImage(new Image(winner.getIcon().get().openStream()));
+            winText.setText(winner.getName() + " wins!");
+        }
+        winPane.setMouseTransparent(false);
+        winPane.setVisible(true);
     }
     
     @FXML
