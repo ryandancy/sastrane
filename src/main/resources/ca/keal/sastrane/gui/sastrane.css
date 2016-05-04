@@ -1,10 +1,23 @@
 .root {
-    -fx-background-color: #A88C27;
+    background: #A88C27;
+    -fx-background-color: background;
     button-background: #927921;
 }
 
 * {
     -fx-text-fill: black;
+}
+
+.scroll-pane {
+    -fx-background-color: transparent;
+    -fx-hbar-policy: never;
+    -fx-vbar-policy: as-needed;
+    -fx-fit-to-height: true;
+    -fx-fit-to-width: true;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
 }
 
 #app-logo {
