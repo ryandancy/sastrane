@@ -15,12 +15,14 @@ import ca.keal.sastrane.api.piece.OwnedPiece;
 import ca.keal.sastrane.api.piece.PlacingPiece;
 import ca.keal.sastrane.util.Resource;
 import com.google.common.eventbus.Subscribe;
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.NumberBinding;
 import javafx.concurrent.Task;
 import javafx.css.PseudoClass;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
@@ -40,13 +42,17 @@ import lombok.Setter;
 import lombok.SneakyThrows;
 
 import javax.annotation.Nullable;
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
-public class GameController {
+public class GameController implements Initializable {
     
     @FXML private BorderPane game;
     @FXML private Label title;
@@ -70,6 +76,7 @@ public class GameController {
     public void setRound(Round round) {
         this.round = round;
         this.round.getBoard().addListener(change -> updateBoardGrid());
+        this.round.getGame().getBus().register(this);
         title.setText(round.getGame().getName());
         game.getStylesheets().add(round.getGame().getCss().getFilename());
         
@@ -83,7 +90,6 @@ public class GameController {
                 }
                 playersToPieceChooserGroups.put(player, pieceChooserGroup);
             }
-            round.getGame().getBus().register(this);
             pieceChooser.setVisible(true);
         }
         
@@ -250,7 +256,7 @@ public class GameController {
             img.setPreserveRatio(true);
             
             Label label = new Label(option.getName());
-            label.getStyleClass().add("text");
+            label.getStyleClass().add("name");
             label.setLabelFor(img);
             
             optionBox.getChildren().addAll(img, label);
@@ -297,18 +303,23 @@ public class GameController {
     }
     
     @Subscribe
-    @SneakyThrows
     public void onWin(WinEvent e) {
-        Player winner = e.getWinner();
-        if (winner == null) {
-            winImg.setImage(new Image(new Resource("ca.keal.sastrane.icon", "draw.png").get().openStream()));
-            winText.setText("Draw...");
-        } else {
-            winImg.setImage(new Image(winner.getIcon().get().openStream()));
-            winText.setText(winner.getName() + " wins!");
-        }
-        winPane.setMouseTransparent(false);
-        winPane.setVisible(true);
+        Platform.runLater(() -> {
+            try {
+                Player winner = e.getWinner();
+                if (winner == null) {
+                    winImg.setImage(new Image(new Resource("ca.keal.sastrane.icon", "draw.png").get().openStream()));
+                    winText.setText("Draw...");
+                } else {
+                    winImg.setImage(new Image(winner.getIcon().get().openStream()));
+                    winText.setText(winner.getName() + " wins!");
+                }
+                winPane.setMouseTransparent(false);
+                winPane.setVisible(true);
+            } catch (IOException ioe) {
+                throw new UncheckedIOException(ioe);
+            }
+        });
     }
     
     @FXML
@@ -316,6 +327,13 @@ public class GameController {
     private void onQuit(ActionEvent e) {
         // Send back to the main menu
         GuiUtils.getStage(e).setScene(GuiUtils.getScene(new Resource("ca.keal.sastrane.gui", "main-menu.fxml")));
+    }
+    
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        NumberBinding winPaneMinWH = Bindings.min(winPane.prefWidthProperty(), winPane.prefHeightProperty());
+        winPane.prefWidthProperty().bind(winPaneMinWH);
+        winPane.prefHeightProperty().bind(winPaneMinWH);
     }
     
 }

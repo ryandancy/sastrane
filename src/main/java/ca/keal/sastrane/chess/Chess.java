@@ -41,10 +41,20 @@ public class Chess extends Game {
     
     @Override
     public Result getResult(Round round) {
-        for (Player player : getPlayers()) {
+        Player player = ChessPlayer.WHITE;
+        Player opponent = ChessPlayer.BLACK;
+        for (int i = 0; i < 2; i++) {
             if (round.getAllPossibleMoves(player).size() == 0) {
-                return KingInCheckUtils.isKingInCheck(round, player) ? new Result.Win(player) : Result.DRAW;
+                if (KingInCheckUtils.isKingInCheck(round, player)) {
+                    return new Result.Win(opponent);
+                } else {
+                    return Result.DRAW;
+                }
             }
+            
+            Player temp = opponent;
+            opponent = player;
+            player = temp;
         }
         return Result.NOT_OVER;
     }

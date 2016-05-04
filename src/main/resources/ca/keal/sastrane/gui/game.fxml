@@ -12,6 +12,9 @@
 <?import javafx.scene.image.ImageView?>
 <BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="ca.keal.sastrane.gui.GameController" fx:id="game"
             stylesheets="@sastrane.css">
+    <fx:define>
+        <Region fx:id="USE_PREF_SIZE" fx:constant="USE_PREF_SIZE" />
+    </fx:define>
     <top>
         <StackPane>
             <Button text="Quit" onAction="#onQuit" StackPane.alignment="center_left" />
@@ -21,16 +24,11 @@
     <center>
         <StackPane>
             <GridPane fx:id="boardGrid" id="board" prefWidth="${game.width * 0.6}" prefHeight="${game.height * 0.6}"
-                      minWidth="0" minHeight="0">
-                <maxWidth>
-                    <Region fx:constant="USE_PREF_SIZE" />
-                </maxWidth>
-                <maxHeight>
-                    <Region fx:constant="USE_PREF_SIZE" />
-                </maxHeight>
-            </GridPane>
+                      minWidth="0" minHeight="0" maxWidth="$USE_PREF_SIZE" maxHeight="$USE_PREF_SIZE" />
             <FlowPane fx:id="decisionPane" id="decision" mouseTransparent="true" />
-            <VBox fx:id="winPane" id="win" mouseTransparent="true">
+            <VBox fx:id="winPane" id="win" mouseTransparent="true" prefWidth="${game.width * 0.55}"
+                  prefHeight="${game.height * 0.55}" minWidth="0" minHeight="0" maxWidth="$USE_PREF_SIZE"
+                  maxHeight="$USE_PREF_SIZE">
                 <ImageView fx:id="winImg" styleClass="img" />
                 <Label fx:id="winText" styleClass="who-won" labelFor="$winImg" />
                 <Button styleClass="main-menu" text="Main Menu" onAction="#onQuit" />

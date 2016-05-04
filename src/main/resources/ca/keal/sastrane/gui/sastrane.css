@@ -131,11 +131,14 @@
 }
 
 #decision {
-    -fx-alignment: center;
     -fx-hgap: 20;
     -fx-vgap: 20;
-    visibility: hidden;
     -fx-padding: 20;
+}
+
+#decision, #win {
+    -fx-alignment: center;
+    visibility: hidden;
 }
 
 #decision .option {
@@ -145,11 +148,16 @@
     -fx-spacing: 5;
 }
 
-#decision .option .text {
+#decision .option .name {
     -fx-font-weight: 600;
 }
 
 #win {
-    visibility: hidden;
-    -fx-alignment: center;
+    -fx-background-color: hsba(0, 100%, 100%, .5);
+    -fx-padding: 40;
+}
+
+#win .who-won {
+    -fx-font-size: 1.5em;
+    -fx-font-weight: 500;
 }

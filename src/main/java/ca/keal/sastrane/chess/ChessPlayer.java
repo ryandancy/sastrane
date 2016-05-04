@@ -15,10 +15,8 @@ public enum ChessPlayer implements Player {
     WHITE("white", new Resource("ca.keal.sastrane.chess.icon", "white.png"), Player::flipY),
     BLACK("black", new Resource("ca.keal.sastrane.chess.icon", "black.png"), Player::flipNone);
     
-    @Getter
-    private final String name;
-    @Getter
-    private final Resource icon;
+    @Getter private final String name;
+    @Getter private final Resource icon;
     private final BinaryOperator<Square> perspectivizer;
     
     @Override
