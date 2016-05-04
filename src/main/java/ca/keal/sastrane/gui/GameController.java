@@ -38,6 +38,7 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import lombok.Setter;
 import lombok.SneakyThrows;
 
@@ -243,12 +244,13 @@ public class GameController implements Initializable {
             VBox optionBox = new VBox();
             optionBox.getStyleClass().add("option");
             optionBox.setOnMouseClicked(e -> onDecide(option));
-            optionBox.prefWidthProperty().bind(boardGrid.widthProperty().multiply(.5));
-            optionBox.prefHeightProperty().bind(optionBox.prefWidthProperty());
+            NumberBinding minWH = Bindings.min(boardGrid.widthProperty(), boardGrid.heightProperty()).multiply(0.5);
+            optionBox.prefWidthProperty().bind(minWH);
+            optionBox.prefHeightProperty().bind(minWH);
             optionBox.setMaxWidth(Region.USE_PREF_SIZE);
             optionBox.setMaxHeight(Region.USE_PREF_SIZE);
-            optionBox.setMinWidth(Region.USE_PREF_SIZE);
-            optionBox.setMinHeight(Region.USE_PREF_SIZE);
+            optionBox.setMinWidth(0);
+            optionBox.setMinHeight(0);
             
             ImageView img = new ImageView(new Image(option.getIcon().get().openStream()));
             img.getStyleClass().add("img");
@@ -258,6 +260,10 @@ public class GameController implements Initializable {
             Label label = new Label(option.getName());
             label.getStyleClass().add("name");
             label.setLabelFor(img);
+            label.fontProperty().bind(Bindings.createObjectBinding(
+                    () -> new Font(optionBox.heightProperty().divide(10).get()),
+                    optionBox.heightProperty()
+            ));
             
             optionBox.getChildren().addAll(img, label);
             decisionPane.getChildren().add(optionBox);
@@ -331,9 +337,14 @@ public class GameController implements Initializable {
     
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        NumberBinding winPaneMinWH = Bindings.min(winPane.prefWidthProperty(), winPane.prefHeightProperty());
+        NumberBinding winPaneMinWH = Bindings.min(game.widthProperty(), game.heightProperty()).multiply(0.6);
         winPane.prefWidthProperty().bind(winPaneMinWH);
         winPane.prefHeightProperty().bind(winPaneMinWH);
+        
+        winText.fontProperty().bind(Bindings.createObjectBinding(
+                () -> new Font(boardGrid.heightProperty().divide(10).get()),
+                boardGrid.heightProperty()
+        ));
     }
     
 }
