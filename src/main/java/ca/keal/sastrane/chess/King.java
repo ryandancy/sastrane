@@ -93,7 +93,7 @@ public class King implements RecursiveMovingPiece, MoveCountingPiece {
                 if ((square.getX() == 0 && square.getY() == 0) || !round.getBoard().isOn(square)) continue;
                 
                 OwnedPiece atSquare = round.getBoard().get(square);
-                if (atSquare == null || atSquare.getOwner() == player) continue;
+                if (atSquare != null && atSquare.getOwner() == player) continue;
                 
                 moves.add(boardPos.to(square));
             }
