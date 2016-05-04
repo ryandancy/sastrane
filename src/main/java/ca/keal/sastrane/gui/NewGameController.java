@@ -45,14 +45,15 @@ public class NewGameController {
     @SneakyThrows
     private void onBack(ActionEvent e) {
         // Send back to the main menu
-        GuiUtils.getStage(e).setScene(GuiUtils.getScene(new Resource("ca.keal.sastrane.gui", "main-menu.fxml")));
+        GuiUtils.getStage(e).setScene(GuiUtils.getScene(new Resource("ca.keal.sastrane.gui", "main-menu.fxml"),
+                GuiUtils.getStage(e).getScene()));
     }
     
     @FXML
     @SneakyThrows
     private void onCreateGame(ActionEvent e) {
         FXMLLoader loader = new FXMLLoader(new Resource("ca.keal.sastrane.gui", "game.fxml").get());
-        Scene scene = GuiUtils.getScene((Parent) loader.load());
+        Scene scene = GuiUtils.getScene((Parent) loader.load(), GuiUtils.getStage(e).getScene());
         GameController controller = loader.getController();
         
         // Get data from player settings

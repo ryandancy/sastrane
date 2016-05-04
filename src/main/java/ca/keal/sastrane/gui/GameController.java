@@ -332,7 +332,8 @@ public class GameController implements Initializable {
     @SneakyThrows
     private void onQuit(ActionEvent e) {
         // Send back to the main menu
-        GuiUtils.getStage(e).setScene(GuiUtils.getScene(new Resource("ca.keal.sastrane.gui", "main-menu.fxml")));
+        GuiUtils.getStage(e).setScene(GuiUtils.getScene(new Resource("ca.keal.sastrane.gui", "main-menu.fxml"),
+                GuiUtils.getStage(e).getScene()));
     }
     
     @Override

@@ -23,7 +23,10 @@ public class Main extends Application {
         
         // TODO dynamic title
         primaryStage.setTitle("Sastrane");
-        primaryStage.setScene(GuiUtils.getScene(new Resource("ca.keal.sastrane.gui", "main-menu.fxml")));
+        // Is 400x400 the best dimens here???
+        primaryStage.setScene(GuiUtils.getScene(new Resource("ca.keal.sastrane.gui", "main-menu.fxml"), 400, 400));
+        primaryStage.setMinWidth(425); // This works for some reason
+        primaryStage.setMinHeight(500);
         primaryStage.show();
     }
     

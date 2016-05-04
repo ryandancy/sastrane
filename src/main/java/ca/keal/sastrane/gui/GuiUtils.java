@@ -14,10 +14,6 @@ import java.io.IOException;
 
 public final class GuiUtils {
     
-    // Is 400x400 the best choice here???
-    public static final int DEFAULT_WIDTH = 400;
-    public static final int DEFAULT_HEIGHT = 400;
-    
     private GuiUtils() {
         throw new RuntimeException("ca.keal.sastrane.gui.GuiUtils is a utility class and cannot be instantiated.");
     }
@@ -29,20 +25,28 @@ public final class GuiUtils {
         return FXMLLoader.load(resource.get());
     }
     
-    public static Scene getScene(Parent parent, int width, int height) {
+    public static Scene getScene(Parent parent, double width, double height) {
         return new Scene(parent, width, height);
     }
     
-    public static Scene getScene(Parent parent) {
-        return getScene(parent, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+    public static Scene getScene(Parent parent, Scene previous) {
+        return getScene(parent, previous.getWidth(), previous.getHeight());
     }
     
-    public static Scene getScene(Resource resource, int width, int height) throws IOException {
+    public static Scene getScene(Parent parent) {
+        return new Scene(parent);
+    }
+    
+    public static Scene getScene(Resource resource, double width, double height) throws IOException {
         return getScene(loadFXML(resource), width, height);
     }
     
+    public static Scene getScene(Resource resource, Scene previous) throws IOException {
+        return getScene(loadFXML(resource), previous);
+    }
+    
     public static Scene getScene(Resource resource) throws IOException {
-        return getScene(resource, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+        return getScene(loadFXML(resource));
     }
     
     // Thanks, http://stackoverflow.com/a/12805134
