@@ -30,8 +30,12 @@ public abstract class AI implements Mover {
     // https://en.wikipedia.org/wiki/Alpha-beta_pruning#Pseudocode
     private double minimaxAlphaBeta(int depth, double a, double b, boolean maximizingPlayer, Round round,
                                     Player player) {
+        if (depth == 0) {
+            return heuristic(round, player);
+        }
+        
         List<Move> moves = round.getAllPossibleMoves(player);
-        if (depth == 0 || moves.size() == 0) {
+        if (moves.size() == 0) {
             return heuristic(round, player);
         }
         
