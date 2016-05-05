@@ -101,7 +101,7 @@ public class Pawn implements RecursiveMovingPiece {
     public void afterMove(MoveEvent.Post e) {
         Square endPos = e.getMove().getEndPos();
         OwnedPiece atEndPos = e.getRound().getBoard().get(endPos);
-        if (atEndPos != null && atEndPos.getPiece() instanceof Pawn) {
+        if (atEndPos != null && atEndPos.getPiece() == this) {
             // Promotion
             if (endPos.getY() == 0 || endPos.getY() == e.getRound().getBoard().getMaxY()) {
                 e.getMover().decide(PromotionDecision.values(), e.getRound(), atEndPos.getOwner())
@@ -110,7 +110,7 @@ public class Pawn implements RecursiveMovingPiece {
             
             Pawn pawn = (Pawn) atEndPos.getPiece();
             pawn.numMoves++;
-            // last move is double if this is its first move and it's on the 3rd/maxyY-3rd rank (with zeroth rank)
+            // last move is double if this is its first move and it's on the 3rd/maxY-3rd rank (with zeroth rank)
             pawn.lastMoveDouble = pawn.numMoves == 1
                     && (endPos.getY() == 3 || endPos.getY() == e.getRound().getBoard().getMaxY() - 3);
         }
