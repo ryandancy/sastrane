@@ -1,12 +1,16 @@
 package ca.keal.sastrane.api;
 
 import ca.keal.sastrane.api.move.Move;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Sets;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 
 /**
  * The base class of all AIs for all games. Uses the <a href="https://en.wikipedia.org/wiki/Minimax">minimax</a>
@@ -20,44 +24,60 @@ public abstract class AI implements Mover {
     private final double difficulty;
     
     private double minimaxAlphaBeta(Round round, int depth, Player player) {
-        return minimaxAlphaBeta(depth, Double.MIN_VALUE, Double.MAX_VALUE, true, round, player);
+        Set<Player> otherPlayers = Sets.newHashSet(round.getGame().getPlayers());
+        otherPlayers.remove(player);
+        return maximize(depth, Double.MIN_VALUE, Double.MAX_VALUE, round, player, ImmutableSet.of(player),
+                otherPlayers);
     }
     
     private double minimaxAlphaBeta(Round round, Move move, int depth, Player player) {
-        return minimaxAlphaBeta(depth, Double.MIN_VALUE, Double.MAX_VALUE, true, round.copyWithMove(move), player);
+        return minimaxAlphaBeta(round.copyWithMove(move), depth, player);
     }
     
-    // https://en.wikipedia.org/wiki/Alpha-beta_pruning#Pseudocode
-    private double minimaxAlphaBeta(int depth, double a, double b, boolean maximizingPlayer, Round round,
-                                    Player player) {
+    private double maximize(int depth, double a, double b, Round round, Player maximizing,
+                            Set<Player> maximizingSet, Set<Player> minimizing) {
         if (depth == 0) {
-            return heuristic(round, player);
+            return heuristic(round, maximizingSet);
         }
         
-        List<Move> moves = round.getAllPossibleMoves(player);
+        List<Move> moves = round.getAllPossibleMoves(maximizing);
         if (moves.size() == 0) {
-            return heuristic(round, player);
+            return heuristic(round, maximizingSet);
+        }
+    
+        double v = Double.MIN_VALUE;
+        for (Move move : moves) {
+            Round roundCopy = round.copyWithMove(move);
+            v = Math.max(v, minimize(depth - 1, a, b, roundCopy, maximizing, maximizingSet, minimizing));
+            a = Math.max(a, v);
+            if (b <= a) break;
+        }
+        return v;
+    }
+    
+    private double minimize(int depth, double a, double b, Round round, Player maximizing,
+                            Set<Player> maximizingSet, Set<Player> minimizing) {
+        if (depth == 0) {
+            return heuristic(round, maximizingSet);
         }
         
-        if (maximizingPlayer) {
-            double v = Double.MIN_VALUE;
-            for (Move move : moves) {
-                Round roundCopy = round.copyWithMove(move);
-                v = Math.max(v, minimaxAlphaBeta(depth - 1, a, b, false, roundCopy, player));
-                a = Math.max(a, v);
-                if (b <= a) break;
-            }
-            return v;
-        } else {
-            double v = Double.MAX_VALUE;
-            for (Move move : moves) {
-                Round roundCopy = round.copyWithMove(move);
-                v = Math.min(v, minimaxAlphaBeta(depth - 1, a, b, true, roundCopy, player));
-                b = Math.min(b, v);
-                if (b <= a) break;
-            }
-            return v;
+        List<Move> moves = new ArrayList<>();
+        for (Player player : minimizing) {
+            moves.addAll(round.getAllPossibleMoves(player));
         }
+        
+        if (moves.size() == 0) {
+            return heuristic(round, maximizingSet);
+        }
+        
+        double v = Double.MAX_VALUE;
+        for (Move move : moves) {
+            Round roundCopy = round.copyWithMove(move);
+            v = Math.min(v, maximize(depth - 1, a, b, roundCopy, maximizing, maximizingSet, minimizing));
+            b = Math.min(b, v);
+            if (b <= a) break;
+        }
+        return v;
     }
     
     @Override
@@ -81,6 +101,6 @@ public abstract class AI implements Mover {
         return (int) (3 * difficulty) + 1;
     }
     
-    protected abstract double heuristic(Round round, Player player);
+    protected abstract double heuristic(Round round, Set<Player> players);
     
 }

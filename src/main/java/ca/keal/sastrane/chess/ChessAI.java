@@ -10,6 +10,7 @@ import ca.keal.sastrane.api.piece.Piece;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class ChessAI extends AI {
     
@@ -29,9 +30,12 @@ public class ChessAI extends AI {
     }
     
     @Override
-    protected double heuristic(Round round, Player player) {
+    protected double heuristic(Round round, Set<Player> players) {
         // draw => MIN_VALUE/2, win => MAX_VALUE, lose => MIN_VALUE, else: naive piece value method
         // TODO improve piece valuation over naive method
+        if (players.size() != 1) throw new IllegalArgumentException("ChessAI.heuristic: players.size() != 1");
+        Player player = players.toArray(new Player[1])[0];
+        
         Result result = Chess.getInstance().getResult(round);
         if (result instanceof Result.Win) {
             return ((Result.Win) result).getPlayer() == player ? Double.MAX_VALUE : Double.MIN_VALUE;
