@@ -6,9 +6,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * The base class of all AIs for all games. Uses the <a href="https://en.wikipedia.org/wiki/Minimax">minimax</a>
@@ -22,34 +20,35 @@ public abstract class AI implements Mover {
     private final double difficulty;
     
     private double minimaxAlphaBeta(Round round, int depth, Player player) {
-        return minimaxAlphaBeta(new MoveTreeNode(round, player), depth, Integer.MIN_VALUE, Integer.MAX_VALUE, true,
-                player);
+        return minimaxAlphaBeta(depth, Double.MIN_VALUE, Double.MAX_VALUE, true, round, player);
     }
     
     private double minimaxAlphaBeta(Round round, Move move, int depth, Player player) {
-        return minimaxAlphaBeta(new MoveTreeNode(round, move, player), depth, Double.MIN_VALUE, Double.MAX_VALUE,
-                true, player);
+        return minimaxAlphaBeta(depth, Double.MIN_VALUE, Double.MAX_VALUE, true, round.copyWithMove(move), player);
     }
     
     // https://en.wikipedia.org/wiki/Alpha-beta_pruning#Pseudocode
-    private double minimaxAlphaBeta(MoveTreeNode node, int depth, double a, double b, boolean maximizingPlayer,
+    private double minimaxAlphaBeta(int depth, double a, double b, boolean maximizingPlayer, Round round,
                                     Player player) {
-        if (depth == 0 || node.isTerminal()) {
-            return heuristic(node.getRound(), player);
+        List<Move> moves = round.getAllPossibleMoves(player);
+        if (depth == 0 || moves.size() == 0) {
+            return heuristic(round, player);
         }
         
         if (maximizingPlayer) {
             double v = Double.MIN_VALUE;
-            for (MoveTreeNode child : node) {
-                v = Math.max(v, minimaxAlphaBeta(child, depth - 1, a, b, false, player));
+            for (Move move : moves) {
+                Round roundCopy = round.copyWithMove(move);
+                v = Math.max(v, minimaxAlphaBeta(depth - 1, a, b, false, roundCopy, player));
                 a = Math.max(a, v);
                 if (b <= a) break;
             }
             return v;
         } else {
             double v = Double.MAX_VALUE;
-            for (MoveTreeNode child : node) {
-                v = Math.min(v, minimaxAlphaBeta(child, depth - 1, a, b, true, player));
+            for (Move move : moves) {
+                Round roundCopy = round.copyWithMove(move);
+                v = Math.min(v, minimaxAlphaBeta(depth - 1, a, b, true, roundCopy, player));
                 b = Math.min(b, v);
                 if (b <= a) break;
             }
@@ -79,39 +78,5 @@ public abstract class AI implements Mover {
     }
     
     protected abstract double heuristic(Round round, Player player);
-    
-    @Getter
-    public static class MoveTreeNode implements Iterable<MoveTreeNode> {
-        
-        private final Round round;
-        private final Player player;
-        @Getter(lazy = true) private final List<Move> childMoves = round.getAllPossibleMoves(player);
-        
-        public MoveTreeNode(Round round, Player player) {
-            this.round = round;
-            this.player = player;
-        }
-        
-        public MoveTreeNode(Round round, Move move, Player player) {
-            this.round = round.copyWithMove(move);
-            this.player = player;
-        }
-        
-        public boolean isTerminal() {
-            return getChildMoves().size() == 0;
-        }
-        
-        public List<MoveTreeNode> getChildren() {
-            return getChildMoves().stream()
-                    .map(move -> new MoveTreeNode(round, move, player))
-                    .collect(Collectors.toList());
-        }
-        
-        @Override
-        public Iterator<MoveTreeNode> iterator() {
-            return getChildren().iterator();
-        }
-        
-    }
     
 }
