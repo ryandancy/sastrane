@@ -5,7 +5,6 @@ import ca.keal.sastrane.util.Resource;
 import com.google.common.reflect.ClassPath;
 import javafx.application.Application;
 import javafx.stage.Stage;
-import lombok.SneakyThrows;
 
 public class Main extends Application {
     
@@ -30,9 +29,12 @@ public class Main extends Application {
         primaryStage.show();
     }
     
-    @SneakyThrows
     private void initializeClass(ClassPath.ClassInfo cls) {
-        Class.forName(cls.getName());
+        try {
+            Class.forName(cls.getName());
+        } catch (ClassNotFoundException | NoClassDefFoundError e) {
+            // TODO log
+        }
     }
     
 }
