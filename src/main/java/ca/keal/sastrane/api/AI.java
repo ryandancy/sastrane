@@ -73,9 +73,9 @@ public abstract class AI implements Mover {
                 .get();
     }
     
-    /** depth = 5*difficulty + 3 */
+    /** depth = 3*difficulty + 1 */
     private int getDepth() {
-        return (int) (5 * difficulty) + 3;
+        return (int) (3 * difficulty) + 1;
     }
     
     protected abstract double heuristic(Round round, Player player);
@@ -84,34 +84,32 @@ public abstract class AI implements Mover {
     public static class MoveTreeNode implements Iterable<MoveTreeNode> {
         
         private final Round round;
-        private final List<Move> childMoves;
         private final Player player;
+        @Getter(lazy = true) private final List<Move> childMoves = round.getAllPossibleMoves(player);
         
         public MoveTreeNode(Round round, Player player) {
             this.round = round;
             this.player = player;
-            this.childMoves = round.getAllPossibleMoves(player);
         }
         
         public MoveTreeNode(Round round, Move move, Player player) {
             this.round = round.copyWithMove(move);
             this.player = player;
-            this.childMoves = this.round.getAllPossibleMoves(player);
         }
         
         public boolean isTerminal() {
-            return childMoves.size() == 0;
+            return getChildMoves().size() == 0;
         }
         
         public List<MoveTreeNode> getChildren() {
-            return childMoves.stream()
+            return getChildMoves().stream()
                     .map(move -> new MoveTreeNode(round, move, player))
                     .collect(Collectors.toList());
         }
         
         @Override
         public Iterator<MoveTreeNode> iterator() {
-            return this.getChildren().iterator();
+            return getChildren().iterator();
         }
         
     }
