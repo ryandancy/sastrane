@@ -45,7 +45,7 @@ public class King implements RecursiveMovingPiece, MoveCountingPiece {
         for (int rookX = 0; rookX <= round.getBoard().getMaxX(); rookX += round.getBoard().getMaxX()) {
             if (canCastle(round, boardPos, player, rookX)) {
                 // Use MovingMove subclass to move rook too
-                int inc = (int) Math.signum(boardPos.getX() - rookX);
+                int inc = (int) Math.signum(rookX - boardPos.getX());
                 final int rookXFinal = rookX; // required because rookX isn't effectively final
                 
                 moves.add(new MovingMove(boardPos, player.perspectivize(boardPos.withX(boardPos.getX() + 2 * inc),
@@ -72,14 +72,15 @@ public class King implements RecursiveMovingPiece, MoveCountingPiece {
         if (rook.getNumMoves() != 0) return false;
         
         // Ensure there are no pieces between rook & king
-        int inc = (int) Math.signum(boardPos.getX() - rookX);
+        int inc = (int) Math.signum(rookX - boardPos.getX());
         for (int x = boardPos.getX() + inc; x != rookX; x += inc) {
             Square between = player.perspectivize(boardPos.withX(x), boardPos);
             if (!round.getBoard().isOn(between) || round.getBoard().get(between) != null) return false;
         }
         
         // Ensure that the position the king will 'pass through' is not in check
-        return Utils.canBeMovedTo(round, player.perspectivize(boardPos.withX(boardPos.getX() + inc), boardPos), player);
+        return !Utils.canBeMovedTo(round, player.perspectivize(boardPos.withX(boardPos.getX() + inc), boardPos),
+                player);
     }
     
     @Override

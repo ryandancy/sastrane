@@ -3,18 +3,14 @@ package ca.keal.sastrane.api.move;
 import ca.keal.sastrane.api.Board;
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.Square;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
-import lombok.experimental.NonFinal;
 
-@Value
-@NonFinal
 @RequiredArgsConstructor
 public class MovingMove implements Move {
     
-    private final Square from;
-    
-    private final Square to;
+    @Getter private final Square from;
+    @Getter private final Square to;
     
     @Override
     public void move(Board board) {
