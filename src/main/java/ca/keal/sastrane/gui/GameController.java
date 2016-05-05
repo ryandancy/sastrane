@@ -73,6 +73,7 @@ public class GameController implements Initializable {
     
     @Nullable private Square selectionBase = null;
     private List<Square> selection = new ArrayList<>();
+    private List<Move> selectionMoves = new ArrayList<>();
     
     public void setRound(Round round) {
         this.round = round;
@@ -185,7 +186,10 @@ public class GameController implements Initializable {
         Square square = new Square(x, y);
         if (selection.size() > 0 && selectionBase != null) {
             if (selection.contains(square)) {
-                round.getGame().getBus().post(new UserMoveEvent(round, selectionBase.to(square)));
+                round.getGame().getBus().post(new UserMoveEvent(round, selectionMoves.stream()
+                    .filter(move -> move.getEndPos().equals(square))
+                    .collect(Collectors.toList())
+                    .get(0)));
             }
             deselect();
             return;
@@ -200,7 +204,7 @@ public class GameController implements Initializable {
             List<Move> possibleMoves = ((MovingPiece) atCoords.getPiece()).getPossibleMoves(round, square,
                     atCoords.getOwner());
             if (possibleMoves.size() == 0) return;
-            select(square, possibleMoves.stream()
+            select(square, possibleMoves, possibleMoves.stream()
                     .map(Move::getEndPos)
                     .collect(Collectors.toList()));
         } else {
@@ -215,9 +219,10 @@ public class GameController implements Initializable {
         }
     }
     
-    private void select(Square selectionBase, List<Square> selection) {
+    private void select(Square selectionBase, List<Move> possibleMoves, List<Square> selection) {
         this.selectionBase = selectionBase;
         this.selection = selection;
+        selectionMoves = possibleMoves;
         
         lookup(selectionBase).pseudoClassStateChanged(PseudoClass.getPseudoClass("selection-base"), true);
         for (Square square : selection) {
@@ -234,6 +239,7 @@ public class GameController implements Initializable {
         
         selectionBase = null;
         selection.clear();
+        selectionMoves.clear();
     }
     
     @SneakyThrows
