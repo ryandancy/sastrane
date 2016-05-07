@@ -7,15 +7,14 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.FlowPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <!--suppress JavaFxUnresolvedFxIdReference -->
 <BorderPane xmlns:fx="http://javafx.com/fxml" fx:id="mainMenu" fx:controller="ca.keal.sastrane.gui.MainMenuController"
             stylesheets="@sastrane.css">
     <top>
-        <HBox alignment="center">
-            <Label text="%global.appname" id="app-logo" textAlignment="center" />
-        </HBox>
+        <StackPane>
+            <Label text="%global.appname" id="app-logo" textAlignment="center" StackPane.alignment="center" />
+        </StackPane>
     </top>
     <center>
         <ScrollPane>
@@ -24,8 +23,8 @@
     </center>
     <bottom>
         <StackPane>
-            <ImageView id="change-language" fitHeight="${mainMenu.height * 0.15}" preserveRatio="true"
-                       StackPane.alignment="center_left" />
+            <ImageView id="change-lang-icon" fitHeight="${mainMenu.height * 0.15}" preserveRatio="true"
+                       StackPane.alignment="center_left" onMouseClicked="#onChangeLanguage" />
         </StackPane>
     </bottom>
 </BorderPane>

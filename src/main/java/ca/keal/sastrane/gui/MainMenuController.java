@@ -36,4 +36,11 @@ public class MainMenuController implements Initializable {
         GuiUtils.getStage(e).setScene(scene);
     }
     
+    @FXML
+    @SneakyThrows
+    private void onChangeLanguage(MouseEvent e) {
+        GuiUtils.getStage(e).setScene(GuiUtils.getScene(new Resource("ca.keal.sastrane.gui", "change-lang.fxml"),
+                GuiUtils.getStage(e).getScene()));
+    }
+    
 }
