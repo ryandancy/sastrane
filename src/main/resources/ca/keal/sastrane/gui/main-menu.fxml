@@ -1,23 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- TODO settings, language changing -->
+<!-- TODO settings -->
 
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
-<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="ca.keal.sastrane.gui.MainMenuController"
+<?import javafx.scene.layout.StackPane?>
+<!--suppress JavaFxUnresolvedFxIdReference -->
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:id="mainMenu" fx:controller="ca.keal.sastrane.gui.MainMenuController"
             stylesheets="@sastrane.css">
     <top>
         <HBox alignment="center">
             <Label text="%global.appname" id="app-logo" textAlignment="center" />
         </HBox>
     </top>
-    
     <center>
         <ScrollPane>
             <FlowPane fx:id="tiles" id="game-tiles" vgap="10" hgap="10" />
         </ScrollPane>
     </center>
+    <bottom>
+        <StackPane>
+            <ImageView id="change-language" fitHeight="${mainMenu.height * 0.15}" preserveRatio="true"
+                       StackPane.alignment="center_left" />
+        </StackPane>
+    </bottom>
 </BorderPane>

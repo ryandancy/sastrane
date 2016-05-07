@@ -47,6 +47,12 @@
     -fx-label-padding: 3 0 0 0;
 }
 
+#change-language {
+    -fx-translate-x: 7;
+    -fx-translate-y: -7; /* apparently y=0 is at bottom */
+    -fx-image: url(/ca/keal/sastrane/icon/change-language.png);
+}
+
 .button {
     -fx-background-color: button-background;
     -fx-padding: 8;
