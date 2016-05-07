@@ -1,6 +1,7 @@
 package ca.keal.sastrane.api;
 
 import ca.keal.sastrane.api.piece.PlacingPiece;
+import ca.keal.sastrane.util.I18n;
 import ca.keal.sastrane.util.Resource;
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
@@ -25,7 +26,8 @@ public abstract class Game {
     
     private static final List<Game> GAMES = new ArrayList<>();
     
-    private final String name; // TODO i18n
+    private final String name;
+    private final String i18nName;
     private final Resource icon;
     private final Resource css;
     private final Player[] players; // TODO support for variable-player games (are those a thing?)
@@ -36,24 +38,25 @@ public abstract class Game {
     private EventBus bus;
     
     /**
+     * {@code name} is both the name of this game's associated {@link EventBus} and also the ResourceBundle base name.
      * {@code players} should be in the order in which the players move (e.g. for chess, {@code [White, Black]}). {@code
      * css} should be a css file, which will be applied to this game's tile, new-game screen, player settings things,
      * and game screen. {@code placeOnly} is whether this game is place-only (i.e. it has no moving pieces).
      */
-    public Game(String name, Resource icon, Resource css, Player[] players, Function<Double, AI> ai,
+    public Game(String name, String i18nName, Resource icon, Resource css, Player[] players, Function<Double, AI> ai,
                 Board.Factory boardFactory, boolean placeOnly, PlacingPiece... placingPieces) {
-        this(name, icon, css, players, ai, boardFactory, placeOnly, placingPieces, new EventBus(name));
+        this(name, i18nName, icon, css, players, ai, boardFactory, placeOnly, placingPieces, new EventBus(name));
         registerGame(this);
+        I18n.load(name);
     }
     
     /**
-     * Same as {@link #Game(String, Resource, Resource, Player[], Function, Board.Factory, boolean, PlacingPiece...)}
-     * except that {@code placeOnly} defaults to {@code placingPieces.length > 0}.
+     * Same as {@link #Game(String, String, Resource, Resource, Player[], Function, Board.Factory, boolean,
+     * PlacingPiece...)} except that {@code placeOnly} defaults to {@code placingPieces.length > 0}.
      */
-    public Game(String name, Resource icon, Resource css, Player[] players, Function<Double, AI> ai,
+    public Game(String name, String i18nName, Resource icon, Resource css, Player[] players, Function<Double, AI> ai,
                 Board.Factory boardFactory, PlacingPiece... placingPieces) {
-        this(name, icon, css, players, ai, boardFactory, placingPieces.length > 0, placingPieces, new EventBus(name));
-        registerGame(this);
+        this(name, i18nName, icon, css, players, ai, boardFactory, placingPieces.length > 0, placingPieces);
     }
     
     private static void registerGame(Game game) {

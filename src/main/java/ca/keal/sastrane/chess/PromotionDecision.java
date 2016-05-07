@@ -14,18 +14,14 @@ import java.util.function.Supplier;
 @RequiredArgsConstructor
 public enum PromotionDecision implements Decision {
     
-    // TODO find a way to refer to piece classes' icons? i18n?
-    QUEEN(new Resource("ca.keal.sastrane.chess.piece", "queen_white.png"), "Promote to Queen", Queen::new),
-    ROOK(new Resource("ca.keal.sastrane.chess.piece", "rook_white.png"), "Promote to Rook", Rook::new),
-    BISHOP(new Resource("ca.keal.sastrane.chess.piece", "bishop_white.png"), "Promote to Bishop", Bishop::new),
-    KNIGHT(new Resource("ca.keal.sastrane.chess.piece", "knight_white.png"), "Promote to Knight", Knight::new);
+    // TODO find a way to refer to piece classes' icons?
+    QUEEN(new Resource("ca.keal.sastrane.chess.piece", "queen_white.png"), "chess.promotion.queen", Queen::new),
+    ROOK(new Resource("ca.keal.sastrane.chess.piece", "rook_white.png"), "chess.promotion.rook", Rook::new),
+    BISHOP(new Resource("ca.keal.sastrane.chess.piece", "bishop_white.png"), "chess.promotion.bishop", Bishop::new),
+    KNIGHT(new Resource("ca.keal.sastrane.chess.piece", "knight_white.png"), "chess.promotion.knight", Knight::new);
     
-    @Getter
-    private final Resource icon;
-    
-    @Getter
-    private final String name;
-    
+    @Getter private final Resource icon;
+    @Getter private final String i18nName;
     private final Supplier<Piece> pieceSupplier;
     
     @Override

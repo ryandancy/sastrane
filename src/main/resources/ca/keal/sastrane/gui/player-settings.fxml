@@ -16,17 +16,17 @@
     </fx:define>
     
     <ImageView fx:id="img" />
-    <Label fx:id="playerName" styleClass="player-name" text="Player" labelFor="$img" />
+    <Label fx:id="playerName" styleClass="player-name" text="%gui.playersettings.title.default" labelFor="$img" />
     
     <HBox>
-        <ToggleButton fx:id="aiBtn" styleClass="ai-or-human" text="Computer" userData="ai"
+        <ToggleButton fx:id="aiBtn" styleClass="ai-or-human" text="%gui.playersettings.mover.ai" userData="ai"
                       toggleGroup="$aiOrHumanButtons" HBox.hgrow="always" maxWidth="Infinity"
                       prefWidth="${humanBtn.width}" />
-        <ToggleButton fx:id="humanBtn" styleClass="ai-or-human" text="Human" userData="human" selected="true"
-                      toggleGroup="$aiOrHumanButtons" HBox.hgrow="always" maxWidth="Infinity"
+        <ToggleButton fx:id="humanBtn" styleClass="ai-or-human" text="%gui.playersettings.mover.human" userData="human"
+                      selected="true" toggleGroup="$aiOrHumanButtons" HBox.hgrow="always" maxWidth="Infinity"
                       prefWidth="${aiBtn.width}" />
     </HBox>
     
-    <Label styleClass="ai-difficulty-label" text="Computer Difficulty" labelFor="$aiDifficulty" />
+    <Label styleClass="ai-difficulty-label" text="%gui.playersettings.mover.ai.difficulty" labelFor="$aiDifficulty" />
     <Slider fx:id="aiDifficulty" min="0" max="1" value="0.5" disable="${!aiBtn.selected}" />
 </fx:root>

@@ -11,7 +11,7 @@
             stylesheets="@sastrane.css">
     <top>
         <HBox alignment="center">
-            <Label text="Sastrane" id="app-logo" textAlignment="center" />
+            <Label text="%global.appname" id="app-logo" textAlignment="center" />
         </HBox>
     </top>
     

@@ -1,6 +1,7 @@
 package ca.keal.sastrane.main;
 
 import ca.keal.sastrane.gui.GuiUtils;
+import ca.keal.sastrane.util.I18n;
 import ca.keal.sastrane.util.Resource;
 import com.google.common.reflect.ClassPath;
 import javafx.application.Application;
@@ -15,6 +16,8 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         // TODO splash screen
+        
+        I18n.load("ca.keal.sastrane.i18n.sastrane");
         
         // Load all classes so that singleton Game subclass instances will be created.
         // @Game annotation???

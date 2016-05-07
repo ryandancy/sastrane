@@ -10,8 +10,9 @@
             stylesheets="@sastrane.css">
     <top>
         <StackPane>
-            <Button text="Back" onAction="#onBack" StackPane.alignment="center_left" />
-            <Label fx:id="title" styleClass="screen-title" text="New Game" StackPane.alignment="center" />
+            <Button text="%gui.back" onAction="#onBack" StackPane.alignment="center_left" />
+            <Label fx:id="title" styleClass="screen-title" text="%gui.newgame.title.default"
+                   StackPane.alignment="center" />
         </StackPane>
     </top>
     <center>
@@ -20,6 +21,6 @@
         </ScrollPane>
     </center>
     <bottom>
-        <Button id="create-game" text="Create Game" onAction="#onCreateGame" maxWidth="Infinity" />
+        <Button id="create-game" text="%gui.newgame.create" onAction="#onCreateGame" maxWidth="Infinity" />
     </bottom>
 </BorderPane>

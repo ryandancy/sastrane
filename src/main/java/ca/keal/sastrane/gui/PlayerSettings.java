@@ -1,6 +1,7 @@
 package ca.keal.sastrane.gui;
 
 import ca.keal.sastrane.api.Player;
+import ca.keal.sastrane.util.I18n;
 import ca.keal.sastrane.util.Resource;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -36,7 +37,7 @@ public class PlayerSettings extends VBox implements Initializable {
     @SneakyThrows
     public void initialize(URL location, ResourceBundle resources) {
         img.setImage(new Image(player.getIcon().get().openStream()));
-        playerName.setText(player.getName());
+        playerName.setText(I18n.localize(player.getI18nName()));
         
         aiOrHumanButtons.selectedToggleProperty().addListener((ov, toggle, newToggle) -> {
             if (newToggle == null) {

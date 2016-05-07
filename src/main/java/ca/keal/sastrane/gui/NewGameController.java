@@ -4,6 +4,7 @@ import ca.keal.sastrane.api.Game;
 import ca.keal.sastrane.api.Mover;
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.Round;
+import ca.keal.sastrane.util.I18n;
 import ca.keal.sastrane.util.Resource;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -34,7 +35,7 @@ public class NewGameController {
     public void setGame(Game game) {
         this.game = game;
         container.getStylesheets().add(game.getCss().getFilename());
-        title.setText("New " + game.getName() + " Game");
+        title.setText(I18n.localize("gui.newgame.title", I18n.localize(game.getI18nName())));
         playerSettingsContainer.getChildren().addAll(Arrays.stream(game.getPlayers())
                 .map(PlayerSettings::new)
                 .peek(settings -> settings.getStylesheets().add(game.getCss().getFilename()))
@@ -52,7 +53,7 @@ public class NewGameController {
     @FXML
     @SneakyThrows
     private void onCreateGame(ActionEvent e) {
-        FXMLLoader loader = new FXMLLoader(new Resource("ca.keal.sastrane.gui", "game.fxml").get());
+        FXMLLoader loader = GuiUtils.getFXMLLoader(new Resource("ca.keal.sastrane.gui", "game.fxml"));
         Scene scene = GuiUtils.getScene((Parent) loader.load(), GuiUtils.getStage(e).getScene());
         GameController controller = loader.getController();
         

@@ -13,6 +13,7 @@ import ca.keal.sastrane.api.move.PlacingMove;
 import ca.keal.sastrane.api.piece.MovingPiece;
 import ca.keal.sastrane.api.piece.OwnedPiece;
 import ca.keal.sastrane.api.piece.PlacingPiece;
+import ca.keal.sastrane.util.I18n;
 import ca.keal.sastrane.util.Resource;
 import com.google.common.eventbus.Subscribe;
 import javafx.application.Platform;
@@ -26,6 +27,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
@@ -65,6 +67,7 @@ public class GameController implements Initializable {
     @FXML private VBox winPane;
     @FXML private ImageView winImg;
     @FXML private Label winText;
+    @FXML private Button winBtn;
     
     private Round round;
     @Nullable private Map<Player, ToggleGroup> playersToPieceChooserGroups = null;
@@ -79,7 +82,7 @@ public class GameController implements Initializable {
         this.round = round;
         this.round.getBoard().addListener(change -> updateBoardGrid());
         this.round.getGame().getBus().register(this);
-        title.setText(round.getGame().getName());
+        title.setText(I18n.localize(round.getGame().getI18nName()));
         game.getStylesheets().add(round.getGame().getCss().getFilename());
         
         int numPlacingPieces = round.getGame().getPlacingPieces().length;
@@ -263,7 +266,7 @@ public class GameController implements Initializable {
             img.fitHeightProperty().bind(optionBox.heightProperty().multiply(.6));
             img.setPreserveRatio(true);
             
-            Label label = new Label(option.getName());
+            Label label = new Label(I18n.localize(option.getI18nName()));
             label.getStyleClass().add("name");
             label.setLabelFor(img);
             label.fontProperty().bind(Bindings.createObjectBinding(
@@ -321,10 +324,10 @@ public class GameController implements Initializable {
                 Player winner = e.getWinner();
                 if (winner == null) {
                     winImg.setImage(new Image(new Resource("ca.keal.sastrane.icon", "draw.png").get().openStream()));
-                    winText.setText("Draw...");
+                    winText.setText(I18n.localize("gui.game.result.draw"));
                 } else {
                     winImg.setImage(new Image(winner.getIcon().get().openStream()));
-                    winText.setText(winner.getName() + " wins!");
+                    winText.setText(I18n.localize("gui.game.result.win", I18n.localize(winner.getI18nName())));
                 }
                 winPane.setMouseTransparent(false);
                 winPane.setVisible(true);

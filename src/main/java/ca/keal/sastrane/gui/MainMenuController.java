@@ -30,7 +30,7 @@ public class MainMenuController implements Initializable {
     
     @SneakyThrows
     private void handleTileClick(MouseEvent e) {
-        FXMLLoader loader = new FXMLLoader(new Resource("ca.keal.sastrane.gui", "new-game.fxml").get());
+        FXMLLoader loader = GuiUtils.getFXMLLoader(new Resource("ca.keal.sastrane.gui", "new-game.fxml"));
         Scene scene = GuiUtils.getScene((Parent) loader.load(), GuiUtils.getStage(e).getScene());
         ((NewGameController) loader.getController()).setGame(((GameTile) e.getSource()).getGame());
         GuiUtils.getStage(e).setScene(scene);

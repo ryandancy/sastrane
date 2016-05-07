@@ -39,6 +39,8 @@ import ca.keal.sastrane.util.Resource;
  */
 public interface Player {
     
+    String getI18nName();
+    
     String getName();
     
     Resource getIcon();

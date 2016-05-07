@@ -19,6 +19,6 @@ public interface Decision {
     
     Resource getIcon();
     
-    String getName();
+    String getI18nName();
     
 }

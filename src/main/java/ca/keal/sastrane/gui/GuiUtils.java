@@ -1,5 +1,6 @@
 package ca.keal.sastrane.gui;
 
+import ca.keal.sastrane.util.I18n;
 import ca.keal.sastrane.util.Resource;
 import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
@@ -18,11 +19,12 @@ public final class GuiUtils {
         throw new RuntimeException("ca.keal.sastrane.gui.GuiUtils is a utility class and cannot be instantiated.");
     }
     
-    /**
-     * loadFXML("foo.fxml", "com.foo.bar", getClass().getClassLoader()) gets com/foo/bar/foo.fxml.
-     */
     public static Parent loadFXML(Resource resource) throws IOException {
-        return FXMLLoader.load(resource.get());
+        return FXMLLoader.load(resource.get(), I18n.getBundle());
+    }
+    
+    public static FXMLLoader getFXMLLoader(Resource resource) {
+        return new FXMLLoader(resource.get(), I18n.getBundle());
     }
     
     public static Scene getScene(Parent parent, double width, double height) {
@@ -59,7 +61,7 @@ public final class GuiUtils {
     }
     
     public static void loadCustom(Node custom, Resource resource) throws IOException {
-        FXMLLoader loader = new FXMLLoader(resource.get());
+        FXMLLoader loader = GuiUtils.getFXMLLoader(resource);
         loader.setRoot(custom);
         loader.setController(custom);
         loader.load();
