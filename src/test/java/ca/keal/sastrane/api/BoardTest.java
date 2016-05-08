@@ -4,16 +4,28 @@ import ca.keal.sastrane.api.piece.OwnedPiece;
 import ca.keal.sastrane.api.piece.OwnedPieceFactory;
 import ca.keal.sastrane.api.piece.Piece;
 import javafx.collections.FXCollections;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.util.HashMap;
 import java.util.NoSuchElementException;
 
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @Test
 public class BoardTest {
+    
+    @Mock private OwnedPieceFactory opfMock;
+    
+    @BeforeMethod(alwaysRun = true)
+    public void injectMocks() {
+        MockitoAnnotations.initMocks(this);
+        when(opfMock.getPieceFactory()).thenReturn(() -> mock(Piece.class));
+    }
     
     // Board(List<String>, Map<Character, OwnedPieceFactory>)
     
@@ -51,11 +63,11 @@ public class BoardTest {
                 .build();
         HashMap<Square, OwnedPiece> expected = new HashMap<>();
         expected.put(new Square(0, 0), null);
-        expected.put(new Square(0, 1), null);
-        expected.put(new Square(0, 2), null);
         expected.put(new Square(1, 0), null);
+        expected.put(new Square(2, 0), null);
+        expected.put(new Square(0, 1), null);
         expected.put(new Square(1, 1), null);
-        expected.put(new Square(1, 2), null);
+        expected.put(new Square(2, 1), null);
         Assert.assertEquals(board, new Board(FXCollections.observableMap(expected)));
     }
     
@@ -63,7 +75,7 @@ public class BoardTest {
     public void testBuilderConstructorNotEnoughPieces() {
         Board.factory()
                 .row("abc")
-                .piece('a', mock(OwnedPieceFactory.class))
+                .piece('a', opfMock)
                 .build();
     }
     
@@ -71,7 +83,7 @@ public class BoardTest {
     public void testBuilderConstructorTooManyPieces() {
         Board.factory()
                 .row("")
-                .piece('x', mock(OwnedPieceFactory.class))
+                .piece('x', opfMock)
                 .build();
     }
     
@@ -79,7 +91,7 @@ public class BoardTest {
     public void testBuilderConstructorContainsSpace() {
         Board.factory()
                 .row(" ")
-                .piece(' ', mock(OwnedPieceFactory.class))
+                .piece(' ', opfMock)
                 .build();
     }
     
@@ -87,7 +99,7 @@ public class BoardTest {
     public void testBuilderConstructorContainsUnderscore() {
         Board.factory()
                 .row("_")
-                .piece('_', mock(OwnedPieceFactory.class))
+                .piece('_', opfMock)
                 .build();
     }
     
@@ -153,7 +165,7 @@ public class BoardTest {
     public void testIsOn4() {
         Board board = Board.factory()
                 .row("x")
-                .piece('x', mock(OwnedPieceFactory.class))
+                .piece('x', opfMock)
                 .build();
         Assert.assertTrue(board.isOn(new Square(0, 0)));
     }
@@ -215,7 +227,7 @@ public class BoardTest {
     }
     
     public void testSet5() {
-        Board board = Board.factory().row("a").piece('a', mock(OwnedPieceFactory.class)).build();
+        Board board = Board.factory().row("a").piece('a', opfMock).build();
         board.set(new Square(0, 0), null);
         HashMap<Square, OwnedPiece> expected = new HashMap<>();
         expected.put(new Square(0, 0), null);
