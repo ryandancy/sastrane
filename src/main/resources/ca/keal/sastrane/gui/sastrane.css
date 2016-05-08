@@ -53,6 +53,15 @@
     -fx-image: url(/ca/keal/sastrane/icon/change-language.png);
 }
 
+.langs {
+    -fx-alignment: center;
+}
+
+.lang {
+    -fx-label-padding: 20;
+    -fx-font-size: 1.4em;
+}
+
 .button {
     -fx-background-color: button-background;
     -fx-padding: 8;

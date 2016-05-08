@@ -24,7 +24,7 @@
     <bottom>
         <StackPane>
             <ImageView id="change-lang-icon" fitHeight="${mainMenu.height * 0.15}" preserveRatio="true"
-                       StackPane.alignment="center_left" onMouseClicked="#onChangeLanguage" />
+                       StackPane.alignment="center_left" onMouseClicked="#onChangeLanguage" pickOnBounds="true" />
         </StackPane>
     </bottom>
 </BorderPane>
