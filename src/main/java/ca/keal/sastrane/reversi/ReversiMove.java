@@ -5,9 +5,13 @@ import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.Square;
 import ca.keal.sastrane.api.move.PlacingMove;
 import ca.keal.sastrane.api.piece.OwnedPiece;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import java.util.List;
 
+@ToString
+@EqualsAndHashCode(callSuper = true)
 public class ReversiMove extends PlacingMove {
     
     private final List<Square> originals;
@@ -25,11 +29,11 @@ public class ReversiMove extends PlacingMove {
         
         for (Square original : originals) {
             Square pos = getPos();
-            int dx = (int) Math.signum(original.getX() - pos.getX());
-            int dy = (int) Math.signum(original.getY() - pos.getY());
+            int dx = (int) Math.signum(pos.getX() - original.getX());
+            int dy = (int) Math.signum(pos.getY() - original.getY());
     
             for (int x = original.getX() + dx, y = original.getY() + dy;
-                 x != pos.getX() && y != pos.getY();
+                 !(x == pos.getX() && y == pos.getY());
                  x += dx, y += dy) {
                 Square xy = new Square(x, y);
                 OwnedPiece atXy = board.get(xy);

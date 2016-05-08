@@ -19,6 +19,7 @@ public class Disk implements PlacingPiece {
         List<PlacingMove> moves = new ArrayList<>();
         
         for (Square square : round.getBoard()) {
+            if (round.getBoard().get(square) != null) continue;
             List<Square> originals = getOriginalsAt(square, round.getBoard(), player);
             if (originals.size() != 0) {
                 moves.add(new ReversiMove(player, originals, square));
@@ -37,12 +38,14 @@ public class Disk implements PlacingPiece {
                 
                 Square xy = new Square(square.getX() + dx, square.getY() + dy);
                 OwnedPiece atXy = board.get(xy);
+                boolean squareBetween = false;
                 while (atXy != null && atXy.getOwner() != player) {
                     xy = new Square(xy.getX() + dx, xy.getY() + dy);
                     atXy = board.get(xy);
+                    squareBetween = true;
                 }
                 
-                if (atXy != null && atXy.getOwner() == player) {
+                if (atXy != null && atXy.getOwner() == player && squareBetween) {
                     originals.add(xy);
                 }
             }

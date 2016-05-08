@@ -212,12 +212,11 @@ public class GameController implements Initializable {
                     .collect(Collectors.toList()));
         } else {
             // placing
-            List<Square> placements = placingPiece.getPossiblePlacements(round, round.getCurrentTurn()).stream()
-                    .map(PlacingMove::getPos)
-                    .collect(Collectors.toList());
-            if (placements.contains(square)) {
-                round.getGame().getBus().post(new UserMoveEvent(round, new PlacingMove(new OwnedPiece(placingPiece,
-                        round.getCurrentTurn()), square)));
+            List<PlacingMove> placements = placingPiece.getPossiblePlacements(round, round.getCurrentTurn());
+            if (placements.stream().map(PlacingMove::getPos).anyMatch(square::equals)) {
+                round.getGame().getBus().post(new UserMoveEvent(round, placements.stream()
+                        .filter(placement -> placement.getPos().equals(square))
+                        .findAny().get()));
             }
         }
     }

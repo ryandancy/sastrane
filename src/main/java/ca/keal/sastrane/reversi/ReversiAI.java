@@ -5,6 +5,7 @@ import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.Result;
 import ca.keal.sastrane.api.Round;
 import com.google.common.collect.Multiset;
+import lombok.SneakyThrows;
 
 import java.util.Set;
 
@@ -15,6 +16,7 @@ public class ReversiAI extends AI {
     }
     
     @Override
+    @SneakyThrows
     protected double heuristic(Round round, Set<Player> players) {
         // win -> MAX_VALUE, lose -> MIN_VALUE, draw -> MIN_VALUE / 2, else -> # of own disks - # of others' disks
         // Is there a better heuristic possible???
