@@ -15,9 +15,12 @@ import lombok.ToString;
 import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -44,21 +47,32 @@ public class Board implements Iterable<Square> {
             throw new IllegalArgumentException("Space and underscore are reserved in pieces; space is null piece "
                     + "and underscore is not-on-board.");
         }
+        if (rows.size() != 0 && rows.stream().map(String::length).distinct().count() != 1) {
+            throw new IllegalArgumentException("Inconsistent length of row; use '_' to skip a square.");
+        }
         
         Map<Square, OwnedPiece> squaresToPieces = new HashMap<>();
+        Set<Character> charsUsed = new HashSet<>();
         
         for (int y = 0; y < rows.size(); y++) {
             String row = rows.get(y);
             for (int x = 0; x < row.length(); x++) {
                 char piece = row.charAt(x);
                 if (piece == '_') continue;
-                if (piece != ' ' && !pieces.containsKey(piece)) {
-                    throw new IllegalArgumentException("Undeclared piece char '" + piece + "' at row " + y
-                            + ", column " + x);
+                if (piece != ' ') {
+                    if (!pieces.containsKey(piece)) {
+                        throw new IllegalArgumentException("Undeclared piece char '" + piece + "' at row " + y
+                                + ", column " + x);
+                    }
+                    charsUsed.add(piece);
                 }
                 squaresToPieces.put(new Square(x, y), piece == ' ' ? null
                         : new OwnedPiece(pieces.get(piece).getPieceFactory().get(), pieces.get(piece).getPlayer()));
             }
+        }
+        
+        if (!charsUsed.equals(pieces.keySet())) {
+            throw new IllegalArgumentException("Too many pieces!");
         }
         
         this.squaresToPieces = FXCollections.observableMap(squaresToPieces);
@@ -70,10 +84,16 @@ public class Board implements Iterable<Square> {
     
     @Nullable
     public OwnedPiece get(Square square) {
+        if (!isOn(square)) {
+            throw new NoSuchElementException(square + " is not on the board");
+        }
         return squaresToPieces.get(square);
     }
     
     public void set(Square square, @Nullable OwnedPiece value) {
+        if (!isOn(square)) {
+            throw new IllegalArgumentException(square + " is not on the board");
+        }
         squaresToPieces.put(square, value);
     }
     
@@ -89,7 +109,11 @@ public class Board implements Iterable<Square> {
      * Pass Square::getX for maxX, or Square::getY for maxY
      */
     private int getMaxDimen(Function<Square, Integer> map) {
-        return Collections.max(squaresToPieces.keySet().stream().map(map).collect(Collectors.toList()));
+        if (squaresToPieces.size() == 0) {
+            return 0;
+        } else {
+            return Collections.max(squaresToPieces.keySet().stream().map(map).collect(Collectors.toList()));
+        }
     }
     
     @Override
