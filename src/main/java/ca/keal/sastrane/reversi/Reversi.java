@@ -15,7 +15,7 @@ public class Reversi extends Game {
     @Getter private static final Reversi instance = new Reversi();
     
     public Reversi() {
-        super("reversi", "reversi.name",
+        super("ca.keal.sastrane.reversi.i18n.reversi", "reversi.name",
                 new Resource("ca.keal.sastrane.reversi", "reversi.png"),
                 new Resource("ca.keal.sastrane.reversi", "reversi.css"),
                 ReversiPlayer.values(), ReversiAI::new,
