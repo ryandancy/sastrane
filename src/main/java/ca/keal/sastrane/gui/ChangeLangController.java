@@ -27,14 +27,18 @@ public class ChangeLangController implements Initializable {
         
         supportedLangs.forEach((lang, name) -> {
             Label label = new Label((String) name);
+            Locale locale = new Locale((String) lang);
+            if (I18n.getLocale().equals(locale)) {
+                label.getStyleClass().add("current");
+            }
             label.getStyleClass().add("lang");
-            label.setOnMouseClicked(e -> changeLang(e, (String) lang));
+            label.setOnMouseClicked(e -> changeLang(e, locale));
             langs.getChildren().add(label);
         });
     }
     
-    private void changeLang(Event e, String langCode) {
-        I18n.setLocale(new Locale(langCode));
+    private void changeLang(Event e, Locale locale) {
+        I18n.setLocale(locale);
         onBack(e);
     }
     

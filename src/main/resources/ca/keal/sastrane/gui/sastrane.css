@@ -62,6 +62,10 @@
     -fx-font-size: 1.4em;
 }
 
+.lang.current {
+    -fx-font-weight: bold;
+}
+
 .button {
     -fx-background-color: button-background;
     -fx-padding: 8;
