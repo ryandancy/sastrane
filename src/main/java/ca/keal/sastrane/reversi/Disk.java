@@ -37,6 +37,8 @@ public class Disk implements PlacingPiece {
                 if (dx == 0 && dy == 0) continue;
                 
                 Square xy = new Square(square.getX() + dx, square.getY() + dy);
+                if (!board.isOn(xy)) continue;
+                
                 OwnedPiece atXy = board.get(xy);
                 boolean squareBetween = false;
                 while (atXy != null && atXy.getOwner() != player) {
