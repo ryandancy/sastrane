@@ -34,7 +34,7 @@ public class ChangeLangController implements Initializable {
     }
     
     private void changeLang(Event e, String langCode) {
-        I18n.setLocale(Locale.forLanguageTag(langCode));
+        I18n.setLocale(new Locale(langCode));
         onBack(e);
     }
     
