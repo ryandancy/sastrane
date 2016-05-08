@@ -4,3 +4,8 @@ Version 2.0 <http://www.apache.org/licenses/LICENSE-2.0.txt>.
     "ChessSet.jpg" <https://commons.wikimedia.org/wiki/File:ChessSet.jpg> by Alan Light <https://en.wikipedia.org/wiki/
 User:Alight> (own work by the original uploader), found at src/main/resources/ca/keal/sastrane/chess/icon/chess.png, is
 licensed under CC-BY-SA 3.0 <https://creativecommons.org/licenses/by-sa/3.0/legalcode>. Modifications: converted to PNG.
+
+    "Othello (Reversi) Board.jpg" <https://commons.wikimedia.org/wiki/File:Othello_(Reversi)_Board.jpg> by Paul 012
+<https://commons.wikimedia.org/wiki/User:Paul_012> (own work), found at src/main/resources/ca/keal/sastrane/reversi/
+reversi.png, is licensed under CC-BY-SA 3.0 <https://creativecommons.org/licenses/by-sa/3.0/legalcode>. Modifications:
+converted to PNG.
