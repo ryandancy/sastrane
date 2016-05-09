@@ -11,6 +11,7 @@ import ca.keal.sastrane.util.Resource;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public class Disk implements PlacingPiece {
     
@@ -43,7 +44,11 @@ public class Disk implements PlacingPiece {
                 boolean squareBetween = false;
                 while (atXy != null && atXy.getOwner() != player) {
                     xy = new Square(xy.getX() + dx, xy.getY() + dy);
-                    atXy = board.get(xy);
+                    try {
+                        atXy = board.get(xy);
+                    } catch (NoSuchElementException e) {
+                        break;
+                    }
                     squareBetween = true;
                 }
                 
