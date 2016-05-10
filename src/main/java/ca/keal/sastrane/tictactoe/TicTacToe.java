@@ -11,6 +11,7 @@ import ca.keal.sastrane.util.Resource;
 import lombok.Getter;
 
 import javax.annotation.Nullable;
+import java.util.function.BiFunction;
 
 public class TicTacToe extends Game {
     
@@ -31,8 +32,9 @@ public class TicTacToe extends Game {
     @Override
     public Result getResult(Round round) {
         // horizontal + vertical
+        BiFunction<Integer, Integer, Square> squareGetter = Square::new;
         for (int maxA = round.getBoard().getMaxX(), maxB = round.getBoard().getMaxY(), i = 0; i < 2; i++) {
-            Result result = getStraightLine(maxA, maxB, round);
+            Result result = getStraightLine(maxA, maxB, squareGetter, round);
             if (result != null) {
                 return result;
             }
@@ -40,30 +42,36 @@ public class TicTacToe extends Game {
             int temp = maxA;
             maxA = maxB;
             maxB = temp;
+            squareGetter = (a, b) -> new Square(b, a);
         }
         
         // diagonal | TODO: reduce repitition here & in getStraightLine
         Player player = null;
         boolean won = true;
         
-        for (int x = 0, y = 0; x < round.getBoard().getMaxX() && y < round.getBoard().getMaxY(); x++, y++) {
-            Square square = new Square(x, y);
-            OwnedPiece atSquare = round.getBoard().get(square);
-            if (atSquare == null) {
-                won = false;
-                break;
+        squareGetter = Square::new;
+        for (int i = 0; i < 2; i++) {
+            for (int x = 0, y = 0; x <= round.getBoard().getMaxX() && y <= round.getBoard().getMaxY(); x++, y++) {
+                Square square = squareGetter.apply(x, y);
+                OwnedPiece atSquare = round.getBoard().get(square);
+                if (atSquare == null) {
+                    won = false;
+                    break;
+                }
+        
+                if (player == null) {
+                    player = atSquare.getOwner();
+                } else if (player != atSquare.getOwner()) {
+                    won = false;
+                    break;
+                }
             }
     
-            if (player == null) {
-                player = atSquare.getOwner();
-            } else if (player != atSquare.getOwner()) {
-                won = false;
-                break;
+            if (won && player != null) {
+                return new Result.Win(player);
             }
-        }
-        
-        if (won && player != null) {
-            return new Result.Win(player);
+            
+            squareGetter = (a, b) -> new Square(a - round.getBoard().getMaxX(), b - round.getBoard().getMaxY());
         }
         
         // board filled = draw
@@ -76,13 +84,13 @@ public class TicTacToe extends Game {
     }
     
     @Nullable
-    private Result getStraightLine(int maxA, int maxB, Round round) {
-        for (int a = 0; a < maxA; a++) {
+    private Result getStraightLine(int maxA, int maxB, BiFunction<Integer, Integer, Square> squareGetter, Round round) {
+        for (int a = 0; a <= maxA; a++) {
             Player player = null;
             boolean won = true;
             
-            for (int b = 0; b < maxB; b++) {
-                Square square = new Square(a, b);
+            for (int b = 0; b <= maxB; b++) {
+                Square square = squareGetter.apply(a, b);
                 OwnedPiece atSquare = round.getBoard().get(square);
                 if (atSquare == null) {
                     won = false;
