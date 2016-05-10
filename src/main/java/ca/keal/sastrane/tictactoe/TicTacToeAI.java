@@ -17,4 +17,9 @@ public class TicTacToeAI extends AI {
         return 0;
     }
     
+    @Override
+    protected int getDepth(double difficulty) {
+        return (int) (3 * difficulty) + 6; // very easy to compute, allows us to play perfectly at difficulty == 1
+    }
+    
 }

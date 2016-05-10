@@ -86,7 +86,7 @@ public abstract class AI implements Mover {
     @Override
     public Move getMove(Round round, Player player) {
         return round.getAllPossibleMoves(player).stream()
-                .max(Comparator.comparing(move -> minimaxAlphaBeta(round, move, getDepth(), player),
+                .max(Comparator.comparing(move -> minimaxAlphaBeta(round, move, getDepth(difficulty), player),
                         Double::compare))
                 .get();
     }
@@ -94,13 +94,13 @@ public abstract class AI implements Mover {
     @Override
     public Decision decide(Decision[] options, Round round, Player player) {
         return Arrays.stream(options)
-                .max(Comparator.comparing(option -> minimaxAlphaBeta(option.whatIf(round), getDepth(), player),
-                        Double::compare))
+                .max(Comparator.comparing(option -> minimaxAlphaBeta(option.whatIf(round), getDepth(difficulty),
+                        player), Double::compare))
                 .get();
     }
     
     /** depth = 3*difficulty + 1 */
-    private int getDepth() {
+    protected int getDepth(double difficulty) {
         return (int) (3 * difficulty) + 1;
     }
     
