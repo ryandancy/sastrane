@@ -38,9 +38,9 @@ public class ChessAI extends AI {
         
         Result result = Chess.getInstance().getResult(round);
         if (result instanceof Result.Win) {
-            return ((Result.Win) result).getPlayer() == player ? Double.MAX_VALUE : Double.MIN_VALUE;
+            return ((Result.Win) result).getPlayer() == player ? WIN : LOSE;
         } else if (result == Result.DRAW) {
-            return Double.MIN_VALUE / 2;
+            return DRAW;
         }
         
         // value = sum of own pieces - sum of everyone else's pieces

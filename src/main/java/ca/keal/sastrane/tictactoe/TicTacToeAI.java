@@ -15,15 +15,14 @@ public class TicTacToeAI extends AI {
     
     @Override
     protected double heuristic(Round round, Set<Player> players) {
-        // lose => MIN_VALUE, win => MAX_VALUE, draw => MIN_VALUE / 2, else => 0
         if (players.size() != 1) throw new IllegalArgumentException("TicTacToeAI.heuristic: players.size() != 1");
         Player player = players.toArray(new Player[1])[0];
         
         Result result = TicTacToe.getInstance().getResult(round);
         if (result instanceof Result.Win) {
-            return ((Result.Win) result).getPlayer() == player ? Double.MAX_VALUE : Double.MIN_VALUE;
+            return ((Result.Win) result).getPlayer() == player ? WIN : LOSE;
         } else if (result == Result.DRAW) {
-            return Double.MIN_VALUE / 2;
+            return DRAW;
         } else {
             return 0;
         }

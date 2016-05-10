@@ -25,9 +25,9 @@ public class ReversiAI extends AI {
         
         Result result = Reversi.getInstance().getResult(round);
         if (result instanceof Result.Win) {
-            return ((Result.Win) result).getPlayer() == player ? Double.MAX_VALUE : Double.MIN_VALUE;
+            return ((Result.Win) result).getPlayer() == player ? WIN : LOSE;
         } else if (result == Result.DRAW) {
-            return Double.MIN_VALUE / 2;
+            return DRAW;
         }
         
         Multiset<Player> counts = ReversiUtils.countPlayers(round.getBoard());

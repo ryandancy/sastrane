@@ -20,14 +20,17 @@ import java.util.Set;
 @RequiredArgsConstructor
 public abstract class AI implements Mover {
     
+    protected static final double WIN = Double.MAX_VALUE / 2;
+    protected static final double LOSE = -WIN;
+    protected static final double DRAW = LOSE / 2;
+    
     /** 1 >= difficulty >= 0 */
     private final double difficulty;
     
     private double minimaxAlphaBeta(Round round, int depth, Player player) {
         Set<Player> otherPlayers = Sets.newHashSet(round.getGame().getPlayers());
         otherPlayers.remove(player);
-        return maximize(depth, Double.MIN_VALUE, Double.MAX_VALUE, round, player, ImmutableSet.of(player),
-                otherPlayers);
+        return maximize(depth, LOSE, WIN, round, player, ImmutableSet.of(player), otherPlayers);
     }
     
     private double minimaxAlphaBeta(Round round, Move move, int depth, Player player) {
@@ -45,7 +48,7 @@ public abstract class AI implements Mover {
             return heuristic(round, maximizingSet);
         }
     
-        double v = Double.MIN_VALUE;
+        double v = LOSE;
         for (Move move : moves) {
             Round roundCopy = round.copyWithMove(move);
             v = Math.max(v, minimize(depth - 1, a, b, roundCopy, maximizing, maximizingSet, minimizing));
@@ -70,7 +73,7 @@ public abstract class AI implements Mover {
             return heuristic(round, maximizingSet);
         }
         
-        double v = Double.MAX_VALUE;
+        double v = WIN;
         for (Move move : moves) {
             Round roundCopy = round.copyWithMove(move);
             v = Math.min(v, maximize(depth - 1, a, b, roundCopy, maximizing, maximizingSet, minimizing));
