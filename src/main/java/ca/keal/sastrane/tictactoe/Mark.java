@@ -26,7 +26,7 @@ public class Mark implements PlacingPiece {
     
     @Override
     public Resource.Unmangled getImage() {
-        return new Resource.Unmangled("ca.keal.sastrane.tictactoe", "mark");
+        return new Resource.Unmangled("ca.keal.sastrane.tictactoe", "mark.png");
     }
     
 }

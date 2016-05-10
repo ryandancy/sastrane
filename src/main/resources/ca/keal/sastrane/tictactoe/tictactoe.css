@@ -1,0 +1,18 @@
+.square {
+    -fx-background-color: white;
+}
+
+.square.x1.y1 {
+    -fx-border-color: black;
+    -fx-border-width: 4;
+}
+
+.square.x1.y0, .square.x1.y2 {
+    -fx-border-color: transparent black transparent black;
+    -fx-border-width: 0 4 0 4;
+}
+
+.square.x0.y1, .square.x2.y1 {
+    -fx-border-color: black transparent black transparent;
+    -fx-border-width: 4 0 4 0;
+}

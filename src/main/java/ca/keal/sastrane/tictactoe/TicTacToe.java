@@ -17,7 +17,7 @@ public class TicTacToe extends Game {
     @Getter private static final TicTacToe instance = new TicTacToe();
     
     public TicTacToe() {
-        super("tictactoe", "tictactoe.name",
+        super("ca.keal.sastrane.tictactoe.i18n.tictactoe", "tictactoe.name",
                 new Resource("ca.keal.sastrane.tictactoe", "tictactoe.png"),
                 new Resource("ca.keal.sastrane.tictactoe", "tictactoe.css"),
                 TicTacToePlayer.values(), TicTacToeAI::new,
