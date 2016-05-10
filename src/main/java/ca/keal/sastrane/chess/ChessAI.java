@@ -2,7 +2,6 @@ package ca.keal.sastrane.chess;
 
 import ca.keal.sastrane.api.AI;
 import ca.keal.sastrane.api.Player;
-import ca.keal.sastrane.api.Result;
 import ca.keal.sastrane.api.Round;
 import ca.keal.sastrane.api.Square;
 import ca.keal.sastrane.api.piece.OwnedPiece;
@@ -31,17 +30,10 @@ public class ChessAI extends AI {
     
     @Override
     protected double heuristic(Round round, Set<Player> players) {
-        // draw => MIN_VALUE/2, win => MAX_VALUE, lose => MIN_VALUE, else: naive piece value method
+        // Naive piece value method
         // TODO improve piece valuation over naive method
         if (players.size() != 1) throw new IllegalArgumentException("ChessAI.heuristic: players.size() != 1");
         Player player = players.toArray(new Player[1])[0];
-        
-        Result result = Chess.getInstance().getResult(round);
-        if (result instanceof Result.Win) {
-            return ((Result.Win) result).getPlayer() == player ? WIN : LOSE;
-        } else if (result == Result.DRAW) {
-            return DRAW;
-        }
         
         // value = sum of own pieces - sum of everyone else's pieces
         double sumOwnPieces = 0;

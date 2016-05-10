@@ -40,12 +40,12 @@ public abstract class AI implements Mover {
     private double maximize(int depth, double a, double b, Round round, Player maximizing,
                             Set<Player> maximizingSet, Set<Player> minimizing) {
         if (depth == 0) {
-            return heuristic(round, maximizingSet);
+            return doHeuristic(round, maximizingSet);
         }
         
         List<Move> moves = round.getAllPossibleMoves(maximizing);
         if (moves.size() == 0) {
-            return heuristic(round, maximizingSet);
+            return doHeuristic(round, maximizingSet);
         }
     
         double v = LOSE;
@@ -61,7 +61,7 @@ public abstract class AI implements Mover {
     private double minimize(int depth, double a, double b, Round round, Player maximizing,
                             Set<Player> maximizingSet, Set<Player> minimizing) {
         if (depth == 0) {
-            return heuristic(round, maximizingSet);
+            return doHeuristic(round, maximizingSet);
         }
         
         List<Move> moves = new ArrayList<>();
@@ -70,7 +70,7 @@ public abstract class AI implements Mover {
         }
         
         if (moves.size() == 0) {
-            return heuristic(round, maximizingSet);
+            return doHeuristic(round, maximizingSet);
         }
         
         double v = WIN;
@@ -102,6 +102,17 @@ public abstract class AI implements Mover {
     /** depth = 3*difficulty + 1 */
     private int getDepth() {
         return (int) (3 * difficulty) + 1;
+    }
+    
+    private double doHeuristic(Round round, Set<Player> players) {
+        Result result = round.getGame().getResult(round);
+        if (result instanceof Result.Win) {
+            return players.contains(((Result.Win) result).getPlayer()) ? WIN : LOSE;
+        } else if (result == Result.DRAW) {
+            return DRAW;
+        } else {
+            return heuristic(round, players);
+        }
     }
     
     protected abstract double heuristic(Round round, Set<Player> players);
