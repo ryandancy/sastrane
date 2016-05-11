@@ -14,7 +14,7 @@ public class TicTacToeAI extends AI {
     
     @Override
     protected double heuristic(Round round, Set<Player> players) {
-        return 0;
+        return DRAW;
     }
     
     @Override

@@ -30,7 +30,7 @@ public abstract class AI implements Mover {
     private double minimaxAlphaBeta(Round round, int depth, Player player) {
         Set<Player> otherPlayers = Sets.newHashSet(round.getGame().getPlayers());
         otherPlayers.remove(player);
-        return maximize(depth, LOSE, WIN, round, player, ImmutableSet.of(player), otherPlayers);
+        return minimize(depth, LOSE, WIN, round, player, ImmutableSet.of(player), otherPlayers);
     }
     
     private double minimaxAlphaBeta(Round round, Move move, int depth, Player player) {
@@ -47,7 +47,7 @@ public abstract class AI implements Mover {
         if (moves.size() == 0) {
             return doHeuristic(round, maximizingSet);
         }
-    
+        
         double v = LOSE;
         for (Move move : moves) {
             Round roundCopy = round.copyWithMove(move);
