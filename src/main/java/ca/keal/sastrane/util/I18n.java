@@ -15,7 +15,7 @@ public final class I18n {
     private static final List<String> baseNames = new ArrayList<>();
     private static final List<ResourceBundle> bundles = new ArrayList<>();
     
-    @Getter private static Locale locale = new Locale("en");
+    @Getter private static Locale locale = new Locale("en_US");
     
     public static void setLocale(Locale locale) {
         I18n.locale = locale;
