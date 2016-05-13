@@ -7,9 +7,12 @@ import ca.keal.sastrane.api.piece.JumpingPiece;
 import ca.keal.sastrane.api.piece.OwnedPiece;
 import ca.keal.sastrane.util.Resource;
 import com.google.common.eventbus.Subscribe;
+import lombok.Getter;
 
 // TODO register
 public class Soldier extends JumpingPiece {
+    
+    @Getter private boolean acrossRiver = false;
     
     public Soldier() {
         // At start, advance 1
@@ -30,6 +33,7 @@ public class Soldier extends JumpingPiece {
         if (XiangqiUtils.doesMoveCrossRiver((MovingMove) e.getMove())) {
             // Soldiers get extra moves after they cross the river - can move to sides
             addOffsets(1, 0);
+            acrossRiver = true;
         }
     }
     
