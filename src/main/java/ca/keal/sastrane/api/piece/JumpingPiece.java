@@ -31,11 +31,16 @@ public abstract class JumpingPiece implements MovingPiece {
         quadrantsToSigns.put(QIV, new Offset(+1, -1));
     }
     
-    private final List<Offset> offsets;
+    private List<Offset> offsets;
     private final boolean takeOpposingPieces;
+    
+    private final boolean mirror;
+    private final int quadrants;
     
     public JumpingPiece(int xOffset, int yOffset, boolean mirror, boolean takeOpposingPieces, int quadrants) {
         this.takeOpposingPieces = takeOpposingPieces;
+        this.mirror = mirror;
+        this.quadrants = quadrants;
         offsets = calculateOffsets(xOffset, yOffset, mirror, quadrants);
     }
     
@@ -53,6 +58,10 @@ public abstract class JumpingPiece implements MovingPiece {
     
     public JumpingPiece(int xOffset, int yOffset) {
         this(xOffset, yOffset, true);
+    }
+    
+    public void setOffsets(int xOffset, int yOffset) {
+        offsets = calculateOffsets(xOffset, yOffset, mirror, quadrants);
     }
     
     @Override
