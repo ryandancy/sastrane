@@ -40,12 +40,15 @@ public class Pawn implements RecursiveMovingPiece {
                                                    Player player) {
         List<Move> moves = new ArrayList<>();
         
-        // One in front if not occupied; two in front if first and not occupied
+        // One in front if not occupied; two in front if first and not occupied and one in front not occupied
+        boolean previousOccupied = false;
         for (int n = 1; n <= (numMoves == 0 ? 2 : 1); n++) {
             Square nInFront = player.perspectivize(boardPos.withY(boardPos.getY() + n), boardPos);
             // !round.getBoard().isOn(nInFront) shouldn't be possible b/c promotions... handle as special case???
-            if (round.getBoard().isOn(nInFront) && round.getBoard().get(nInFront) == null) {
+            if (round.getBoard().isOn(nInFront) && round.getBoard().get(nInFront) == null && !previousOccupied) {
                 moves.add(boardPos.to(nInFront));
+            } else {
+                previousOccupied = true;
             }
         }
         
