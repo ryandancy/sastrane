@@ -111,10 +111,10 @@ public class Pawn implements RecursiveMovingPiece {
                         .onChoose(e.getRound());
             }
             
-            Pawn pawn = (Pawn) atEndPos.getPiece();
-            pawn.numMoves++;
+//            Pawn pawn = (Pawn) atEndPos.getPiece();
+            numMoves++;
             // last move is double if this is its first move and it's on the 3rd/maxY-3rd rank (with zeroth rank)
-            pawn.lastMoveDouble = pawn.numMoves == 1
+            lastMoveDouble = numMoves == 1
                     && (endPos.getY() == 3 || endPos.getY() == e.getRound().getBoard().getMaxY() - 3);
         }
     }
