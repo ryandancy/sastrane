@@ -35,12 +35,8 @@ public class Elephant implements MovingPiece {
         }
         
         return moves.stream()
-                .filter(this::hasCrossedRiver)
+                .filter(XiangqiUtils::doesMoveCrossRiver)
                 .collect(Collectors.toList());
-    }
-    
-    private boolean hasCrossedRiver(MovingMove move) {
-        return (move.getFrom().getY() > 5) != (move.getTo().getY() > 5);
     }
     
     @Override
