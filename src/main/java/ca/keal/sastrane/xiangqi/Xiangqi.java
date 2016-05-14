@@ -2,6 +2,7 @@ package ca.keal.sastrane.xiangqi;
 
 import ca.keal.sastrane.api.Board;
 import ca.keal.sastrane.api.Game;
+import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.Result;
 import ca.keal.sastrane.api.Round;
 import ca.keal.sastrane.api.piece.OwnedPieceFactory;
@@ -46,7 +47,18 @@ public class Xiangqi extends Game {
     
     @Override
     public Result getResult(Round round) {
-        // TODO
-        return null;
+        Player player = XiangqiPlayer.RED;
+        Player opponent = XiangqiPlayer.BLACK;
+        for (int i = 0; i < 2; i++) {
+            if (round.getAllPossibleMoves(player).size() == 0) {
+                return new Result.Win(opponent);
+            }
+            
+            Player temp = player;
+            player = opponent;
+            opponent = temp;
+        }
+        return Result.NOT_OVER;
     }
+    
 }
