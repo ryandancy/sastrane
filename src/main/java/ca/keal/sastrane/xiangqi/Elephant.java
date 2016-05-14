@@ -5,17 +5,22 @@ import ca.keal.sastrane.api.Round;
 import ca.keal.sastrane.api.Square;
 import ca.keal.sastrane.api.move.Move;
 import ca.keal.sastrane.api.move.MovingMove;
-import ca.keal.sastrane.api.piece.MovingPiece;
+import ca.keal.sastrane.api.piece.RecursiveMovingPiece;
 import ca.keal.sastrane.util.Resource;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Elephant implements MovingPiece {
+public class Elephant implements RecursiveMovingPiece {
     
     @Override
     public List<Move> getPossibleMoves(Round round, Square boardPos, Player player) {
+        return XiangqiUtils.getPossibleMoves(this::getPossibleMovesNonRecursive, round, boardPos, player);
+    }
+    
+    @Override
+    public List<Move> getPossibleMovesNonRecursive(Round round, Square boardPos, Player player) {
         List<MovingMove> moves = new ArrayList<>();
         
         // loop over all possible deltas

@@ -6,13 +6,14 @@ import ca.keal.sastrane.api.Square;
 import ca.keal.sastrane.api.move.Move;
 import ca.keal.sastrane.api.move.MovingMove;
 import ca.keal.sastrane.api.piece.JumpingPiece;
+import ca.keal.sastrane.api.piece.RecursiveMovingPiece;
 import ca.keal.sastrane.util.Resource;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 /** Similar to chess' knight, except can't move through a piece **/
-public class Horse extends JumpingPiece {
+public class Horse extends JumpingPiece implements RecursiveMovingPiece {
     
     public Horse() {
         super(2, 1);
@@ -20,6 +21,11 @@ public class Horse extends JumpingPiece {
     
     @Override
     public List<Move> getPossibleMoves(Round round, Square boardPos, Player player) {
+        return XiangqiUtils.getPossibleMoves(this::getPossibleMovesNonRecursive, round, boardPos, player);
+    }
+    
+    @Override
+    public List<Move> getPossibleMovesNonRecursive(Round round, Square boardPos, Player player) {
         return super.getPossibleMoves(round, boardPos, player).stream().filter(move -> {
             assert move instanceof MovingMove : "uhhh... JumpingPiece.getPossibleMoves() returned something that's not"
                     + " a MovingMove...";

@@ -6,11 +6,12 @@ import ca.keal.sastrane.api.Square;
 import ca.keal.sastrane.api.move.Move;
 import ca.keal.sastrane.api.piece.LinePiece;
 import ca.keal.sastrane.api.piece.OwnedPiece;
+import ca.keal.sastrane.api.piece.RecursiveMovingPiece;
 import ca.keal.sastrane.util.Resource;
 
 import java.util.List;
 
-public class Cannon extends LinePiece {
+public class Cannon extends LinePiece implements RecursiveMovingPiece {
     
     public Cannon() {
         super(true, false, UP | DOWN | LEFT | RIGHT);
@@ -18,14 +19,19 @@ public class Cannon extends LinePiece {
     
     @Override
     public List<Move> getPossibleMoves(Round round, Square boardPos, Player player) {
+        return XiangqiUtils.getPossibleMoves(this::getPossibleMovesNonRecursive, round, boardPos, player);
+    }
+    
+    @Override
+    public List<Move> getPossibleMovesNonRecursive(Round round, Square boardPos, Player player) {
         List<Move> moves = super.getPossibleMoves(round, boardPos, player);
-        
+    
         // Call addCapture in all 4 directions
         for (int i = -1; i <= 1; i += 2) {
             addCapture(moves, round, boardPos, player, i, 0);
             addCapture(moves, round, boardPos, player, 0, i);
         }
-        
+    
         return moves;
     }
     

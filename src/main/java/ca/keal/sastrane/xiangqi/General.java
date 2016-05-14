@@ -6,12 +6,13 @@ import ca.keal.sastrane.api.Square;
 import ca.keal.sastrane.api.move.Move;
 import ca.keal.sastrane.api.piece.JumpingPiece;
 import ca.keal.sastrane.api.piece.OwnedPiece;
+import ca.keal.sastrane.api.piece.RecursiveMovingPiece;
 import ca.keal.sastrane.util.Resource;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class General extends JumpingPiece {
+public class General extends JumpingPiece implements RecursiveMovingPiece {
     
     public General() {
         super(1, 0, QI | QII | QIII | QIV);
@@ -19,6 +20,11 @@ public class General extends JumpingPiece {
     
     @Override
     public List<Move> getPossibleMoves(Round round, Square boardPos, Player player) {
+        return XiangqiUtils.getPossibleMoves(this::getPossibleMovesNonRecursive, round, boardPos, player);
+    }
+    
+    @Override
+    public List<Move> getPossibleMovesNonRecursive(Round round, Square boardPos, Player player) {
         assert player instanceof XiangqiPlayer : "General.getPossibleMoves: !(player instanceof XiangqiPlayer)";
         List<Move> moves = super.getPossibleMoves(round, boardPos, player);
         
