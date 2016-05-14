@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-public final class XiangqiUtils {
+final class XiangqiUtils {
     
     /** river is between ranks 5 and 6 */
     private static final int RIVER_Y = 5;
