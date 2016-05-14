@@ -22,8 +22,7 @@ public class Queen extends LinePiece implements RecursiveMovingPiece {
     }
     
     @Override
-    public List<Move> getPossibleMovesNonRecursive(Round round, Square boardPos,
-                                                   Player player) {
+    public List<Move> getPossibleMovesNonRecursive(Round round, Square boardPos, Player player) {
         return super.getPossibleMoves(round, boardPos, player);
     }
     

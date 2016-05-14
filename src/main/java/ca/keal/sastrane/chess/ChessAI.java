@@ -40,13 +40,12 @@ public class ChessAI extends AI {
         double sumOpponentPieces = 0;
         for (Square square : round.getBoard()) {
             OwnedPiece atSquare = round.getBoard().get(square);
-            if (atSquare != null) {
-                double naiveValue = pieceToNaiveValue.get(atSquare.getPiece().getClass());
-                if (atSquare.getOwner() == player) {
-                    sumOwnPieces += naiveValue;
-                } else {
-                    sumOpponentPieces += naiveValue;
-                }
+            if (atSquare == null) continue;
+            double naiveValue = pieceToNaiveValue.get(atSquare.getPiece().getClass());
+            if (atSquare.getOwner() == player) {
+                sumOwnPieces += naiveValue;
+            } else {
+                sumOpponentPieces += naiveValue;
             }
         }
         

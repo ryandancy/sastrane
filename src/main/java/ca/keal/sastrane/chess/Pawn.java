@@ -104,19 +104,18 @@ public class Pawn implements RecursiveMovingPiece {
     public void afterMove(MoveEvent.Post e) {
         Square endPos = e.getMove().getEndPos();
         OwnedPiece atEndPos = e.getRound().getBoard().get(endPos);
-        if (atEndPos != null && atEndPos.getPiece() == this) {
-            // Promotion
-            if (endPos.getY() == 0 || endPos.getY() == e.getRound().getBoard().getMaxY()) {
-                e.getMover().decide(PromotionDecision.values(), e.getRound(), atEndPos.getOwner())
-                        .onChoose(e.getRound());
-            }
-            
-//            Pawn pawn = (Pawn) atEndPos.getPiece();
-            numMoves++;
-            // last move is double if this is its first move and it's on the 3rd/maxY-3rd rank (with zeroth rank)
-            lastMoveDouble = numMoves == 1
-                    && (endPos.getY() == 3 || endPos.getY() == e.getRound().getBoard().getMaxY() - 3);
+        if (atEndPos == null || atEndPos.getPiece() != this) return;
+        
+        // Promotion
+        if (endPos.getY() == 0 || endPos.getY() == e.getRound().getBoard().getMaxY()) {
+            e.getMover().decide(PromotionDecision.values(), e.getRound(), atEndPos.getOwner())
+                    .onChoose(e.getRound());
         }
+        
+        numMoves++;
+        // last move is double if this is its first move and it's on the 3rd/maxY-3rd rank (with zeroth rank)
+        lastMoveDouble = numMoves == 1
+                && (endPos.getY() == 3 || endPos.getY() == e.getRound().getBoard().getMaxY() - 3);
     }
     
 }

@@ -84,8 +84,7 @@ public class King implements RecursiveMovingPiece, MoveCountingPiece {
     }
     
     @Override
-    public List<Move> getPossibleMovesNonRecursive(Round round, Square boardPos,
-                                                   Player player) {
+    public List<Move> getPossibleMovesNonRecursive(Round round, Square boardPos, Player player) {
         // All 8 surrounding squares
         List<Move> moves = new ArrayList<>();
         for (int x = -1; x <= 1; x++) {
