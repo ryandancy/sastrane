@@ -9,7 +9,6 @@ import ca.keal.sastrane.util.Resource;
 import com.google.common.eventbus.Subscribe;
 import lombok.Getter;
 
-// TODO register
 public class Soldier extends JumpingPiece {
     
     @Getter private boolean acrossRiver = false;
@@ -17,6 +16,7 @@ public class Soldier extends JumpingPiece {
     public Soldier() {
         // At start, advance 1
         super(0, 1, QI | QII);
+        Xiangqi.getInstance().getBus().register(this);
     }
     
     @Override
