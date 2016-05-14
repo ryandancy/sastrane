@@ -3,10 +3,28 @@ package ca.keal.sastrane.xiangqi;
 import ca.keal.sastrane.api.AI;
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.Round;
+import ca.keal.sastrane.api.Square;
+import ca.keal.sastrane.api.piece.OwnedPiece;
+import ca.keal.sastrane.api.piece.Piece;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
+// This class is *VERY* similar to ChessAI... consolidate???
 public class XiangqiAI extends AI {
+    
+    private static final Map<Class<? extends Piece>, Double> pieceToNaiveValue = new HashMap<>();
+    
+    static {
+        // Soldier is handled as a special case in getNaiveValue
+        pieceToNaiveValue.put(Advisor.class, 2.0);
+        pieceToNaiveValue.put(Elephant.class, 2.0);
+        pieceToNaiveValue.put(Horse.class, 4.0);
+        pieceToNaiveValue.put(Cannon.class, 4.5);
+        pieceToNaiveValue.put(Chariot.class, 9.0);
+        pieceToNaiveValue.put(General.class, 1e6); // not Double.MAX_VALUE to avoid overflow
+    }
     
     public XiangqiAI(double difficulty) {
         super(difficulty);
@@ -14,8 +32,35 @@ public class XiangqiAI extends AI {
     
     @Override
     protected double heuristic(Round round, Set<Player> players) {
-        // TODO
-        return 0;
+        // Naive piece value method
+        // TODO improve piece valuation over naive method
+        if (players.size() != 1) throw new IllegalArgumentException("XiangqiAI.heuristic: players.size() != 1");
+        Player player = players.toArray(new Player[1])[0];
+        
+        // value = sum of own pieces - sum of everyone else's pieces
+        double sumOwnPieces = 0;
+        double sumOpponentPieces = 0;
+        for (Square square : round.getBoard()) {
+            OwnedPiece atSquare = round.getBoard().get(square);
+            if (atSquare != null) {
+                double naiveValue = getNaiveValue(atSquare.getPiece());
+                if (atSquare.getOwner() == player) {
+                    sumOwnPieces += naiveValue;
+                } else {
+                    sumOpponentPieces += naiveValue;
+                }
+            }
+        }
+    
+        return sumOwnPieces - sumOpponentPieces;
+    }
+    
+    private double getNaiveValue(Piece piece) {
+        if (piece instanceof Soldier) {
+            return ((Soldier) piece).isAcrossRiver() ? 2.0 : 1.0;
+        } else {
+            return pieceToNaiveValue.get(piece.getClass());
+        }
     }
     
 }
