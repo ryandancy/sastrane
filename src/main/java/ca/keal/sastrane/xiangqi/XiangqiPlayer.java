@@ -13,13 +13,13 @@ import java.util.function.BinaryOperator;
 @RequiredArgsConstructor
 public enum XiangqiPlayer implements Player {
     
-    RED("red", "xiangqi.player.red", new Resource("ca.keal.sastrane.xiangqi.icon", "red.png"), Player::flipY,
+    RED("red", "xiangqi.player.red", new Resource("ca.keal.sastrane.xiangqi.piece", "general_red.png"), Player::flipY,
             ImmutableList.of(
                     new Square(3, 2), new Square(4, 2), new Square(5, 2),
                     new Square(3, 1), new Square(4, 1), new Square(5, 1),
                     new Square(3, 0), new Square(4, 0), new Square(5, 0))),
-    BLACK("black", "xiangqi.player.black", new Resource("ca.keal.sastrane.xiangqi.icon", "black.png"), Player::flipNone,
-            ImmutableList.of(
+    BLACK("black", "xiangqi.player.black", new Resource("ca.keal.sastrane.xiangqi.piece", "general_black.png"),
+            Player::flipNone, ImmutableList.of(
                     new Square(3, 9), new Square(4, 9), new Square(5, 9),
                     new Square(3, 8), new Square(4, 8), new Square(5, 8),
                     new Square(3, 7), new Square(4, 7), new Square(5, 7)));

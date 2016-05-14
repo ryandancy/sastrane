@@ -15,7 +15,7 @@ public class Xiangqi extends Game {
     
     public Xiangqi() {
         super("ca.keal.sastrane.xiangqi.i18n.xiangqi", "xiangqi.name",
-                new Resource("ca.keal.sastrane.xiangqi.icon", "xiangqi.png"),
+                new Resource("ca.keal.sastrane.xiangqi", "xiangqi.png"),
                 new Resource("ca.keal.sastrane.xiangqi", "xiangqi.css"),
                 XiangqiPlayer.values(), XiangqiAI::new,
                 Board.factory()
