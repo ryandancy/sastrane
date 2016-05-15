@@ -16,8 +16,10 @@ import ca.keal.sastrane.api.piece.PlacingPiece;
 import ca.keal.sastrane.util.I18n;
 import ca.keal.sastrane.util.Resource;
 import com.google.common.eventbus.Subscribe;
+import com.google.common.io.Files;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
+import javafx.beans.binding.DoubleBinding;
 import javafx.beans.binding.NumberBinding;
 import javafx.concurrent.Task;
 import javafx.css.PseudoClass;
@@ -45,9 +47,11 @@ import lombok.Setter;
 import lombok.SneakyThrows;
 
 import javax.annotation.Nullable;
+import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -59,7 +63,7 @@ public class GameController implements Initializable {
     
     @FXML private BorderPane game;
     @FXML private Label title;
-    @FXML private BoardGrid boardGrid;
+    @FXML private GridPane boardGrid;
     @FXML private TilePane pieceChooser;
     
     @FXML private FlowPane decisionPane;
@@ -78,6 +82,7 @@ public class GameController implements Initializable {
     private List<Square> selection = new ArrayList<>();
     private List<Move> selectionMoves = new ArrayList<>();
     
+    @SneakyThrows
     public void setRound(Round round) {
         this.round = round;
         this.round.getBoard().addListener(change -> updateBoardGrid());
@@ -144,6 +149,12 @@ public class GameController implements Initializable {
         }
         updateBoardGrid();
         
+        // Total hack: check CSS file for grid-type property (it's a looked-up colour so the CSS parser accepts it)
+        String css = Files.toString(new File(round.getGame().getCss().get().toURI()), StandardCharsets.UTF_8);
+        if (css.matches("(?s).*(?:-sastrane-)?grid-type:\\s*point.*")) {
+            usePoints();
+        }
+        
         Thread worker = new Thread(new Task<Void>() {
             @Override
             protected Void call() throws Exception {
@@ -153,6 +164,31 @@ public class GameController implements Initializable {
         });
         worker.setDaemon(true);
         worker.start();
+    }
+    
+    private void usePoints() {
+        DoubleBinding gridTranslate = ((StackPane) boardGrid.getChildren().get(0)).widthProperty().divide(2);
+        DoubleBinding translate = gridTranslate.negate();
+    
+        for (Node child : boardGrid.getChildren()) {
+            Node img = child.lookup(".img");
+            if (img == null) continue;
+            img.translateXProperty().bind(translate);
+            img.translateYProperty().bind(translate);
+        
+            Node overlay = child.lookup(".overlay");
+            overlay.translateXProperty().bind(translate);
+            overlay.translateYProperty().bind(translate);
+        }
+    
+        boardGrid.translateXProperty().bind(gridTranslate);
+        boardGrid.translateYProperty().bind(gridTranslate);
+    
+        boardGrid.lookupAll(".square.maxx").forEach(s -> s.setStyle("-fx-border-color: transparent transparent "
+                + "transparent black; -fx-background-color: transparent;"));
+        boardGrid.lookupAll(".square.maxy").forEach(s -> s.setStyle("-fx-border-color: black transparent transparent "
+                + "transparent; -fx-background-color: transparent;"));
+        boardGrid.lookup(".square.maxx.maxy").setStyle("-fx-border-color: transparent;");
     }
     
     @SneakyThrows
