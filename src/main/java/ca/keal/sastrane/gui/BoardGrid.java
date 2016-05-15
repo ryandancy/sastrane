@@ -110,7 +110,7 @@ public class BoardGrid extends GridPane {
             
             grid.lookupAll(".square.maxx").forEach(s -> s.setStyle("-fx-border-color: transparent transparent "
                     + "transparent black; -fx-background-color: transparent;"));
-            grid.lookupAll(".square.maxy").forEach(s -> s.setStyle("-fx-border-color: black transparent transparent " 
+            grid.lookupAll(".square.maxy").forEach(s -> s.setStyle("-fx-border-color: black transparent transparent "
                     + "transparent; -fx-background-color: transparent;"));
             grid.lookup(".square.maxx.maxy").setStyle("-fx-border-color: transparent;");
         });
