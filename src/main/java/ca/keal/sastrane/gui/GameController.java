@@ -59,7 +59,7 @@ public class GameController implements Initializable {
     
     @FXML private BorderPane game;
     @FXML private Label title;
-    @FXML private GridPane boardGrid;
+    @FXML private BoardGrid boardGrid;
     @FXML private TilePane pieceChooser;
     
     @FXML private FlowPane decisionPane;
@@ -98,14 +98,20 @@ public class GameController implements Initializable {
             pieceChooser.setVisible(true);
         }
         
-        for (int y = 0; y <= round.getBoard().getMaxX(); y++) {
-            for (int x = 0; x <= round.getBoard().getMaxY(); x++) {
+        for (int y = 0; y <= round.getBoard().getMaxY(); y++) {
+            for (int x = 0; x <= round.getBoard().getMaxX(); x++) {
                 Node cell;
                 NumberBinding cellDimen = Bindings.min(boardGrid.widthProperty().divide(round.getBoard().getMaxX() + 1),
                         boardGrid.heightProperty().divide(round.getBoard().getMaxY() + 1));
                 if (round.getBoard().isOn(new Square(x, y))) {
                     StackPane imgPane = new StackPane();
                     imgPane.getStyleClass().addAll("square", (x + y % 2) % 2 == 0 ? "even" : "odd", "x" + x, "y" + y);
+                    if (x == round.getBoard().getMaxX()) {
+                        imgPane.getStyleClass().add("maxx");
+                    }
+                    if (y == round.getBoard().getMaxY()) {
+                        imgPane.getStyleClass().add("maxy");
+                    }
                     
                     ImageView img = new ImageView();
                     img.getStyleClass().add("img");

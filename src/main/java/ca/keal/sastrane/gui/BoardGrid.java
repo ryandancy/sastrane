@@ -1,6 +1,5 @@
 package ca.keal.sastrane.gui;
 
-import ca.keal.sastrane.api.Round;
 import com.google.common.collect.ImmutableList;
 import javafx.beans.binding.DoubleBinding;
 import javafx.beans.property.ObjectProperty;
@@ -20,10 +19,7 @@ import java.util.function.Consumer;
 // TODO move some (most?) functionality from GameController to BoardGrid
 
 /** This class is simply a GridPane with extra style(s). */
-@RequiredArgsConstructor
 public class BoardGrid extends GridPane {
-    
-    private final Round round;
     
     private ObjectProperty<Type> gridType = new StyleableObjectProperty<Type>() {
         
@@ -31,12 +27,12 @@ public class BoardGrid extends GridPane {
         public Object getBean() {
             return BoardGrid.this;
         }
-    
+        
         @Override
         public String getName() {
             return "gridType";
         }
-    
+        
         @Override
         public CssMetaData<BoardGrid, Type> getCssMetaData() {
             return GRID_TYPE;
@@ -95,11 +91,12 @@ public class BoardGrid extends GridPane {
         
         SQUARE(grid -> {}),
         POINT(grid -> {
-            DoubleBinding gridTranslate = ((StackPane) grid.getChildren().get(0)).widthProperty().divide(2);
-            DoubleBinding translate = gridTranslate.negate();
+            DoubleBinding gridTranslate = ((StackPane) grid.getChildren().get(0)).widthProperty().negate();
+            DoubleBinding translate = gridTranslate.divide(2);
             
             for (Node child : grid.getChildren()) {
                 Node img = child.lookup(".img");
+                if (img == null) continue;
                 img.translateXProperty().bind(translate);
                 img.translateYProperty().bind(translate);
                 
@@ -111,8 +108,11 @@ public class BoardGrid extends GridPane {
             grid.translateXProperty().bind(gridTranslate);
             grid.translateYProperty().bind(gridTranslate);
             
-            grid.setStyle(String.format(".square.x%d, .square.y%d { visibility: hidden; }",
-                    grid.round.getBoard().getMaxX(), grid.round.getBoard().getMaxY()));
+            grid.lookupAll(".square.maxx").forEach(s -> s.setStyle("-fx-border-color: transparent transparent "
+                    + "transparent black; -fx-background-color: transparent;"));
+            grid.lookupAll(".square.maxy").forEach(s -> s.setStyle("-fx-border-color: black transparent transparent " 
+                    + "transparent; -fx-background-color: transparent;"));
+            grid.lookup(".square.maxx.maxy").setStyle("-fx-border-color: transparent;");
         });
         
         private final Consumer<BoardGrid> update;

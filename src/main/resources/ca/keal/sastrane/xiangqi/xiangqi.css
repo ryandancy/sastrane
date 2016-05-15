@@ -1,0 +1,7 @@
+#board {
+    -sastrane-grid-type: point;
+}
+
+.square {
+    -fx-border-color: black transparent transparent black;
+}
