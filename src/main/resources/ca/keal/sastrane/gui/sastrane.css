@@ -143,6 +143,14 @@
     -fx-background-insets: -5;
 }
 
+.square:selection-base .overlay {
+    -fx-background-color: rgba(0, 0, 255, .25); /* blue */
+}
+
+.square:selected .overlay {
+    -fx-background-color: rgba(255, 215, 0, .25); /* gold */
+}
+
 /* FIXME piece chooser is probably broken, it's completely untested */
 .piece-chooser {
     -fx-orientation: vertical;

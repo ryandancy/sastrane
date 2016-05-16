@@ -5,11 +5,3 @@
 .square.even {
     -fx-background-color: #F2D7AC;
 }
-
-.square:selection-base .overlay {
-    -fx-background-color: rgba(0, 0, 255, .25); /* blue */
-}
-
-.square:selected .overlay {
-    -fx-background-color: rgba(255, 215, 0, .25); /* gold */
-}
