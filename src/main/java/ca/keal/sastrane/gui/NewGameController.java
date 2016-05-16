@@ -4,6 +4,7 @@ import ca.keal.sastrane.api.Game;
 import ca.keal.sastrane.api.Mover;
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.Round;
+import ca.keal.sastrane.api.event.ToGameEvent;
 import ca.keal.sastrane.util.I18n;
 import ca.keal.sastrane.util.Resource;
 import javafx.event.ActionEvent;
@@ -54,7 +55,8 @@ public class NewGameController {
     @SneakyThrows
     private void onCreateGame(ActionEvent e) {
         FXMLLoader loader = GuiUtils.getFXMLLoader(new Resource("ca.keal.sastrane.gui", "game.fxml"));
-        Scene scene = GuiUtils.getScene((Parent) loader.load(), GuiUtils.getStage(e).getScene());
+        Scene previousScene = GuiUtils.getStage(e).getScene();
+        Scene scene = GuiUtils.getScene((Parent) loader.load(), previousScene);
         GameController controller = loader.getController();
         
         // Get data from player settings
@@ -69,8 +71,12 @@ public class NewGameController {
                         return new HumanMover(controller);
                     }
                 }));
+        Round round = new Round(game, playersToMovers);
         
-        controller.setRound(new Round(game, playersToMovers));
+        round.getGame().getBus().post(new ToGameEvent.Pre(previousScene, scene, round, playersToMovers));
+        controller.setRound(round);
+        round.getGame().getBus().post(new ToGameEvent.Post(previousScene, scene, round, playersToMovers));
+        
         GuiUtils.getStage(e).setScene(scene);
     }
     

@@ -1,6 +1,7 @@
 package ca.keal.sastrane.gui;
 
 import ca.keal.sastrane.api.Game;
+import ca.keal.sastrane.api.event.ToNewGameScreenEvent;
 import ca.keal.sastrane.util.Resource;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -31,8 +32,15 @@ public class MainMenuController implements Initializable {
     @SneakyThrows
     private void handleTileClick(MouseEvent e) {
         FXMLLoader loader = GuiUtils.getFXMLLoader(new Resource("ca.keal.sastrane.gui", "new-game.fxml"));
-        Scene scene = GuiUtils.getScene((Parent) loader.load(), GuiUtils.getStage(e).getScene());
-        ((NewGameController) loader.getController()).setGame(((GameTile) e.getSource()).getGame());
+        Scene previousScene = GuiUtils.getStage(e).getScene();
+        Scene scene = GuiUtils.getScene((Parent) loader.load(), previousScene);
+        
+        Game game = ((GameTile) e.getSource()).getGame();
+        
+        game.getBus().post(new ToNewGameScreenEvent.Pre(previousScene, scene, game));
+        ((NewGameController) loader.getController()).setGame(game);
+        game.getBus().post(new ToNewGameScreenEvent.Post(previousScene, scene, game));
+        
         GuiUtils.getStage(e).setScene(scene);
     }
     
