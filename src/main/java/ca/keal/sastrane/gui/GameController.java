@@ -59,6 +59,8 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
+import static ca.keal.sastrane.gui.GuiUtils.lookup;
+
 public class GameController implements Initializable {
     
     @FXML private BorderPane game;
@@ -188,7 +190,8 @@ public class GameController implements Initializable {
                 + "transparent black; -fx-background-color: transparent;"));
         boardGrid.lookupAll(".square.maxy").forEach(s -> s.setStyle("-fx-border-color: black transparent transparent "
                 + "transparent; -fx-background-color: transparent;"));
-        boardGrid.lookup(".square.maxx.maxy").setStyle("-fx-border-color: transparent;");
+        boardGrid.lookup(".square.maxx.maxy").setStyle("-fx-border-color: transparent;" 
+                + "-fx-background-color: transparent;");
     }
     
     @SneakyThrows
@@ -268,17 +271,17 @@ public class GameController implements Initializable {
         this.selection = selection;
         selectionMoves = possibleMoves;
         
-        lookup(selectionBase).pseudoClassStateChanged(PseudoClass.getPseudoClass("selection-base"), true);
+        lookup(game, selectionBase).pseudoClassStateChanged(PseudoClass.getPseudoClass("selection-base"), true);
         for (Square square : selection) {
-            lookup(square).pseudoClassStateChanged(PseudoClass.getPseudoClass("selected"), true);
+            lookup(game, square).pseudoClassStateChanged(PseudoClass.getPseudoClass("selected"), true);
         }
     }
     
     private void deselect() {
         assert selectionBase != null;
-        lookup(selectionBase).pseudoClassStateChanged(PseudoClass.getPseudoClass("selection-base"), false);
+        lookup(game, selectionBase).pseudoClassStateChanged(PseudoClass.getPseudoClass("selection-base"), false);
         for (Square square : selection) {
-            lookup(square).pseudoClassStateChanged(PseudoClass.getPseudoClass("selected"), false);
+            lookup(game, square).pseudoClassStateChanged(PseudoClass.getPseudoClass("selected"), false);
         }
         
         selectionBase = null;
@@ -329,14 +332,6 @@ public class GameController implements Initializable {
         decisionPane.setMouseTransparent(true);
         
         round.getGame().getBus().post(new UserDecideEvent(round, option));
-    }
-    
-    private Node lookup(Square square) {
-        return game.getScene().lookup(getLookupString(square));
-    }
-    
-    private String getLookupString(Square square) {
-        return String.format(".x%d.y%d", square.getX(), square.getY());
     }
     
     @Nullable

@@ -48,6 +48,7 @@ public abstract class Game {
         this(name, i18nName, icon, css, players, ai, boardFactory, placeOnly, placingPieces, new EventBus(name));
         registerGame(this);
         I18n.load(name);
+        registerDefaults(bus);
     }
     
     /**
@@ -72,7 +73,13 @@ public abstract class Game {
      */
     public void refreshBus() {
         bus = new EventBus(name);
+        registerDefaults(bus);
     }
+    
+    /**
+     * In this method, register everything with {@code bus} that should always be registered.
+     */
+    protected void registerDefaults(EventBus bus) {}
     
     public abstract Result getResult(Round round);
     

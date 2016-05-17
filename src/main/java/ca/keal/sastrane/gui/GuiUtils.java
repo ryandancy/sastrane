@@ -1,5 +1,6 @@
 package ca.keal.sastrane.gui;
 
+import ca.keal.sastrane.api.Square;
 import ca.keal.sastrane.util.I18n;
 import ca.keal.sastrane.util.Resource;
 import javafx.event.Event;
@@ -77,6 +78,18 @@ public final class GuiUtils {
             }
         }
         return null;
+    }
+    
+    public static Node lookup(Node node, Square square) {
+        return lookup(node.getScene(), square);
+    }
+    
+    public static Node lookup(Scene scene, Square square) {
+        return scene.lookup(getLookupString(square));
+    }
+    
+    public static String getLookupString(Square square) {
+        return String.format(".x%d.y%d", square.getX(), square.getY());
     }
     
 }

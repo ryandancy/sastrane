@@ -5,9 +5,21 @@ import ca.keal.sastrane.api.Game;
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.Result;
 import ca.keal.sastrane.api.Round;
+import ca.keal.sastrane.api.event.ToGameEvent;
 import ca.keal.sastrane.api.piece.OwnedPieceFactory;
 import ca.keal.sastrane.util.Resource;
+import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
+import javafx.scene.shape.Line;
 import lombok.Getter;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static ca.keal.sastrane.gui.GuiUtils.lookup;
 
 public class Xiangqi extends Game {
     
@@ -59,6 +71,49 @@ public class Xiangqi extends Game {
             opponent = temp;
         }
         return Result.NOT_OVER;
+    }
+    
+    @Override
+    protected void registerDefaults(EventBus bus) {
+        bus.register(this);
+    }
+    
+    @Subscribe
+    public void afterGameScreenLoaded(ToGameEvent.Post e) {
+        GridPane boardGrid = (GridPane) e.getGameScene().lookup("#board");
+        
+        for (XiangqiPlayer player : XiangqiPlayer.values()) {
+            List<StackPane> palace = player.getPalace().stream()
+                    .map(s -> (StackPane) lookup(e.getGameScene(), s))
+                    .collect(Collectors.toList());
+            
+            boardGrid.getChildren().add(getNEToSWLine(palace.get(3)));
+            boardGrid.getChildren().add(getNWToSELine(palace.get(4)));
+            boardGrid.getChildren().add(getNWToSELine(palace.get(6)));
+            boardGrid.getChildren().add(getNEToSWLine(palace.get(7)));
+        }
+    }
+    
+    private Line getNWToSELine(StackPane square) {
+        Region overlay = (Region) square.lookup(".overlay");
+        Line line = new Line();
+        line.getStyleClass().add("decor");
+        line.startXProperty().bind(square.layoutXProperty());
+        line.startYProperty().bind(square.layoutYProperty());
+        line.endXProperty().bind(square.layoutXProperty().add(overlay.minWidthProperty()));
+        line.endYProperty().bind(square.layoutYProperty().add(overlay.minHeightProperty()));
+        return line;
+    }
+    
+    private Line getNEToSWLine(StackPane square) {
+        Region overlay = (Region) square.lookup(".overlay");
+        Line line = new Line();
+        line.getStyleClass().add("decor");
+        line.startXProperty().bind(square.layoutXProperty().add(overlay.minWidthProperty()));
+        line.startYProperty().bind(square.layoutYProperty());
+        line.endXProperty().bind(square.layoutXProperty());
+        line.endYProperty().bind(square.layoutYProperty().add(overlay.minHeightProperty()));
+        return line;
     }
     
 }
