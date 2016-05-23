@@ -87,34 +87,30 @@ public class Xiangqi extends Game {
                     .map(s -> (StackPane) lookup(e.getGameScene(), s))
                     .collect(Collectors.toList());
             
-            neToSWLine(boardGrid, player.getPalace().get(3), palace.get(3));
-            nwToSELine(boardGrid, player.getPalace().get(4), palace.get(4));
-            nwToSELine(boardGrid, player.getPalace().get(6), palace.get(6));
-            neToSWLine(boardGrid, player.getPalace().get(7), palace.get(7));
+            line(boardGrid, player.getPalace().get(3), palace.get(3), DiagLineDirection.NE_SW);
+            line(boardGrid, player.getPalace().get(4), palace.get(4), DiagLineDirection.NW_SE);
+            line(boardGrid, player.getPalace().get(6), palace.get(6), DiagLineDirection.NW_SE);
+            line(boardGrid, player.getPalace().get(7), palace.get(7), DiagLineDirection.NE_SW);
         }
     }
     
-    private void nwToSELine(GridPane grid, Square square, StackPane squarePane) {
-        Line line = new Line();
-        
-        line.getStyleClass().add("decor");
-        line.setStartX(0);
-        line.setStartY(0);
-        line.endXProperty().bind(squarePane.widthProperty());
-        line.endYProperty().bind(squarePane.heightProperty());
-        
-        grid.add(line, square.getX(), square.getY());
-    }
+    private enum DiagLineDirection {NW_SE, NE_SW}
     
-    private void neToSWLine(GridPane grid, Square square, StackPane squarePane) {
+    private void line(GridPane grid, Square square, StackPane squarePane, DiagLineDirection dir) {
         Line line = new Line();
-        
+    
         line.getStyleClass().add("decor");
-        line.startXProperty().bind(squarePane.widthProperty());
         line.setStartY(0);
-        line.setEndX(0);
-        line.endYProperty().bind(squarePane.heightProperty());
-        
+        if (dir == DiagLineDirection.NW_SE) {
+            line.setStartX(0);
+            line.endXProperty().bind(squarePane.widthProperty());
+            line.endYProperty().bind(squarePane.heightProperty());
+        } else { // NE_SW
+            line.startXProperty().bind(squarePane.widthProperty());
+            line.setEndX(0);
+            line.endYProperty().bind(squarePane.heightProperty());
+        }
+    
         grid.add(line, square.getX(), square.getY());
     }
     
