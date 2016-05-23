@@ -5,13 +5,13 @@ import ca.keal.sastrane.api.Game;
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.Result;
 import ca.keal.sastrane.api.Round;
+import ca.keal.sastrane.api.Square;
 import ca.keal.sastrane.api.event.ToGameEvent;
 import ca.keal.sastrane.api.piece.OwnedPieceFactory;
 import ca.keal.sastrane.util.Resource;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Line;
 import lombok.Getter;
@@ -87,33 +87,35 @@ public class Xiangqi extends Game {
                     .map(s -> (StackPane) lookup(e.getGameScene(), s))
                     .collect(Collectors.toList());
             
-            boardGrid.getChildren().add(getNEToSWLine(palace.get(3)));
-            boardGrid.getChildren().add(getNWToSELine(palace.get(4)));
-            boardGrid.getChildren().add(getNWToSELine(palace.get(6)));
-            boardGrid.getChildren().add(getNEToSWLine(palace.get(7)));
+            neToSWLine(boardGrid, player.getPalace().get(3), palace.get(3));
+            nwToSELine(boardGrid, player.getPalace().get(4), palace.get(4));
+            nwToSELine(boardGrid, player.getPalace().get(6), palace.get(6));
+            neToSWLine(boardGrid, player.getPalace().get(7), palace.get(7));
         }
     }
     
-    private Line getNWToSELine(StackPane square) {
-        Region overlay = (Region) square.lookup(".overlay");
+    private void nwToSELine(GridPane grid, Square square, StackPane squarePane) {
         Line line = new Line();
+        
         line.getStyleClass().add("decor");
-        line.startXProperty().bind(square.layoutXProperty());
-        line.startYProperty().bind(square.layoutYProperty());
-        line.endXProperty().bind(square.layoutXProperty().add(overlay.minWidthProperty()));
-        line.endYProperty().bind(square.layoutYProperty().add(overlay.minHeightProperty()));
-        return line;
+        line.setStartX(0);
+        line.setStartY(0);
+        line.endXProperty().bind(squarePane.widthProperty());
+        line.endYProperty().bind(squarePane.heightProperty());
+        
+        grid.add(line, square.getX(), square.getY());
     }
     
-    private Line getNEToSWLine(StackPane square) {
-        Region overlay = (Region) square.lookup(".overlay");
+    private void neToSWLine(GridPane grid, Square square, StackPane squarePane) {
         Line line = new Line();
+        
         line.getStyleClass().add("decor");
-        line.startXProperty().bind(square.layoutXProperty().add(overlay.minWidthProperty()));
-        line.startYProperty().bind(square.layoutYProperty());
-        line.endXProperty().bind(square.layoutXProperty());
-        line.endYProperty().bind(square.layoutYProperty().add(overlay.minHeightProperty()));
-        return line;
+        line.startXProperty().bind(squarePane.widthProperty());
+        line.setStartY(0);
+        line.setEndX(0);
+        line.endYProperty().bind(squarePane.heightProperty());
+        
+        grid.add(line, square.getX(), square.getY());
     }
     
 }
