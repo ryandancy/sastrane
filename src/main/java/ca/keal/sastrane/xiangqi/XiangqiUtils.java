@@ -15,8 +15,8 @@ import java.util.stream.Collectors;
 
 final class XiangqiUtils {
     
-    /** river is between ranks 5 and 6 */
-    private static final int RIVER_Y = 5;
+    /** river is between ranks 4 and 5 */
+    private static final int RIVER_Y = 4;
     
     private XiangqiUtils() {
         throw new IllegalStateException("XiangqiUtils is a utility class and therefore cannot be constructed.");

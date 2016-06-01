@@ -21,7 +21,7 @@ public class Soldier extends JumpingPiece implements RecursiveMovingPiece {
     
     public Soldier() {
         // At start, advance 1
-        super(0, 1, QI | QII);
+        super(0, 1, false, QI | QII);
         Xiangqi.getInstance().getBus().register(this);
     }
     
