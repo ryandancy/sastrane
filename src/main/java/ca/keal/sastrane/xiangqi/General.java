@@ -26,13 +26,16 @@ public class General extends JumpingPiece implements RecursiveMovingPiece {
     @Override
     public List<Move> getPossibleMovesNonRecursive(Round round, Square boardPos, Player player) {
         assert player instanceof XiangqiPlayer : "General.getPossibleMoves: !(player instanceof XiangqiPlayer)";
-        List<Move> moves = super.getPossibleMoves(round, boardPos, player);
+        
+        List<Move> moves = super.getPossibleMoves(round, boardPos, player).stream()
+                .filter(move -> ((XiangqiPlayer) player).getPalace().contains(move.getEndPos()))
+                .collect(Collectors.toList());
         
         // 'Flying General' move: can capture opposing general from across the board if on the same file
         for (int dy = -1; dy <= 1; dy += 2) {
             for (int x = boardPos.getX(), y = boardPos.getY() + dy;
                  round.getBoard().isOn(new Square(x, y));
-                 x++, y += dy) {
+                 y += dy) {
                 Square square = new Square(x, y);
                 OwnedPiece atSquare = round.getBoard().get(square);
                 if (atSquare != null) {
@@ -44,9 +47,7 @@ public class General extends JumpingPiece implements RecursiveMovingPiece {
             }
         }
         
-        return moves.stream()
-                .filter(move -> ((XiangqiPlayer) player).getPalace().contains(move.getEndPos()))
-                .collect(Collectors.toList());
+        return moves;
     }
     
     @Override
