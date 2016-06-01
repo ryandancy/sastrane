@@ -11,6 +11,8 @@ import ca.keal.sastrane.api.piece.OwnedPieceFactory;
 import ca.keal.sastrane.util.Resource;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.NumberBinding;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Line;
@@ -87,30 +89,32 @@ public class Xiangqi extends Game {
                     .map(s -> (StackPane) lookup(e.getGameScene(), s))
                     .collect(Collectors.toList());
             
-            line(boardGrid, player.getPalace().get(3), palace.get(3), DiagLineDirection.NE_SW);
-            line(boardGrid, player.getPalace().get(4), palace.get(4), DiagLineDirection.NW_SE);
-            line(boardGrid, player.getPalace().get(6), palace.get(6), DiagLineDirection.NW_SE);
-            line(boardGrid, player.getPalace().get(7), palace.get(7), DiagLineDirection.NE_SW);
+            line(e.getRound(), boardGrid, player.getPalace().get(3), DiagLineDirection.NE_SW);
+            line(e.getRound(), boardGrid, player.getPalace().get(4), DiagLineDirection.NW_SE);
+            line(e.getRound(), boardGrid, player.getPalace().get(6), DiagLineDirection.NW_SE);
+            line(e.getRound(), boardGrid, player.getPalace().get(7), DiagLineDirection.NE_SW);
         }
     }
     
     private enum DiagLineDirection {NW_SE, NE_SW}
     
-    private void line(GridPane grid, Square square, StackPane squarePane, DiagLineDirection dir) {
+    private void line(Round round, GridPane grid, Square square, DiagLineDirection dir) {
         Line line = new Line();
-    
+        NumberBinding cellDimen = Bindings.min(grid.widthProperty().divide(round.getBoard().getMaxX() + 1),
+                grid.heightProperty().divide(round.getBoard().getMaxY() + 1)).add(10); // DRY???
+        
         line.getStyleClass().add("decor");
         line.setStartY(0);
         if (dir == DiagLineDirection.NW_SE) {
             line.setStartX(0);
-            line.endXProperty().bind(squarePane.widthProperty());
-            line.endYProperty().bind(squarePane.heightProperty());
+            line.endXProperty().bind(cellDimen);
+            line.endYProperty().bind(cellDimen);
         } else { // NE_SW
-            line.startXProperty().bind(squarePane.widthProperty());
+            line.startXProperty().bind(cellDimen);
             line.setEndX(0);
-            line.endYProperty().bind(squarePane.heightProperty());
+            line.endYProperty().bind(cellDimen);
         }
-    
+        
         grid.add(line, square.getX(), square.getY());
     }
     
