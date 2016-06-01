@@ -37,7 +37,7 @@ public class Horse extends JumpingPiece implements RecursiveMovingPiece {
             int dy = to.getY() - from.getY();
             int dxSignum = (int) Math.signum(dx);
             int dySignum = (int) Math.signum(dy);
-            Square mustBeClear = new Square(dx - dxSignum, dy - dySignum);
+            Square mustBeClear = new Square(to.getX() - dxSignum, to.getY() - dySignum);
             
             return round.getBoard().isOn(mustBeClear) && round.getBoard().get(mustBeClear) == null;
         }).collect(Collectors.toList());
