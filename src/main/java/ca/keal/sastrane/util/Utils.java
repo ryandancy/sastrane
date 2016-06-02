@@ -13,12 +13,20 @@ import com.google.common.collect.HashMultiset;
 import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public final class Utils {
     
+    public static final Random RANDOM = new Random();
+    
     private Utils() {}
+    
+    @SafeVarargs
+    public static <T> T randomChoice(T... array) {
+        return array[RANDOM.nextInt(array.length)];
+    }
     
     /**
      * Returns whether the two collections have equal elements; that is, the same number of elements, and all elements
