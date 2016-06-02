@@ -8,4 +8,30 @@ licensed under CC-BY-SA 3.0 <https://creativecommons.org/licenses/by-sa/3.0/lega
     "Othello (Reversi) Board.jpg" <https://commons.wikimedia.org/wiki/File:Othello_(Reversi)_Board.jpg> by Paul 012
 <https://commons.wikimedia.org/wiki/User:Paul_012> (own work), found at src/main/resources/ca/keal/sastrane/reversi/
 reversi.png, is licensed under CC-BY-SA 3.0 <https://creativecommons.org/licenses/by-sa/3.0/legalcode>. Modifications:
-converted to PNG.
+converted to PNG. In compliance with the CC-BY-SA license, this derivative is licensed under the same license.
+
+    "Tic tac toe.svg" <https://commons.wikimedia.org/wiki/File:Tic_tac_toe.svg> by Symode09
+<https://commons.wikimedia.org/wiki/User:Symode09> (own work), found at src/main/resources/ca/keal/sastrane/tictactoe/
+tictactoe.png, is in the public domain. Modifications: converted to PNG.
+
+    "Xiangqi Board.svg" <https://commons.wikimedia.org/wiki/File:Xiangqi_Board.svg> by Inductiveload
+<https://commons.wikimedia.org/wiki/User:Inductiveload> (own work), found at src/main/resources/ca/keal/sastrane/xiangqi
+/xiangqi.png, has been released by its author into the public domain. Modifications: converted to PNG.
+
+    white.png and black.png in src/main/resources/ca/keal/sastrane/chess/icon and all images in src/main/resources/ca/
+keal/sastrane/chess/piece have been extracted and modified from the Chess Merida font <http://www.chessvariants.com/
+index/zipfile.php?itemid=FontMerida2> by Armando Hdez. Modifications: extracted images, changed colours.
+
+    In src/main/resources/ca/keal/sastrane/xiangqi/piece, advisor_black.png and advisor_red.png have been extracted from
+"Xiangqi Advisor.png", cannon_black.png and cannon_red.png from "Xiangqi Cannon.png", chariot_black.png and
+chariot_red.png from "Xiangqi Chariot.png", elephant_black.png and elephant_red.png from "Xiangqi Elephant.png",
+general_black and general_red from "Xiangqi General.png", horse_black.png and horse_red.png from "Xiangqi Horse.png",
+and soldier_black.png and soldier_red.png from "Xiangqi Soldier.png", all by Mcy jerry <https://en.wikipedia.org/wiki/
+User:Mcy_jerry>. They have all been released under CC-BY-SA 3.0 <https://creativecommons.org/licenses/by-sa/3.0/
+legalcode>. Modifications: extracted individual images. In compliance with the CC-BY-SA license, these derivatives are
+licensed under the same license.
+
+    "Click.wav" <http://freesound.org/people/ecfike/sounds/128918> by ecfike <http://freesound.org/people/ecfike/>,
+found at src/main/resources/ca/keal/sastrane/audio/soundfx/click.mp3, is licensed under CC0 1.0
+<https://creativecommons.org/publicdomain/zero/1.0/legalcode>; that is, it is in the public domain. Modifications:
+converted to MP3.
