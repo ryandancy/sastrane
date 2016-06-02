@@ -38,4 +38,11 @@ public final class SoundEffects {
         POOL.shutdown();
     }
     
+    /**
+     * A utility method to play ca.keal.sastrane.audio.soundfx/click.mp3.
+     */
+    public static void playClick() {
+        play(new Resource("ca.keal.sastrane.audio.soundfx", "click.mp3"));
+    }
+    
 }

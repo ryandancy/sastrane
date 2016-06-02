@@ -1,5 +1,6 @@
 package ca.keal.sastrane.gui;
 
+import ca.keal.sastrane.gui.audio.SoundEffects;
 import ca.keal.sastrane.util.I18n;
 import ca.keal.sastrane.util.Resource;
 import javafx.event.Event;
@@ -46,6 +47,7 @@ public class ChangeLangController implements Initializable {
     @SneakyThrows
     private void onBack(Event e) {
         // Back to the main menu
+        SoundEffects.playClick();
         GuiUtils.getStage(e).setScene(GuiUtils.getScene(new Resource("ca.keal.sastrane.gui", "main-menu.fxml"),
                 GuiUtils.getStage(e).getScene()));
     }

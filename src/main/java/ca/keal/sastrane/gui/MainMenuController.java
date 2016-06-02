@@ -2,6 +2,7 @@ package ca.keal.sastrane.gui;
 
 import ca.keal.sastrane.api.Game;
 import ca.keal.sastrane.api.event.ToNewGameScreenEvent;
+import ca.keal.sastrane.gui.audio.SoundEffects;
 import ca.keal.sastrane.util.Resource;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -31,6 +32,8 @@ public class MainMenuController implements Initializable {
     
     @SneakyThrows
     private void handleTileClick(MouseEvent e) {
+        SoundEffects.playClick();
+        
         FXMLLoader loader = GuiUtils.getFXMLLoader(new Resource("ca.keal.sastrane.gui", "new-game.fxml"));
         Scene previousScene = GuiUtils.getStage(e).getScene();
         Scene scene = GuiUtils.getScene((Parent) loader.load(), previousScene);
@@ -47,6 +50,7 @@ public class MainMenuController implements Initializable {
     @FXML
     @SneakyThrows
     private void onChangeLanguage(MouseEvent e) {
+        SoundEffects.playClick();
         GuiUtils.getStage(e).setScene(GuiUtils.getScene(new Resource("ca.keal.sastrane.gui", "change-lang.fxml"),
                 GuiUtils.getStage(e).getScene()));
     }

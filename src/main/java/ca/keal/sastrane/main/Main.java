@@ -6,8 +6,6 @@ import ca.keal.sastrane.util.I18n;
 import ca.keal.sastrane.util.Resource;
 import com.google.common.reflect.ClassPath;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
 public class Main extends Application {
@@ -22,12 +20,6 @@ public class Main extends Application {
         
         I18n.load("ca.keal.sastrane.i18n.sastrane");
         SoundEffects.load(new Resource("ca.keal.sastrane.audio.soundfx", "click.mp3"));
-        
-        primaryStage.addEventHandler(ActionEvent.ANY, e -> {
-            if (e.getSource() instanceof Button) {
-                SoundEffects.play(new Resource("ca.keal.sastrane.audio.soundfx", "click.mp3"));
-            }
-        });
         
         // Load all classes so that singleton Game subclass instances will be created.
         // @Game annotation???

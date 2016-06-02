@@ -1,6 +1,7 @@
 package ca.keal.sastrane.gui;
 
 import ca.keal.sastrane.api.Player;
+import ca.keal.sastrane.gui.audio.SoundEffects;
 import ca.keal.sastrane.util.I18n;
 import ca.keal.sastrane.util.Resource;
 import javafx.fxml.FXML;
@@ -41,6 +42,7 @@ public class PlayerSettings extends VBox implements Initializable {
         
         aiOrHumanButtons.selectedToggleProperty().addListener((ov, toggle, newToggle) -> {
             if (newToggle == null) {
+                SoundEffects.playClick();
                 toggle.setSelected(true);
             }
         });

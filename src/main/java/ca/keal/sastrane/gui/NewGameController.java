@@ -5,6 +5,7 @@ import ca.keal.sastrane.api.Mover;
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.Round;
 import ca.keal.sastrane.api.event.ToGameEvent;
+import ca.keal.sastrane.gui.audio.SoundEffects;
 import ca.keal.sastrane.util.I18n;
 import ca.keal.sastrane.util.Resource;
 import javafx.event.ActionEvent;
@@ -47,6 +48,7 @@ public class NewGameController {
     @SneakyThrows
     private void onBack(ActionEvent e) {
         // Send back to the main menu
+        SoundEffects.playClick();
         GuiUtils.getStage(e).setScene(GuiUtils.getScene(new Resource("ca.keal.sastrane.gui", "main-menu.fxml"),
                 GuiUtils.getStage(e).getScene()));
     }
@@ -54,6 +56,8 @@ public class NewGameController {
     @FXML
     @SneakyThrows
     private void onCreateGame(ActionEvent e) {
+        SoundEffects.playClick();
+        
         FXMLLoader loader = GuiUtils.getFXMLLoader(new Resource("ca.keal.sastrane.gui", "game.fxml"));
         Scene previousScene = GuiUtils.getStage(e).getScene();
         Scene scene = GuiUtils.getScene((Parent) loader.load(), previousScene);

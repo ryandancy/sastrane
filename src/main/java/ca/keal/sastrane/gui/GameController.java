@@ -13,6 +13,7 @@ import ca.keal.sastrane.api.move.PlacingMove;
 import ca.keal.sastrane.api.piece.MovingPiece;
 import ca.keal.sastrane.api.piece.OwnedPiece;
 import ca.keal.sastrane.api.piece.PlacingPiece;
+import ca.keal.sastrane.gui.audio.SoundEffects;
 import ca.keal.sastrane.util.I18n;
 import ca.keal.sastrane.util.Resource;
 import com.google.common.eventbus.Subscribe;
@@ -230,6 +231,8 @@ public class GameController implements Initializable {
     
     private void onTileClick(int x, int y) {
         if (!inputting || deciding) return;
+    
+        SoundEffects.playClick();
         
         Square square = new Square(x, y);
         if (selection.size() > 0 && selectionBase != null) {
@@ -326,6 +329,8 @@ public class GameController implements Initializable {
     }
     
     private void onDecide(Decision option) {
+        SoundEffects.playClick();
+        
         deciding = false;
         decisionPane.getChildren().clear();
         decisionPane.setVisible(false);
