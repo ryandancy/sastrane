@@ -47,7 +47,7 @@ public class ChangeLangController implements Initializable {
     @SneakyThrows
     private void onBack(Event e) {
         // Back to the main menu
-        SoundEffects.playClick();
+        SoundEffects.play("click");
         GuiUtils.getStage(e).setScene(GuiUtils.getScene(new Resource("ca.keal.sastrane.gui", "main-menu.fxml"),
                 GuiUtils.getStage(e).getScene()));
     }

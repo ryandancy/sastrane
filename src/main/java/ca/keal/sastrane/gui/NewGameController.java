@@ -48,7 +48,7 @@ public class NewGameController {
     @SneakyThrows
     private void onBack(ActionEvent e) {
         // Send back to the main menu
-        SoundEffects.playClick();
+        SoundEffects.play("click");
         GuiUtils.getStage(e).setScene(GuiUtils.getScene(new Resource("ca.keal.sastrane.gui", "main-menu.fxml"),
                 GuiUtils.getStage(e).getScene()));
     }
@@ -56,7 +56,7 @@ public class NewGameController {
     @FXML
     @SneakyThrows
     private void onCreateGame(ActionEvent e) {
-        SoundEffects.playClick();
+        SoundEffects.play("click");
         
         FXMLLoader loader = GuiUtils.getFXMLLoader(new Resource("ca.keal.sastrane.gui", "game.fxml"));
         Scene previousScene = GuiUtils.getStage(e).getScene();

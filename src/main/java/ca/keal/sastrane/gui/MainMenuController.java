@@ -32,7 +32,7 @@ public class MainMenuController implements Initializable {
     
     @SneakyThrows
     private void handleTileClick(MouseEvent e) {
-        SoundEffects.playClick();
+        SoundEffects.play("click");
         
         FXMLLoader loader = GuiUtils.getFXMLLoader(new Resource("ca.keal.sastrane.gui", "new-game.fxml"));
         Scene previousScene = GuiUtils.getStage(e).getScene();
@@ -50,7 +50,7 @@ public class MainMenuController implements Initializable {
     @FXML
     @SneakyThrows
     private void onChangeLanguage(MouseEvent e) {
-        SoundEffects.playClick();
+        SoundEffects.play("click");
         GuiUtils.getStage(e).setScene(GuiUtils.getScene(new Resource("ca.keal.sastrane.gui", "change-lang.fxml"),
                 GuiUtils.getStage(e).getScene()));
     }

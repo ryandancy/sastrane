@@ -41,7 +41,7 @@ public class PlayerSettings extends VBox implements Initializable {
         playerName.setText(I18n.localize(player.getI18nName()));
         
         aiOrHumanButtons.selectedToggleProperty().addListener((ov, toggle, newToggle) -> {
-            SoundEffects.playClick();
+            SoundEffects.play("click");
             if (newToggle == null) {
                 toggle.setSelected(true);
             }

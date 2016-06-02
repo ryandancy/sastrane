@@ -4,9 +4,11 @@ import ca.keal.sastrane.util.Resource;
 import javafx.scene.media.AudioClip;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.SneakyThrows;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -17,32 +19,33 @@ import java.util.concurrent.Executors;
 public final class SoundEffects {
     
     private static final ExecutorService POOL = Executors.newFixedThreadPool(2);
-    private static final Map<Resource, AudioClip> CACHE = new HashMap<>();
+    private static final Map<String, AudioClip> CACHE = new HashMap<>();
     @Getter @Setter private static double volume = .5;
     
     private SoundEffects() {
         throw new IllegalStateException("SoundEffects is a utility class and thus cannot be instantiated");
     }
     
-    public static void load(Resource resource) {
-        if (!CACHE.containsKey(resource)) {
-            CACHE.put(resource, new AudioClip(resource.getFullFilename()));
+    public static void load(String nickname, Resource resource) {
+        if (!CACHE.containsKey(nickname)) {
+            CACHE.put(nickname, new AudioClip(resource.getFullFilename()));
         }
     }
     
-    public static void play(Resource resource) {
-        POOL.execute(() -> CACHE.get(resource).play(volume));
+    @SneakyThrows
+    public static void loadAll(Resource propertiesFile) {
+        Properties nicksToNames = new Properties();
+        nicksToNames.load(propertiesFile.get().openStream());
+        
+        nicksToNames.forEach((nick, name) -> load((String) nick, new Resource(propertiesFile.getPkg(), (String) name)));
+    }
+    
+    public static void play(String nickname) {
+        POOL.execute(() -> CACHE.get(nickname).play(volume));
     }
     
     public static void stop() {
         POOL.shutdown();
-    }
-    
-    /**
-     * A utility method to play ca.keal.sastrane.audio.soundfx/click.mp3.
-     */
-    public static void playClick() {
-        play(new Resource("ca.keal.sastrane.audio.soundfx", "click.mp3"));
     }
     
 }

@@ -19,7 +19,7 @@ public class Main extends Application {
         // TODO splash screen
         
         I18n.load("ca.keal.sastrane.i18n.sastrane");
-        SoundEffects.load(new Resource("ca.keal.sastrane.audio.soundfx", "click.mp3"));
+        SoundEffects.loadAll(new Resource("ca.keal.sastrane.audio.soundfx", "soundfx.properties"));
         
         // Load all classes so that singleton Game subclass instances will be created.
         // @Game annotation???

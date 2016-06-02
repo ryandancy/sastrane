@@ -235,7 +235,7 @@ public class GameController implements Initializable {
         Square square = new Square(x, y);
         if (selection.size() > 0 && selectionBase != null) {
             if (selection.contains(square)) {
-                SoundEffects.playClick();
+                SoundEffects.play("click");
                 round.getGame().getBus().post(new UserMoveEvent(round, selectionMoves.stream()
                     .filter(move -> move.getEndPos().equals(square))
                     .collect(Collectors.toList())
@@ -261,7 +261,7 @@ public class GameController implements Initializable {
             // placing
             List<PlacingMove> placements = placingPiece.getPossiblePlacements(round, round.getCurrentTurn());
             if (placements.stream().map(PlacingMove::getPos).anyMatch(square::equals)) {
-                SoundEffects.playClick();
+                SoundEffects.play("click");
                 round.getGame().getBus().post(new UserMoveEvent(round, placements.stream()
                         .filter(placement -> placement.getPos().equals(square))
                         .findAny().get()));
@@ -270,7 +270,7 @@ public class GameController implements Initializable {
     }
     
     private void select(Square selectionBase, List<Move> possibleMoves, List<Square> selection) {
-        SoundEffects.playClick();
+        SoundEffects.play("click");
         
         this.selectionBase = selectionBase;
         this.selection = selection;
@@ -331,7 +331,7 @@ public class GameController implements Initializable {
     }
     
     private void onDecide(Decision option) {
-        SoundEffects.playClick();
+        SoundEffects.play("click");
         
         deciding = false;
         decisionPane.getChildren().clear();
@@ -384,7 +384,7 @@ public class GameController implements Initializable {
     @SneakyThrows
     private void onQuit(ActionEvent e) {
         // Send back to the main menu
-        SoundEffects.playClick();
+        SoundEffects.play("click");
         GuiUtils.getStage(e).setScene(GuiUtils.getScene(new Resource("ca.keal.sastrane.gui", "main-menu.fxml"),
                 GuiUtils.getStage(e).getScene()));
     }
