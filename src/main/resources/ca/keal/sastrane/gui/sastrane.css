@@ -38,7 +38,7 @@
     -fx-alignment: center;
 }
 
-.game-tile:hover, .button:hover, .change-lang-icon:hover {
+.game-tile:hover, .button:hover, #change-lang-icon:hover {
     -fx-cursor: hand;
 }
 
