@@ -1,6 +1,7 @@
 package ca.keal.sastrane.util;
 
 import lombok.Data;
+import lombok.SneakyThrows;
 
 import javax.annotation.Nullable;
 import java.net.URL;
@@ -25,6 +26,11 @@ public class Resource {
     
     public String getFilename() {
         return toString();
+    }
+    
+    @SneakyThrows
+    public String getFullFilename() {
+        return get().toExternalForm();
     }
     
     @Override

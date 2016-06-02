@@ -31,7 +31,7 @@ public final class Music {
     
     public static void play(Resource resource) {
         if (isPlaying()) stop();
-        player = new MediaPlayer(new Media(resource.getFilename()));
+        player = new MediaPlayer(new Media(resource.getFullFilename()));
         player.setVolume(volume);
         player.play();
     }

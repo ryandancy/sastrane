@@ -26,7 +26,7 @@ public final class SoundEffects {
     
     public static void load(Resource resource) {
         if (!CACHE.containsKey(resource)) {
-            CACHE.put(resource, new AudioClip(resource.getFilename()));
+            CACHE.put(resource, new AudioClip(resource.getFullFilename()));
         }
     }
     

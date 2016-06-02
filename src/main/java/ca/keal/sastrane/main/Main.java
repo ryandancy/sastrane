@@ -21,7 +21,7 @@ public class Main extends Application {
         // TODO splash screen
         
         I18n.load("ca.keal.sastrane.i18n.sastrane");
-        SoundEffects.load(new Resource("ca.keal.sastane.audio.soundfx", "click.mp3"));
+        SoundEffects.load(new Resource("ca.keal.sastrane.audio.soundfx", "click.mp3"));
         
         primaryStage.addEventHandler(ActionEvent.ANY, e -> {
             if (e.getSource() instanceof Button) {
