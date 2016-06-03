@@ -1,6 +1,7 @@
 package ca.keal.sastrane.main;
 
 import ca.keal.sastrane.gui.GuiUtils;
+import ca.keal.sastrane.gui.audio.Music;
 import ca.keal.sastrane.gui.audio.SoundEffects;
 import ca.keal.sastrane.util.I18n;
 import ca.keal.sastrane.util.Resource;
@@ -20,6 +21,7 @@ public class Main extends Application {
         
         I18n.load("ca.keal.sastrane.i18n.sastrane");
         SoundEffects.loadAll(new Resource("ca.keal.sastrane.audio.soundfx", "soundfx.properties"));
+        Music.shuffleAll(Resource.getAllFromFile(new Resource("ca.keal.sastrane.audio.music", "soundtrack.config")));
         
         // Load all classes so that singleton Game subclass instances will be created.
         // @Game annotation???

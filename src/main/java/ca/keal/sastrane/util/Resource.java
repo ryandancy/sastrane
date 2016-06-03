@@ -58,7 +58,7 @@ public class Resource {
         return new BufferedReader(new InputStreamReader(file.get().openStream()))
                 .lines()
                 .map(String::trim)
-                .filter(s -> !s.startsWith("#"))
+                .filter(s -> !s.isEmpty() && !s.startsWith("#"))
                 .map(s -> s.split("/"))
                 .map(res -> res.length == 2 ? res : new String[] {file.getPkg(), res[1]})
                 .map(res -> new Resource(res[0], res[1]))
