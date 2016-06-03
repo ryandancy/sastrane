@@ -60,7 +60,7 @@ public class Resource {
                 .map(String::trim)
                 .filter(s -> !s.isEmpty() && !s.startsWith("#"))
                 .map(s -> s.split("/"))
-                .map(res -> res.length == 2 ? res : new String[] {file.getPkg(), res[1]})
+                .map(res -> res.length == 2 ? res : new String[] {file.getPkg(), res[0]})
                 .map(res -> new Resource(res[0], res[1]))
                 .toArray(Resource[]::new);
     }
