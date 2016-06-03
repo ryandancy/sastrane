@@ -63,6 +63,7 @@ public final class Music {
         if (!isPlaying()) throw new IllegalStateException("Cannot stop when not playing");
         shuffling = false;
         player.stop();
+        player = null;
     }
     
     public static boolean isPlaying() {
