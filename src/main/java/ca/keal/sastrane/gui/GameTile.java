@@ -1,7 +1,6 @@
 package ca.keal.sastrane.gui;
 
 import ca.keal.sastrane.api.Game;
-import ca.keal.sastrane.util.I18n;
 import ca.keal.sastrane.util.Resource;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -36,7 +35,7 @@ public class GameTile extends VBox implements Initializable {
     @SneakyThrows
     public void initialize(URL location, ResourceBundle resources) {
         imgView.setImage(new Image(game.getIcon().get().openStream()));
-        displayName.setText(I18n.localize(game.getI18nName()));
+        displayName.setText(resources.getString(game.getI18nName()));
     }
     
 }
