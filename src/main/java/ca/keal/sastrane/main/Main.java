@@ -19,6 +19,9 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         // TODO splash screen
         
+        // No-good very bad hack to kill the process when the window is closed
+        primaryStage.setOnCloseRequest(e -> System.exit(0));
+        
         I18n.load("ca.keal.sastrane.i18n.sastrane");
         SoundEffects.loadAll(new Resource("ca.keal.sastrane.audio.soundfx", "soundfx.properties"));
         Music.shuffleAll(Resource.getAllFromFile(new Resource("ca.keal.sastrane.audio.music", "soundtrack.config")));
