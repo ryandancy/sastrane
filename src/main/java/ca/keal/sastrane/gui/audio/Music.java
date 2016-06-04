@@ -30,7 +30,11 @@ public final class Music {
     }
     
     public static void play(Resource resource) {
-        if (isPlaying()) stop();
+        if (isPlaying()) {
+            boolean oldShuffle = shuffling;
+            stop();
+            shuffling = oldShuffle;
+        }
         player = new MediaPlayer(new Media(resource.getFullFilename()));
         player.setVolume(volume);
         player.play();
