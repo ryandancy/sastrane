@@ -1,6 +1,15 @@
     Sastrane uses Guava <https://github.com/google/guava/> by Google, licensed under The Apache Software License,
 Version 2.0 <http://www.apache.org/licenses/LICENSE-2.0.txt>.
 
+    "Mouse pointer or cursor.png" <https://commons.wikimedia.org/wiki/File:Mouse_pointer_or_cursor.png> by Mikael
+Häggström <https://commons.wikimedia.org/wiki/User:Mikael_Häggström>, found at src/main/resources/ca/keal/sastrane/icon/
+cursor.png, is licensed under CC0 1.0 <https://creativecommons.org/publicdomain/zero/1.0/legalcode>; that is, it is in
+the public domain.
+
+    "Translation" <https://thenounproject.com/term/translation/987> by d͡ʒɛrmi Good <https://thenounproject.com/
+geremygood>, found at src/main/resources/ca/keal/sastrane/icon/change-language.png, is licensed under CC0 1.0
+<https://creativecommons.org/publicdomain/zero/1.0/legalcode>; that is, it is in the public domain.
+
     "ChessSet.jpg" <https://commons.wikimedia.org/wiki/File:ChessSet.jpg> by Alan Light <https://en.wikipedia.org/wiki/
 User:Alight> (own work by the original uploader), found at src/main/resources/ca/keal/sastrane/chess/icon/chess.png, is
 licensed under CC-BY-SA 3.0 <https://creativecommons.org/licenses/by-sa/3.0/legalcode>. Modifications: converted to PNG.
