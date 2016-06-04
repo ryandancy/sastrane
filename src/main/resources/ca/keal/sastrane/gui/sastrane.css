@@ -20,6 +20,21 @@
     -fx-background-color: transparent;
 }
 
+.scroll-bar {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar > .increment-button,
+.scroll-bar > .decrement-button,
+.scroll-bar > .increment-button > .increment-arrow,
+.scroll-bar > .decrement-button > .decrement-arrow {
+    visibility: hidden;
+}
+
+.scroll-bar > .thumb {
+    -fx-background-color: button-background;
+}
+
 #app-logo {
     -fx-font-weight: 800;
     -fx-text-fill: linear-gradient(#E7BC3C, #BD8522);
