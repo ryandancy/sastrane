@@ -1,5 +1,7 @@
 package ca.keal.sastrane.util;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import lombok.Cleanup;
 import lombok.Data;
 import lombok.SneakyThrows;
 
@@ -7,6 +9,7 @@ import javax.annotation.Nullable;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 
 @Data
 public class Resource {
@@ -54,8 +57,11 @@ public class Resource {
      * returns {@code [Resource(pkg=com.foo.baz,filename=abc.xyz),Resource(pkg=com.foo.bar,filename=asdjke.html)]}.
      */
     @SneakyThrows
+    @SuppressFBWarnings("OS_OPEN_STREAM")
     public static Resource[] getAllFromFile(Resource file) {
-        return new BufferedReader(new InputStreamReader(file.get().openStream()))
+        @Cleanup BufferedReader reader = new BufferedReader(new InputStreamReader(file.get().openStream(),
+                StandardCharsets.UTF_8));
+        return reader
                 .lines()
                 .map(String::trim)
                 .filter(s -> !s.isEmpty() && !s.startsWith("#"))
