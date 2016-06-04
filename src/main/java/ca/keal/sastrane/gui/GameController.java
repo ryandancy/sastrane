@@ -1,5 +1,6 @@
 package ca.keal.sastrane.gui;
 
+import ca.keal.sastrane.api.AI;
 import ca.keal.sastrane.api.Decision;
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.Round;
@@ -366,9 +367,15 @@ public class GameController implements Initializable {
             try {
                 Player winner = e.getWinner();
                 if (winner == null) {
+                    SoundEffects.play("lose");
                     winImg.setImage(new Image(new Resource("ca.keal.sastrane.icon", "draw.png").get().openStream()));
                     winText.setText(I18n.localize("gui.game.result.draw"));
                 } else {
+                    if (e.getRound().getPlayersToMovers().get(winner) instanceof AI) {
+                        SoundEffects.play("lose");
+                    } else {
+                        SoundEffects.play("win");
+                    }
                     winImg.setImage(new Image(winner.getIcon().get().openStream()));
                     winText.setText(I18n.localize("gui.game.result.win", I18n.localize(winner.getI18nName())));
                 }

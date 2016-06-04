@@ -31,10 +31,18 @@ User:Mcy_jerry>. They have all been released under CC-BY-SA 3.0 <https://creativ
 legalcode>. Modifications: extracted individual images. In compliance with the CC-BY-SA license, these derivatives are
 licensed under the same license.
 
-    "Click.wav" <http://freesound.org/people/ecfike/sounds/128918> by ecfike <http://freesound.org/people/ecfike/>,
+    "Click.wav" <http://freesound.org/people/ecfike/sounds/128918> by ecfike <http://freesound.org/people/ecfike>,
 found at src/main/resources/ca/keal/sastrane/audio/soundfx/click.mp3, is licensed under CC0 1.0
 <https://creativecommons.org/publicdomain/zero/1.0/legalcode>; that is, it is in the public domain. Modifications:
 converted to MP3.
+
+    "Ta Da Sound" <http://soundbible.com/1003-Ta-Da.html> by Mike Koenig, found at src/main/resources/ca/keal/sastrane/
+audio/soundfx/victory-trumpet.mp3, is licensed under CC-BY 3.0 <https://creativecommons.org/licenses/by-sa/3.0/
+legalcode>.
+
+    "Sad Trombone.wav" <http://www.freesound.org/people/Benboncan/sounds/73581> by Benboncan <http://freesound.org/
+people/Benboncan>, found at src/main/resources/ca/keal/sastrane/audio/soundfx/sad-trombone.mp3, is licensed under CC-BY
+3.0 <https://creativecommons.org/licenses/by/3.0/legalcode>. Modifications: converted to MP3.
 
     "Symphony No. 5 in C minor, Op. 67 - III. Allegro" <https://musopen.org/music/113/ludwig-van-beethoven/
 symphony-no-5-in-cm-op-67> by Ludwig van Beethoven, performed by the Skidmore College Orchestra, found at src/main/
