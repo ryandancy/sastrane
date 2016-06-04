@@ -1,8 +1,8 @@
 package ca.keal.sastrane.gui;
 
 import ca.keal.sastrane.util.Resource;
+import javafx.application.Platform;
 import javafx.beans.property.DoubleProperty;
-import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -13,8 +13,6 @@ import javafx.scene.layout.VBox;
 import lombok.Getter;
 import lombok.SneakyThrows;
 
-import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -46,15 +44,9 @@ public class VolumeSelector extends VBox implements Initializable {
         
         titleLabel.setText(title);
         // TODO save settings, load
-        ChangeListener<Number> callback = (ov, v, nv) -> {
-            try {
-                img.setImage(new Image(getVolumeIcon((double) nv).get().openStream()));
-            } catch (IOException e) {
-                throw new UncheckedIOException(e); // GAAH!!! THE BEAUTY OF THE LAMBDA IS RUINED!!!
-            }
-        };
-        volumeProperty().addListener(callback);
-        callback.changed(volumeProperty(), getVolume(), getVolume());
+        volumeProperty().addListener((ov, v, nv) -> img.setImage(new Image(getVolumeIcon((double) nv).getFilename())));
+        
+        Platform.runLater(() -> img.setImage(new Image(getVolumeIcon(getVolume()).getFilename())));
     }
     
     private Resource getVolumeIcon(double volume) {
