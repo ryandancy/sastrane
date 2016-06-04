@@ -25,7 +25,6 @@ import javafx.beans.binding.DoubleBinding;
 import javafx.beans.binding.NumberBinding;
 import javafx.concurrent.Task;
 import javafx.css.PseudoClass;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.HPos;
@@ -63,7 +62,7 @@ import java.util.stream.Collectors;
 
 import static ca.keal.sastrane.gui.GuiUtils.lookup;
 
-public class GameController implements Initializable {
+public class GameController extends GoBacker implements Initializable {
     
     @FXML private BorderPane game;
     @FXML private Label title;
@@ -85,6 +84,10 @@ public class GameController implements Initializable {
     @Nullable private Square selectionBase = null;
     private List<Square> selection = new ArrayList<>();
     private List<Move> selectionMoves = new ArrayList<>();
+    
+    public GameController() {
+        super(new Resource("ca.keal.sastrane.gui", "main-menu.fxml"));
+    }
     
     @SneakyThrows
     public void setRound(Round round) {
@@ -385,15 +388,6 @@ public class GameController implements Initializable {
                 throw new UncheckedIOException(ioe);
             }
         });
-    }
-    
-    @FXML
-    @SneakyThrows
-    private void onQuit(ActionEvent e) {
-        // Send back to the main menu
-        SoundEffects.play("click");
-        GuiUtils.getStage(e).setScene(GuiUtils.getScene(new Resource("ca.keal.sastrane.gui", "main-menu.fxml"),
-                GuiUtils.getStage(e).getScene()));
     }
     
     @Override

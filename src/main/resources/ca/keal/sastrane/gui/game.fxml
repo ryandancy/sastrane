@@ -17,7 +17,7 @@
     </fx:define>
     <top>
         <StackPane>
-            <Button text="%gui.game.quit" onAction="#onQuit" StackPane.alignment="center_left" />
+            <Button text="%gui.game.quit" onAction="#goBack" StackPane.alignment="center_left" />
             <Label fx:id="title" styleClass="screen-title" text="%gui.game.title.default"
                    StackPane.alignment="center" />
         </StackPane>
@@ -32,7 +32,7 @@
                 <ImageView fx:id="winImg" styleClass="img" fitWidth="${winPane.width * 0.5}"
                            fitHeight="${winPane.height * 0.5}" preserveRatio="true" />
                 <Label fx:id="winText" styleClass="who-won" labelFor="$winImg" />
-                <Button fx:id="winBtn" styleClass="main-menu" text="%gui.game.over.back" onAction="#onQuit" />
+                <Button fx:id="winBtn" styleClass="main-menu" text="%gui.game.over.back" onAction="#goBack" />
             </VBox>
         </StackPane>
     </center>

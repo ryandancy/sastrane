@@ -10,7 +10,7 @@
             stylesheets="@sastrane.css">
     <top>
         <StackPane>
-            <Button text="%gui.back" onAction="#onBack" StackPane.alignment="center_left" />
+            <Button text="%gui.back" onAction="#goBack" StackPane.alignment="center_left" />
             <Label fx:id="title" styleClass="screen-title" text="%gui.newgame.title.default"
                    StackPane.alignment="center" />
         </StackPane>

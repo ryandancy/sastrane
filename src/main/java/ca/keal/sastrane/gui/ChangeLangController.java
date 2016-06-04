@@ -1,6 +1,5 @@
 package ca.keal.sastrane.gui;
 
-import ca.keal.sastrane.gui.audio.SoundEffects;
 import ca.keal.sastrane.util.I18n;
 import ca.keal.sastrane.util.Resource;
 import javafx.event.Event;
@@ -15,9 +14,13 @@ import java.util.Locale;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
-public class ChangeLangController implements Initializable {
+public class ChangeLangController extends GoBacker implements Initializable {
     
     @FXML private FlowPane langs;
+    
+    public ChangeLangController() {
+        super(new Resource("ca.keal.sastrane.gui", "main-menu.fxml"));
+    }
     
     @Override
     @SneakyThrows
@@ -40,16 +43,7 @@ public class ChangeLangController implements Initializable {
     
     private void changeLang(Event e, Locale locale) {
         I18n.setLocale(locale);
-        onBack(e);
-    }
-    
-    @FXML
-    @SneakyThrows
-    private void onBack(Event e) {
-        // Back to the main menu
-        SoundEffects.play("click");
-        GuiUtils.getStage(e).setScene(GuiUtils.getScene(new Resource("ca.keal.sastrane.gui", "main-menu.fxml"),
-                GuiUtils.getStage(e).getScene()));
+        goBack(e);
     }
     
 }

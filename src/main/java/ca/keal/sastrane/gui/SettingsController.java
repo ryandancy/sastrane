@@ -11,10 +11,14 @@ import lombok.SneakyThrows;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class SettingsController implements Initializable {
+public class SettingsController extends GoBacker implements Initializable {
     
     @FXML private VolumeSelector soundfxVolume;
     @FXML private VolumeSelector musicVolume;
+    
+    public SettingsController() {
+        super(new Resource("ca.keal.sastrane.gui", "main-menu.fxml"));
+    }
     
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -25,15 +29,6 @@ public class SettingsController implements Initializable {
         soundfxVolume.layout();
         musicVolume.applyCss();
         musicVolume.layout();
-    }
-    
-    @FXML
-    @SneakyThrows
-    private void onBack(ActionEvent e) {
-        // Back to the main menu
-        SoundEffects.play("click");
-        GuiUtils.getStage(e).setScene(GuiUtils.getScene(new Resource("ca.keal.sastrane.gui", "main-menu.fxml"),
-                GuiUtils.getStage(e).getScene()));
     }
     
     @FXML

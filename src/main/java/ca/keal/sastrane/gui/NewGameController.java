@@ -26,13 +26,17 @@ import java.util.stream.Collectors;
 
 @Getter
 @Setter
-public class NewGameController {
+public class NewGameController extends GoBacker {
     
     @FXML private BorderPane container;
     @FXML private Label title;
     @FXML private FlowPane playerSettingsContainer;
     
     private Game game;
+    
+    public NewGameController() {
+        super(new Resource("ca.keal.sastrane.gui", "main-menu.fxml"));
+    }
     
     public void setGame(Game game) {
         this.game = game;
@@ -42,15 +46,6 @@ public class NewGameController {
                 .map(PlayerSettings::new)
                 .peek(settings -> settings.getStylesheets().add(game.getCss().getFilename()))
                 .collect(Collectors.toList()));
-    }
-    
-    @FXML
-    @SneakyThrows
-    private void onBack(ActionEvent e) {
-        // Send back to the main menu
-        SoundEffects.play("click");
-        GuiUtils.getStage(e).setScene(GuiUtils.getScene(new Resource("ca.keal.sastrane.gui", "main-menu.fxml"),
-                GuiUtils.getStage(e).getScene()));
     }
     
     @FXML
