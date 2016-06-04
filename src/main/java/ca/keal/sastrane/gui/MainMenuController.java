@@ -55,4 +55,12 @@ public class MainMenuController implements Initializable {
                 GuiUtils.getStage(e).getScene()));
     }
     
+    @FXML
+    @SneakyThrows
+    private void onSettings(MouseEvent e) {
+        SoundEffects.play("click");
+        GuiUtils.getStage(e).setScene(GuiUtils.getScene(new Resource("ca.keal.sastrane.gui", "settings.fxml"),
+                GuiUtils.getStage(e).getScene()));
+    }
+    
 }

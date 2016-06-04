@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<fx:root xmlns:fx="http://javafx.com/fxml" type="javafx.scene.layout.VBox" fx:id="vselect"
+         styleClass="volume-selector" stylesheets="@sastrane.css">
+    <Label fx:id="titleLabel" styleClass="volume-title" text="%gui.volumeselect.title.default" />
+    <HBox>
+        <ImageView fx:id="img" styleClass="volume-img" preserveRatio="true" fitHeight="${vselect.height * 0.4}" />
+        <Slider fx:id="volume" min="0" max="1" value="0.5" />
+    </HBox>
+</fx:root>

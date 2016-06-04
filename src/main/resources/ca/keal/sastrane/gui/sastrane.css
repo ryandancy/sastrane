@@ -53,7 +53,7 @@
     -fx-alignment: center;
 }
 
-.game-tile:hover, .button:hover, #change-lang-icon:hover {
+.game-tile:hover, .button:hover, .img-button:hover {
     -fx-cursor: hand;
 }
 
@@ -66,6 +66,12 @@
     -fx-translate-x: 7;
     -fx-translate-y: -7; /* apparently y=0 is at bottom */
     -fx-image: url(/ca/keal/sastrane/icon/change-language.png);
+}
+
+#settings-icon {
+    -fx-translate-x: -7;
+    -fx-translate-y: -7;
+    -fx-image: url(/ca/keal/sastrane/icon/settings.png);
 }
 
 .langs {
@@ -81,11 +87,35 @@
     -fx-font-weight: bold;
 }
 
-.button {
+.settings {
+    -fx-padding: 10;
+}
+
+#settings-vbox, .volume-selectors {
+    -fx-alignment: center;
+    -fx-spacing: 20;
+}
+
+.volume-selector {
+    -fx-padding: 15;
+}
+
+.volume-selector, .volume-selector > HBox {
+    -fx-alignment: center;
+}
+
+.volume-selector .volume-title, .settings-change-lang {
+    -fx-font-size: 1.2em;
+}
+
+.button, .volume-selector {
     -fx-background-color: button-background;
-    -fx-padding: 8;
     -fx-border-insets: 5;
     -fx-background-insets: 5;
+}
+
+.button {
+    -fx-padding: 8;
 }
 
 .button, .toggle-button, .slider .thumb {

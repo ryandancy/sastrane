@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import ca.keal.sastrane.gui.VolumeSelector?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="ca.keal.sastrane.gui.SettingsController"
+            styleClass="settings" stylesheets="@sastrane.css">
+    <top>
+        <StackPane>
+            <Button text="%gui.back" onAction="#onBack" StackPane.alignment="center_left" />
+            <Label styleClass="screen-title" text="%gui.settings.title" StackPane.alignment="center" />
+        </StackPane>
+    </top>
+    <center>
+        <VBox id="settings-vbox">
+            <Button styleClass="settings-change-lang" text="%gui.changelang.title" onAction="#onChangeLang"
+                    VBox.vgrow="always" maxWidth="Infinity" />
+            <HBox styleClass="volume-selectors">
+                <VolumeSelector fx:id="soundfxVolume" title="%gui.volumeselect.title.soundfx" VBox.vgrow="always"
+                                HBox.hgrow="always" />
+                <VolumeSelector fx:id="musicVolume" title="%gui.volumeselect.title.music" VBox.vgrow="always"
+                                HBox.hgrow="always" />
+            </HBox>
+        </VBox>
+    </center>
+</BorderPane>

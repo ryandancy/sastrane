@@ -23,8 +23,12 @@
     </center>
     <bottom>
         <StackPane>
-            <ImageView id="change-lang-icon" fitHeight="${mainMenu.height * 0.15}" preserveRatio="true"
-                       StackPane.alignment="center_left" onMouseClicked="#onChangeLanguage" pickOnBounds="true" />
+            <ImageView id="change-lang-icon" styleClass="img-button" fitHeight="${mainMenu.height * 0.15}"
+                       preserveRatio="true" StackPane.alignment="center_left" onMouseClicked="#onChangeLanguage"
+                       pickOnBounds="true" />
+            <ImageView id="settings-icon" styleClass="img-button" fitHeight="${mainMenu.height * 0.15}"
+                       preserveRatio="true" StackPane.alignment="center_right" onMouseClicked="#onSettings"
+                       pickOnBounds="true" />
         </StackPane>
     </bottom>
 </BorderPane>
