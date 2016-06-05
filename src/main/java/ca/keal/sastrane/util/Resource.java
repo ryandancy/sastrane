@@ -1,5 +1,7 @@
 package ca.keal.sastrane.util;
 
+import com.google.common.base.Splitter;
+import com.google.common.collect.Lists;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.Cleanup;
 import lombok.Data;
@@ -65,9 +67,10 @@ public class Resource {
                 .lines()
                 .map(String::trim)
                 .filter(s -> !s.isEmpty() && !s.startsWith("#"))
-                .map(s -> s.split("/"))
-                .map(res -> res.length == 2 ? res : new String[] {file.getPkg(), res[0]})
-                .map(res -> new Resource(res[0], res[1]))
+                .map(Splitter.on('/').trimResults()::split)
+                .map(Lists::newArrayList)
+                .peek(res -> { if (res.size() == 1) res.add(0, file.getPkg()); })
+                .map(res -> new Resource(res.get(0), res.get(1)))
                 .toArray(Resource[]::new);
     }
     
