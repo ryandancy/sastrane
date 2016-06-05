@@ -21,6 +21,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.StackPane?>
+
 <!--suppress JavaFxUnresolvedFxIdReference -->
 <BorderPane xmlns:fx="http://javafx.com/fxml" fx:id="mainMenu" fx:controller="ca.keal.sastrane.gui.MainMenuController"
             stylesheets="@sastrane.css">
