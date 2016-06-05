@@ -28,7 +28,7 @@
 
     "Symphony No. 5 in C minor, Op. 67 - III. Allegro" <https://musopen.org/music/113/ludwig-van-beethoven/symphony-no-5-in-cm-op-67> by Ludwig van Beethoven, performed by the Skidmore College Orchestra, found at src/main/resources/ca/keal/sastrane/audio/music/beethoven-symphony-5-iii.mp3, is in the public domain and free of known copyright restrictions.
 
-    "Concerto 1 in C minor" from The Vivaldi Concerto <https://musopen.org/music/1522/antonio-vivaldi/the-vivaldi-concerto> by Antonio Vivladi, performed by the European Archive, found at src/main/resources/ca/keal/sastrane/audio/music/vivaldi-concerto-1.mp3, is in the public domain and free of known copyright restrictions.
+    "Cello Sonata in E minor, RV 40 - IV. Allegro" <https://musopen.org/music/839/antonio-vivaldi/cello-sonata-in-em-rv-40> by Antonio Vivaldi, performed by the Telemann Trio, found at src/main/resources/ca/keal/sastrane/audio/music/vivaldi-cello-sonata-5-iv.mp3, is in the public domain and free of known copyright restrictions.
 
     "Symphony No. 40 in G minor, K. 550 - I. Molto Allegro" <https://musopen.org/music/1577/wolfgang-amadeus-mozart/symphony-no40-in-g-minor-k550> by Wolfgang Amadeus Mozart, performed by the Musopen Symphony, found at src/main/resources/ca/keal/sastrane/audio/music/mozart-symphony-40-i.mp3, is in the public domain and free of known copyright restrictions.
 
