@@ -29,7 +29,7 @@
     -fx-fit-to-width: true;
 }
 
-.scroll-pane > .viewport {
+.scroll-pane .viewport {
     -fx-background-color: transparent;
 }
 
@@ -100,8 +100,17 @@
     -fx-font-weight: bold;
 }
 
+.simple-text {
+    -fx-font-size: 1.05em;
+}
+
 .settings {
     -fx-padding: 10;
+}
+
+#legal-link-box {
+    -fx-spacing: 30;
+    -fx-alignment: center;
 }
 
 #settings-vbox, .volume-selectors {

@@ -1,0 +1,2 @@
+TODO come up with a better about page
+    Sastrane is a board game playing system that allows you to play many board games from chess to xiangqi. It was written by Ryan Dancy.

@@ -20,7 +20,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
-
+<?import javafx.scene.control.Hyperlink?>
 <BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="ca.keal.sastrane.gui.SettingsController"
             styleClass="settings" stylesheets="@sastrane.css">
     <top>
@@ -41,4 +41,11 @@
             </HBox>
         </VBox>
     </center>
+    <bottom>
+        <HBox id="legal-link-box">
+            <Hyperlink text="About" onAction="#toAbout" />
+            <Hyperlink text="Attribution Notices" onAction="#toAttribution" />
+            <Hyperlink text="License" onAction="#toLicense" />
+        </HBox>
+    </bottom>
 </BorderPane>

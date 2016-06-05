@@ -1,0 +1,2 @@
+TODO une page meilleur
+    Sastrane est un système pour jouer des jeux de société. Avec il, vous pouvez jouer beaucoup des jeux de société, des échecs à la xiangqi. C'était écrit par Ryan Dancy.

@@ -18,7 +18,10 @@ import ca.keal.sastrane.gui.audio.SoundEffects;
 import ca.keal.sastrane.util.Resource;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import lombok.SneakyThrows;
 
 import java.net.URL;
@@ -45,9 +48,42 @@ public class SettingsController extends GoBacker implements Initializable {
     }
     
     @FXML
-    @SneakyThrows
     private void onChangeLang(ActionEvent e) {
         GuiUtils.goTo(new Resource("ca.keal.sastrane.gui", "change-lang.fxml"), e);
+    }
+    
+    @FXML
+    private void toAbout(ActionEvent e) {
+        toSimpleText("text.about", e);
+    }
+    
+    @FXML
+    private void toLicense(ActionEvent e) {
+        toSimpleText("text.license", e);
+    }
+    
+    @FXML
+    private void toAttribution(ActionEvent e) {
+        toSimpleText("text.attribution", e);
+    }
+    
+    private void toSimpleText(String base, ActionEvent e) {
+        toSimpleText(base + ".title", base + ".file", e);
+    }
+    
+    @SneakyThrows
+    private void toSimpleText(String title, String text, ActionEvent e) {
+        SoundEffects.play("click");
+        
+        FXMLLoader loader = GuiUtils.getFXMLLoader(new Resource("ca.keal.sastrane.gui", "simple-text.fxml"));
+        Scene previousScene = GuiUtils.getStage(e).getScene();
+        Scene scene = GuiUtils.getScene((Parent) loader.load(), previousScene);
+        
+        SimpleTextController controller = loader.getController();
+        controller.setTitle(title);
+        controller.setText(text);
+        
+        GuiUtils.getStage(e).setScene(scene);
     }
     
 }
