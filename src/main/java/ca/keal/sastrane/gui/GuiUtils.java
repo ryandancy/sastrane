@@ -1,6 +1,7 @@
 package ca.keal.sastrane.gui;
 
 import ca.keal.sastrane.api.Square;
+import ca.keal.sastrane.gui.audio.SoundEffects;
 import ca.keal.sastrane.util.I18n;
 import ca.keal.sastrane.util.Resource;
 import javafx.event.Event;
@@ -10,6 +11,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import lombok.SneakyThrows;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
@@ -59,6 +61,15 @@ public final class GuiUtils {
     
     public static Stage getStage(Node node) {
         return (Stage) node.getScene().getWindow();
+    }
+    
+    /**
+     * For boilerplate reduction. Usecase is to go to another scene on an event.
+     */
+    @SneakyThrows
+    public static void goTo(Resource fxml, Event e) {
+        SoundEffects.play("click");
+        getStage(e).setScene(getScene(fxml, getStage(e).getScene()));
     }
     
     public static void loadCustom(Node custom, Resource resource) throws IOException {

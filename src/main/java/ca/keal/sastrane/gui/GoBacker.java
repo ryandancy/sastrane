@@ -1,6 +1,5 @@
 package ca.keal.sastrane.gui;
 
-import ca.keal.sastrane.gui.audio.SoundEffects;
 import ca.keal.sastrane.util.Resource;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -18,8 +17,7 @@ public abstract class GoBacker {
     @FXML
     @SneakyThrows
     protected void goBack(Event e) {
-        SoundEffects.play("click");
-        GuiUtils.getStage(e).setScene(GuiUtils.getScene(previous, GuiUtils.getStage(e).getScene()));
+        GuiUtils.goTo(previous, e);
     }
     
 }

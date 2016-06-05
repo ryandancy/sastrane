@@ -50,17 +50,13 @@ public class MainMenuController implements Initializable {
     @FXML
     @SneakyThrows
     private void onChangeLanguage(MouseEvent e) {
-        SoundEffects.play("click");
-        GuiUtils.getStage(e).setScene(GuiUtils.getScene(new Resource("ca.keal.sastrane.gui", "change-lang.fxml"),
-                GuiUtils.getStage(e).getScene()));
+        GuiUtils.goTo(new Resource("ca.keal.sastrane.gui", "change-lang.fxml"), e);
     }
     
     @FXML
     @SneakyThrows
     private void onSettings(MouseEvent e) {
-        SoundEffects.play("click");
-        GuiUtils.getStage(e).setScene(GuiUtils.getScene(new Resource("ca.keal.sastrane.gui", "settings.fxml"),
-                GuiUtils.getStage(e).getScene()));
+        GuiUtils.goTo(new Resource("ca.keal.sastrane.gui", "settings.fxml"), e);
     }
     
 }

@@ -34,10 +34,7 @@ public class SettingsController extends GoBacker implements Initializable {
     @FXML
     @SneakyThrows
     private void onChangeLang(ActionEvent e) {
-        // To the change-lang screen
-        SoundEffects.play("click");
-        GuiUtils.getStage(e).setScene(GuiUtils.getScene(new Resource("ca.keal.sastrane.gui", "change-lang.fxml"),
-                GuiUtils.getStage(e).getScene()));
+        GuiUtils.goTo(new Resource("ca.keal.sastrane.gui", "change-lang.fxml"), e);
     }
     
 }
