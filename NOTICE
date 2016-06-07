@@ -76,6 +76,7 @@ copyright restrictions.
     "Cello Sonata in E minor, RV 40 - IV. Allegro" <https://musopen.org/music/839/antonio-vivaldi/
 cello-sonata-in-em-rv-40> by Antonio Vivaldi, performed by the Telemann Trio, found at src/main/resources/ca/keal/
 sastrane/audio/music/vivaldi-cello-sonata-5-iv.mp3, is in the public domain and free of known copyright restrictions.
+Modifications: removed applause at end.
 
     "Symphony No. 40 in G minor, K. 550 - I. Molto Allegro" <https://musopen.org/music/1577/wolfgang-amadeus-mozart/
 symphony-no40-in-g-minor-k550> by Wolfgang Amadeus Mozart, performed by the Musopen Symphony, found at src/main/
