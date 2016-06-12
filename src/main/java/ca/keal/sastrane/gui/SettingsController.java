@@ -49,13 +49,13 @@ public class SettingsController extends GoBacker implements Initializable {
         soundfxVolume.volumeProperty().addListener((val, ov, nv) -> SoundEffects.setVolume((double) nv));
         musicVolume.volumeProperty().addListener((val, ov, nv) -> Music.setVolume((double) nv));
         
+        soundfxVolume.setVolume(cfg.soundFXVolume());
+        musicVolume.setVolume(cfg.musicVolume());
+        
         soundfxVolume.applyCss();
         soundfxVolume.layout();
         musicVolume.applyCss();
         musicVolume.layout();
-    
-        soundfxVolume.setVolume(cfg.soundFXVolume());
-        musicVolume.setVolume(cfg.musicVolume());
     }
     
     @SneakyThrows
