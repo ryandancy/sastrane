@@ -46,7 +46,8 @@
                 <ImageView fx:id="winImg" styleClass="img" fitWidth="${winPane.width * 0.5}"
                            fitHeight="${winPane.height * 0.5}" preserveRatio="true" />
                 <Label fx:id="winText" styleClass="who-won" labelFor="$winImg" />
-                <Button fx:id="winBtn" styleClass="main-menu" text="%gui.game.over.back" onAction="#goBack" />
+                <Button fx:id="winBtn" text="%gui.game.over.back" onAction="#goBack" />
+                <Button fx:id="notationBtn" text="%gui.game.over.notation" onAction="#toNotation" visible="false" />
             </VBox>
         </StackPane>
     </center>

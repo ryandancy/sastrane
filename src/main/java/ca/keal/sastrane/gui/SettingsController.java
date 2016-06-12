@@ -104,7 +104,7 @@ public class SettingsController extends GoBacker implements Initializable {
         
         SimpleTextController controller = loader.getController();
         controller.setTitle(title);
-        controller.setText(text);
+        controller.setTextFromFile(text);
         
         Main.STAGE.setScene(scene);
         onLeave();

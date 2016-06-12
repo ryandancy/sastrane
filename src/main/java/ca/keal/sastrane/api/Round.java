@@ -29,10 +29,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Deque;
 import java.util.List;
 import java.util.Map;
 
@@ -50,7 +48,7 @@ public class Round {
     private boolean ended = false;
     
     @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
-    private Deque<Move> moves = new ArrayDeque<>();
+    private List<Move> moves = new ArrayList<>();
     
     public Round(Game game, Map<Player, Mover> playersToMovers) {
         if (!Utils.areElementsEqual(playersToMovers.keySet(), Arrays.asList(game.getPlayers()))) {
@@ -63,7 +61,7 @@ public class Round {
     
     public Round(Round round) {
         this(round.getGame(), ImmutableMap.copyOf(round.getPlayersToMovers()), new Board(round.getBoard()),
-                round.getMoveNum(), round.isEnded(), new ArrayDeque<>(round.getMoves()));
+                round.getMoveNum(), round.isEnded(), new ArrayList<>(round.getMoves()));
     }
     
     public void nextTurn() {
@@ -84,7 +82,15 @@ public class Round {
         Result result = game.getResult(this);
         if (result != Result.NOT_OVER) {
             ended = true;
-            game.getBus().post(new WinEvent(this, result));
+            
+            String notation;
+            if (game instanceof Notatable) {
+                notation = ((Notatable) game).notate(moves);
+            } else {
+                notation = null;
+            }
+            
+            game.getBus().post(new WinEvent(this, result, notation));
         }
         
         moveNum++;
@@ -121,6 +127,14 @@ public class Round {
             moves.addAll(placingPiece.getPossiblePlacements(this, player));
         }
         return moves;
+    }
+    
+    public Move getLastMove() {
+        return getLastMove(0);
+    }
+    
+    public Move getLastMove(int n) {
+        return moves.get(moves.size() - 1 - n);
     }
     
 }

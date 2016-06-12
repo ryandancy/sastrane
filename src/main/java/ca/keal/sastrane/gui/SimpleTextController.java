@@ -16,6 +16,7 @@ package ca.keal.sastrane.gui;
 import ca.keal.sastrane.util.I18n;
 import ca.keal.sastrane.util.Resource;
 import com.google.common.io.Resources;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.text.Text;
@@ -47,7 +48,7 @@ public class SimpleTextController extends GoBacker {
      * UTF-8.
      */
     @SneakyThrows
-    public void setText(String i18nFilename) {
+    public void setTextFromFile(String i18nFilename) {
         String pkg = I18n.localize(i18nFilename + ".package");
         if (pkg.equals(i18nFilename + ".package")) {
             pkg = I18n.localize("text.package.default");
@@ -57,6 +58,17 @@ public class SimpleTextController extends GoBacker {
         
         Resource resource = new Resource(pkg, filename);
         text.setText(Resources.toString(resource.get(), StandardCharsets.UTF_8));
+    }
+    
+    public void setText(String text) {
+        this.text.setText(text);
+    }
+    
+    @FXML
+    @Override
+    protected void goBack(Event e) {
+        super.goBack(e);
+        GuiUtils.setTitleToDefault();
     }
     
 }

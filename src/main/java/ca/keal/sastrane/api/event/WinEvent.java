@@ -22,8 +22,8 @@ import lombok.EqualsAndHashCode;
 import javax.annotation.Nullable;
 
 /**
- * An event posted when a game is won. Game implementations should post this when the winning criteria for the game have
- * been met.
+ * An event posted when a game is won. This is posted when {@link ca.keal.sastrane.api.Game#getResult(Round)} returns
+ * something other than {@link Result#NOT_OVER}.
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -33,14 +33,16 @@ public class WinEvent extends RoundEvent {
      * The winner of the game. {@code null} means the game was a tie.
      */
     @Nullable private final Player winner;
+    @Nullable private final String notation;
     
-    public WinEvent(Round round, @Nullable Player winner) {
+    public WinEvent(Round round, @Nullable Player winner, @Nullable String notation) {
         super(round);
         this.winner = winner;
+        this.notation = notation;
     }
     
-    public WinEvent(Round round, Result result) {
-        this(round, result instanceof Result.Win ? ((Result.Win) result).getPlayer() : null);
+    public WinEvent(Round round, Result result, @Nullable String notation) {
+        this(round, result instanceof Result.Win ? ((Result.Win) result).getPlayer() : null, notation);
     }
     
 }

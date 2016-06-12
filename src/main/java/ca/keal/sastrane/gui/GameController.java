@@ -15,6 +15,7 @@ package ca.keal.sastrane.gui;
 
 import ca.keal.sastrane.api.AI;
 import ca.keal.sastrane.api.Decision;
+import ca.keal.sastrane.api.Notatable;
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.Round;
 import ca.keal.sastrane.api.Square;
@@ -28,6 +29,7 @@ import ca.keal.sastrane.api.piece.MovingPiece;
 import ca.keal.sastrane.api.piece.OwnedPiece;
 import ca.keal.sastrane.api.piece.PlacingPiece;
 import ca.keal.sastrane.gui.audio.SoundEffects;
+import ca.keal.sastrane.main.Main;
 import ca.keal.sastrane.util.I18n;
 import ca.keal.sastrane.util.Resource;
 import com.google.common.eventbus.Subscribe;
@@ -38,12 +40,16 @@ import javafx.beans.binding.DoubleBinding;
 import javafx.beans.binding.NumberBinding;
 import javafx.concurrent.Task;
 import javafx.css.PseudoClass;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
@@ -89,6 +95,7 @@ public class GameController extends GoBacker implements Initializable {
     @FXML private ImageView winImg;
     @FXML private Label winText;
     @FXML private Button winBtn;
+    @FXML private Button notationBtn;
     
     private Round round;
     @Nullable private Map<Player, ToggleGroup> playersToPieceChooserGroups = null;
@@ -400,6 +407,11 @@ public class GameController extends GoBacker implements Initializable {
                     winImg.setImage(new Image(winner.getIcon().get().openStream()));
                     winText.setText(I18n.localize("gui.game.result.win", I18n.localize(winner.getI18nName())));
                 }
+                
+                if (e.getRound().getGame() instanceof Notatable) {
+                    notationBtn.setVisible(true);
+                }
+                
                 winPane.setMouseTransparent(false);
                 winPane.setVisible(true);
             } catch (IOException ioe) {
@@ -420,9 +432,27 @@ public class GameController extends GoBacker implements Initializable {
         ));
     }
     
+    @FXML
     @Override
     protected void goBack(Event e) {
         super.goBack(e);
         GuiUtils.setTitleToDefault();
     }
+    
+    @FXML
+    @SneakyThrows
+    private void toNotation(ActionEvent e) {
+        SoundEffects.play("click");
+        
+        FXMLLoader loader = GuiUtils.getFXMLLoader(new Resource("ca.keal.sastrane.gui", "simple-text.fxml"));
+        Scene previousScene = Main.STAGE.getScene();
+        Scene scene = GuiUtils.getScene((Parent) loader.load(), previousScene);
+        
+        SimpleTextController controller = loader.getController();
+        controller.setTitle(I18n.localize("gui.game.over.notation"));
+        controller.setText(((Notatable) round.getGame()).notate(round.getMoves()));
+        
+        Main.STAGE.setScene(scene);
+    }
+    
 }
