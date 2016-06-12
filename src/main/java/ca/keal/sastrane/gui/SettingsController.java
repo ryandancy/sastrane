@@ -26,6 +26,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import lombok.SneakyThrows;
+import lombok.val;
 import org.aeonbits.owner.ConfigCache;
 
 import java.io.FileOutputStream;
@@ -62,7 +63,9 @@ public class SettingsController extends GoBacker implements Initializable {
         cfg.setProperty(SastraneConfig.SOUNDFX_VOLUME_KEY, Double.toString(soundfxVolume.getVolume()));
         cfg.setProperty(SastraneConfig.MUSIC_VOLUME_KEY, Double.toString(musicVolume.getVolume()));
         
-        cfg.store(new FileOutputStream(Utils.openOrCreateFile("config.properties")), "Sastrane config");
+        try (val os = new FileOutputStream(Utils.openOrCreateFile("config.properties"))) {
+            cfg.store(os, "Sastrane config");
+        }
     }
     
     @FXML
