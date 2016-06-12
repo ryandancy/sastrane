@@ -15,15 +15,14 @@ package ca.keal.sastrane.gui;
 
 import ca.keal.sastrane.api.Square;
 import ca.keal.sastrane.gui.audio.SoundEffects;
+import ca.keal.sastrane.main.Main;
 import ca.keal.sastrane.util.I18n;
 import ca.keal.sastrane.util.Resource;
-import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
-import javafx.stage.Stage;
 import lombok.SneakyThrows;
 
 import javax.annotation.Nullable;
@@ -67,22 +66,22 @@ public final class GuiUtils {
         return getScene(loadFXML(resource));
     }
     
-    // Thanks, http://stackoverflow.com/a/12805134
-    public static Stage getStage(Event e) {
-        return (Stage) ((Node) e.getSource()).getScene().getWindow();
+    /** Passes title through I18n.localize("gui.title") before setting */
+    public static void setTitle(String title) {
+        Main.STAGE.setTitle(I18n.localize("gui.title", title));
     }
     
-    public static Stage getStage(Node node) {
-        return (Stage) node.getScene().getWindow();
+    public static void setTitleToDefault() {
+        Main.STAGE.setTitle(I18n.localize("gui.title.default"));
     }
     
     /**
      * For boilerplate reduction. Usecase is to go to another scene on an event.
      */
     @SneakyThrows
-    public static void goTo(Resource fxml, Event e) {
+    public static void goTo(Resource fxml) {
         SoundEffects.play("click");
-        getStage(e).setScene(getScene(fxml, getStage(e).getScene()));
+        Main.STAGE.setScene(getScene(fxml, Main.STAGE.getScene()));
     }
     
     public static void loadCustom(Node custom, Resource resource) throws IOException {

@@ -19,6 +19,7 @@ import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.Round;
 import ca.keal.sastrane.api.event.ToGameEvent;
 import ca.keal.sastrane.gui.audio.SoundEffects;
+import ca.keal.sastrane.main.Main;
 import ca.keal.sastrane.util.I18n;
 import ca.keal.sastrane.util.Resource;
 import javafx.event.ActionEvent;
@@ -67,7 +68,7 @@ public class NewGameController extends GoBacker {
         SoundEffects.play("click");
         
         FXMLLoader loader = GuiUtils.getFXMLLoader(new Resource("ca.keal.sastrane.gui", "game.fxml"));
-        Scene previousScene = GuiUtils.getStage(e).getScene();
+        Scene previousScene = Main.STAGE.getScene();
         Scene scene = GuiUtils.getScene((Parent) loader.load(), previousScene);
         GameController controller = loader.getController();
         
@@ -89,7 +90,7 @@ public class NewGameController extends GoBacker {
         controller.setRound(round);
         round.getGame().getBus().post(new ToGameEvent.Post(previousScene, scene, round, playersToMovers));
         
-        GuiUtils.getStage(e).setScene(scene);
+        Main.STAGE.setScene(scene);
     }
     
 }

@@ -16,6 +16,7 @@ package ca.keal.sastrane.gui;
 import ca.keal.sastrane.api.Game;
 import ca.keal.sastrane.api.event.ToNewGameScreenEvent;
 import ca.keal.sastrane.gui.audio.SoundEffects;
+import ca.keal.sastrane.main.Main;
 import ca.keal.sastrane.util.Resource;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -48,7 +49,7 @@ public class MainMenuController implements Initializable {
         SoundEffects.play("click");
         
         FXMLLoader loader = GuiUtils.getFXMLLoader(new Resource("ca.keal.sastrane.gui", "new-game.fxml"));
-        Scene previousScene = GuiUtils.getStage(e).getScene();
+        Scene previousScene = Main.STAGE.getScene();
         Scene scene = GuiUtils.getScene((Parent) loader.load(), previousScene);
         
         Game game = ((GameTile) e.getSource()).getGame();
@@ -57,19 +58,19 @@ public class MainMenuController implements Initializable {
         ((NewGameController) loader.getController()).setGame(game);
         game.getBus().post(new ToNewGameScreenEvent.Post(previousScene, scene, game));
         
-        GuiUtils.getStage(e).setScene(scene);
+        Main.STAGE.setScene(scene);
     }
     
     @FXML
     @SneakyThrows
     private void onChangeLanguage(MouseEvent e) {
-        GuiUtils.goTo(new Resource("ca.keal.sastrane.gui", "change-lang.fxml"), e);
+        GuiUtils.goTo(new Resource("ca.keal.sastrane.gui", "change-lang.fxml"));
     }
     
     @FXML
     @SneakyThrows
     private void onSettings(MouseEvent e) {
-        GuiUtils.goTo(new Resource("ca.keal.sastrane.gui", "settings.fxml"), e);
+        GuiUtils.goTo(new Resource("ca.keal.sastrane.gui", "settings.fxml"));
     }
     
 }

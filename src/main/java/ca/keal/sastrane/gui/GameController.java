@@ -38,6 +38,7 @@ import javafx.beans.binding.DoubleBinding;
 import javafx.beans.binding.NumberBinding;
 import javafx.concurrent.Task;
 import javafx.css.PseudoClass;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.HPos;
@@ -107,7 +108,11 @@ public class GameController extends GoBacker implements Initializable {
         this.round = round;
         this.round.getBoard().addListener(change -> updateBoardGrid());
         this.round.getGame().getBus().register(this);
-        title.setText(I18n.localize(round.getGame().getI18nName()));
+        
+        String titleText = I18n.localize(round.getGame().getI18nName());
+        GuiUtils.setTitle(titleText);
+        title.setText(titleText);
+        
         game.getStylesheets().add(round.getGame().getCss().getFilename());
         
         int numPlacingPieces = round.getGame().getPlacingPieces().length;
@@ -415,4 +420,9 @@ public class GameController extends GoBacker implements Initializable {
         ));
     }
     
+    @Override
+    protected void goBack(Event e) {
+        super.goBack(e);
+        GuiUtils.setTitleToDefault();
+    }
 }

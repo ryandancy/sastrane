@@ -15,6 +15,7 @@ package ca.keal.sastrane.gui;
 
 import ca.keal.sastrane.gui.audio.Music;
 import ca.keal.sastrane.gui.audio.SoundEffects;
+import ca.keal.sastrane.main.Main;
 import ca.keal.sastrane.util.Resource;
 import ca.keal.sastrane.util.SastraneConfig;
 import ca.keal.sastrane.util.Utils;
@@ -70,7 +71,7 @@ public class SettingsController extends GoBacker implements Initializable {
     
     @FXML
     private void onChangeLang(ActionEvent e) {
-        GuiUtils.goTo(new Resource("ca.keal.sastrane.gui", "change-lang.fxml"), e);
+        GuiUtils.goTo(new Resource("ca.keal.sastrane.gui", "change-lang.fxml"));
         onLeave();
     }
     
@@ -98,14 +99,14 @@ public class SettingsController extends GoBacker implements Initializable {
         SoundEffects.play("click");
         
         FXMLLoader loader = GuiUtils.getFXMLLoader(new Resource("ca.keal.sastrane.gui", "simple-text.fxml"));
-        Scene previousScene = GuiUtils.getStage(e).getScene();
+        Scene previousScene = Main.STAGE.getScene();
         Scene scene = GuiUtils.getScene((Parent) loader.load(), previousScene);
         
         SimpleTextController controller = loader.getController();
         controller.setTitle(title);
         controller.setText(text);
         
-        GuiUtils.getStage(e).setScene(scene);
+        Main.STAGE.setScene(scene);
         onLeave();
     }
     

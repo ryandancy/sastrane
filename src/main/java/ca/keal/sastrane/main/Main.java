@@ -27,6 +27,8 @@ import org.aeonbits.owner.ConfigCache;
 
 public class Main extends Application {
     
+    public static Stage STAGE;
+    
     public static void main(String[] args) {
         launch(args);
     }
@@ -34,6 +36,8 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         // TODO splash screen
+        
+        STAGE = primaryStage;
         
         // No-good very bad hack to kill the process when the window is closed
         primaryStage.setOnCloseRequest(e -> System.exit(0));
@@ -50,8 +54,7 @@ public class Main extends Application {
         // @Game annotation???
         ClassPath.from(getClass().getClassLoader()).getAllClasses().forEach(this::initializeClass);
         
-        // TODO dynamic title
-        primaryStage.setTitle("Sastrane");
+        GuiUtils.setTitleToDefault();
         // Multiple icon sizes???
         primaryStage.getIcons().add(new Image(new Resource("ca.keal.sastrane.icon", "logo.png").get().openStream()));
         primaryStage.setScene(GuiUtils.getScene(new Resource("ca.keal.sastrane.gui", "main-menu.fxml"), 410, 410));

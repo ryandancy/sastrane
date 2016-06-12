@@ -30,7 +30,7 @@ public abstract class GoBacker {
     @FXML
     @SneakyThrows
     protected void goBack(Event e) {
-        GuiUtils.goTo(previous, e);
+        GuiUtils.goTo(previous);
     }
     
 }
