@@ -69,7 +69,7 @@ idea {
 jar {
     copy {
         from 'src/main/config'
-        into "$destinationDir/config"
+        into "$destinationDir"
     }
     manifest {
         attributes 'Main-Class': 'ca.keal.sastrane.main.Main', 'Class-Path': 'config'
