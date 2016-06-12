@@ -21,6 +21,7 @@ import ca.keal.sastrane.util.Resource;
 import ca.keal.sastrane.util.SastraneConfig;
 import com.google.common.reflect.ClassPath;
 import javafx.application.Application;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.aeonbits.owner.ConfigCache;
 
@@ -51,7 +52,8 @@ public class Main extends Application {
         
         // TODO dynamic title
         primaryStage.setTitle("Sastrane");
-        // Is 400x400 the best dimens here???
+        // Multiple icon sizes???
+        primaryStage.getIcons().add(new Image(new Resource("ca.keal.sastrane.icon", "logo.png").get().openStream()));
         primaryStage.setScene(GuiUtils.getScene(new Resource("ca.keal.sastrane.gui", "main-menu.fxml"), 410, 410));
         primaryStage.setMinWidth(425); // This works for some reason
         primaryStage.setMinHeight(500);
