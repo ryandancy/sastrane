@@ -27,14 +27,8 @@ import com.google.common.eventbus.Subscribe;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.NumberBinding;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Line;
 import lombok.Getter;
-
-import java.util.List;
-import java.util.stream.Collectors;
-
-import static ca.keal.sastrane.gui.GuiUtils.lookup;
 
 public class Xiangqi extends Game {
     
@@ -98,10 +92,6 @@ public class Xiangqi extends Game {
         GridPane boardGrid = (GridPane) e.getGameScene().lookup("#board");
         
         for (XiangqiPlayer player : XiangqiPlayer.values()) {
-            List<StackPane> palace = player.getPalace().stream()
-                    .map(s -> (StackPane) lookup(e.getGameScene(), s))
-                    .collect(Collectors.toList());
-            
             line(e.getRound(), boardGrid, player.getPalace().get(3), DiagLineDirection.NE_SW);
             line(e.getRound(), boardGrid, player.getPalace().get(4), DiagLineDirection.NW_SE);
             line(e.getRound(), boardGrid, player.getPalace().get(6), DiagLineDirection.NW_SE);
