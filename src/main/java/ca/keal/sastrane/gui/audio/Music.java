@@ -66,13 +66,16 @@ public final class Music {
     @SuppressWarnings("ConstantConditions")
     public static void shuffleAll(Resource... resources) {
         shuffling = true;
-        Runnable pickNextMusic = () -> {
-            if (/* everyday I'm */ shuffling) {
-                play(Utils.randomChoice(resources));
+        Runnable pickNextMusic = new Runnable() {
+            @Override
+            public void run() {
+                if (/* everyday I'm */ shuffling) {
+                    play(Utils.randomChoice(resources));
+                    player.setOnEndOfMedia(this);
+                }
             }
         };
         pickNextMusic.run();
-        player.setOnEndOfMedia(pickNextMusic);
     }
     
     @SuppressWarnings("ConstantConditions")
