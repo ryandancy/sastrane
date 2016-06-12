@@ -18,9 +18,11 @@ import ca.keal.sastrane.gui.audio.Music;
 import ca.keal.sastrane.gui.audio.SoundEffects;
 import ca.keal.sastrane.util.I18n;
 import ca.keal.sastrane.util.Resource;
+import ca.keal.sastrane.util.SastraneConfig;
 import com.google.common.reflect.ClassPath;
 import javafx.application.Application;
 import javafx.stage.Stage;
+import org.aeonbits.owner.ConfigCache;
 
 public class Main extends Application {
     
@@ -34,6 +36,10 @@ public class Main extends Application {
         
         // No-good very bad hack to kill the process when the window is closed
         primaryStage.setOnCloseRequest(e -> System.exit(0));
+        
+        SastraneConfig cfg = ConfigCache.getOrCreate(SastraneConfig.class);
+        SoundEffects.setVolume(cfg.soundFXVolume());
+        Music.setVolume(cfg.musicVolume());
         
         I18n.load("ca.keal.sastrane.i18n.sastrane");
         SoundEffects.loadAll(new Resource("ca.keal.sastrane.audio.soundfx", "soundfx.properties"));

@@ -16,14 +16,19 @@ package ca.keal.sastrane.gui;
 import ca.keal.sastrane.gui.audio.Music;
 import ca.keal.sastrane.gui.audio.SoundEffects;
 import ca.keal.sastrane.util.Resource;
+import ca.keal.sastrane.util.SastraneConfig;
+import ca.keal.sastrane.util.Utils;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import lombok.SneakyThrows;
+import org.aeonbits.owner.ConfigCache;
 
+import java.io.FileOutputStream;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -31,6 +36,8 @@ public class SettingsController extends GoBacker implements Initializable {
     
     @FXML private VolumeSelector soundfxVolume;
     @FXML private VolumeSelector musicVolume;
+    
+    private SastraneConfig cfg = ConfigCache.getOrCreate(SastraneConfig.class);
     
     public SettingsController() {
         super(new Resource("ca.keal.sastrane.gui", "main-menu.fxml"));
@@ -45,11 +52,23 @@ public class SettingsController extends GoBacker implements Initializable {
         soundfxVolume.layout();
         musicVolume.applyCss();
         musicVolume.layout();
+    
+        soundfxVolume.setVolume(cfg.soundFXVolume());
+        musicVolume.setVolume(cfg.musicVolume());
+    }
+    
+    @SneakyThrows
+    private void onLeave() {
+        cfg.setProperty(SastraneConfig.SOUNDFX_VOLUME_KEY, Double.toString(soundfxVolume.getVolume()));
+        cfg.setProperty(SastraneConfig.MUSIC_VOLUME_KEY, Double.toString(musicVolume.getVolume()));
+        
+        cfg.store(new FileOutputStream(Utils.openOrCreateFile("config.properties")), "Sastrane config");
     }
     
     @FXML
     private void onChangeLang(ActionEvent e) {
         GuiUtils.goTo(new Resource("ca.keal.sastrane.gui", "change-lang.fxml"), e);
+        onLeave();
     }
     
     @FXML
@@ -84,6 +103,13 @@ public class SettingsController extends GoBacker implements Initializable {
         controller.setText(text);
         
         GuiUtils.getStage(e).setScene(scene);
+        onLeave();
+    }
+    
+    @Override
+    protected void goBack(Event e) {
+        super.goBack(e);
+        onLeave();
     }
     
 }

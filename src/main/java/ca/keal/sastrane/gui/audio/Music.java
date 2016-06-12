@@ -27,7 +27,7 @@ import javax.annotation.Nullable;
 public final class Music {
     
     @Nullable private static MediaPlayer player = null;
-    @Getter private static double volume = 0.5;
+    @Getter private static double volume = .5;
     private static boolean shuffling = false;
     
     private Music() {

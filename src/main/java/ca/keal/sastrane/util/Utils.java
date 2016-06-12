@@ -24,6 +24,9 @@ import ca.keal.sastrane.api.piece.RecursiveMovingPiece;
 import com.google.common.collect.HashMultiset;
 
 import javax.annotation.Nullable;
+import java.io.File;
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Random;
@@ -35,6 +38,18 @@ public final class Utils {
     public static final Random RANDOM = new Random();
     
     private Utils() {}
+    
+    public static File openOrCreateFile(String path) {
+        try {
+            File file = new File(path);
+            if (!file.isFile() && !file.createNewFile()) {
+                throw new IOException("Cannot create file " + file.getAbsolutePath());
+            }
+            return file;
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+    }
     
     @SafeVarargs
     public static <T> T randomChoice(T... array) {
