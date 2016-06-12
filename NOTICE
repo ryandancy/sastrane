@@ -1,6 +1,10 @@
     Sastrane uses Guava <https://github.com/google/guava/> by Google, licensed under The Apache Software License,
 Version 2.0 <http://www.apache.org/licenses/LICENSE-2.0.txt>.
 
+    Sastrane uses OWNER <http://owner.aeonbits.org/> (available on GitHub at <https://github.com/lviggiano/owner>) by
+Luigi R. Viggiano <https://github.com/lviggiano>, licensed under the terms and conditions of its license
+<https://raw.githubusercontent.com/lviggiano/owner/master/LICENSE>.
+
     "Mouse pointer or cursor.png" <https://commons.wikimedia.org/wiki/File:Mouse_pointer_or_cursor.png> by Mikael
 Häggström <https://commons.wikimedia.org/wiki/User:Mikael_Häggström>, found at src/main/resources/ca/keal/sastrane/icon/
 cursor.png, is licensed under CC0 1.0 <https://creativecommons.org/publicdomain/zero/1.0/legalcode>; that is, it is in
