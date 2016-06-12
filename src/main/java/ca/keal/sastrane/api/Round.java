@@ -83,8 +83,8 @@ public class Round {
         
         Result result = game.getResult(this);
         if (result != Result.NOT_OVER) {
-            game.getBus().post(new WinEvent(this, result));
             ended = true;
+            game.getBus().post(new WinEvent(this, result));
         }
         
         moveNum++;
