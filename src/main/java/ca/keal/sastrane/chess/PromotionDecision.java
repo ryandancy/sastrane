@@ -39,7 +39,7 @@ public enum PromotionDecision implements Decision {
     
     @Override
     public void onChoose(Round round) {
-        Square lastMovePos = round.getLastMove().getEndPos();
+        Square lastMovePos = round.getLastMove().getMove().getEndPos();
         // If there's nothing at lastMovePos, we'll get an NPE - but that should be impossible
         //noinspection ConstantConditions
         round.getBoard().set(lastMovePos, new OwnedPiece(pieceSupplier.get(),

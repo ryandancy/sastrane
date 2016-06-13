@@ -30,4 +30,10 @@ public interface Move {
      */
     Square getEndPos();
     
+    default Board whatIf(Board board) {
+        Board newBoard = new Board(board);
+        move(newBoard);
+        return newBoard;
+    }
+    
 }

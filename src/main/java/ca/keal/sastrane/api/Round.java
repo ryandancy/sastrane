@@ -48,7 +48,7 @@ public class Round {
     private boolean ended = false;
     
     @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
-    private List<Move> moves = new ArrayList<>();
+    private List<StateChange> moves = new ArrayList<>();
     
     public Round(Game game, Map<Player, Mover> playersToMovers) {
         if (!Utils.areElementsEqual(playersToMovers.keySet(), Arrays.asList(game.getPlayers()))) {
@@ -72,10 +72,13 @@ public class Round {
         Mover mover = playersToMovers.get(player);
         Move move = mover.getMove(this, player);
         
+        Board oldBoard = new Board(board);
+        
         game.getBus().post(new MoveEvent.Pre(this, move));
         move.move(board);
-        moves.add(move);
         game.getBus().post(new MoveEvent.Post(this, move));
+        
+        moves.add(new StateChange(oldBoard, move, new Round(this)));
         
         game.getBus().post(new TurnEvent.Post(this));
         
@@ -129,11 +132,11 @@ public class Round {
         return moves;
     }
     
-    public Move getLastMove() {
+    public StateChange getLastMove() {
         return getLastMove(0);
     }
     
-    public Move getLastMove(int n) {
+    public StateChange getLastMove(int n) {
         return moves.get(moves.size() - 1 - n);
     }
     

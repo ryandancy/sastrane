@@ -13,8 +13,6 @@
 
 package ca.keal.sastrane.api;
 
-import ca.keal.sastrane.api.move.Move;
-
 import java.util.List;
 
 /**
@@ -23,6 +21,6 @@ import java.util.List;
  */
 public interface Notatable {
     
-    String notate(List<Move> moves);
+    String notate(List<StateChange> moves);
     
 }

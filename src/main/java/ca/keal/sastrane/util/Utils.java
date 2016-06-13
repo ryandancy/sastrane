@@ -13,6 +13,7 @@
 
 package ca.keal.sastrane.util;
 
+import ca.keal.sastrane.api.Board;
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.Round;
 import ca.keal.sastrane.api.Square;
@@ -22,6 +23,7 @@ import ca.keal.sastrane.api.piece.OwnedPiece;
 import ca.keal.sastrane.api.piece.Piece;
 import ca.keal.sastrane.api.piece.RecursiveMovingPiece;
 import com.google.common.collect.HashMultiset;
+import com.google.common.collect.Multiset;
 
 import javax.annotation.Nullable;
 import java.io.File;
@@ -108,6 +110,19 @@ public final class Utils {
     
     public static boolean canBeMovedTo(Round round, Square square) {
         return canBeMovedTo(round, square, null, true);
+    }
+    
+    public static Multiset<Player> countPlayers(Board board) {
+        Multiset<Player> players = HashMultiset.create();
+    
+        for (Square square : board) {
+            OwnedPiece atSquare = board.get(square);
+            if (atSquare != null) {
+                players.add(atSquare.getOwner());
+            }
+        }
+        
+        return players;
     }
     
 }

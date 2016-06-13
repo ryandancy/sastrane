@@ -20,6 +20,7 @@ import ca.keal.sastrane.api.Result;
 import ca.keal.sastrane.api.Round;
 import ca.keal.sastrane.api.piece.OwnedPieceFactory;
 import ca.keal.sastrane.util.Resource;
+import ca.keal.sastrane.util.Utils;
 import com.google.common.collect.Multiset;
 import lombok.Getter;
 
@@ -64,7 +65,7 @@ public class Reversi extends Game {
     }
     
     private Result count(Board board, Player player, Player opponent) {
-        Multiset<Player> players = ReversiUtils.countPlayers(board);
+        Multiset<Player> players = Utils.countPlayers(board);
         switch (Integer.compare(players.count(player), players.count(opponent))) {
             case -1:
                 return new Result.Win(opponent);

@@ -16,6 +16,7 @@ package ca.keal.sastrane.reversi;
 import ca.keal.sastrane.api.AI;
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.Round;
+import ca.keal.sastrane.util.Utils;
 import com.google.common.collect.Multiset;
 import lombok.SneakyThrows;
 
@@ -35,7 +36,7 @@ public class ReversiAI extends AI {
         if (players.size() != 1) throw new IllegalArgumentException("ReversiAI.heuristic: players.size() != 1");
         Player player = players.toArray(new Player[1])[0];
         
-        Multiset<Player> counts = ReversiUtils.countPlayers(round.getBoard());
+        Multiset<Player> counts = Utils.countPlayers(round.getBoard());
         return 2 * counts.count(player) - counts.size(); // equivalent to count(player) - (size() - count(player))
     }
     
