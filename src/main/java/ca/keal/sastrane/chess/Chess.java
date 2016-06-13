@@ -106,14 +106,21 @@ public class Chess extends Game implements Notatable {
         StringBuilder res = new StringBuilder();
         
         int moveNum = 1;
+        boolean isFirst = true;
         boolean startNew = true;
         for (StateChange change : moves) {
             if (startNew) {
+                if (isFirst) {
+                    isFirst = false;
+                } else {
+                    res.append(System.lineSeparator());
+                }
                 res.append(moveNum++);
                 res.append(". ");
             } else {
                 res.append(' ');
             }
+            startNew = !startNew;
             
             MovingMove move = change.getMovingMove();
             
@@ -168,22 +175,19 @@ public class Chess extends Game implements Notatable {
             }
             
             appendSuffixes(change.getAfterRound(), change.getMovedPiece().getOwner(), res);
-            
-            if (!startNew) {
-                res.append(System.lineSeparator());
-            }
-            startNew = !startNew;
         }
         
         // game end: 1-0 for white wins, 0-1 black wins, 1/2-1/2 tie
         Result result = getResult(moves.get(moves.size() - 1).getAfterRound());
         if (result instanceof Result.Win) {
+            res.append(System.lineSeparator());
             if (((Result.Win) result).getPlayer() == ChessPlayer.WHITE) {
                 res.append("1-0");
             } else { // black
                 res.append("0-1");
             }
         } else if (result == Result.DRAW) {
+            res.append(System.lineSeparator());
             res.append("½-½");
         }
         
