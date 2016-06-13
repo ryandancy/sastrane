@@ -38,6 +38,10 @@ public class SimpleTextController extends GoBacker {
         title.setText(I18n.localize(i18nTitle));
     }
     
+    public void setPreviousScene(Resource previous) {
+        this.previous = previous;
+    }
+    
     /**
      * To find the package of the resource, i18nFilename + ".package" is passed through I18n.localize. If that doesn't
      * exist, I18n.localize("text.package.default") is used.
