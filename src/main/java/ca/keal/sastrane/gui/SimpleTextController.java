@@ -19,6 +19,7 @@ import com.google.common.io.Resources;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import lombok.SneakyThrows;
 
@@ -66,6 +67,10 @@ public class SimpleTextController extends GoBacker {
     
     public void setText(String text) {
         this.text.setText(text);
+    }
+    
+    public void useMonospacedFont() {
+        text.setFont(Font.font("monospace", text.getFont().getSize()));
     }
     
     @FXML

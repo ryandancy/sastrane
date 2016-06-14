@@ -51,7 +51,7 @@ public class GridNotater implements Notater {
         
         for (int i = 0; i < moves.size(); i++) {
             Square square = moves.get(i).getMove().getEndPos();
-            grid[square.getY()][square.getX()] = i;
+            grid[square.getY()][square.getX()] = i + 1;
         }
         
         return gridToString(grid);
@@ -64,7 +64,6 @@ public class GridNotater implements Notater {
         for (int y = 0; y < grid.length; y++) {
             res.append(System.lineSeparator());
             res.append(y + 1);
-            res.append(' ');
             
             for (int x = 0; x < grid[y].length; x++) {
                 String squareRepr;
@@ -88,10 +87,11 @@ public class GridNotater implements Notater {
                 res.append(String.format("%1$3s", squareRepr)); // left pad to 3 chars with spaces
             }
             
+            res.append(' ');
             res.append(y + 1);
         }
         
-        return res.append(System.lineSeparator()).append(' ').append(prePostfix).toString();
+        return res.append(System.lineSeparator()).append(prePostfix).toString();
     }
     
 }

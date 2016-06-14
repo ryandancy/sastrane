@@ -452,6 +452,7 @@ public class GameController extends GoBacker implements Initializable {
         controller.setTitle(I18n.localize("gui.game.over.notation"));
         controller.setText(((Notatable) round.getGame()).getNotater().notate(round.getMoves()));
         controller.setPreviousScene(new Resource("ca.keal.sastrane.gui", "main-menu.fxml"));
+        controller.useMonospacedFont();
         
         Main.STAGE.setScene(scene);
     }
