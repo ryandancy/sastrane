@@ -13,12 +13,14 @@
 
 package ca.keal.sastrane.api;
 
+import java.util.List;
+
 /**
- * Indicates that this {@link Game} has a notation system that can be used to record its games; it can be notated, and
- * is hence <i>notatable</i>. Only valid on {@link Game}s.
+ * An object that can notate a game; that is, it can record a game in some standard notation system.
  */
-public interface Notatable {
+@FunctionalInterface
+public interface Notater {
     
-    Notater getNotater();
+    String notate(List<StateChange> moves);
     
 }

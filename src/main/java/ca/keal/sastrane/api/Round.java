@@ -88,7 +88,7 @@ public class Round {
             
             String notation;
             if (game instanceof Notatable) {
-                notation = ((Notatable) game).notate(moves);
+                notation = ((Notatable) game).getNotater().notate(moves);
             } else {
                 notation = null;
             }
