@@ -35,7 +35,7 @@ public class GridNotater implements Notater {
     public String notate(List<StateChange> moves) {
         Board start = moves.get(0).getBefore();
         
-        int[][] grid = new int[start.getMaxY()][start.getMaxX()]; // grid[y][x]; it's initialized with `NOTHING` (0)
+        int[][] grid = new int[start.getMaxY()+1][start.getMaxX()+1]; // grid[y][x]; it's initialized with 0 (NOTHING)
         for (Square square : start) {
             OwnedPiece atSquare = start.get(square);
             if (atSquare != null) {
@@ -62,6 +62,7 @@ public class GridNotater implements Notater {
         StringBuilder res = new StringBuilder(prePostfix);
         
         for (int y = 0; y < grid.length; y++) {
+            res.append(System.lineSeparator());
             res.append(y + 1);
             res.append(' ');
             
@@ -84,13 +85,13 @@ public class GridNotater implements Notater {
                         squareRepr = Integer.toString(grid[y][x]);
                     }
                 }
-                res.append(String.format("%1$2s", squareRepr)); // left pad to 2 chars with spaces
+                res.append(String.format("%1$3s", squareRepr)); // left pad to 3 chars with spaces
             }
             
             res.append(y + 1);
         }
         
-        return res.append(prePostfix).toString();
+        return res.append(System.lineSeparator()).append(' ').append(prePostfix).toString();
     }
     
 }
