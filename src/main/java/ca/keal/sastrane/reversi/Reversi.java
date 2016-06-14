@@ -15,6 +15,8 @@ package ca.keal.sastrane.reversi;
 
 import ca.keal.sastrane.api.Board;
 import ca.keal.sastrane.api.Game;
+import ca.keal.sastrane.api.Notatable;
+import ca.keal.sastrane.api.Notater;
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.Result;
 import ca.keal.sastrane.api.Round;
@@ -24,7 +26,7 @@ import ca.keal.sastrane.util.Utils;
 import com.google.common.collect.Multiset;
 import lombok.Getter;
 
-public class Reversi extends Game {
+public class Reversi extends Game implements Notatable {
     
     @Getter private static final Reversi instance = new Reversi();
     
@@ -77,6 +79,11 @@ public class Reversi extends Game {
                 // Wait what? This should NEVER happen...
                 throw new RuntimeException("Why am I here? It's dark... and I'm scared... help... (Reversi.count)");
         }
+    }
+    
+    @Override
+    public Notater getNotater() {
+        return new GridNotater();
     }
     
 }
