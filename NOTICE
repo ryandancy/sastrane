@@ -98,8 +98,8 @@ restrictions.
 
     "Violin Concerto in F minor, RV 297 'Winter'" <https://musopen.org/music/2213/antonio-vivaldi/the-four-seasons>
 by Antonio Vivaldi, performed by John Harrison, found at src/main/resources/ca/keal/sastrane/audio/music/
-vivaldi-winter.mp3, is a combination of three files, each bearing the name of the entire piece, plus a suffix --
-" - I. Allegro non molto", " - II. Largo", and " - III. Allegro" -- and can each be found at the same page as the
+vivaldi-winter.mp3, is a combination of three files, each bearing the name of the entire piece, plus a suffix —
+" - I. Allegro non molto", " - II. Largo", and " - III. Allegro" — and can each be found at the same page as the
 whole piece. Each individual piece is licensed under CC-BY-SA 3.0 <https://creativecommons.org/licenses/by-sa/3.0/
 legalcode>; the combination of them is therefore, in compliance with the license, released under the same license.
 Modifications: combined.

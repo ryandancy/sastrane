@@ -104,6 +104,10 @@
     -fx-font-size: 1.05em;
 }
 
+.hyperlink:focused {
+    -fx-border-color: transparent; /* remove blue dashed border */
+}
+
 .settings {
     -fx-padding: 10;
 }
