@@ -54,9 +54,15 @@ public class WXFNotater implements Notater {
         
         int moveNum = 1;
         boolean startNew = true;
+        boolean isFirst = true;
         for (StateChange change : moves) {
             if (startNew) {
-                res.append(moveNum);
+                if (isFirst) {
+                    isFirst = false;
+                } else {
+                    res.append(System.lineSeparator());
+                }
+                res.append(moveNum++);
                 res.append('.');
             }
             res.append(' ');
@@ -147,7 +153,6 @@ public class WXFNotater implements Notater {
             }
             
             startNew = !startNew;
-            moveNum++;
         }
         
         return res.toString();
