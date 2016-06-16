@@ -15,6 +15,7 @@ package ca.keal.sastrane.api;
 
 import ca.keal.sastrane.api.piece.MovingPiece;
 import ca.keal.sastrane.util.Resource;
+import ca.keal.sastrane.xiangqi.Xiangqi;
 
 /**
  * A general description of a player/team/side/whatever. If you're looking for an AI-or-user input type, go to {@link
@@ -80,7 +81,11 @@ public interface Player {
      */
     Square perspectivize(Square pos, Square original);
     
-    static Square flipNone(@SuppressWarnings("UnusedParameters") Square pos, Square original) {
+    static Square flipNone(Square pos, @SuppressWarnings("UnusedParameters") Square original) {
+        return flipNone(pos);
+    }
+    
+    static Square flipNone(Square pos) {
         return pos;
     }
     
@@ -95,6 +100,14 @@ public interface Player {
     
     static Square flipBoth(Square pos, Square original) {
         return new Square(2 * original.getX() - pos.getX(), 2 * original.getY() - pos.getY());
+    }
+    
+    static Square flipAroundCentre(Square pos, @SuppressWarnings("UnusedParameters") Square original) {
+        return flipAroundCentre(pos);
+    }
+    
+    static Square flipAroundCentre(Square pos) {
+        return new Square(Xiangqi.MAXX - pos.getX(), Xiangqi.MAXY - pos.getY());
     }
     
 }

@@ -15,6 +15,8 @@ package ca.keal.sastrane.xiangqi;
 
 import ca.keal.sastrane.api.Board;
 import ca.keal.sastrane.api.Game;
+import ca.keal.sastrane.api.Notatable;
+import ca.keal.sastrane.api.Notater;
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.Result;
 import ca.keal.sastrane.api.Round;
@@ -30,7 +32,10 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Line;
 import lombok.Getter;
 
-public class Xiangqi extends Game {
+public class Xiangqi extends Game implements Notatable {
+    
+    public static final int MAXX = 9;
+    public static final int MAXY = 10;
     
     @Getter private static final Xiangqi instance = new Xiangqi();
     
@@ -119,6 +124,11 @@ public class Xiangqi extends Game {
         }
         
         grid.add(line, square.getX(), square.getY());
+    }
+    
+    @Override
+    public Notater getNotater() {
+        return new WXFNotater();
     }
     
 }
