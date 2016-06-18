@@ -11,14 +11,22 @@
  * specific language governing permissions and limitations under the License.
  */
 
-package ca.keal.sastrane.tictactoe;
+package ca.keal.sastrane.api;
 
-import ca.keal.sastrane.api.AbstractGameModule;
+import com.google.inject.AbstractModule;
+import com.google.inject.multibindings.Multibinder;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
 
-public class TicTacToeModule extends AbstractGameModule {
+@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
+public abstract class AbstractGameModule extends AbstractModule {
     
-    public TicTacToeModule() {
-        super(TicTacToe.class);
+    private final Class<? extends GameInfo> infoCls;
+    
+    @Override
+    public void configure() {
+        Multibinder<GameInfo> gameBinder = Multibinder.newSetBinder(binder(), GameInfo.class);
+        gameBinder.addBinding().to(infoCls);
     }
     
 }

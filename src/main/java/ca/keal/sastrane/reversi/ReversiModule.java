@@ -13,16 +13,12 @@
 
 package ca.keal.sastrane.reversi;
 
-import ca.keal.sastrane.api.GameInfo;
-import com.google.inject.AbstractModule;
-import com.google.inject.multibindings.Multibinder;
+import ca.keal.sastrane.api.AbstractGameModule;
 
-public class ReversiModule extends AbstractModule {
+public class ReversiModule extends AbstractGameModule {
     
-    @Override
-    public void configure() {
-        Multibinder<GameInfo> gameBinder = Multibinder.newSetBinder(binder(), GameInfo.class);
-        gameBinder.addBinding().to(Reversi.class);
+    public ReversiModule() {
+        super(Reversi.class);
     }
     
 }

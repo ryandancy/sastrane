@@ -13,16 +13,12 @@
 
 package ca.keal.sastrane.chess;
 
-import ca.keal.sastrane.api.GameInfo;
-import com.google.inject.AbstractModule;
-import com.google.inject.multibindings.Multibinder;
+import ca.keal.sastrane.api.AbstractGameModule;
 
-public class ChessModule extends AbstractModule {
+public class ChessModule extends AbstractGameModule {
     
-    @Override
-    public void configure() {
-        Multibinder<GameInfo> gameBinder = Multibinder.newSetBinder(binder(), GameInfo.class);
-        gameBinder.addBinding().to(Chess.class);
+    public ChessModule() {
+        super(Chess.class);
     }
     
 }

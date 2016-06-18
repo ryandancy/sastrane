@@ -13,16 +13,12 @@
 
 package ca.keal.sastrane.xiangqi;
 
-import ca.keal.sastrane.api.GameInfo;
-import com.google.inject.AbstractModule;
-import com.google.inject.multibindings.Multibinder;
+import ca.keal.sastrane.api.AbstractGameModule;
 
-public class XiangqiModule extends AbstractModule {
+public class XiangqiModule extends AbstractGameModule {
     
-    @Override
-    public void configure() {
-        Multibinder<GameInfo> gameBinder = Multibinder.newSetBinder(binder(), GameInfo.class);
-        gameBinder.addBinding().to(Xiangqi.class);
+    public XiangqiModule() {
+        super(Xiangqi.class);
     }
     
 }
