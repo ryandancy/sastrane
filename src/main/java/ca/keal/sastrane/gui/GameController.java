@@ -445,7 +445,7 @@ public class GameController extends GoBacker implements Initializable {
         SoundEffects.play("click");
         
         FXMLLoader loader = GuiUtils.getFXMLLoader(new Resource("ca.keal.sastrane.gui", "simple-text.fxml"));
-        Scene previousScene = Main.STAGE.getScene();
+        Scene previousScene = Main.getStage().getScene();
         Scene scene = GuiUtils.getScene((Parent) loader.load(), previousScene);
         
         SimpleTextController controller = loader.getController();
@@ -454,7 +454,7 @@ public class GameController extends GoBacker implements Initializable {
         controller.setPreviousScene(new Resource("ca.keal.sastrane.gui", "main-menu.fxml"));
         controller.useMonospacedFont();
         
-        Main.STAGE.setScene(scene);
+        Main.getStage().setScene(scene);
     }
     
 }

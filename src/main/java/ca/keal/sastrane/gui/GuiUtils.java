@@ -68,11 +68,11 @@ public final class GuiUtils {
     
     /** Passes title through I18n.localize("gui.title") before setting */
     public static void setTitle(String title) {
-        Main.STAGE.setTitle(I18n.localize("gui.title", title));
+        Main.getStage().setTitle(I18n.localize("gui.title", title));
     }
     
     public static void setTitleToDefault() {
-        Main.STAGE.setTitle(I18n.localize("gui.title.default"));
+        Main.getStage().setTitle(I18n.localize("gui.title.default"));
     }
     
     /**
@@ -81,7 +81,7 @@ public final class GuiUtils {
     @SneakyThrows
     public static void goTo(Resource fxml) {
         SoundEffects.play("click");
-        Main.STAGE.setScene(getScene(fxml, Main.STAGE.getScene()));
+        Main.getStage().setScene(getScene(fxml, Main.getStage().getScene()));
     }
     
     public static void loadCustom(Node custom, Resource resource) throws IOException {

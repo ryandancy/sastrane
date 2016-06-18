@@ -68,7 +68,7 @@ public class NewGameController extends GoBacker {
         SoundEffects.play("click");
         
         FXMLLoader loader = GuiUtils.getFXMLLoader(new Resource("ca.keal.sastrane.gui", "game.fxml"));
-        Scene previousScene = Main.STAGE.getScene();
+        Scene previousScene = Main.getStage().getScene();
         Scene scene = GuiUtils.getScene((Parent) loader.load(), previousScene);
         GameController controller = loader.getController();
         
@@ -90,7 +90,7 @@ public class NewGameController extends GoBacker {
         controller.setRound(round);
         round.getGame().getBus().post(new ToGameEvent.Post(previousScene, scene, round, playersToMovers));
         
-        Main.STAGE.setScene(scene);
+        Main.getStage().setScene(scene);
     }
     
 }

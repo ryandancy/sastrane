@@ -99,14 +99,14 @@ public class SettingsController extends GoBacker implements Initializable {
         SoundEffects.play("click");
         
         FXMLLoader loader = GuiUtils.getFXMLLoader(new Resource("ca.keal.sastrane.gui", "simple-text.fxml"));
-        Scene previousScene = Main.STAGE.getScene();
+        Scene previousScene = Main.getStage().getScene();
         Scene scene = GuiUtils.getScene((Parent) loader.load(), previousScene);
         
         SimpleTextController controller = loader.getController();
         controller.setTitle(title);
         controller.setTextFromFile(text);
         
-        Main.STAGE.setScene(scene);
+        Main.getStage().setScene(scene);
         onLeave();
     }
     

@@ -33,6 +33,7 @@ import com.google.inject.util.Types;
 import javafx.application.Application;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import lombok.Getter;
 import lombok.val;
 import org.aeonbits.owner.ConfigCache;
 
@@ -40,7 +41,15 @@ import java.util.Set;
 
 public class Main extends Application {
     
-    public static Stage STAGE;
+    @Getter private static Stage stage;
+    private static boolean stageSet = false;
+    
+    private static void setStage(Stage stage) {
+        if (stageSet) {
+            Main.stage = stage;
+            stageSet = false;
+        }
+    }
     
     public static void main(String[] args) {
         launch(args);
@@ -50,7 +59,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         // TODO splash screen
         
-        STAGE = primaryStage;
+        setStage(primaryStage);
         
         // No-good very bad hack to kill the process when the window is closed
         primaryStage.setOnCloseRequest(e -> System.exit(0));

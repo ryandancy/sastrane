@@ -49,7 +49,7 @@ public class MainMenuController implements Initializable {
         SoundEffects.play("click");
         
         FXMLLoader loader = GuiUtils.getFXMLLoader(new Resource("ca.keal.sastrane.gui", "new-game.fxml"));
-        Scene previousScene = Main.STAGE.getScene();
+        Scene previousScene = Main.getStage().getScene();
         Scene scene = GuiUtils.getScene((Parent) loader.load(), previousScene);
         
         Game game = ((GameTile) e.getSource()).getGame();
@@ -58,7 +58,7 @@ public class MainMenuController implements Initializable {
         ((NewGameController) loader.getController()).setGame(game);
         game.getBus().post(new ToNewGameScreenEvent.Post(previousScene, scene, game));
         
-        Main.STAGE.setScene(scene);
+        Main.getStage().setScene(scene);
     }
     
     @FXML
