@@ -123,7 +123,7 @@ public class LongAlgebraicNotater implements Notater {
         }
         
         // game end: 1-0 for white wins, 0-1 black wins, 1/2-1/2 tie
-        Result result = Chess.getInstance().getResult(moves.get(moves.size() - 1).getAfterRound());
+        Result result = ChessArbitrator.INSTANCE.arbitrate(moves.get(moves.size() - 1).getAfterRound()); // TODO DI here
         if (result instanceof Result.Win) {
             res.append(System.lineSeparator());
             if (((Result.Win) result).getPlayer() == ChessPlayer.WHITE) {

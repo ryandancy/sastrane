@@ -116,18 +116,18 @@ public class GameController extends GoBacker implements Initializable {
         this.round.getBoard().addListener(change -> updateBoardGrid());
         this.round.getGame().getBus().register(this);
         
-        String titleText = I18n.localize(round.getGame().getI18nName());
+        String titleText = I18n.localize(round.getGame().getInfo().getI18nName());
         GuiUtils.setTitle(titleText);
         title.setText(titleText);
         
-        game.getStylesheets().add(round.getGame().getCss().getFilename());
+        game.getStylesheets().add(round.getGame().getInfo().getCss().getFilename());
         
-        int numPlacingPieces = round.getGame().getPlacingPieces().length;
-        if (numPlacingPieces > 1 || (numPlacingPieces == 1 && !round.getGame().isPlaceOnly())) {
+        int numPlacingPieces = round.getGame().getInfo().getPlacingPieces().length;
+        if (numPlacingPieces > 1 || (numPlacingPieces == 1 && !round.getGame().getInfo().isPlaceOnly())) {
             playersToPieceChooserGroups = new HashMap<>();
-            for (Player player : round.getGame().getPlayers()) {
+            for (Player player : round.getGame().getInfo().getPlayers()) {
                 ToggleGroup pieceChooserGroup = new ToggleGroup();
-                for (PlacingPiece piece : round.getGame().getPlacingPieces()) {
+                for (PlacingPiece piece : round.getGame().getInfo().getPlacingPieces()) {
                     addPlacingPiece(piece, player, pieceChooserGroup);
                 }
                 playersToPieceChooserGroups.put(player, pieceChooserGroup);
@@ -182,7 +182,7 @@ public class GameController extends GoBacker implements Initializable {
         updateBoardGrid();
         
         // Total hack: check CSS file for grid-type property (it's a looked-up colour so the CSS parser accepts it)
-        String css = Files.toString(new File(round.getGame().getCss().get().toURI()), StandardCharsets.UTF_8);
+        String css = Files.toString(new File(round.getGame().getInfo().getCss().get().toURI()), StandardCharsets.UTF_8);
         if (css.matches("(?s).*(?:-sastrane-)?grid-type:\\s*point.*")) {
             usePoints();
         }
@@ -372,8 +372,8 @@ public class GameController extends GoBacker implements Initializable {
     
     @Nullable
     private PlacingPiece getCurrentPlacingPiece() {
-        if (round.getGame().getPlacingPieces().length == 0) return null;
-        if (playersToPieceChooserGroups == null) return round.getGame().getPlacingPieces()[0];
+        if (round.getGame().getInfo().getPlacingPieces().length == 0) return null;
+        if (playersToPieceChooserGroups == null) return round.getGame().getInfo().getPlacingPieces()[0];
         return (PlacingPiece) playersToPieceChooserGroups.get(round.getCurrentTurn()).getUserData();
     }
     
@@ -408,7 +408,7 @@ public class GameController extends GoBacker implements Initializable {
                     winText.setText(I18n.localize("gui.game.result.win", I18n.localize(winner.getI18nName())));
                 }
                 
-                if (e.getRound().getGame() instanceof Notatable) {
+                if (e.getRound().getGame().getInfo() instanceof Notatable) {
                     notationBtn.setVisible(true);
                 }
                 
@@ -450,7 +450,7 @@ public class GameController extends GoBacker implements Initializable {
         
         SimpleTextController controller = loader.getController();
         controller.setTitle(I18n.localize("gui.game.over.notation"));
-        controller.setText(((Notatable) round.getGame()).getNotater().notate(round.getMoves()));
+        controller.setText(((Notatable) round.getGame().getInfo()).getNotater().notate(round.getMoves()));
         controller.setPreviousScene(new Resource("ca.keal.sastrane.gui", "main-menu.fxml"));
         controller.useMonospacedFont();
         

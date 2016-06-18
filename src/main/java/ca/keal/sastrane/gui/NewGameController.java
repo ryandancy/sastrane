@@ -54,11 +54,11 @@ public class NewGameController extends GoBacker {
     
     public void setGame(Game game) {
         this.game = game;
-        container.getStylesheets().add(game.getCss().getFilename());
-        title.setText(I18n.localize("gui.newgame.title", I18n.localize(game.getI18nName())));
-        playerSettingsContainer.getChildren().addAll(Arrays.stream(game.getPlayers())
+        container.getStylesheets().add(game.getInfo().getCss().getFilename());
+        title.setText(I18n.localize("gui.newgame.title", I18n.localize(game.getInfo().getI18nName())));
+        playerSettingsContainer.getChildren().addAll(Arrays.stream(game.getInfo().getPlayers())
                 .map(PlayerSettings::new)
-                .peek(settings -> settings.getStylesheets().add(game.getCss().getFilename()))
+                .peek(settings -> settings.getStylesheets().add(game.getInfo().getCss().getFilename()))
                 .collect(Collectors.toList()));
     }
     
@@ -78,7 +78,7 @@ public class NewGameController extends GoBacker {
                 .collect(Collectors.toMap(PlayerSettings::getPlayer, settings -> {
                     if (settings.getAiOrHumanButtons().getSelectedToggle().getUserData().equals("ai")) {
                         // AI
-                        return game.getAi().apply(settings.getAiDifficulty().getValue());
+                        return game.getInfo().getAI().apply(settings.getAiDifficulty().getValue());
                     } else {
                         // Human player
                         return new HumanMover(controller);

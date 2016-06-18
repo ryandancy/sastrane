@@ -37,7 +37,7 @@ public class BoardTest {
     @BeforeMethod(alwaysRun = true)
     public void injectMocks() {
         MockitoAnnotations.initMocks(this);
-        when(opfMock.getPieceFactory()).thenReturn(() -> mock(Piece.class));
+        when(opfMock.getPieceFactory()).thenReturn(r -> mock(Piece.class));
     }
     
     // Board(List<String>, Map<Character, OwnedPieceFactory>)

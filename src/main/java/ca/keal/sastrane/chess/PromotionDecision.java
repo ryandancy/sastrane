@@ -14,6 +14,7 @@
 package ca.keal.sastrane.chess;
 
 import ca.keal.sastrane.api.Decision;
+import ca.keal.sastrane.api.Game;
 import ca.keal.sastrane.api.Round;
 import ca.keal.sastrane.api.Square;
 import ca.keal.sastrane.api.piece.OwnedPiece;
@@ -22,6 +23,7 @@ import ca.keal.sastrane.util.Resource;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 @RequiredArgsConstructor
@@ -35,14 +37,18 @@ public enum PromotionDecision implements Decision {
     
     @Getter private final Resource icon;
     @Getter private final String i18nName;
-    private final Supplier<Piece> pieceSupplier;
+    private final Function<Game, Piece> pieceSupplier;
+    
+    PromotionDecision(Resource icon, String i18nName, Supplier<Piece> pieceSupplier) {
+        this(icon, i18nName, r -> pieceSupplier.get());
+    }
     
     @Override
     public void onChoose(Round round) {
         Square lastMovePos = round.getLastMove().getMove().getEndPos();
         // If there's nothing at lastMovePos, we'll get an NPE - but that should be impossible
         //noinspection ConstantConditions
-        round.getBoard().set(lastMovePos, new OwnedPiece(pieceSupplier.get(),
+        round.getBoard().set(lastMovePos, new OwnedPiece(pieceSupplier.apply(round.getGame()),
                 round.getBoard().get(lastMovePos).getOwner()));
     }
     

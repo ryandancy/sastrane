@@ -13,17 +13,30 @@
 
 package ca.keal.sastrane.main;
 
+import ca.keal.sastrane.api.Game;
+import ca.keal.sastrane.api.GameInfo;
+import ca.keal.sastrane.chess.ChessModule;
 import ca.keal.sastrane.gui.GuiUtils;
 import ca.keal.sastrane.gui.audio.Music;
 import ca.keal.sastrane.gui.audio.SoundEffects;
+import ca.keal.sastrane.reversi.ReversiModule;
+import ca.keal.sastrane.tictactoe.TicTacToeModule;
 import ca.keal.sastrane.util.I18n;
 import ca.keal.sastrane.util.Resource;
 import ca.keal.sastrane.util.SastraneConfig;
-import com.google.common.reflect.ClassPath;
+import ca.keal.sastrane.xiangqi.XiangqiModule;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import com.google.inject.Key;
+import com.google.inject.TypeLiteral;
+import com.google.inject.util.Types;
 import javafx.application.Application;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import lombok.val;
 import org.aeonbits.owner.ConfigCache;
+
+import java.util.Set;
 
 public class Main extends Application {
     
@@ -50,9 +63,16 @@ public class Main extends Application {
         SoundEffects.loadAll(new Resource("ca.keal.sastrane.audio.soundfx", "soundfx.properties"));
         Music.shuffleAll(Resource.getAllFromFile(new Resource("ca.keal.sastrane.audio.music", "soundtrack.config")));
         
-        // Load all classes so that singleton Game subclass instances will be created.
-        // @Game annotation???
-        ClassPath.from(getClass().getClassLoader()).getAllClasses().forEach(this::initializeClass);
+        // Register all the games
+        Injector injector = Guice.createInjector(
+                new ChessModule(),
+                new ReversiModule(),
+                new TicTacToeModule(),
+                new XiangqiModule());
+        @SuppressWarnings("unchecked")
+        val literal = (TypeLiteral<Set<GameInfo>>) TypeLiteral.get(Types.setOf(GameInfo.class));
+        Set<GameInfo> games = injector.getInstance(Key.get(literal));
+        games.forEach(info -> Game.registerGame(new Game(info)));
         
         GuiUtils.setTitleToDefault();
         // Multiple icon sizes???
@@ -61,14 +81,6 @@ public class Main extends Application {
         primaryStage.setMinWidth(425); // This works for some reason
         primaryStage.setMinHeight(500);
         primaryStage.show();
-    }
-    
-    private void initializeClass(ClassPath.ClassInfo cls) {
-        try {
-            Class.forName(cls.getName());
-        } catch (ClassNotFoundException | NoClassDefFoundError e) {
-            // TODO log
-        }
     }
     
 }

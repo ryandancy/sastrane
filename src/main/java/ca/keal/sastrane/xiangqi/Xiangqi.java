@@ -13,38 +13,59 @@
 
 package ca.keal.sastrane.xiangqi;
 
+import ca.keal.sastrane.api.AI;
+import ca.keal.sastrane.api.Arbitrator;
 import ca.keal.sastrane.api.Board;
-import ca.keal.sastrane.api.Game;
+import ca.keal.sastrane.api.GameInfo;
 import ca.keal.sastrane.api.Notatable;
 import ca.keal.sastrane.api.Notater;
 import ca.keal.sastrane.api.Player;
-import ca.keal.sastrane.api.Result;
-import ca.keal.sastrane.api.Round;
-import ca.keal.sastrane.api.Square;
-import ca.keal.sastrane.api.event.ToGameEvent;
 import ca.keal.sastrane.api.piece.OwnedPieceFactory;
 import ca.keal.sastrane.util.Resource;
 import com.google.common.eventbus.EventBus;
-import com.google.common.eventbus.Subscribe;
-import javafx.beans.binding.Bindings;
-import javafx.beans.binding.NumberBinding;
-import javafx.scene.layout.GridPane;
-import javafx.scene.shape.Line;
-import lombok.Getter;
 
-public class Xiangqi extends Game implements Notatable {
+import java.util.function.Function;
+
+public class Xiangqi implements GameInfo, Notatable {
     
     public static final int MAXX = 9;
     public static final int MAXY = 10;
     
-    @Getter private static final Xiangqi instance = new Xiangqi();
+    private final PalaceLines palaceLines = new PalaceLines();
     
-    public Xiangqi() {
-        super("ca.keal.sastrane.xiangqi.i18n.xiangqi", "xiangqi.name",
-                new Resource("ca.keal.sastrane.xiangqi", "xiangqi.png"),
-                new Resource("ca.keal.sastrane.xiangqi", "xiangqi.css"),
-                XiangqiPlayer.values(), XiangqiAI::new,
-                Board.factory()
+    @Override
+    public String getResourceBundleName() {
+        return "ca.keal.sastrane.xiangqi.i18n.xiangqi";
+    }
+    
+    @Override
+    public String getI18nName() {
+        return "xiangqi.name";
+    }
+    
+    @Override
+    public Resource getIcon() {
+        return new Resource("ca.keal.sastrane.xiangqi", "xiangqi.png");
+    }
+    
+    @Override
+    public Resource getCss() {
+        return new Resource("ca.keal.sastrane.xiangqi", "xiangqi.css");
+    }
+    
+    @Override
+    public Player[] getPlayers() {
+        return XiangqiPlayer.values();
+    }
+    
+    @Override
+    public Function<Double, AI> getAI() {
+        return XiangqiAI::new;
+    }
+    
+    @Override
+    public Board.Factory getBoardFactory() {
+        return Board.factory()
                         .row("RHEAGAEHR")
                         .row("         ")
                         .row(" C     C ")
@@ -68,62 +89,17 @@ public class Xiangqi extends Game implements Notatable {
                         .piece('a', new OwnedPieceFactory(Advisor::new, XiangqiPlayer.RED))
                         .piece('g', new OwnedPieceFactory(General::new, XiangqiPlayer.RED))
                         .piece('c', new OwnedPieceFactory(Cannon::new, XiangqiPlayer.RED))
-                        .piece('s', new OwnedPieceFactory(Soldier::new, XiangqiPlayer.RED)));
+                        .piece('s', new OwnedPieceFactory(Soldier::new, XiangqiPlayer.RED));
     }
     
     @Override
-    public Result getResult(Round round) {
-        Player player = XiangqiPlayer.RED;
-        Player opponent = XiangqiPlayer.BLACK;
-        for (int i = 0; i < 2; i++) {
-            if (round.getAllPossibleMoves(player).size() == 0) {
-                return new Result.Win(opponent);
-            }
-            
-            Player temp = player;
-            player = opponent;
-            opponent = temp;
-        }
-        return Result.NOT_OVER;
+    public Arbitrator getArbitrator() {
+        return new XiangqiArbitrator();
     }
     
     @Override
-    protected void registerDefaults(EventBus bus) {
-        bus.register(this);
-    }
-    
-    @Subscribe
-    public void afterGameScreenLoaded(ToGameEvent.Post e) {
-        GridPane boardGrid = (GridPane) e.getGameScene().lookup("#board");
-        
-        for (XiangqiPlayer player : XiangqiPlayer.values()) {
-            line(e.getRound(), boardGrid, player.getPalace().get(3), DiagLineDirection.NE_SW);
-            line(e.getRound(), boardGrid, player.getPalace().get(4), DiagLineDirection.NW_SE);
-            line(e.getRound(), boardGrid, player.getPalace().get(6), DiagLineDirection.NW_SE);
-            line(e.getRound(), boardGrid, player.getPalace().get(7), DiagLineDirection.NE_SW);
-        }
-    }
-    
-    private enum DiagLineDirection {NW_SE, NE_SW}
-    
-    private void line(Round round, GridPane grid, Square square, DiagLineDirection dir) {
-        Line line = new Line();
-        NumberBinding cellDimen = Bindings.min(grid.widthProperty().divide(round.getBoard().getMaxX() + 1),
-                grid.heightProperty().divide(round.getBoard().getMaxY() + 1)).add(10); // DRY???
-        
-        line.getStyleClass().add("decor");
-        line.setStartY(0);
-        if (dir == DiagLineDirection.NW_SE) {
-            line.setStartX(0);
-            line.endXProperty().bind(cellDimen);
-            line.endYProperty().bind(cellDimen);
-        } else { // NE_SW
-            line.startXProperty().bind(cellDimen);
-            line.setEndX(0);
-            line.endYProperty().bind(cellDimen);
-        }
-        
-        grid.add(line, square.getX(), square.getY());
+    public void registerDefaults(EventBus bus) {
+        bus.register(palaceLines);
     }
     
     @Override

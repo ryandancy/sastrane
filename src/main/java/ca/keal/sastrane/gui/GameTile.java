@@ -41,14 +41,14 @@ public class GameTile extends VBox implements Initializable {
     public GameTile(Game game) {
         this.game = game;
         GuiUtils.loadCustom(this, new Resource("ca.keal.sastrane.gui", "game-tile.fxml"));
-        getStylesheets().add(game.getCss().getFilename());
+        getStylesheets().add(game.getInfo().getCss().getFilename());
     }
     
     @Override
     @SneakyThrows
     public void initialize(URL location, ResourceBundle resources) {
-        imgView.setImage(new Image(game.getIcon().get().openStream()));
-        displayName.setText(resources.getString(game.getI18nName()));
+        imgView.setImage(new Image(game.getInfo().getIcon().get().openStream()));
+        displayName.setText(resources.getString(game.getInfo().getI18nName()));
     }
     
 }

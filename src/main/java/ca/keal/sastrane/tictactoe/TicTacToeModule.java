@@ -11,29 +11,18 @@
  * specific language governing permissions and limitations under the License.
  */
 
-package ca.keal.sastrane.api.piece;
+package ca.keal.sastrane.tictactoe;
 
-import ca.keal.sastrane.api.Game;
-import ca.keal.sastrane.api.Player;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import ca.keal.sastrane.api.GameInfo;
+import com.google.inject.AbstractModule;
+import com.google.inject.multibindings.Multibinder;
 
-import java.util.function.Function;
-import java.util.function.Supplier;
-
-@Data
-@RequiredArgsConstructor
-public class OwnedPieceFactory {
+public class TicTacToeModule extends AbstractModule {
     
-    private final Function<Game, Piece> pieceFactory;
-    private final Player player;
-    
-    public OwnedPieceFactory(Supplier<Piece> pieceFactory, Player player) {
-        this(r -> pieceFactory.get(), player);
-    }
-    
-    public Piece getPiece(Game game) {
-        return pieceFactory.apply(game);
+    @Override
+    public void configure() {
+        Multibinder<GameInfo> gameBinder = Multibinder.newSetBinder(binder(), GameInfo.class);
+        gameBinder.addBinding().to(TicTacToe.class);
     }
     
 }

@@ -13,6 +13,7 @@
 
 package ca.keal.sastrane.xiangqi;
 
+import ca.keal.sastrane.api.Game;
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.Round;
 import ca.keal.sastrane.api.Square;
@@ -32,10 +33,10 @@ public class Soldier extends JumpingPiece implements RecursiveMovingPiece {
     
     @Getter private boolean acrossRiver = false;
     
-    public Soldier() {
+    public Soldier(Game xiangqi) {
         // At start, advance 1
         super(0, 1, false, QI | QII);
-        Xiangqi.getInstance().getBus().register(this);
+        xiangqi.getBus().register(this);
     }
     
     @Override

@@ -13,12 +13,10 @@
 
 package ca.keal.sastrane.api;
 
-/**
- * Indicates that this {@link Game} has a notation system that can be used to record its games; it can be notated, and
- * is hence <i>notatable</i>. Only valid on {@link GameInfo}s.
- */
-public interface Notatable {
+/** Decides on the end of a {@link Round}. */
+public interface Arbitrator {
     
-    Notater getNotater(); // DI???
+    /** Returns a {@link Result} to detect the end of {@code round}, or {@link Result#NOT_OVER} if it's not over */
+    Result arbitrate(Round round);
     
 }

@@ -13,121 +13,64 @@
 
 package ca.keal.sastrane.tictactoe;
 
+import ca.keal.sastrane.api.AI;
+import ca.keal.sastrane.api.Arbitrator;
 import ca.keal.sastrane.api.Board;
-import ca.keal.sastrane.api.Game;
+import ca.keal.sastrane.api.GameInfo;
 import ca.keal.sastrane.api.Player;
-import ca.keal.sastrane.api.Result;
-import ca.keal.sastrane.api.Round;
-import ca.keal.sastrane.api.Square;
-import ca.keal.sastrane.api.piece.OwnedPiece;
+import ca.keal.sastrane.api.piece.PlacingPiece;
 import ca.keal.sastrane.util.Resource;
-import lombok.Getter;
 
-import javax.annotation.Nullable;
-import java.util.function.BiFunction;
+import java.util.function.Function;
 
-public class TicTacToe extends Game {
+public class TicTacToe implements GameInfo {
     
-    @Getter private static final TicTacToe instance = new TicTacToe();
-    
-    public TicTacToe() {
-        super("ca.keal.sastrane.tictactoe.i18n.tictactoe", "tictactoe.name",
-                new Resource("ca.keal.sastrane.tictactoe", "tictactoe.png"),
-                new Resource("ca.keal.sastrane.tictactoe", "tictactoe.css"),
-                TicTacToePlayer.values(), TicTacToeAI::new,
-                Board.factory()
-                        .row("   ")
-                        .row("   ")
-                        .row("   "),
-                new Mark());
+    @Override
+    public String getResourceBundleName() {
+        return "ca.keal.sastrane.tictactoe.i18n.tictactoe";
     }
     
     @Override
-    public Result getResult(Round round) {
-        // horizontal + vertical
-        BiFunction<Integer, Integer, Square> squareGetter = Square::new;
-        for (int maxA = round.getBoard().getMaxX(), maxB = round.getBoard().getMaxY(), i = 0; i < 2; i++) {
-            Result result = getStraightLine(maxA, maxB, squareGetter, round);
-            if (result != null) return result;
-            
-            int temp = maxA;
-            maxA = maxB;
-            maxB = temp;
-            squareGetter = (a, b) -> new Square(b, a);
-        }
-        
-        // diagonal
-        Result result = getDiagonal(0, round.getBoard().getMaxX(), +1, round);
-        if (result != null) return result;
-        result = getDiagonal(round.getBoard().getMaxY(), 0, -1, round);
-        if (result != null) return result;
-        
-        // board filled = draw
-        for (Square square : round.getBoard()) {
-            if (round.getBoard().get(square) == null) {
-                return Result.NOT_OVER;
-            }
-        }
-        return Result.DRAW;
+    public String getI18nName() {
+        return "tictactoe.name";
     }
     
-    @Nullable
-    private Result getDiagonal(int startX, int endX, int inc, Round round) {
-        // TODO: reduce repitition here & in getStraightLine
-        Player player = null;
-        boolean won = true;
-        
-        for (int x = startX, y = 0; x != endX + inc && y <= round.getBoard().getMaxY(); x += inc, y++) {
-            Square square = new Square(x, y);
-            OwnedPiece atSquare = round.getBoard().get(square);
-            if (atSquare == null) {
-                won = false;
-                break;
-            }
-        
-            if (player == null) {
-                player = atSquare.getOwner();
-            } else if (player != atSquare.getOwner()) {
-                won = false;
-                break;
-            }
-        }
-    
-        if (won && player != null) {
-            return new Result.Win(player);
-        }
-            
-        return null;
+    @Override
+    public Resource getIcon() {
+        return new Resource("ca.keal.sastrane.tictactoe", "tictactoe.png");
     }
     
-    @Nullable
-    private Result getStraightLine(int maxA, int maxB, BiFunction<Integer, Integer, Square> squareGetter, Round round) {
-        for (int a = 0; a <= maxA; a++) {
-            Player player = null;
-            boolean won = true;
-            
-            for (int b = 0; b <= maxB; b++) {
-                Square square = squareGetter.apply(a, b);
-                OwnedPiece atSquare = round.getBoard().get(square);
-                if (atSquare == null) {
-                    won = false;
-                    break;
-                }
-                
-                if (player == null) {
-                    player = atSquare.getOwner();
-                } else if (player != atSquare.getOwner()) {
-                    won = false;
-                    break;
-                }
-            }
-            
-            if (won && player != null) {
-                return new Result.Win(player);
-            }
-        }
-        
-        return null;
+    @Override
+    public Resource getCss() {
+        return new Resource("ca.keal.sastrane.tictactoe", "tictactoe.css");
+    }
+    
+    @Override
+    public Player[] getPlayers() {
+        return TicTacToePlayer.values();
+    }
+    
+    @Override
+    public Function<Double, AI> getAI() {
+        return TicTacToeAI::new;
+    }
+    
+    @Override
+    public Board.Factory getBoardFactory() {
+        return Board.factory()
+                .row("   ")
+                .row("   ")
+                .row("   ");
+    }
+    
+    @Override
+    public PlacingPiece[] getPlacingPieces() {
+        return new PlacingPiece[] {new Mark()};
+    }
+    
+    @Override
+    public Arbitrator getArbitrator() {
+        return new TicTacToeArbitrator();
     }
     
 }
