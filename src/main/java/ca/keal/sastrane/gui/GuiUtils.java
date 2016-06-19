@@ -14,105 +14,48 @@
 package ca.keal.sastrane.gui;
 
 import ca.keal.sastrane.api.Square;
-import ca.keal.sastrane.gui.audio.SoundEffects;
-import ca.keal.sastrane.main.Main;
-import ca.keal.sastrane.util.I18n;
 import ca.keal.sastrane.util.Resource;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
-import lombok.SneakyThrows;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
 
-public final class GuiUtils {
+public interface GuiUtils {
     
-    private GuiUtils() {
-        throw new RuntimeException("ca.keal.sastrane.gui.GuiUtils is a utility class and cannot be instantiated.");
-    }
+    Parent loadFXML(Resource resource) throws IOException;
     
-    public static Parent loadFXML(Resource resource) throws IOException {
-        return FXMLLoader.load(resource.get(), I18n.getBundle());
-    }
+    FXMLLoader getFXMLLoader(Resource resource);
     
-    public static FXMLLoader getFXMLLoader(Resource resource) {
-        return new FXMLLoader(resource.get(), I18n.getBundle());
-    }
+    Scene getScene(Parent parent, double width, double height);
     
-    public static Scene getScene(Parent parent, double width, double height) {
-        return new Scene(parent, width, height);
-    }
+    Scene getScene(Parent parent, Scene previous);
     
-    public static Scene getScene(Parent parent, Scene previous) {
-        return getScene(parent, previous.getWidth(), previous.getHeight());
-    }
+    Scene getScene(Parent parent);
     
-    public static Scene getScene(Parent parent) {
-        return new Scene(parent);
-    }
+    Scene getScene(Resource resource, double width, double height) throws IOException;
     
-    public static Scene getScene(Resource resource, double width, double height) throws IOException {
-        return getScene(loadFXML(resource), width, height);
-    }
+    Scene getScene(Resource resource, Scene previous) throws IOException;
     
-    public static Scene getScene(Resource resource, Scene previous) throws IOException {
-        return getScene(loadFXML(resource), previous);
-    }
+    Scene getScene(Resource resource) throws IOException;
     
-    public static Scene getScene(Resource resource) throws IOException {
-        return getScene(loadFXML(resource));
-    }
+    void setTitle(String title);
     
-    /** Passes title through I18n.localize("gui.title") before setting */
-    public static void setTitle(String title) {
-        Main.getStage().setTitle(I18n.localize("gui.title", title));
-    }
+    void setTitleToDefault();
     
-    public static void setTitleToDefault() {
-        Main.getStage().setTitle(I18n.localize("gui.title.default"));
-    }
+    void goTo(Resource fxml);
     
-    /**
-     * For boilerplate reduction. Usecase is to go to another scene on an event.
-     */
-    @SneakyThrows
-    public static void goTo(Resource fxml) {
-        SoundEffects.play("click");
-        Main.getStage().setScene(getScene(fxml, Main.getStage().getScene()));
-    }
-    
-    public static void loadCustom(Node custom, Resource resource) throws IOException {
-        FXMLLoader loader = GuiUtils.getFXMLLoader(resource);
-        loader.setRoot(custom);
-        loader.setController(custom);
-        loader.load();
-    }
+    void loadCustom(Node custom, Resource resource) throws IOException;
     
     // http://stackoverflow.com/a/20656861
-    @Nullable
-    public static Node getNodeFromGridPane(GridPane gridPane, int col, int row) {
-        for (Node node : gridPane.getChildren()) {
-            if (Integer.valueOf(col).equals(GridPane.getColumnIndex(node))
-                    && Integer.valueOf(row).equals(GridPane.getRowIndex(node))) {
-                return node;
-            }
-        }
-        return null;
-    }
+    @Nullable Node getNodeFromGridPane(GridPane gridPane, int col, int row);
     
-    public static Node lookup(Node node, Square square) {
-        return lookup(node.getScene(), square);
-    }
+    Node lookup(Node node, Square square);
     
-    public static Node lookup(Scene scene, Square square) {
-        return scene.lookup(getLookupString(square));
-    }
+    Node lookup(Scene scene, Square square);
     
-    public static String getLookupString(Square square) {
-        return String.format(".x%d.y%d", square.getX(), square.getY());
-    }
-    
+    String getLookupString(Square square);
 }

@@ -11,26 +11,18 @@
  * specific language governing permissions and limitations under the License.
  */
 
-package ca.keal.sastrane.gui.audio;
+package ca.keal.sastrane.gui;
 
-import ca.keal.sastrane.util.Resource;
+import com.google.inject.AbstractModule;
+import com.google.inject.assistedinject.FactoryModuleBuilder;
 
-public interface SoundEffects {
+public class GuiModule extends AbstractModule {
     
-    void setVolume(double volume);
-    
-    double getVolume();
-    
-    void load(String nickname, Resource effect);
-    
-    /**
-     * Loads a .properties file and loads each name-value pair; name to nickname, value used as a Resource for the
-     * effect.
-     */
-    void loadAll(Resource propertiesFile);
-    
-    void play(String nickname);
-    
-    void stop();
+    @Override
+    public void configure() {
+        bind(GuiUtils.class).to(GuiUtilsImpl.class);
+        install(new FactoryModuleBuilder().build(PlayerSettings.Factory.class));
+        install(new FactoryModuleBuilder().build(GameTile.Factory.class));
+    }
     
 }

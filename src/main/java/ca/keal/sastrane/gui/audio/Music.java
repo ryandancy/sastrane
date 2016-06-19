@@ -14,80 +14,21 @@
 package ca.keal.sastrane.gui.audio;
 
 import ca.keal.sastrane.util.Resource;
-import ca.keal.sastrane.util.Utils;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
-import lombok.Getter;
 
-import javax.annotation.Nullable;
-
-/**
- * Plays background music. Thanks, <a href="https://dzone.com/articles/javafx-2-gametutorial-part-5">Carl Dea</a>.
- */
-public final class Music {
+public interface Music {
     
-    @Nullable private static MediaPlayer player = null;
-    @Getter private static double volume = .5;
-    private static boolean shuffling = false;
+    void setVolume(double volume);
     
-    private Music() {
-        throw new IllegalStateException("Music is a utility class and thus cannot be instantiated");
-    }
+    double getVolume();
     
-    @SuppressWarnings("ConstantConditions")
-    public static void setVolume(double volume) {
-        if (isPlaying()) {
-            player.setVolume(volume);
-        }
-        Music.volume = volume;
-    }
+    void play(Resource music);
     
-    public static void play(Resource resource) {
-        if (isPlaying()) {
-            boolean oldShuffle = shuffling;
-            stop();
-            shuffling = oldShuffle;
-        }
-        player = new MediaPlayer(new Media(resource.getFullFilename()));
-        player.setVolume(volume);
-        player.play();
-    }
+    void repeat(Resource music);
     
-    @SuppressWarnings("ConstantConditions")
-    public static void repeat(Resource resource) {
-        play(resource);
-        player.setCycleCount(Integer.MAX_VALUE);
-    }
+    void stop();
     
-    /**
-     * Plays the indicated music files randomly, as if on shuffle, until stopped.
-     * @param resources The list of available music files.
-     */
-    @SuppressWarnings("ConstantConditions")
-    public static void shuffleAll(Resource... resources) {
-        shuffling = true;
-        Runnable pickNextMusic = new Runnable() {
-            @Override
-            public void run() {
-                if (/* everyday I'm */ shuffling) {
-                    play(Utils.randomChoice(resources));
-                    player.setOnEndOfMedia(this);
-                }
-            }
-        };
-        pickNextMusic.run();
-    }
+    boolean isPlaying();
     
-    @SuppressWarnings("ConstantConditions")
-    public static void stop() {
-        if (!isPlaying()) throw new IllegalStateException("Cannot stop when not playing");
-        shuffling = false;
-        player.stop();
-        player = null;
-    }
-    
-    public static boolean isPlaying() {
-        return player != null;
-    }
+    void shuffleAll(Resource... music);
     
 }

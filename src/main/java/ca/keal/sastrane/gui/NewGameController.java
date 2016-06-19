@@ -22,6 +22,7 @@ import ca.keal.sastrane.gui.audio.SoundEffects;
 import ca.keal.sastrane.main.Main;
 import ca.keal.sastrane.util.I18n;
 import ca.keal.sastrane.util.Resource;
+import com.google.inject.Inject;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -38,26 +39,31 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@Getter
 @Setter
 public class NewGameController extends GoBacker {
     
-    @FXML private BorderPane container;
-    @FXML private Label title;
-    @FXML private FlowPane playerSettingsContainer;
+    @FXML @Getter private BorderPane container;
+    @FXML @Getter private Label title;
+    @FXML @Getter private FlowPane playerSettingsContainer;
     
-    private Game game;
+    @Getter private Game game;
     
-    public NewGameController() {
-        super(new Resource("ca.keal.sastrane.gui", "main-menu.fxml"));
+    private final SoundEffects soundFX;
+    private final PlayerSettings.Factory playerSettingsFactory;
+    
+    @Inject
+    public NewGameController(SoundEffects soundFX, GuiUtils guiUtils, PlayerSettings.Factory playerSettingsFactory) {
+        super(new Resource("ca.keal.sastrane.gui", "main-menu.fxml"), guiUtils);
+        this.soundFX = soundFX;
+        this.playerSettingsFactory = playerSettingsFactory;
     }
     
-    public void setGame(Game game) {
+    void setGame(Game game) {
         this.game = game;
         container.getStylesheets().add(game.getInfo().getCss().getFilename());
         title.setText(I18n.localize("gui.newgame.title", I18n.localize(game.getInfo().getI18nName())));
         playerSettingsContainer.getChildren().addAll(Arrays.stream(game.getInfo().getPlayers())
-                .map(PlayerSettings::new)
+                .map(playerSettingsFactory::create)
                 .peek(settings -> settings.getStylesheets().add(game.getInfo().getCss().getFilename()))
                 .collect(Collectors.toList()));
     }
@@ -65,11 +71,11 @@ public class NewGameController extends GoBacker {
     @FXML
     @SneakyThrows
     private void onCreateGame(ActionEvent e) {
-        SoundEffects.play("click");
+        soundFX.play("click");
         
-        FXMLLoader loader = GuiUtils.getFXMLLoader(new Resource("ca.keal.sastrane.gui", "game.fxml"));
+        FXMLLoader loader = guiUtils.getFXMLLoader(new Resource("ca.keal.sastrane.gui", "game.fxml"));
         Scene previousScene = Main.getStage().getScene();
-        Scene scene = GuiUtils.getScene((Parent) loader.load(), previousScene);
+        Scene scene = guiUtils.getScene((Parent) loader.load(), previousScene);
         GameController controller = loader.getController();
         
         // Get data from player settings

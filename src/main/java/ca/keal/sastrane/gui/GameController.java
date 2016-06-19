@@ -34,6 +34,7 @@ import ca.keal.sastrane.util.I18n;
 import ca.keal.sastrane.util.Resource;
 import com.google.common.eventbus.Subscribe;
 import com.google.common.io.Files;
+import com.google.inject.Inject;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.DoubleBinding;
@@ -80,8 +81,6 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
-import static ca.keal.sastrane.gui.GuiUtils.lookup;
-
 public class GameController extends GoBacker implements Initializable {
     
     @FXML private BorderPane game;
@@ -106,8 +105,12 @@ public class GameController extends GoBacker implements Initializable {
     private List<Square> selection = new ArrayList<>();
     private List<Move> selectionMoves = new ArrayList<>();
     
-    public GameController() {
-        super(new Resource("ca.keal.sastrane.gui", "main-menu.fxml"));
+    private final SoundEffects soundFX;
+    
+    @Inject
+    public GameController(SoundEffects soundFX, GuiUtils guiUtils) {
+        super(new Resource("ca.keal.sastrane.gui", "main-menu.fxml"), guiUtils);
+        this.soundFX = soundFX;
     }
     
     @SneakyThrows
@@ -117,7 +120,7 @@ public class GameController extends GoBacker implements Initializable {
         this.round.getGame().getBus().register(this);
         
         String titleText = I18n.localize(round.getGame().getInfo().getI18nName());
-        GuiUtils.setTitle(titleText);
+        guiUtils.setTitle(titleText);
         title.setText(titleText);
         
         game.getStylesheets().add(round.getGame().getInfo().getCss().getFilename());
@@ -227,7 +230,7 @@ public class GameController extends GoBacker implements Initializable {
     @SneakyThrows
     private void updateBoardGrid() {
         for (Square square : round.getBoard()) {
-            Node squareNode = GuiUtils.getNodeFromGridPane(boardGrid, square.getX(), square.getY());
+            Node squareNode = guiUtils.getNodeFromGridPane(boardGrid, square.getX(), square.getY());
             if (!(squareNode instanceof StackPane)) continue;
             StackPane squarePane = (StackPane) squareNode;
             if (!(squarePane.getChildren().size() >= 1 && squarePane.getChildren().get(0) instanceof ImageView)) {
@@ -264,7 +267,7 @@ public class GameController extends GoBacker implements Initializable {
         Square square = new Square(x, y);
         if (selection.size() > 0 && selectionBase != null) {
             if (selection.contains(square)) {
-                SoundEffects.play("click");
+                soundFX.play("click");
                 round.getGame().getBus().post(new UserMoveEvent(round, selectionMoves.stream()
                         .filter(move -> move.getEndPos().equals(square))
                         .collect(Collectors.toList())
@@ -290,7 +293,7 @@ public class GameController extends GoBacker implements Initializable {
             // placing
             List<PlacingMove> placements = placingPiece.getPossiblePlacements(round, round.getCurrentTurn());
             if (placements.stream().map(PlacingMove::getPos).anyMatch(square::equals)) {
-                SoundEffects.play("click");
+                soundFX.play("click");
                 round.getGame().getBus().post(new UserMoveEvent(round, placements.stream()
                         .filter(placement -> placement.getPos().equals(square))
                         .findAny().get()));
@@ -299,23 +302,25 @@ public class GameController extends GoBacker implements Initializable {
     }
     
     private void select(Square selectionBase, List<Move> possibleMoves, List<Square> selection) {
-        SoundEffects.play("click");
+        soundFX.play("click");
         
         this.selectionBase = selectionBase;
         this.selection = selection;
         selectionMoves = possibleMoves;
-        
-        lookup(game, selectionBase).pseudoClassStateChanged(PseudoClass.getPseudoClass("selection-base"), true);
+    
+        guiUtils.lookup(game, selectionBase)
+                .pseudoClassStateChanged(PseudoClass.getPseudoClass("selection-base"), true);
         for (Square square : selection) {
-            lookup(game, square).pseudoClassStateChanged(PseudoClass.getPseudoClass("selected"), true);
+            guiUtils.lookup(game, square).pseudoClassStateChanged(PseudoClass.getPseudoClass("selected"), true);
         }
     }
     
     private void deselect() {
         assert selectionBase != null;
-        lookup(game, selectionBase).pseudoClassStateChanged(PseudoClass.getPseudoClass("selection-base"), false);
+        guiUtils.lookup(game, selectionBase)
+                .pseudoClassStateChanged(PseudoClass.getPseudoClass("selection-base"), false);
         for (Square square : selection) {
-            lookup(game, square).pseudoClassStateChanged(PseudoClass.getPseudoClass("selected"), false);
+            guiUtils.lookup(game, square).pseudoClassStateChanged(PseudoClass.getPseudoClass("selected"), false);
         }
         
         selectionBase = null;
@@ -360,7 +365,7 @@ public class GameController extends GoBacker implements Initializable {
     }
     
     private void onDecide(Decision option) {
-        SoundEffects.play("click");
+        soundFX.play("click");
         
         deciding = false;
         decisionPane.getChildren().clear();
@@ -395,15 +400,15 @@ public class GameController extends GoBacker implements Initializable {
             try {
                 Player winner = e.getWinner();
                 if (winner == null) {
-                    SoundEffects.play("lose");
+                    soundFX.play("lose");
                     winImg.setImage(new Image(new Resource("ca.keal.sastrane.icon", "draw.png").get().openStream()));
                     winText.setText(I18n.localize("gui.game.result.draw"));
                 } else {
                     if (e.getRound().getPlayersToMovers().get(winner) instanceof AI
                             && !(e.getRound().getPlayersToMovers().values().stream().allMatch(p -> p instanceof AI))) {
-                        SoundEffects.play("lose");
+                        soundFX.play("lose");
                     } else {
-                        SoundEffects.play("win");
+                        soundFX.play("win");
                     }
                     winImg.setImage(new Image(winner.getIcon().get().openStream()));
                     winText.setText(I18n.localize("gui.game.result.win", I18n.localize(winner.getI18nName())));
@@ -437,17 +442,17 @@ public class GameController extends GoBacker implements Initializable {
     @Override
     protected void goBack(Event e) {
         super.goBack(e);
-        GuiUtils.setTitleToDefault();
+        guiUtils.setTitleToDefault();
     }
     
     @FXML
     @SneakyThrows
     private void toNotation(ActionEvent e) {
-        SoundEffects.play("click");
+        soundFX.play("click");
         
-        FXMLLoader loader = GuiUtils.getFXMLLoader(new Resource("ca.keal.sastrane.gui", "simple-text.fxml"));
+        FXMLLoader loader = guiUtils.getFXMLLoader(new Resource("ca.keal.sastrane.gui", "simple-text.fxml"));
         Scene previousScene = Main.getStage().getScene();
-        Scene scene = GuiUtils.getScene((Parent) loader.load(), previousScene);
+        Scene scene = guiUtils.getScene((Parent) loader.load(), previousScene);
         
         SimpleTextController controller = loader.getController();
         controller.setTitle(I18n.localize("gui.game.over.notation"));

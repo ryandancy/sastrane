@@ -15,6 +15,7 @@ package ca.keal.sastrane.gui;
 
 import ca.keal.sastrane.api.Game;
 import ca.keal.sastrane.util.Resource;
+import com.google.inject.assistedinject.Assisted;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -38,9 +39,9 @@ class GameTile extends VBox implements Initializable {
     private final Game game;
     
     @SneakyThrows
-    GameTile(Game game) {
+    GameTile(GuiUtils guiUtils, @Assisted Game game) {
         this.game = game;
-        GuiUtils.loadCustom(this, new Resource("ca.keal.sastrane.gui", "game-tile.fxml"));
+        guiUtils.loadCustom(this, new Resource("ca.keal.sastrane.gui", "game-tile.fxml"));
         getStylesheets().add(game.getInfo().getCss().getFilename());
     }
     
@@ -49,6 +50,10 @@ class GameTile extends VBox implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         imgView.setImage(new Image(game.getInfo().getIcon().get().openStream()));
         displayName.setText(resources.getString(game.getInfo().getI18nName()));
+    }
+    
+    interface Factory {
+        GameTile create(Game game);
     }
     
 }

@@ -14,6 +14,7 @@
 package ca.keal.sastrane.gui;
 
 import ca.keal.sastrane.util.Resource;
+import com.google.inject.Inject;
 import javafx.application.Platform;
 import javafx.beans.property.DoubleProperty;
 import javafx.fxml.FXML;
@@ -39,9 +40,10 @@ class VolumeSelector extends VBox implements Initializable {
     
     private boolean hasInitialized = false;
     
+    @Inject
     @SneakyThrows
-    VolumeSelector() {
-        GuiUtils.loadCustom(this, new Resource("ca.keal.sastrane.gui", "volume-select.fxml"));
+    VolumeSelector(GuiUtils guiUtils) {
+        guiUtils.loadCustom(this, new Resource("ca.keal.sastrane.gui", "volume-select.fxml"));
     }
     
     void setTitle(String title) {

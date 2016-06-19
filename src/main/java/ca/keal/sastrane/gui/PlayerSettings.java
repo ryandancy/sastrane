@@ -16,6 +16,8 @@ package ca.keal.sastrane.gui;
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.gui.audio.SoundEffects;
 import ca.keal.sastrane.util.Resource;
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -40,10 +42,14 @@ class PlayerSettings extends VBox implements Initializable {
     
     private final Player player;
     
+    private final SoundEffects soundFX;
+    
+    @Inject
     @SneakyThrows
-    PlayerSettings(Player player) {
+    PlayerSettings(@Assisted Player player, SoundEffects soundFX, GuiUtils guiUtils) {
         this.player = player;
-        GuiUtils.loadCustom(this, new Resource("ca.keal.sastrane.gui", "player-settings.fxml"));
+        this.soundFX = soundFX;
+        guiUtils.loadCustom(this, new Resource("ca.keal.sastrane.gui", "player-settings.fxml"));
     }
     
     @Override
@@ -53,11 +59,16 @@ class PlayerSettings extends VBox implements Initializable {
         playerName.setText(resources.getString(player.getI18nName()));
         
         aiOrHumanButtons.selectedToggleProperty().addListener((ov, toggle, newToggle) -> {
-            SoundEffects.play("click");
+            soundFX.play("click");
             if (newToggle == null) {
                 toggle.setSelected(true);
             }
         });
+    }
+    
+    /** For AssistedInject */
+    interface Factory {
+        PlayerSettings create(Player player);
     }
     
 }

@@ -13,24 +13,14 @@
 
 package ca.keal.sastrane.gui.audio;
 
-import ca.keal.sastrane.util.Resource;
+import com.google.inject.AbstractModule;
 
-public interface SoundEffects {
+public class AudioModule extends AbstractModule {
     
-    void setVolume(double volume);
-    
-    double getVolume();
-    
-    void load(String nickname, Resource effect);
-    
-    /**
-     * Loads a .properties file and loads each name-value pair; name to nickname, value used as a Resource for the
-     * effect.
-     */
-    void loadAll(Resource propertiesFile);
-    
-    void play(String nickname);
-    
-    void stop();
+    @Override
+    public void configure() {
+        bind(Music.class).to(MusicImpl.class);
+        bind(SoundEffects.class).to(SoundEffectsImpl.class);
+    }
     
 }

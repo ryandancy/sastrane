@@ -15,6 +15,7 @@ package ca.keal.sastrane.gui;
 
 import ca.keal.sastrane.util.I18n;
 import ca.keal.sastrane.util.Resource;
+import com.google.inject.Inject;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -31,8 +32,9 @@ public class ChangeLangController extends GoBacker implements Initializable {
     
     @FXML private FlowPane langs;
     
-    public ChangeLangController() {
-        super(new Resource("ca.keal.sastrane.gui", "main-menu.fxml"));
+    @Inject
+    public ChangeLangController(GuiUtils guiUtils) {
+        super(new Resource("ca.keal.sastrane.gui", "main-menu.fxml"), guiUtils);
     }
     
     @Override

@@ -26,11 +26,12 @@ import lombok.SneakyThrows;
 abstract class GoBacker {
     
     protected Resource previous;
+    protected final GuiUtils guiUtils;
     
     @FXML
     @SneakyThrows
     protected void goBack(Event e) {
-        GuiUtils.goTo(previous);
+        guiUtils.goTo(previous);
     }
     
 }

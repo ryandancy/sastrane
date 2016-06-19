@@ -16,6 +16,7 @@ package ca.keal.sastrane.gui;
 import ca.keal.sastrane.util.I18n;
 import ca.keal.sastrane.util.Resource;
 import com.google.common.io.Resources;
+import com.google.inject.Inject;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -30,16 +31,17 @@ public class SimpleTextController extends GoBacker {
     @FXML private Label title;
     @FXML private Text text;
     
-    public SimpleTextController() {
-        super(new Resource("ca.keal.sastrane.gui", "settings.fxml"));
+    @Inject
+    public SimpleTextController(GuiUtils guiUtils) {
+        super(new Resource("ca.keal.sastrane.gui", "settings.fxml"), guiUtils);
     }
     
     /** i18nTitle is passed through I18n.localize before setting the title */
-    public void setTitle(String i18nTitle) {
+    void setTitle(String i18nTitle) {
         title.setText(I18n.localize(i18nTitle));
     }
     
-    public void setPreviousScene(Resource previous) {
+    void setPreviousScene(Resource previous) {
         this.previous = previous;
     }
     
@@ -53,7 +55,7 @@ public class SimpleTextController extends GoBacker {
      * UTF-8.
      */
     @SneakyThrows
-    public void setTextFromFile(String i18nFilename) {
+    void setTextFromFile(String i18nFilename) {
         String pkg = I18n.localize(i18nFilename + ".package");
         if (pkg.equals(i18nFilename + ".package")) {
             pkg = I18n.localize("text.package.default");
@@ -65,11 +67,11 @@ public class SimpleTextController extends GoBacker {
         text.setText(Resources.toString(resource.get(), StandardCharsets.UTF_8));
     }
     
-    public void setText(String text) {
+    void setText(String text) {
         this.text.setText(text);
     }
     
-    public void useMonospacedFont() {
+    void useMonospacedFont() {
         text.setFont(Font.font("monospace", text.getFont().getSize()));
     }
     
@@ -77,7 +79,7 @@ public class SimpleTextController extends GoBacker {
     @Override
     protected void goBack(Event e) {
         super.goBack(e);
-        GuiUtils.setTitleToDefault();
+        guiUtils.setTitleToDefault();
     }
     
 }

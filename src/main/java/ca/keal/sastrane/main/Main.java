@@ -16,7 +16,9 @@ package ca.keal.sastrane.main;
 import ca.keal.sastrane.api.Game;
 import ca.keal.sastrane.api.GameInfo;
 import ca.keal.sastrane.chess.ChessModule;
+import ca.keal.sastrane.gui.GuiModule;
 import ca.keal.sastrane.gui.GuiUtils;
+import ca.keal.sastrane.gui.audio.AudioModule;
 import ca.keal.sastrane.gui.audio.Music;
 import ca.keal.sastrane.gui.audio.SoundEffects;
 import ca.keal.sastrane.reversi.ReversiModule;
@@ -42,6 +44,9 @@ public class Main extends GuiceApplication {
     private static boolean stageSet = false;
     
     @Inject private Set<GameInfo> games;
+    @Inject private Music music;
+    @Inject private SoundEffects soundFX;
+    @Inject private GuiUtils guiUtils;
     
     private static void setStage(Stage stage) {
         if (!stageSet) {
@@ -64,20 +69,20 @@ public class Main extends GuiceApplication {
         primaryStage.setOnCloseRequest(e -> System.exit(0));
         
         SastraneConfig cfg = ConfigCache.getOrCreate(SastraneConfig.class);
-        SoundEffects.setVolume(cfg.soundFXVolume());
-        Music.setVolume(cfg.musicVolume());
+        soundFX.setVolume(cfg.soundFXVolume());
+        soundFX.setVolume(cfg.musicVolume());
         
         I18n.load("ca.keal.sastrane.i18n.sastrane");
-        SoundEffects.loadAll(new Resource("ca.keal.sastrane.audio.soundfx", "soundfx.properties"));
-        Music.shuffleAll(Resource.getAllFromFile(new Resource("ca.keal.sastrane.audio.music", "soundtrack.config")));
+        soundFX.loadAll(new Resource("ca.keal.sastrane.audio.soundfx", "soundfx.properties"));
+        music.shuffleAll(Resource.getAllFromFile(new Resource("ca.keal.sastrane.audio.music", "soundtrack.config")));
         
         // Register all the games
         games.forEach(info -> Game.registerGame(new Game(info)));
         
-        GuiUtils.setTitleToDefault();
+        guiUtils.setTitleToDefault();
         // Multiple icon sizes???
         primaryStage.getIcons().add(new Image(new Resource("ca.keal.sastrane.icon", "logo.png").get().openStream()));
-        primaryStage.setScene(GuiUtils.getScene(new Resource("ca.keal.sastrane.gui", "main-menu.fxml"), 410, 410));
+        primaryStage.setScene(guiUtils.getScene(new Resource("ca.keal.sastrane.gui", "main-menu.fxml"), 410, 410));
         primaryStage.setMinWidth(425); // This works for some reason
         primaryStage.setMinHeight(500);
         primaryStage.show();
@@ -85,6 +90,8 @@ public class Main extends GuiceApplication {
     
     @Override
     public void init(List<Module> list) throws Exception {
+        list.add(new GuiModule());
+        list.add(new AudioModule());
         list.add(new ChessModule());
         list.add(new ReversiModule());
         list.add(new TicTacToeModule());
