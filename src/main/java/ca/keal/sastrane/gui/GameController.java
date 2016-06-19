@@ -201,26 +201,26 @@ public class GameController extends GoBacker implements Initializable {
     private void usePoints() {
         DoubleBinding gridTranslate = ((StackPane) boardGrid.getChildren().get(0)).widthProperty().divide(2);
         DoubleBinding translate = gridTranslate.negate();
-    
+        
         for (Node child : boardGrid.getChildren()) {
             Node img = child.lookup(".img");
             if (img == null) continue;
             img.translateXProperty().bind(translate);
             img.translateYProperty().bind(translate);
-        
+            
             Node overlay = child.lookup(".overlay");
             overlay.translateXProperty().bind(translate);
             overlay.translateYProperty().bind(translate);
         }
-    
+        
         boardGrid.translateXProperty().bind(gridTranslate);
         boardGrid.translateYProperty().bind(gridTranslate);
-    
+        
         boardGrid.lookupAll(".square.maxx").forEach(s -> s.setStyle("-fx-border-color: transparent transparent "
                 + "transparent black; -fx-background-color: transparent;"));
         boardGrid.lookupAll(".square.maxy").forEach(s -> s.setStyle("-fx-border-color: black transparent transparent "
                 + "transparent; -fx-background-color: transparent;"));
-        boardGrid.lookup(".square.maxx.maxy").setStyle("-fx-border-color: transparent;" 
+        boardGrid.lookup(".square.maxx.maxy").setStyle("-fx-border-color: transparent;"
                 + "-fx-background-color: transparent;");
     }
     
@@ -266,9 +266,9 @@ public class GameController extends GoBacker implements Initializable {
             if (selection.contains(square)) {
                 SoundEffects.play("click");
                 round.getGame().getBus().post(new UserMoveEvent(round, selectionMoves.stream()
-                    .filter(move -> move.getEndPos().equals(square))
-                    .collect(Collectors.toList())
-                    .get(0)));
+                        .filter(move -> move.getEndPos().equals(square))
+                        .collect(Collectors.toList())
+                        .get(0)));
             }
             deselect();
             return;
@@ -399,7 +399,8 @@ public class GameController extends GoBacker implements Initializable {
                     winImg.setImage(new Image(new Resource("ca.keal.sastrane.icon", "draw.png").get().openStream()));
                     winText.setText(I18n.localize("gui.game.result.draw"));
                 } else {
-                    if (e.getRound().getPlayersToMovers().get(winner) instanceof AI) {
+                    if (e.getRound().getPlayersToMovers().get(winner) instanceof AI
+                            && !(e.getRound().getPlayersToMovers().values().stream().allMatch(p -> p instanceof AI))) {
                         SoundEffects.play("lose");
                     } else {
                         SoundEffects.play("win");
