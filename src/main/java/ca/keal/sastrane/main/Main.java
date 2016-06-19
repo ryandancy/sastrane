@@ -34,7 +34,6 @@ import com.google.inject.Module;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import lombok.Getter;
-import org.aeonbits.owner.ConfigCache;
 
 import java.util.List;
 import java.util.Set;
@@ -45,6 +44,7 @@ public class Main extends GuiceApplication {
     private static boolean stageSet = false;
     
     @Inject private Set<GameInfo> games;
+    @Inject private SastraneConfig cfg;
     @Inject private Music music;
     @Inject private SoundEffects soundFX;
     @Inject private GuiUtils guiUtils;
@@ -69,13 +69,12 @@ public class Main extends GuiceApplication {
         // No-good very bad hack to kill the process when the window is closed
         primaryStage.setOnCloseRequest(e -> System.exit(0));
         
-        SastraneConfig cfg = ConfigCache.getOrCreate(SastraneConfig.class);
         soundFX.setVolume(cfg.soundFXVolume());
-        soundFX.setVolume(cfg.musicVolume());
-        
-        I18n.load("ca.keal.sastrane.i18n.sastrane");
+        music.setVolume(cfg.musicVolume());
         soundFX.loadAll(new Resource("ca.keal.sastrane.audio.soundfx", "soundfx.properties"));
         music.shuffleAll(Resource.getAllFromFile(new Resource("ca.keal.sastrane.audio.music", "soundtrack.config")));
+        
+        I18n.load("ca.keal.sastrane.i18n.sastrane");
         
         // Register all the games
         games.forEach(info -> Game.registerGame(new Game(info)));
