@@ -23,9 +23,9 @@ import ca.keal.sastrane.util.Resource;
 
 import java.util.List;
 
-public class Queen extends LinePiece implements RecursiveMovingPiece {
+class Queen extends LinePiece implements RecursiveMovingPiece {
     
-    public Queen() {
+    Queen() {
         super(UP | UP_RIGHT | RIGHT | DOWN_RIGHT | DOWN | DOWN_LEFT | LEFT | UP_LEFT);
     }
     

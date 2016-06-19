@@ -23,9 +23,9 @@ import ca.keal.sastrane.util.Resource;
 
 import java.util.List;
 
-public class Bishop extends LinePiece implements RecursiveMovingPiece {
+class Bishop extends LinePiece implements RecursiveMovingPiece {
     
-    public Bishop() {
+    Bishop() {
         super(UP_LEFT | UP_RIGHT | DOWN_LEFT | DOWN_RIGHT);
     }
     

@@ -29,7 +29,7 @@ import lombok.SneakyThrows;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class VolumeSelector extends VBox implements Initializable {
+class VolumeSelector extends VBox implements Initializable {
     
     @FXML private Label titleLabel;
     @FXML private ImageView img;
@@ -40,11 +40,11 @@ public class VolumeSelector extends VBox implements Initializable {
     private boolean hasInitialized = false;
     
     @SneakyThrows
-    public VolumeSelector() {
+    VolumeSelector() {
         GuiUtils.loadCustom(this, new Resource("ca.keal.sastrane.gui", "volume-select.fxml"));
     }
     
-    public void setTitle(String title) {
+    void setTitle(String title) {
         this.title = title;
         if (hasInitialized) {
             titleLabel.setText(title);
@@ -69,15 +69,15 @@ public class VolumeSelector extends VBox implements Initializable {
         return new Resource("ca.keal.sastrane.icon", "volume-high.png");
     }
     
-    public double getVolume() {
+    double getVolume() {
         return volume.getValue();
     }
     
-    public void setVolume(double value) {
+    void setVolume(double value) {
         volume.setValue(value);
     }
     
-    public DoubleProperty volumeProperty() {
+    DoubleProperty volumeProperty() {
         return volume.valueProperty();
     }
     

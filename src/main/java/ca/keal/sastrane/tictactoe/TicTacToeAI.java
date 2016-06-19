@@ -19,9 +19,9 @@ import ca.keal.sastrane.api.Round;
 
 import java.util.Set;
 
-public class TicTacToeAI extends AI {
+class TicTacToeAI extends AI {
     
-    public TicTacToeAI(double difficulty) {
+    TicTacToeAI(double difficulty) {
         super(difficulty);
     }
     

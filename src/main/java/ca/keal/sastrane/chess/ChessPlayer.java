@@ -22,7 +22,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.function.BinaryOperator;
 
 @RequiredArgsConstructor
-public enum ChessPlayer implements Player {
+enum ChessPlayer implements Player {
     
     // y = 0 is at top
     WHITE("white", "chess.player.white", new Resource("ca.keal.sastrane.chess.icon", "white.png"), Player::flipY),

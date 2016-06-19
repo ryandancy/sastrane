@@ -30,7 +30,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 // TODO reduce repitition here - there's a *lot* of similarity between getMove() and decide()
 @RequiredArgsConstructor
-public class HumanMover implements Mover {
+class HumanMover implements Mover {
     
     private final GameController controller;
     

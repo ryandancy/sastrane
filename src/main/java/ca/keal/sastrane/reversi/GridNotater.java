@@ -25,7 +25,7 @@ import java.util.List;
  * Notates Reversi games using a grid on which move numbers are recorded, à la 
  * <a href="http://usothello.org/trans/Transcripts_day1_2014.pdf">US Othello championship transcript</a>.
  */
-public class GridNotater implements Notater {
+class GridNotater implements Notater {
     
     private static final int NOTHING = 0;
     private static final int PRE_WHITE = -1;

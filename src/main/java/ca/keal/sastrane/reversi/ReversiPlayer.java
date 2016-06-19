@@ -21,7 +21,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum ReversiPlayer implements Player {
+enum ReversiPlayer implements Player {
     
     BLACK("black", "reversi.player.black", new Resource("ca.keal.sastrane.reversi", "disk_black.png")),
     WHITE("white", "reversi.player.white", new Resource("ca.keal.sastrane.reversi", "disk_white.png"));

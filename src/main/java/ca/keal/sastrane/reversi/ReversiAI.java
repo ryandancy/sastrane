@@ -22,9 +22,9 @@ import lombok.SneakyThrows;
 
 import java.util.Set;
 
-public class ReversiAI extends AI {
+class ReversiAI extends AI {
     
-    public ReversiAI(double difficulty) {
+    ReversiAI(double difficulty) {
         super(difficulty);
     }
     

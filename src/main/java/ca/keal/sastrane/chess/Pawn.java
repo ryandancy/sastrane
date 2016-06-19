@@ -33,12 +33,12 @@ import java.util.stream.Collectors;
 
 // Doesn't implement MoveCountingPiece because it handles MoveEvent.Post itself
 @Getter
-public class Pawn implements RecursiveMovingPiece {
+class Pawn implements RecursiveMovingPiece {
     
     private boolean lastMoveDouble;
     private int numMoves = 0;
     
-    public Pawn(Game chess) {
+    Pawn(Game chess) {
         chess.getBus().register(this);
     }
     

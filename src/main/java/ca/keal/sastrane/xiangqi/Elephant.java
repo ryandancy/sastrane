@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Elephant implements RecursiveMovingPiece {
+class Elephant implements RecursiveMovingPiece {
     
     @Override
     public List<Move> getPossibleMoves(Round round, Square boardPos, Player player) {

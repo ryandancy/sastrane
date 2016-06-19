@@ -26,7 +26,7 @@ import ca.keal.sastrane.util.Resource;
 
 import java.util.function.Function;
 
-public class Reversi implements GameInfo, Notatable {
+class Reversi implements GameInfo, Notatable {
     
     @Override
     public String getResourceBundleName() {

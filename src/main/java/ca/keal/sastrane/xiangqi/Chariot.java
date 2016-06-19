@@ -23,9 +23,9 @@ import ca.keal.sastrane.util.Resource;
 
 import java.util.List;
 
-public class Chariot extends LinePiece implements RecursiveMovingPiece {
+class Chariot extends LinePiece implements RecursiveMovingPiece {
     
-    public Chariot() {
+    Chariot() {
         super(UP | LEFT | DOWN | RIGHT);
     }
     

@@ -33,7 +33,7 @@ import java.util.Map;
  * Notates chess using <a href="https://en.wikipedia.org/wiki/Algebraic_notation_(chess)#Long_algebraic_notation">long 
  * algebraic notation</a>.
  */
-public class LongAlgebraicNotater implements Notater {
+class LongAlgebraicNotater implements Notater {
     
     private static final Map<Class<? extends Piece>, String> PIECE_CHARS = new HashMap<>();
     

@@ -24,7 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-public class ChessAI extends AI {
+class ChessAI extends AI {
     
     private static final Map<Class<? extends Piece>, Double> pieceToNaiveValue = new HashMap<>();
     
@@ -37,7 +37,7 @@ public class ChessAI extends AI {
         pieceToNaiveValue.put(King.class, 1e9); // not Double.MAX_VALUE to avoid overflow
     }
     
-    public ChessAI(double difficulty) {
+    ChessAI(double difficulty) {
         super(difficulty);
     }
     

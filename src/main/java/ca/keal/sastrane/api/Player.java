@@ -15,7 +15,8 @@ package ca.keal.sastrane.api;
 
 import ca.keal.sastrane.api.piece.MovingPiece;
 import ca.keal.sastrane.util.Resource;
-import ca.keal.sastrane.xiangqi.Xiangqi;
+
+import java.util.function.UnaryOperator;
 
 /**
  * A general description of a player/team/side/whatever. If you're looking for an AI-or-user input type, go to {@link
@@ -24,7 +25,7 @@ import ca.keal.sastrane.xiangqi.Xiangqi;
  * This interface is designed to be used as an "extensible enum": each implementation of this interface should be an
  * {@code enum}. For example:
  * <pre><code>
- *     public enum FooPlayer implements Player {
+ *     enum FooPlayer implements Player {
  *
  *         PLAYERA("a", Player::flipNone), PLAYERB("b", Player::flipY);
  *
@@ -102,12 +103,8 @@ public interface Player {
         return new Square(2 * original.getX() - pos.getX(), 2 * original.getY() - pos.getY());
     }
     
-    static Square flipAroundCentre(Square pos, @SuppressWarnings("UnusedParameters") Square original) {
-        return flipAroundCentre(pos);
-    }
-    
-    static Square flipAroundCentre(Square pos) {
-        return new Square(Xiangqi.MAXX - pos.getX(), Xiangqi.MAXY - pos.getY());
+    static UnaryOperator<Square> getFlipAroundCentre(int maxx, int maxy) {
+        return pos -> new Square(maxx - pos.getX(), maxy - pos.getY());
     }
     
 }

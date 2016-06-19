@@ -23,9 +23,9 @@ import ca.keal.sastrane.util.Resource;
 
 import java.util.List;
 
-public class Knight extends JumpingPiece implements RecursiveMovingPiece {
+class Knight extends JumpingPiece implements RecursiveMovingPiece {
     
-    public Knight() {
+    Knight() {
         // "L" shape: x+2, y+1 (JumpingPiece automagically mirrors it)
         super(2, 1);
     }

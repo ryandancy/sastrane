@@ -24,9 +24,9 @@ import ca.keal.sastrane.util.Resource;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Advisor extends JumpingPiece implements RecursiveMovingPiece {
+class Advisor extends JumpingPiece implements RecursiveMovingPiece {
     
-    public Advisor() {
+    Advisor() {
         super(1, 1);
     }
     

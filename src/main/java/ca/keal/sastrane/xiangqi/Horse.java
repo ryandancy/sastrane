@@ -26,9 +26,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /** Similar to chess' knight, except can't move through a piece **/
-public class Horse extends JumpingPiece implements RecursiveMovingPiece {
+class Horse extends JumpingPiece implements RecursiveMovingPiece {
     
-    public Horse() {
+    Horse() {
         super(2, 1);
     }
     

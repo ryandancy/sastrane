@@ -21,7 +21,7 @@ import ca.keal.sastrane.api.Round;
 import ca.keal.sastrane.util.Utils;
 import com.google.common.collect.Multiset;
 
-public class ReversiArbitrator implements Arbitrator {
+class ReversiArbitrator implements Arbitrator {
     
     @Override
     public Result arbitrate(Round round) {

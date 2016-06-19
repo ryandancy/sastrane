@@ -26,10 +26,10 @@ import com.google.common.eventbus.EventBus;
 
 import java.util.function.Function;
 
-public class Xiangqi implements GameInfo, Notatable {
+class Xiangqi implements GameInfo, Notatable {
     
-    public static final int MAXX = 9;
-    public static final int MAXY = 10;
+    static final int MAXX = 9;
+    static final int MAXY = 10;
     
     private final PalaceLines palaceLines = new PalaceLines();
     

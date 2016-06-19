@@ -23,7 +23,7 @@ import ca.keal.sastrane.util.Resource;
 
 import java.util.function.Function;
 
-public class TicTacToe implements GameInfo {
+class TicTacToe implements GameInfo {
     
     @Override
     public String getResourceBundleName() {

@@ -28,7 +28,7 @@ import java.util.function.UnaryOperator;
 public enum XiangqiPlayer implements Player {
     
     RED("red", "xiangqi.player.red", new Resource("ca.keal.sastrane.xiangqi.piece", "general_red.png"),
-            Player::flipY, Player::flipAroundCentre, ImmutableList.of(
+            Player::flipY, Player.getFlipAroundCentre(Xiangqi.MAXX, Xiangqi.MAXY), ImmutableList.of(
                 new Square(3, 9), new Square(4, 9), new Square(5, 9),
                 new Square(3, 8), new Square(4, 8), new Square(5, 8),
                 new Square(3, 7), new Square(4, 7), new Square(5, 7))),

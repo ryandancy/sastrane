@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-public class Disk implements PlacingPiece {
+class Disk implements PlacingPiece {
     
     @Override
     public List<PlacingMove> getPossiblePlacements(Round round, Player player) {

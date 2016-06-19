@@ -30,7 +30,7 @@ import java.util.ResourceBundle;
 
 @Getter
 @Setter
-public class GameTile extends VBox implements Initializable {
+class GameTile extends VBox implements Initializable {
     
     @FXML private ImageView imgView;
     @FXML private Label displayName;
@@ -38,7 +38,7 @@ public class GameTile extends VBox implements Initializable {
     private final Game game;
     
     @SneakyThrows
-    public GameTile(Game game) {
+    GameTile(Game game) {
         this.game = game;
         GuiUtils.loadCustom(this, new Resource("ca.keal.sastrane.gui", "game-tile.fxml"));
         getStylesheets().add(game.getInfo().getCss().getFilename());

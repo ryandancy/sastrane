@@ -23,7 +23,7 @@ import ca.keal.sastrane.api.piece.OwnedPiece;
 import javax.annotation.Nullable;
 import java.util.function.BiFunction;
 
-public class TicTacToeArbitrator implements Arbitrator {
+class TicTacToeArbitrator implements Arbitrator {
     
     @Override
     public Result arbitrate(Round round) {

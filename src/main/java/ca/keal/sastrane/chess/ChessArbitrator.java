@@ -18,9 +18,9 @@ import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.Result;
 import ca.keal.sastrane.api.Round;
 
-public class ChessArbitrator implements Arbitrator {
+class ChessArbitrator implements Arbitrator {
     
-    public static final ChessArbitrator INSTANCE = new ChessArbitrator(); // TODO DI
+    static final ChessArbitrator INSTANCE = new ChessArbitrator(); // TODO DI
     
     @Override
     public Result arbitrate(Round round) {

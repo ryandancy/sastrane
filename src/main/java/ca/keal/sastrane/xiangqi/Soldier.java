@@ -29,11 +29,11 @@ import lombok.Getter;
 
 import java.util.List;
 
-public class Soldier extends JumpingPiece implements RecursiveMovingPiece {
+class Soldier extends JumpingPiece implements RecursiveMovingPiece {
     
     @Getter private boolean acrossRiver = false;
     
-    public Soldier(Game xiangqi) {
+    Soldier(Game xiangqi) {
         // At start, advance 1
         super(0, 1, false, QI | QII);
         xiangqi.getBus().register(this);

@@ -25,9 +25,9 @@ import ca.keal.sastrane.util.Resource;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class General extends JumpingPiece implements RecursiveMovingPiece {
+class General extends JumpingPiece implements RecursiveMovingPiece {
     
-    public General() {
+    General() {
         super(1, 0, QI | QII | QIII | QIV);
     }
     

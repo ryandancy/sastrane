@@ -27,11 +27,11 @@ import lombok.Getter;
 import java.util.List;
 
 @Getter
-public class Rook extends LinePiece implements MoveCountingPiece, RecursiveMovingPiece {
+class Rook extends LinePiece implements MoveCountingPiece, RecursiveMovingPiece {
     
     private int numMoves = 0;
     
-    public Rook(Game chess) {
+    Rook(Game chess) {
         super(UP | LEFT | DOWN | RIGHT);
         chess.getBus().register(this);
     }

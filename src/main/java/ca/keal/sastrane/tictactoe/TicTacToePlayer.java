@@ -21,7 +21,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum TicTacToePlayer implements Player {
+enum TicTacToePlayer implements Player {
     
     X("x", "tictactoe.player.x", new Resource("ca.keal.sastrane.tictactoe", "mark_x.png")),
     O("o", "tictactoe.player.o", new Resource("ca.keal.sastrane.tictactoe", "mark_o.png"));

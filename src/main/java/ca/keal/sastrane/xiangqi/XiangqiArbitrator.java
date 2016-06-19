@@ -18,7 +18,7 @@ import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.Result;
 import ca.keal.sastrane.api.Round;
 
-public class XiangqiArbitrator implements Arbitrator {
+class XiangqiArbitrator implements Arbitrator {
     
     @Override
     public Result arbitrate(Round round) {

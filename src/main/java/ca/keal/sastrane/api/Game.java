@@ -23,9 +23,6 @@ import lombok.ToString;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * All subclasses must create instances of themselves on load; most will implement this as a singleton.
- */
 @Getter
 @ToString
 @EqualsAndHashCode

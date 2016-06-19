@@ -31,7 +31,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 @Getter
-public class PlayerSettings extends VBox implements Initializable {
+class PlayerSettings extends VBox implements Initializable {
     
     @FXML private ImageView img;
     @FXML private Label playerName;
@@ -41,7 +41,7 @@ public class PlayerSettings extends VBox implements Initializable {
     private final Player player;
     
     @SneakyThrows
-    public PlayerSettings(Player player) {
+    PlayerSettings(Player player) {
         this.player = player;
         GuiUtils.loadCustom(this, new Resource("ca.keal.sastrane.gui", "player-settings.fxml"));
     }

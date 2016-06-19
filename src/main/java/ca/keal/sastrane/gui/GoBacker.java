@@ -23,7 +23,7 @@ import lombok.SneakyThrows;
  * A controller with the ability to go back to a previous scene.
  */
 @AllArgsConstructor
-public abstract class GoBacker {
+abstract class GoBacker {
     
     protected Resource previous;
     

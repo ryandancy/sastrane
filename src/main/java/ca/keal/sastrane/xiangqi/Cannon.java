@@ -24,9 +24,9 @@ import ca.keal.sastrane.util.Resource;
 
 import java.util.List;
 
-public class Cannon extends LinePiece implements RecursiveMovingPiece {
+class Cannon extends LinePiece implements RecursiveMovingPiece {
     
-    public Cannon() {
+    Cannon() {
         super(true, false, UP | DOWN | LEFT | RIGHT);
     }
     

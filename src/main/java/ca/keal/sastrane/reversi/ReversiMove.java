@@ -25,12 +25,12 @@ import java.util.List;
 
 @ToString
 @EqualsAndHashCode(callSuper = true)
-public class ReversiMove extends PlacingMove {
+class ReversiMove extends PlacingMove {
     
     private final List<Square> originals;
     private final Player player;
     
-    public ReversiMove(Player player, List<Square> originals, Square pos) {
+    ReversiMove(Player player, List<Square> originals, Square pos) {
         super(new OwnedPiece(new Disk(), player), pos);
         this.originals = originals;
         this.player = player;

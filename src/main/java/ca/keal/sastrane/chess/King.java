@@ -31,11 +31,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class King implements RecursiveMovingPiece, MoveCountingPiece {
+class King implements RecursiveMovingPiece, MoveCountingPiece {
     
     private int numMoves = 0;
     
-    public King(Game chess) {
+    King(Game chess) {
         chess.getBus().register(this);
     }
     

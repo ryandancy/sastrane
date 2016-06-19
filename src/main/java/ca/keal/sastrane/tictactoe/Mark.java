@@ -24,7 +24,7 @@ import ca.keal.sastrane.util.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Mark implements PlacingPiece {
+class Mark implements PlacingPiece {
     
     @Override
     public List<PlacingMove> getPossiblePlacements(Round round, Player player) {

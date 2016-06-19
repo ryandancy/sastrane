@@ -34,7 +34,7 @@ import java.util.stream.Collectors;
  * Notates xiangqi games using the notation popularized by the World Xiangqi Federation (WXF), known as <a
  * href="https://en.wikipedia.org/wiki/Xiangqi#System_2">WXF notation</a>.
  */
-public class WXFNotater implements Notater {
+class WXFNotater implements Notater {
     
     private static final Map<Class<? extends Piece>, Character> PIECE_CHARS = new HashMap<>();
     

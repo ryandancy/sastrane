@@ -25,7 +25,7 @@ import ca.keal.sastrane.util.Resource;
 
 import java.util.function.Function;
 
-public class Chess implements GameInfo, Notatable {
+class Chess implements GameInfo, Notatable {
     
     @Override
     public String getResourceBundleName() {

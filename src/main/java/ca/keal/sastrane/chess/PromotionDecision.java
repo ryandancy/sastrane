@@ -27,7 +27,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 @RequiredArgsConstructor
-public enum PromotionDecision implements Decision {
+enum PromotionDecision implements Decision {
     
     // TODO find a way to refer to piece classes' icons?
     QUEEN(new Resource("ca.keal.sastrane.chess.piece", "queen_white.png"), "chess.promotion.queen", Queen::new),

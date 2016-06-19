@@ -25,7 +25,7 @@ import java.util.Map;
 import java.util.Set;
 
 // This class is *VERY* similar to ChessAI... consolidate???
-public class XiangqiAI extends AI {
+class XiangqiAI extends AI {
     
     private static final Map<Class<? extends Piece>, Double> pieceToNaiveValue = new HashMap<>();
     
@@ -39,7 +39,7 @@ public class XiangqiAI extends AI {
         pieceToNaiveValue.put(General.class, 1e6); // not Double.MAX_VALUE to avoid overflow
     }
     
-    public XiangqiAI(double difficulty) {
+    XiangqiAI(double difficulty) {
         super(difficulty);
     }
     
