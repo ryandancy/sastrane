@@ -45,9 +45,9 @@ public class Main extends Application {
     private static boolean stageSet = false;
     
     private static void setStage(Stage stage) {
-        if (stageSet) {
+        if (!stageSet) {
             Main.stage = stage;
-            stageSet = false;
+            stageSet = true;
         }
     }
     
