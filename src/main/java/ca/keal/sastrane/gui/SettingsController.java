@@ -13,12 +13,12 @@
 
 package ca.keal.sastrane.gui;
 
+import ca.keal.sastrane.config.ConfigUtils;
+import ca.keal.sastrane.config.SastraneConfig;
 import ca.keal.sastrane.gui.audio.Music;
 import ca.keal.sastrane.gui.audio.SoundEffects;
 import ca.keal.sastrane.main.Main;
 import ca.keal.sastrane.util.Resource;
-import ca.keal.sastrane.util.SastraneConfig;
-import ca.keal.sastrane.util.Utils;
 import com.google.inject.Inject;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -28,10 +28,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import lombok.SneakyThrows;
-import lombok.val;
-import org.aeonbits.owner.ConfigCache;
 
-import java.io.FileOutputStream;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -40,14 +37,14 @@ public class SettingsController extends GoBacker implements Initializable {
     @FXML private VolumeSelector soundfxVolume;
     @FXML private VolumeSelector musicVolume;
     
-    private final SastraneConfig cfg = ConfigCache.getOrCreate(SastraneConfig.class);
-    
+    private final SastraneConfig cfg;
     private final SoundEffects soundFX;
     private final Music music;
     
     @Inject
-    public SettingsController(Music music, SoundEffects soundFX, GuiUtils guiUtils) {
+    public SettingsController(SastraneConfig cfg, SoundEffects soundFX, Music music, GuiUtils guiUtils) {
         super(new Resource("ca.keal.sastrane.gui", "main-menu.fxml"), guiUtils);
+        this.cfg = cfg;
         this.soundFX = soundFX;
         this.music = music;
     }
@@ -70,10 +67,7 @@ public class SettingsController extends GoBacker implements Initializable {
     private void onLeave() {
         cfg.setProperty(SastraneConfig.SOUNDFX_VOLUME_KEY, Double.toString(soundfxVolume.getVolume()));
         cfg.setProperty(SastraneConfig.MUSIC_VOLUME_KEY, Double.toString(musicVolume.getVolume()));
-        
-        try (val os = new FileOutputStream(Utils.openOrCreateFile("config.properties"))) {
-            cfg.store(os, "Sastrane config");
-        }
+        ConfigUtils.save(cfg);
     }
     
     @FXML

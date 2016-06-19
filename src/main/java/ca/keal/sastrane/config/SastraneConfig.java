@@ -11,15 +11,17 @@
  * specific language governing permissions and limitations under the License.
  */
 
-package ca.keal.sastrane.util;
+package ca.keal.sastrane.config;
 
 import org.aeonbits.owner.Accessible;
 import org.aeonbits.owner.Config;
 import org.aeonbits.owner.Config.Sources;
 import org.aeonbits.owner.Mutable;
 
-@Sources("file:config.properties")
+@Sources("file:" + SastraneConfig.FILE_PATH)
 public interface SastraneConfig extends Config, Accessible, Mutable {
+    
+    String FILE_PATH = "config.properties";
     
     String SOUNDFX_VOLUME_KEY = "volume.soundfx";
     

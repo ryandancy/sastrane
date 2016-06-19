@@ -16,6 +16,8 @@ package ca.keal.sastrane.main;
 import ca.keal.sastrane.api.Game;
 import ca.keal.sastrane.api.GameInfo;
 import ca.keal.sastrane.chess.ChessModule;
+import ca.keal.sastrane.config.ConfigModule;
+import ca.keal.sastrane.config.SastraneConfig;
 import ca.keal.sastrane.gui.GuiModule;
 import ca.keal.sastrane.gui.GuiUtils;
 import ca.keal.sastrane.gui.audio.AudioModule;
@@ -25,7 +27,6 @@ import ca.keal.sastrane.reversi.ReversiModule;
 import ca.keal.sastrane.tictactoe.TicTacToeModule;
 import ca.keal.sastrane.util.I18n;
 import ca.keal.sastrane.util.Resource;
-import ca.keal.sastrane.util.SastraneConfig;
 import ca.keal.sastrane.xiangqi.XiangqiModule;
 import com.cathive.fx.guice.GuiceApplication;
 import com.google.inject.Inject;
@@ -90,6 +91,7 @@ public class Main extends GuiceApplication {
     
     @Override
     public void init(List<Module> list) throws Exception {
+        list.add(new ConfigModule());
         list.add(new GuiModule());
         list.add(new AudioModule());
         list.add(new ChessModule());
