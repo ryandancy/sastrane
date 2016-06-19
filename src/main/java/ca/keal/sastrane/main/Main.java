@@ -25,24 +25,23 @@ import ca.keal.sastrane.util.I18n;
 import ca.keal.sastrane.util.Resource;
 import ca.keal.sastrane.util.SastraneConfig;
 import ca.keal.sastrane.xiangqi.XiangqiModule;
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-import com.google.inject.Key;
-import com.google.inject.TypeLiteral;
-import com.google.inject.util.Types;
-import javafx.application.Application;
+import com.cathive.fx.guice.GuiceApplication;
+import com.google.inject.Inject;
+import com.google.inject.Module;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import lombok.Getter;
-import lombok.val;
 import org.aeonbits.owner.ConfigCache;
 
+import java.util.List;
 import java.util.Set;
 
-public class Main extends Application {
+public class Main extends GuiceApplication {
     
     @Getter private static Stage stage;
     private static boolean stageSet = false;
+    
+    @Inject private Set<GameInfo> games;
     
     private static void setStage(Stage stage) {
         if (!stageSet) {
@@ -73,14 +72,6 @@ public class Main extends Application {
         Music.shuffleAll(Resource.getAllFromFile(new Resource("ca.keal.sastrane.audio.music", "soundtrack.config")));
         
         // Register all the games
-        Injector injector = Guice.createInjector(
-                new ChessModule(),
-                new ReversiModule(),
-                new TicTacToeModule(),
-                new XiangqiModule());
-        @SuppressWarnings("unchecked")
-        val literal = (TypeLiteral<Set<GameInfo>>) TypeLiteral.get(Types.setOf(GameInfo.class));
-        Set<GameInfo> games = injector.getInstance(Key.get(literal));
         games.forEach(info -> Game.registerGame(new Game(info)));
         
         GuiUtils.setTitleToDefault();
@@ -90,6 +81,14 @@ public class Main extends Application {
         primaryStage.setMinWidth(425); // This works for some reason
         primaryStage.setMinHeight(500);
         primaryStage.show();
+    }
+    
+    @Override
+    public void init(List<Module> list) throws Exception {
+        list.add(new ChessModule());
+        list.add(new ReversiModule());
+        list.add(new TicTacToeModule());
+        list.add(new XiangqiModule());
     }
     
 }

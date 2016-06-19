@@ -1,6 +1,8 @@
     Sastrane uses Guava <https://github.com/google/guava/> by Google, licensed under The Apache Software License, Version 2.0 <http://www.apache.org/licenses/LICENSE-2.0.txt>.
 
     Sastrane uses Guice <https://github.com/google/guice/> by Google, licensed under The Apache Software License, Version 2.0 <http://www.apache.org/licenses/LICENSE-2.0.txt>.
+
+    Sastrane uses FX-Guice <https://github.com/cathive/fx-guice> by Benjamin P. Jung, licensed under The Apache Software License, Version 2.0 <http://www.apache.org/licenses/LICENSE-2.0.txt>.
     
     Sastrane uses OWNER <http://owner.aeonbits.org/> (available on GitHub at <https://github.com/lviggiano/owner>) by Luigi R. Viggiano <https://github.com/lviggiano>, licensed under the terms and conditions of its license <https://raw.githubusercontent.com/lviggiano/owner/master/LICENSE>.
 
