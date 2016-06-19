@@ -30,8 +30,6 @@ public interface GuiUtils {
     
     FXMLLoader getFXMLLoader(Resource resource);
     
-    FXMLLoader guicifyLoader(FXMLLoader loader);
-    
     Scene getScene(Parent parent, double width, double height);
     
     Scene getScene(Parent parent, Scene previous);

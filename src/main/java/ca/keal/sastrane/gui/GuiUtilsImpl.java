@@ -61,8 +61,7 @@ public class GuiUtilsImpl implements GuiUtils {
      * <a href="http://pscheidl.cz/index.php/blog/6-using-javafx8-with-dependency-injection">Pavel
      * Pscheidl</a>.
      */
-    @Override
-    public FXMLLoader guicifyLoader(FXMLLoader loader) {
+    private FXMLLoader guicifyLoader(FXMLLoader loader) {
         loader.setControllerFactory(injector::getInstance);
         loader.setBuilderFactory(cls -> {
             if (cls != null && cls.isAnnotationPresent(FXMLComponent.class)) {
