@@ -117,6 +117,7 @@ public class SettingsController extends GoBacker implements Initializable {
         onLeave();
     }
     
+    @FXML
     @Override
     protected void goBack(Event e) {
         super.goBack(e);

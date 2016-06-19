@@ -30,7 +30,8 @@ import lombok.SneakyThrows;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-class VolumeSelector extends VBox implements Initializable {
+@FXMLComponent
+public class VolumeSelector extends VBox implements Initializable {
     
     @FXML private Label titleLabel;
     @FXML private ImageView img;
@@ -46,7 +47,7 @@ class VolumeSelector extends VBox implements Initializable {
         guiUtils.loadCustom(this, new Resource("ca.keal.sastrane.gui", "volume-select.fxml"));
     }
     
-    void setTitle(String title) {
+    public void setTitle(String title) { // public because FXML property
         this.title = title;
         if (hasInitialized) {
             titleLabel.setText(title);

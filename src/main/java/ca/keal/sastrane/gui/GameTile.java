@@ -15,6 +15,7 @@ package ca.keal.sastrane.gui;
 
 import ca.keal.sastrane.api.Game;
 import ca.keal.sastrane.util.Resource;
+import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -31,13 +32,15 @@ import java.util.ResourceBundle;
 
 @Getter
 @Setter
-class GameTile extends VBox implements Initializable {
+@FXMLComponent
+public class GameTile extends VBox implements Initializable {
     
     @FXML private ImageView imgView;
     @FXML private Label displayName;
     
     private final Game game;
     
+    @Inject
     @SneakyThrows
     GameTile(GuiUtils guiUtils, @Assisted Game game) {
         this.game = game;

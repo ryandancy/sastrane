@@ -33,7 +33,8 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 @Getter
-class PlayerSettings extends VBox implements Initializable {
+@FXMLComponent
+public class PlayerSettings extends VBox implements Initializable {
     
     @FXML private ImageView img;
     @FXML private Label playerName;

@@ -13,8 +13,6 @@
   ~ specific language governing permissions and limitations under the License.
   -->
 
-<!-- TODO settings -->
-
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.image.ImageView?>
