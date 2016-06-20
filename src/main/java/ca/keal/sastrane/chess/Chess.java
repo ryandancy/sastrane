@@ -33,8 +33,8 @@ class Chess implements Game, Notatable {
     }
     
     @Override
-    public String getI18nName() {
-        return "chess.name";
+    public String getName() {
+        return "chess";
     }
     
     @Override

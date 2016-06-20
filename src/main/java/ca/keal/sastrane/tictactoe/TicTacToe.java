@@ -31,8 +31,8 @@ class TicTacToe implements Game {
     }
     
     @Override
-    public String getI18nName() {
-        return "tictactoe.name";
+    public String getName() {
+        return "tictactoe";
     }
     
     @Override

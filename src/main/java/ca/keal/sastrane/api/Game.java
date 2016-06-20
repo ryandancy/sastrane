@@ -21,10 +21,13 @@ import java.util.function.Function;
 
 public interface Game {
     
-    /** Also EventBus name */
     String getResourceBundleName();
     
-    String getI18nName();
+    String getName();
+    
+    default String getI18nName() {
+        return getName() + ".name";
+    }
     
     Resource getIcon();
     

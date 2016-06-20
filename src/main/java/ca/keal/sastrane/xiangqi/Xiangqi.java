@@ -39,8 +39,8 @@ class Xiangqi implements Game, Notatable {
     }
     
     @Override
-    public String getI18nName() {
-        return "xiangqi.name";
+    public String getName() {
+        return "xiangqi";
     }
     
     @Override

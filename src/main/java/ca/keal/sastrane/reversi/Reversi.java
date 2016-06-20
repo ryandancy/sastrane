@@ -34,8 +34,8 @@ class Reversi implements Game, Notatable {
     }
     
     @Override
-    public String getI18nName() {
-        return "reversi.name";
+    public String getName() {
+        return "reversi";
     }
     
     @Override
