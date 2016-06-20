@@ -24,6 +24,7 @@ import ca.keal.sastrane.api.piece.OwnedPiece;
 import ca.keal.sastrane.api.piece.RecursiveMovingPiece;
 import ca.keal.sastrane.util.Resource;
 import ca.keal.sastrane.util.Utils;
+import com.google.common.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,8 +35,8 @@ class King implements RecursiveMovingPiece, MoveCountingPiece {
     
     private int numMoves = 0;
     
-    King(Round round) {
-        round.getBus().register(this);
+    King(EventBus bus) {
+        bus.register(this);
     }
     
     @Override

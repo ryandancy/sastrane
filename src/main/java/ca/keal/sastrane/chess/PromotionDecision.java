@@ -19,6 +19,7 @@ import ca.keal.sastrane.api.Square;
 import ca.keal.sastrane.api.piece.OwnedPiece;
 import ca.keal.sastrane.api.piece.Piece;
 import ca.keal.sastrane.util.Resource;
+import com.google.common.eventbus.EventBus;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -36,7 +37,7 @@ enum PromotionDecision implements Decision {
     
     @Getter private final Resource icon;
     @Getter private final String i18nName;
-    private final Function<Round, Piece> pieceSupplier;
+    private final Function<EventBus, Piece> pieceSupplier;
     
     PromotionDecision(Resource icon, String i18nName, Supplier<Piece> pieceSupplier) {
         this(icon, i18nName, r -> pieceSupplier.get());
@@ -47,7 +48,7 @@ enum PromotionDecision implements Decision {
         Square lastMovePos = round.getLastMove().getMove().getEndPos();
         // If there's nothing at lastMovePos, we'll get an NPE - but that should be impossible
         //noinspection ConstantConditions
-        round.getBoard().set(lastMovePos, new OwnedPiece(pieceSupplier.apply(round),
+        round.getBoard().set(lastMovePos, new OwnedPiece(pieceSupplier.apply(round.getBus()),
                 round.getBoard().get(lastMovePos).getOwner()));
     }
     

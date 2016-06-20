@@ -46,8 +46,8 @@ public class MainMenuController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         tiles.getChildren().addAll(registrar.stream()
-                .sorted((g0, g1) -> resources.getString(g0.getInfo().getI18nName())
-                        .compareToIgnoreCase(resources.getString(g1.getInfo().getI18nName())))
+                .sorted((g0, g1) -> resources.getString(g0.getI18nName())
+                        .compareToIgnoreCase(resources.getString(g1.getI18nName())))
                 .map(gameTileFactory::create)
                 .peek(tile -> tile.setOnMouseClicked(this::handleTileClick))
                 .collect(Collectors.toList()));

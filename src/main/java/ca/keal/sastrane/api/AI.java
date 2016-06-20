@@ -41,7 +41,7 @@ public abstract class AI implements Mover {
     private final double difficulty;
     
     private double minimaxAlphaBeta(Round round, int depth, Player player) {
-        Set<Player> otherPlayers = Sets.newHashSet(round.getGame().getInfo().getPlayers());
+        Set<Player> otherPlayers = Sets.newHashSet(round.getGame().getPlayers());
         otherPlayers.remove(player);
         return minimize(depth, LOSE, WIN, round, player, ImmutableSet.of(player), otherPlayers);
     }
@@ -118,7 +118,7 @@ public abstract class AI implements Mover {
     }
     
     private double doHeuristic(Round round, Set<Player> players) {
-        Result result = round.getGame().getInfo().getArbitrator().arbitrate(round);
+        Result result = round.getGame().getArbitrator().arbitrate(round);
         if (result instanceof Result.Win) {
             return players.contains(((Result.Win) result).getPlayer()) ? WIN : LOSE;
         } else if (result == Result.DRAW) {

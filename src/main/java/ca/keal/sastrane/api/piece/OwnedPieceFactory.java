@@ -14,7 +14,7 @@
 package ca.keal.sastrane.api.piece;
 
 import ca.keal.sastrane.api.Player;
-import ca.keal.sastrane.api.Round;
+import com.google.common.eventbus.EventBus;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
@@ -25,15 +25,15 @@ import java.util.function.Supplier;
 @RequiredArgsConstructor
 public class OwnedPieceFactory {
     
-    private final Function<Round, Piece> pieceFactory;
+    private final Function<EventBus, Piece> pieceFactory;
     private final Player player;
     
     public OwnedPieceFactory(Supplier<Piece> pieceFactory, Player player) {
         this(r -> pieceFactory.get(), player);
     }
     
-    public Piece getPiece(Round round) {
-        return pieceFactory.apply(round);
+    public Piece getPiece(EventBus bus) {
+        return pieceFactory.apply(bus);
     }
     
 }

@@ -23,6 +23,7 @@ import ca.keal.sastrane.api.piece.JumpingPiece;
 import ca.keal.sastrane.api.piece.OwnedPiece;
 import ca.keal.sastrane.api.piece.RecursiveMovingPiece;
 import ca.keal.sastrane.util.Resource;
+import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import lombok.Getter;
 
@@ -32,10 +33,10 @@ class Soldier extends JumpingPiece implements RecursiveMovingPiece {
     
     @Getter private boolean acrossRiver = false;
     
-    Soldier(Round round) {
+    Soldier(EventBus bus) {
         // At start, advance 1
         super(0, 1, false, QI | QII);
-        round.getBus().register(this);
+        bus.register(this);
     }
     
     @Override

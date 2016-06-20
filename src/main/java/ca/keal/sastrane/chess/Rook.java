@@ -21,6 +21,7 @@ import ca.keal.sastrane.api.piece.LinePiece;
 import ca.keal.sastrane.api.piece.MoveCountingPiece;
 import ca.keal.sastrane.api.piece.RecursiveMovingPiece;
 import ca.keal.sastrane.util.Resource;
+import com.google.common.eventbus.EventBus;
 import lombok.Getter;
 
 import java.util.List;
@@ -30,9 +31,9 @@ class Rook extends LinePiece implements MoveCountingPiece, RecursiveMovingPiece 
     
     private int numMoves = 0;
     
-    Rook(Round round) {
+    Rook(EventBus bus) {
         super(UP | LEFT | DOWN | RIGHT);
-        round.getBus().register(this);
+        bus.register(this);
     }
     
     @Override
