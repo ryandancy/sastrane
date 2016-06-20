@@ -22,8 +22,8 @@ import lombok.EqualsAndHashCode;
 import javax.annotation.Nullable;
 
 /**
- * An event posted when a game is won. This is posted when {@link ca.keal.sastrane.api.Game#getResult(Round)} returns
- * something other than {@link Result#NOT_OVER}.
+ * An event posted when a game is won. This is posted when {@link ca.keal.sastrane.api.Arbitrator#arbitrate(Round)}
+ * returns something other than {@link Result#NOT_OVER}.
  */
 @Data
 @EqualsAndHashCode(callSuper = true)

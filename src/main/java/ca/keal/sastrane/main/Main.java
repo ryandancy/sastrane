@@ -15,7 +15,6 @@ package ca.keal.sastrane.main;
 
 import ca.keal.sastrane.api.APIModule;
 import ca.keal.sastrane.api.Game;
-import ca.keal.sastrane.api.GameInfo;
 import ca.keal.sastrane.api.GameRegistrar;
 import ca.keal.sastrane.chess.ChessModule;
 import ca.keal.sastrane.config.ConfigModule;
@@ -45,7 +44,7 @@ public class Main extends GuiceApplication {
     @Getter private static Stage stage;
     private static boolean stageSet = false;
     
-    @Inject private Set<GameInfo> games;
+    @Inject private Set<Game> games;
     @Inject private GameRegistrar registrar;
     @Inject private SastraneConfig cfg;
     @Inject private Music music;
@@ -80,7 +79,7 @@ public class Main extends GuiceApplication {
         I18n.load("ca.keal.sastrane.i18n.sastrane");
         
         // Register all the games
-        games.forEach(info -> registrar.register(new Game(info)));
+        games.forEach(registrar::register);
         
         guiUtils.setTitleToDefault();
         // Multiple icon sizes???

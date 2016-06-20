@@ -13,19 +13,42 @@
 
 package ca.keal.sastrane.api;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
+import ca.keal.sastrane.api.piece.PlacingPiece;
+import ca.keal.sastrane.util.Resource;
+import com.google.common.eventbus.EventBus;
 
-@Getter
-@ToString
-@EqualsAndHashCode
-public class Game {
+import java.util.function.Function;
+
+public interface Game {
     
-    private final GameInfo info;
+    /** Also EventBus name */
+    String getResourceBundleName();
     
-    public Game(GameInfo info) {
-        this.info = info;
+    String getI18nName();
+    
+    Resource getIcon();
+    
+    Resource getCss();
+    
+    Player[] getPlayers();
+    
+    /** Difficulty to AI object */
+    Function<Double, AI> getAI();
+    
+    Board.Factory getBoardFactory();
+    
+    default PlacingPiece[] getPlacingPieces() {
+        return new PlacingPiece[] {};
     }
+    
+    default boolean isPlaceOnly() {
+        return getPlacingPieces().length > 0;
+    }
+    
+    /** Register everything with the bus that should always be registered */
+    default void registerDefaults(EventBus bus) {}
+    
+    // DI here???
+    Arbitrator getArbitrator();
     
 }

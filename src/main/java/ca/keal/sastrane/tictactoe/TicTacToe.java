@@ -16,14 +16,14 @@ package ca.keal.sastrane.tictactoe;
 import ca.keal.sastrane.api.AI;
 import ca.keal.sastrane.api.Arbitrator;
 import ca.keal.sastrane.api.Board;
-import ca.keal.sastrane.api.GameInfo;
+import ca.keal.sastrane.api.Game;
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.piece.PlacingPiece;
 import ca.keal.sastrane.util.Resource;
 
 import java.util.function.Function;
 
-class TicTacToe implements GameInfo {
+class TicTacToe implements Game {
     
     @Override
     public String getResourceBundleName() {

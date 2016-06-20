@@ -16,7 +16,7 @@ package ca.keal.sastrane.xiangqi;
 import ca.keal.sastrane.api.AI;
 import ca.keal.sastrane.api.Arbitrator;
 import ca.keal.sastrane.api.Board;
-import ca.keal.sastrane.api.GameInfo;
+import ca.keal.sastrane.api.Game;
 import ca.keal.sastrane.api.Notatable;
 import ca.keal.sastrane.api.Notater;
 import ca.keal.sastrane.api.Player;
@@ -26,7 +26,7 @@ import com.google.common.eventbus.EventBus;
 
 import java.util.function.Function;
 
-class Xiangqi implements GameInfo, Notatable {
+class Xiangqi implements Game, Notatable {
     
     static final int MAXX = 9;
     static final int MAXY = 10;

@@ -16,7 +16,7 @@ package ca.keal.sastrane.reversi;
 import ca.keal.sastrane.api.AI;
 import ca.keal.sastrane.api.Arbitrator;
 import ca.keal.sastrane.api.Board;
-import ca.keal.sastrane.api.GameInfo;
+import ca.keal.sastrane.api.Game;
 import ca.keal.sastrane.api.Notatable;
 import ca.keal.sastrane.api.Notater;
 import ca.keal.sastrane.api.Player;
@@ -26,7 +26,7 @@ import ca.keal.sastrane.util.Resource;
 
 import java.util.function.Function;
 
-class Reversi implements GameInfo, Notatable {
+class Reversi implements Game, Notatable {
     
     @Override
     public String getResourceBundleName() {

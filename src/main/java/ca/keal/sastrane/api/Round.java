@@ -53,14 +53,14 @@ public class Round {
     private List<StateChange> moves = new ArrayList<>();
     
     public Round(Game game, Map<Player, Mover> playersToMovers) {
-        if (!Utils.areElementsEqual(playersToMovers.keySet(), Arrays.asList(game.getInfo().getPlayers()))) {
+        if (!Utils.areElementsEqual(playersToMovers.keySet(), Arrays.asList(game.getPlayers()))) {
             throw new IllegalArgumentException("Round: playersToMovers.keySet() must = game.getCombatants()");
         }
         this.game = game;
         this.playersToMovers = ImmutableMap.copyOf(playersToMovers);
-        this.board = game.getInfo().getBoardFactory().round(this).build();
-        bus = new EventBus(game.getInfo().getI18nName());
-        game.getInfo().registerDefaults(bus);
+        this.board = game.getBoardFactory().round(this).build();
+        bus = new EventBus(game.getI18nName());
+        game.registerDefaults(bus);
     }
     
     public Round(Round round) {
@@ -86,7 +86,7 @@ public class Round {
         
         bus.post(new TurnEvent.Post(this));
         
-        Result result = game.getInfo().getArbitrator().arbitrate(this);
+        Result result = game.getArbitrator().arbitrate(this);
         if (result != Result.NOT_OVER) {
             ended = true;
             
@@ -112,7 +112,7 @@ public class Round {
     }
     
     public Player getCurrentTurn() {
-        return game.getInfo().getPlayers()[moveNum % game.getInfo().getPlayers().length];
+        return game.getPlayers()[moveNum % game.getPlayers().length];
     }
     
     public Round copyWithMove(Move move) {
@@ -129,7 +129,7 @@ public class Round {
                 moves.addAll(((MovingPiece) atSquare.getPiece()).getPossibleMoves(this, square, atSquare.getOwner()));
             }
         }
-        for (PlacingPiece placingPiece : game.getInfo().getPlacingPieces()) {
+        for (PlacingPiece placingPiece : game.getPlacingPieces()) {
             moves.addAll(placingPiece.getPossiblePlacements(this, player));
         }
         return moves;

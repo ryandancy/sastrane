@@ -21,11 +21,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class AbstractGameModule extends AbstractModule {
     
-    private final Class<? extends GameInfo> infoCls;
+    private final Class<? extends Game> infoCls;
     
     @Override
     public void configure() {
-        Multibinder<GameInfo> gameBinder = Multibinder.newSetBinder(binder(), GameInfo.class);
+        Multibinder<Game> gameBinder = Multibinder.newSetBinder(binder(), Game.class);
         gameBinder.addBinding().to(infoCls);
     }
     

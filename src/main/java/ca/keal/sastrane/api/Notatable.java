@@ -14,8 +14,8 @@
 package ca.keal.sastrane.api;
 
 /**
- * Indicates that this {@link Game} has a notation system that can be used to record its games; it can be notated, and
- * is hence <i>notatable</i>. Only valid on {@link GameInfo}s.
+ * Indicates that this {@link Game} has a notation system that can be used to record its games; it can be notated,
+ * and is hence <i>notatable</i>. Only valid on {@link Game}s.
  */
 public interface Notatable {
     

@@ -34,10 +34,11 @@ class GameRegistrarImpl implements GameRegistrar {
     
     @Override
     public boolean add(Game game) {
-        I18n.load(game.getInfo().getResourceBundleName());
+        I18n.load(game.getResourceBundleName());
         return impl.add(game);
     }
     
+    @Override
     public void register(Game game) {
         add(game);
     }
