@@ -14,6 +14,7 @@
 package ca.keal.sastrane.gui;
 
 import ca.keal.sastrane.api.Game;
+import ca.keal.sastrane.api.GameRegistrar;
 import ca.keal.sastrane.api.event.ToNewGameScreenEvent;
 import ca.keal.sastrane.gui.audio.SoundEffects;
 import ca.keal.sastrane.main.Main;
@@ -38,13 +39,14 @@ public class MainMenuController implements Initializable {
     
     @FXML private FlowPane tiles;
     
+    private final GameRegistrar registrar;
     private final SoundEffects soundFX;
     private final GameTile.Factory gameTileFactory;
     private final GuiUtils guiUtils;
     
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        tiles.getChildren().addAll(Game.getGames().stream()
+        tiles.getChildren().addAll(registrar.stream()
                 .sorted((g0, g1) -> resources.getString(g0.getInfo().getI18nName())
                         .compareToIgnoreCase(resources.getString(g1.getInfo().getI18nName())))
                 .map(gameTileFactory::create)

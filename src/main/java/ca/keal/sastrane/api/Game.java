@@ -14,21 +14,15 @@
 package ca.keal.sastrane.api;
 
 import ca.keal.sastrane.util.I18n;
-import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Getter
 @ToString
 @EqualsAndHashCode
 public class Game {
-    
-    private static final List<Game> GAMES = new ArrayList<>();
     
     private final GameInfo info;
     private EventBus bus;
@@ -38,14 +32,6 @@ public class Game {
         I18n.load(info.getResourceBundleName());
         bus = new EventBus(info.getResourceBundleName());
         info.registerDefaults(bus);
-    }
-    
-    public static void registerGame(Game game) {
-        GAMES.add(game);
-    }
-    
-    public static List<Game> getGames() {
-        return ImmutableList.copyOf(GAMES);
     }
     
     /**

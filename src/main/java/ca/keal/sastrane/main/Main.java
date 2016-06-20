@@ -13,8 +13,10 @@
 
 package ca.keal.sastrane.main;
 
+import ca.keal.sastrane.api.APIModule;
 import ca.keal.sastrane.api.Game;
 import ca.keal.sastrane.api.GameInfo;
+import ca.keal.sastrane.api.GameRegistrar;
 import ca.keal.sastrane.chess.ChessModule;
 import ca.keal.sastrane.config.ConfigModule;
 import ca.keal.sastrane.config.SastraneConfig;
@@ -44,6 +46,7 @@ public class Main extends GuiceApplication {
     private static boolean stageSet = false;
     
     @Inject private Set<GameInfo> games;
+    @Inject private GameRegistrar registrar;
     @Inject private SastraneConfig cfg;
     @Inject private Music music;
     @Inject private SoundEffects soundFX;
@@ -77,7 +80,7 @@ public class Main extends GuiceApplication {
         I18n.load("ca.keal.sastrane.i18n.sastrane");
         
         // Register all the games
-        games.forEach(info -> Game.registerGame(new Game(info)));
+        games.forEach(info -> registrar.register(new Game(info)));
         
         guiUtils.setTitleToDefault();
         // Multiple icon sizes???
@@ -89,14 +92,15 @@ public class Main extends GuiceApplication {
     }
     
     @Override
-    public void init(List<Module> list) throws Exception {
-        list.add(new ConfigModule());
-        list.add(new GuiModule());
-        list.add(new AudioModule());
-        list.add(new ChessModule());
-        list.add(new ReversiModule());
-        list.add(new TicTacToeModule());
-        list.add(new XiangqiModule());
+    public void init(List<Module> modules) throws Exception {
+        modules.add(new APIModule());
+        modules.add(new ConfigModule());
+        modules.add(new GuiModule());
+        modules.add(new AudioModule());
+        modules.add(new ChessModule());
+        modules.add(new ReversiModule());
+        modules.add(new TicTacToeModule());
+        modules.add(new XiangqiModule());
     }
     
 }
