@@ -13,7 +13,6 @@
 
 package ca.keal.sastrane.chess;
 
-import ca.keal.sastrane.api.Game;
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.Round;
 import ca.keal.sastrane.api.Square;
@@ -31,9 +30,9 @@ class Rook extends LinePiece implements MoveCountingPiece, RecursiveMovingPiece 
     
     private int numMoves = 0;
     
-    Rook(Game chess) {
+    Rook(Round round) {
         super(UP | LEFT | DOWN | RIGHT);
-        chess.getBus().register(this);
+        round.getBus().register(this);
     }
     
     @Override

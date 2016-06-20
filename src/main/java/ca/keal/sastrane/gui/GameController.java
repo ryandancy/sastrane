@@ -117,7 +117,7 @@ public class GameController extends GoBacker implements Initializable {
     public void setRound(Round round) {
         this.round = round;
         this.round.getBoard().addListener(change -> updateBoardGrid());
-        this.round.getGame().getBus().register(this);
+        this.round.getBus().register(this);
         
         String titleText = I18n.localize(round.getGame().getInfo().getI18nName());
         guiUtils.setTitle(titleText);
@@ -268,7 +268,7 @@ public class GameController extends GoBacker implements Initializable {
         if (selection.size() > 0 && selectionBase != null) {
             if (selection.contains(square)) {
                 soundFX.play("click");
-                round.getGame().getBus().post(new UserMoveEvent(round, selectionMoves.stream()
+                round.getBus().post(new UserMoveEvent(round, selectionMoves.stream()
                         .filter(move -> move.getEndPos().equals(square))
                         .collect(Collectors.toList())
                         .get(0)));
@@ -294,7 +294,7 @@ public class GameController extends GoBacker implements Initializable {
             List<PlacingMove> placements = placingPiece.getPossiblePlacements(round, round.getCurrentTurn());
             if (placements.stream().map(PlacingMove::getPos).anyMatch(square::equals)) {
                 soundFX.play("click");
-                round.getGame().getBus().post(new UserMoveEvent(round, placements.stream()
+                round.getBus().post(new UserMoveEvent(round, placements.stream()
                         .filter(placement -> placement.getPos().equals(square))
                         .findAny().get()));
             }
@@ -372,7 +372,7 @@ public class GameController extends GoBacker implements Initializable {
         decisionPane.setVisible(false);
         decisionPane.setMouseTransparent(true);
         
-        round.getGame().getBus().post(new UserDecideEvent(round, option));
+        round.getBus().post(new UserDecideEvent(round, option));
     }
     
     @Nullable

@@ -92,9 +92,9 @@ public class NewGameController extends GoBacker {
                 }));
         Round round = new Round(game, playersToMovers);
         
-        round.getGame().getBus().post(new ToGameEvent.Pre(previousScene, scene, round, playersToMovers));
+        round.getBus().post(new ToGameEvent.Pre(previousScene, scene, round, playersToMovers));
         controller.setRound(round);
-        round.getGame().getBus().post(new ToGameEvent.Post(previousScene, scene, round, playersToMovers));
+        round.getBus().post(new ToGameEvent.Post(previousScene, scene, round, playersToMovers));
         
         Main.getStage().setScene(scene);
     }

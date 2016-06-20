@@ -13,8 +13,6 @@
 
 package ca.keal.sastrane.api;
 
-import ca.keal.sastrane.util.I18n;
-import com.google.common.eventbus.EventBus;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -25,21 +23,9 @@ import lombok.ToString;
 public class Game {
     
     private final GameInfo info;
-    private EventBus bus;
     
     public Game(GameInfo info) {
         this.info = info;
-        I18n.load(info.getResourceBundleName());
-        bus = new EventBus(info.getResourceBundleName());
-        info.registerDefaults(bus);
-    }
-    
-    /**
-     * Throws away the old bus and replaces it with a new one; has the effect of unregistering all subscribers.
-     */
-    public void refreshBus() {
-        bus = new EventBus(info.getResourceBundleName());
-        info.registerDefaults(bus);
     }
     
 }

@@ -14,7 +14,6 @@
 package ca.keal.sastrane.chess;
 
 import ca.keal.sastrane.api.Board;
-import ca.keal.sastrane.api.Game;
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.Round;
 import ca.keal.sastrane.api.Square;
@@ -38,8 +37,8 @@ class Pawn implements RecursiveMovingPiece {
     private boolean lastMoveDouble;
     private int numMoves = 0;
     
-    Pawn(Game chess) {
-        chess.getBus().register(this);
+    Pawn(Round round) {
+        round.getBus().register(this);
     }
     
     @Override

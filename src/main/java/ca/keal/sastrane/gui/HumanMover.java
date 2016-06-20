@@ -47,7 +47,7 @@ class HumanMover implements Mover {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                round.getGame().getBus().register(this);
+                round.getBus().register(this);
                 controller.setInputting(true);
             }
             
@@ -57,7 +57,7 @@ class HumanMover implements Mover {
                 if (e.getMover() == HumanMover.this) { // just to be safe
                     controller.setInputting(false);
                     move.set(e.getMove());
-                    round.getGame().getBus().unregister(this);
+                    round.getBus().unregister(this);
                     
                     // Wake up HumanMover
                     synchronized (lock) {
@@ -84,7 +84,7 @@ class HumanMover implements Mover {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                round.getGame().getBus().register(this);
+                round.getBus().register(this);
                 controller.displayDecision(options);
             }
             
@@ -93,7 +93,7 @@ class HumanMover implements Mover {
             public void onUserDecide(UserDecideEvent e) {
                 if (e.getMover() == HumanMover.this) { // again, just to be safe
                     decision.set(e.getDecision());
-                    round.getGame().getBus().unregister(this);
+                    round.getBus().unregister(this);
                     
                     // Wake up HumanMover
                     synchronized (lock) {

@@ -15,7 +15,6 @@ package ca.keal.sastrane.gui;
 
 import ca.keal.sastrane.api.Game;
 import ca.keal.sastrane.api.GameRegistrar;
-import ca.keal.sastrane.api.event.ToNewGameScreenEvent;
 import ca.keal.sastrane.gui.audio.SoundEffects;
 import ca.keal.sastrane.main.Main;
 import ca.keal.sastrane.util.Resource;
@@ -63,10 +62,7 @@ public class MainMenuController implements Initializable {
         Scene scene = guiUtils.getScene((Parent) loader.load(), previousScene);
         
         Game game = ((GameTile) e.getSource()).getGame();
-        
-        game.getBus().post(new ToNewGameScreenEvent.Pre(previousScene, scene, game));
         ((NewGameController) loader.getController()).setGame(game);
-        game.getBus().post(new ToNewGameScreenEvent.Post(previousScene, scene, game));
         
         Main.getStage().setScene(scene);
     }

@@ -23,6 +23,7 @@ import ca.keal.sastrane.api.piece.OwnedPiece;
 import ca.keal.sastrane.api.piece.PlacingPiece;
 import ca.keal.sastrane.util.Utils;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.eventbus.EventBus;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -43,6 +44,7 @@ public class Round {
     private final Game game;
     private final Map<Player, Mover> playersToMovers;
     private final Board board;
+    private EventBus bus;
     
     private int moveNum = 0;
     private boolean ended = false;
@@ -56,17 +58,19 @@ public class Round {
         }
         this.game = game;
         this.playersToMovers = ImmutableMap.copyOf(playersToMovers);
-        this.board = game.getInfo().getBoardFactory().game(game).build();
+        this.board = game.getInfo().getBoardFactory().round(this).build();
+        bus = new EventBus(game.getInfo().getI18nName());
+        game.getInfo().registerDefaults(bus);
     }
     
     public Round(Round round) {
         this(round.getGame(), ImmutableMap.copyOf(round.getPlayersToMovers()), new Board(round.getBoard()),
-                round.getMoveNum(), round.isEnded(), new ArrayList<>(round.getMoves()));
+                round.getBus(), round.getMoveNum(), round.isEnded(), new ArrayList<>(round.getMoves()));
     }
     
     public void nextTurn() {
         if (ended) throw new IllegalStateException("nextTurn() cannot be called on a Round that is already ended");
-        game.getBus().post(new TurnEvent.Pre(this));
+        bus.post(new TurnEvent.Pre(this));
         
         Player player = getCurrentTurn();
         Mover mover = playersToMovers.get(player);
@@ -74,13 +78,13 @@ public class Round {
         
         Board oldBoard = new Board(board);
         
-        game.getBus().post(new MoveEvent.Pre(this, move));
+        bus.post(new MoveEvent.Pre(this, move));
         move.move(board);
-        game.getBus().post(new MoveEvent.Post(this, move));
+        bus.post(new MoveEvent.Post(this, move));
         
         moves.add(new StateChange(oldBoard, move, new Round(this)));
         
-        game.getBus().post(new TurnEvent.Post(this));
+        bus.post(new TurnEvent.Post(this));
         
         Result result = game.getInfo().getArbitrator().arbitrate(this);
         if (result != Result.NOT_OVER) {
@@ -93,19 +97,18 @@ public class Round {
                 notation = null;
             }
             
-            game.getBus().post(new WinEvent(this, result, notation));
+            bus.post(new WinEvent(this, result, notation));
         }
         
         moveNum++;
     }
     
     public void start() {
-        game.getBus().post(new RoundEvent.Pre(this));
+        bus.post(new RoundEvent.Pre(this));
         while (!ended) {
             nextTurn();
         }
-        game.getBus().post(new RoundEvent.Post(this));
-        game.refreshBus();
+        bus.post(new RoundEvent.Post(this));
     }
     
     public Player getCurrentTurn() {

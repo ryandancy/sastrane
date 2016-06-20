@@ -14,7 +14,6 @@
 package ca.keal.sastrane.chess;
 
 import ca.keal.sastrane.api.Board;
-import ca.keal.sastrane.api.Game;
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.Round;
 import ca.keal.sastrane.api.Square;
@@ -35,8 +34,8 @@ class King implements RecursiveMovingPiece, MoveCountingPiece {
     
     private int numMoves = 0;
     
-    King(Game chess) {
-        chess.getBus().register(this);
+    King(Round round) {
+        round.getBus().register(this);
     }
     
     @Override

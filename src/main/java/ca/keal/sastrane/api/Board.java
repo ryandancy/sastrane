@@ -55,7 +55,7 @@ public class Board implements Iterable<Square> {
      * ' ' = null piece, '_' = not on board, is error if either used in pieces.
      */
     @Builder(builderClassName = "Factory", builderMethodName = "factory")
-    public Board(Game game, @Singular List<String> rows, @Singular Map<Character, OwnedPieceFactory> pieces) {
+    public Board(Round round, @Singular List<String> rows, @Singular Map<Character, OwnedPieceFactory> pieces) {
         if (pieces.containsKey(' ') || pieces.containsKey('_')) {
             throw new IllegalArgumentException("Space and underscore are reserved in pieces; space is null piece "
                     + "and underscore is not-on-board.");
@@ -80,7 +80,7 @@ public class Board implements Iterable<Square> {
                     charsUsed.add(piece);
                 }
                 squaresToPieces.put(new Square(x, y), piece == ' ' ? null
-                        : new OwnedPiece(pieces.get(piece).getPiece(game), pieces.get(piece).getPlayer()));
+                        : new OwnedPiece(pieces.get(piece).getPiece(round), pieces.get(piece).getPlayer()));
             }
         }
         

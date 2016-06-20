@@ -25,7 +25,7 @@ import java.util.function.BinaryOperator;
 import java.util.function.UnaryOperator;
 
 @RequiredArgsConstructor
-public enum XiangqiPlayer implements Player {
+enum XiangqiPlayer implements Player {
     
     RED("red", "xiangqi.player.red", new Resource("ca.keal.sastrane.xiangqi.piece", "general_red.png"),
             Player::flipY, Player.getFlipAroundCentre(Xiangqi.MAXX, Xiangqi.MAXY), ImmutableList.of(

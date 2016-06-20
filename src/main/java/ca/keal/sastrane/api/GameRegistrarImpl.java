@@ -13,6 +13,7 @@
 
 package ca.keal.sastrane.api;
 
+import ca.keal.sastrane.util.I18n;
 import com.google.inject.Singleton;
 import lombok.experimental.Delegate;
 
@@ -24,9 +25,18 @@ import java.util.Set;
 class GameRegistrarImpl implements GameRegistrar {
     
     private interface GameCollection extends Collection<Game> {} // for the generics
+    private interface Exceptions {
+        boolean add(Game game);
+    }
     
-    @Delegate(types = GameCollection.class)
+    @Delegate(types = GameCollection.class, excludes = Exceptions.class)
     private final Set<Game> impl = new HashSet<>();
+    
+    @Override
+    public boolean add(Game game) {
+        I18n.load(game.getInfo().getResourceBundleName());
+        return impl.add(game);
+    }
     
     public void register(Game game) {
         add(game);
