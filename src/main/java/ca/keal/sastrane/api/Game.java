@@ -37,7 +37,7 @@ public class Game {
         this.info = info;
         I18n.load(info.getResourceBundleName());
         bus = new EventBus(info.getResourceBundleName());
-        registerDefaults(bus);
+        info.registerDefaults(bus);
     }
     
     public static void registerGame(Game game) {
@@ -53,12 +53,7 @@ public class Game {
      */
     public void refreshBus() {
         bus = new EventBus(info.getResourceBundleName());
-        registerDefaults(bus);
+        info.registerDefaults(bus);
     }
-    
-    /**
-     * In this method, register everything with {@code bus} that should always be registered.
-     */
-    protected void registerDefaults(@SuppressWarnings("UnusedParameters") EventBus bus) {}
     
 }
