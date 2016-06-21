@@ -26,34 +26,22 @@ import java.util.function.Function;
 public class TicTacToeModule extends AbstractGameModule {
     
     public TicTacToeModule() {
-        super(TicTacToeGame.class);
+        super(TicTacToeGame.class, TicTacToe.class);
     }
     
     @Override
     public void configure() {
         super.configure();
         
-        bind(Game.Name.class)
-                .annotatedWith(TicTacToe.class)
-                .toInstance(new Game.Name("tictactoe"));
-        bind(Game.Package.class)
-                .annotatedWith(TicTacToe.class)
-                .toInstance(new Game.Package("ca.keal.sastrane.tictactoe"));
-        bind(Player[].class)
-                .annotatedWith(TicTacToe.class)
-                .toInstance(TicTacToePlayer.values());
-        bind(new TypeLiteral<Function<Double, AI>>() {})
-                .annotatedWith(TicTacToe.class)
-                .toInstance(TicTacToeAI::new);
-        bind(Board.Factory.class)
-                .annotatedWith(TicTacToe.class)
-                .toInstance(Board.factory()
-                        .row("   ")
-                        .row("   ")
-                        .row("   "));
-        bind(Arbitrator.class)
-                .annotatedWith(TicTacToe.class)
-                .to(TicTacToeArbitrator.class);
+        bindToInstance(Game.Name.class, new Game.Name("tictactoe"));
+        bindToInstance(Game.Package.class, new Game.Package("ca.keal.sastrane.tictactoe"));
+        bindToInstance(Player[].class, TicTacToePlayer.values());
+        bindToInstance(new TypeLiteral<Function<Double, AI>>() {}, TicTacToeAI::new);
+        bindToInstance(Board.Factory.class, Board.factory()
+                .row("   ")
+                .row("   ")
+                .row("   "));
+        bindTo(Arbitrator.class, TicTacToeArbitrator.class);
     }
     
 }

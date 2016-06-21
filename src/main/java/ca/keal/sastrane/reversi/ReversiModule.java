@@ -28,44 +28,30 @@ import java.util.function.Function;
 public class ReversiModule extends AbstractGameModule {
     
     public ReversiModule() {
-        super(ReversiGame.class);
+        super(ReversiGame.class, Reversi.class);
     }
     
     @Override
     public void configure() {
         super.configure();
         
-        bind(Game.Name.class)
-                .annotatedWith(Reversi.class)
-                .toInstance(new Game.Name("reversi"));
-        bind(Game.Package.class)
-                .annotatedWith(Reversi.class)
-                .toInstance(new Game.Package("ca.keal.sastrane.reversi"));
-        bind(Player[].class)
-                .annotatedWith(Reversi.class)
-                .toInstance(ReversiPlayer.values());
-        bind(new TypeLiteral<Function<Double, AI>>() {})
-                .annotatedWith(Reversi.class)
-                .toInstance(ReversiAI::new);
-        bind(Board.Factory.class)
-                .annotatedWith(Reversi.class)
-                .toInstance(Board.factory()
-                        .row("        ")
-                        .row("        ")
-                        .row("        ")
-                        .row("   WB   ")
-                        .row("   BW   ")
-                        .row("        ")
-                        .row("        ")
-                        .row("        ")
-                        .piece('B', new OwnedPieceFactory(Disk::new, ReversiPlayer.BLACK))
-                        .piece('W', new OwnedPieceFactory(Disk::new, ReversiPlayer.WHITE)));
-        bind(Arbitrator.class)
-                .annotatedWith(Reversi.class)
-                .to(ReversiArbitrator.class);
-        bind(Notater.class)
-                .annotatedWith(Reversi.class)
-                .to(GridNotater.class);
+        bindToInstance(Game.Name.class, new Game.Name("reversi"));
+        bindToInstance(Game.Package.class, new Game.Package("ca.keal.sastrane.reversi"));
+        bindToInstance(Player[].class, ReversiPlayer.values());
+        bindToInstance(new TypeLiteral<Function<Double, AI>>() {}, ReversiAI::new);
+        bindToInstance(Board.Factory.class, Board.factory()
+                .row("        ")
+                .row("        ")
+                .row("        ")
+                .row("   WB   ")
+                .row("   BW   ")
+                .row("        ")
+                .row("        ")
+                .row("        ")
+                .piece('B', new OwnedPieceFactory(Disk::new, ReversiPlayer.BLACK))
+                .piece('W', new OwnedPieceFactory(Disk::new, ReversiPlayer.WHITE)));
+        bindTo(Arbitrator.class, ReversiArbitrator.class);
+        bindTo(Notater.class, GridNotater.class);
     }
     
 }

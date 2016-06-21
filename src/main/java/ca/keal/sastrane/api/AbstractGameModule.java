@@ -14,19 +14,39 @@
 package ca.keal.sastrane.api;
 
 import com.google.inject.AbstractModule;
+import com.google.inject.TypeLiteral;
 import com.google.inject.multibindings.Multibinder;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+
+import java.lang.annotation.Annotation;
 
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class AbstractGameModule extends AbstractModule {
     
     private final Class<? extends Game> infoCls;
+    private final Class<? extends Annotation> gameAnnoCls;
     
     @Override
     public void configure() {
         Multibinder<Game> gameBinder = Multibinder.newSetBinder(binder(), Game.class);
         gameBinder.addBinding().to(infoCls);
+    }
+    
+    protected <T> void bindToInstance(Class<T> cls, T t) {
+        bind(cls).annotatedWith(gameAnnoCls).toInstance(t);
+    }
+    
+    protected <T> void bindToInstance(TypeLiteral<T> cls, T t) {
+        bind(cls).annotatedWith(gameAnnoCls).toInstance(t);
+    }
+    
+    protected <T> void bindTo(Class<T> cls, Class<? extends T> impl) {
+        bind(cls).annotatedWith(gameAnnoCls).to(impl);
+    }
+    
+    protected <T> void bindTo(TypeLiteral<T> cls, Class<? extends T> impl) {
+        bind(cls).annotatedWith(gameAnnoCls).to(impl);
     }
     
 }

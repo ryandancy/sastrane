@@ -28,54 +28,40 @@ import java.util.function.Function;
 public class ChessModule extends AbstractGameModule {
     
     public ChessModule() {
-        super(ChessGame.class);
+        super(ChessGame.class, Chess.class);
     }
     
     @Override
     public void configure() {
         super.configure();
         
-        bind(Game.Name.class)
-                .annotatedWith(Chess.class)
-                .toInstance(new Game.Name("chess"));
-        bind(Game.Package.class)
-                .annotatedWith(Chess.class)
-                .toInstance(new Game.Package("ca.keal.sastrane.chess"));
-        bind(Player[].class)
-                .annotatedWith(Chess.class)
-                .toInstance(ChessPlayer.values());
-        bind(new TypeLiteral<Function<Double, AI>>() {})
-                .annotatedWith(Chess.class)
-                .toInstance(ChessAI::new);
-        bind(Board.Factory.class)
-                .annotatedWith(Chess.class)
-                .toInstance(Board.factory()
-                        .row("RNBQKBNR")
-                        .row("PPPPPPPP")
-                        .row("        ")
-                        .row("        ")
-                        .row("        ")
-                        .row("        ")
-                        .row("pppppppp")
-                        .row("rnbqkbnr")
-                        .piece('R', new OwnedPieceFactory(Rook::new, ChessPlayer.BLACK))
-                        .piece('N', new OwnedPieceFactory(Knight::new, ChessPlayer.BLACK))
-                        .piece('B', new OwnedPieceFactory(Bishop::new, ChessPlayer.BLACK))
-                        .piece('Q', new OwnedPieceFactory(Queen::new, ChessPlayer.BLACK))
-                        .piece('K', new OwnedPieceFactory(King::new, ChessPlayer.BLACK))
-                        .piece('P', new OwnedPieceFactory(Pawn::new, ChessPlayer.BLACK))
-                        .piece('r', new OwnedPieceFactory(Rook::new, ChessPlayer.WHITE))
-                        .piece('n', new OwnedPieceFactory(Knight::new, ChessPlayer.WHITE))
-                        .piece('b', new OwnedPieceFactory(Bishop::new, ChessPlayer.WHITE))
-                        .piece('q', new OwnedPieceFactory(Queen::new, ChessPlayer.WHITE))
-                        .piece('k', new OwnedPieceFactory(King::new, ChessPlayer.WHITE))
-                        .piece('p', new OwnedPieceFactory(Pawn::new, ChessPlayer.WHITE)));
-        bind(Arbitrator.class)
-                .annotatedWith(Chess.class)
-                .to(ChessArbitrator.class);
-        bind(Notater.class)
-                .annotatedWith(Chess.class)
-                .to(LongAlgebraicNotater.class);
+        bindToInstance(Game.Name.class, new Game.Name("chess"));
+        bindToInstance(Game.Package.class, new Game.Package("ca.keal.sastrane.chess"));
+        bindToInstance(Player[].class, ChessPlayer.values());
+        bindToInstance(new TypeLiteral<Function<Double, AI>>() {}, ChessAI::new);
+        bindToInstance(Board.Factory.class, Board.factory()
+                .row("RNBQKBNR")
+                .row("PPPPPPPP")
+                .row("        ")
+                .row("        ")
+                .row("        ")
+                .row("        ")
+                .row("pppppppp")
+                .row("rnbqkbnr")
+                .piece('R', new OwnedPieceFactory(Rook::new, ChessPlayer.BLACK))
+                .piece('N', new OwnedPieceFactory(Knight::new, ChessPlayer.BLACK))
+                .piece('B', new OwnedPieceFactory(Bishop::new, ChessPlayer.BLACK))
+                .piece('Q', new OwnedPieceFactory(Queen::new, ChessPlayer.BLACK))
+                .piece('K', new OwnedPieceFactory(King::new, ChessPlayer.BLACK))
+                .piece('P', new OwnedPieceFactory(Pawn::new, ChessPlayer.BLACK))
+                .piece('r', new OwnedPieceFactory(Rook::new, ChessPlayer.WHITE))
+                .piece('n', new OwnedPieceFactory(Knight::new, ChessPlayer.WHITE))
+                .piece('b', new OwnedPieceFactory(Bishop::new, ChessPlayer.WHITE))
+                .piece('q', new OwnedPieceFactory(Queen::new, ChessPlayer.WHITE))
+                .piece('k', new OwnedPieceFactory(King::new, ChessPlayer.WHITE))
+                .piece('p', new OwnedPieceFactory(Pawn::new, ChessPlayer.WHITE)));
+        bindTo(Arbitrator.class, ChessArbitrator.class);
+        bindTo(Notater.class, LongAlgebraicNotater.class);
     }
     
 }

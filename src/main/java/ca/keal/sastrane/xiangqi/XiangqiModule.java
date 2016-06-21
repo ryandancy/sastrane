@@ -28,58 +28,44 @@ import java.util.function.Function;
 public class XiangqiModule extends AbstractGameModule {
     
     public XiangqiModule() {
-        super(XiangqiGame.class);
+        super(XiangqiGame.class, Xiangqi.class);
     }
     
     @Override
     public void configure() {
         super.configure();
         
-        bind(Game.Name.class)
-                .annotatedWith(Xiangqi.class)
-                .toInstance(new Game.Name("xiangqi"));
-        bind(Game.Package.class)
-                .annotatedWith(Xiangqi.class)
-                .toInstance(new Game.Package("ca.keal.sastrane.xiangqi"));
-        bind(Player[].class)
-                .annotatedWith(Xiangqi.class)
-                .toInstance(XiangqiPlayer.values());
-        bind(new TypeLiteral<Function<Double, AI>>() {})
-                .annotatedWith(Xiangqi.class)
-                .toInstance(XiangqiAI::new);
-        bind(Board.Factory.class)
-                .annotatedWith(Xiangqi.class)
-                .toInstance(Board.factory()
-                        .row("RHEAGAEHR")
-                        .row("         ")
-                        .row(" C     C ")
-                        .row("S S S S S")
-                        .row("         ")
-                        .row("         ")
-                        .row("s s s s s")
-                        .row(" c     c ")
-                        .row("         ")
-                        .row("rheagaehr")
-                        .piece('R', new OwnedPieceFactory(Chariot::new, XiangqiPlayer.BLACK))
-                        .piece('H', new OwnedPieceFactory(Horse::new, XiangqiPlayer.BLACK))
-                        .piece('E', new OwnedPieceFactory(Elephant::new, XiangqiPlayer.BLACK))
-                        .piece('A', new OwnedPieceFactory(Advisor::new, XiangqiPlayer.BLACK))
-                        .piece('G', new OwnedPieceFactory(General::new, XiangqiPlayer.BLACK))
-                        .piece('C', new OwnedPieceFactory(Cannon::new, XiangqiPlayer.BLACK))
-                        .piece('S', new OwnedPieceFactory(Soldier::new, XiangqiPlayer.BLACK))
-                        .piece('r', new OwnedPieceFactory(Chariot::new, XiangqiPlayer.RED))
-                        .piece('h', new OwnedPieceFactory(Horse::new, XiangqiPlayer.RED))
-                        .piece('e', new OwnedPieceFactory(Elephant::new, XiangqiPlayer.RED))
-                        .piece('a', new OwnedPieceFactory(Advisor::new, XiangqiPlayer.RED))
-                        .piece('g', new OwnedPieceFactory(General::new, XiangqiPlayer.RED))
-                        .piece('c', new OwnedPieceFactory(Cannon::new, XiangqiPlayer.RED))
-                        .piece('s', new OwnedPieceFactory(Soldier::new, XiangqiPlayer.RED)));
-        bind(Arbitrator.class)
-                .annotatedWith(Xiangqi.class)
-                .to(XiangqiArbitrator.class);
-        bind(Notater.class)
-                .annotatedWith(Xiangqi.class)
-                .to(WXFNotater.class);
+        bindToInstance(Game.Name.class, new Game.Name("xiangqi"));
+        bindToInstance(Game.Package.class, new Game.Package("ca.keal.sastrane.xiangqi"));
+        bindToInstance(Player[].class, XiangqiPlayer.values());
+        bindToInstance(new TypeLiteral<Function<Double, AI>>() {}, XiangqiAI::new);
+        bindToInstance(Board.Factory.class, Board.factory()
+                .row("RHEAGAEHR")
+                .row("         ")
+                .row(" C     C ")
+                .row("S S S S S")
+                .row("         ")
+                .row("         ")
+                .row("s s s s s")
+                .row(" c     c ")
+                .row("         ")
+                .row("rheagaehr")
+                .piece('R', new OwnedPieceFactory(Chariot::new, XiangqiPlayer.BLACK))
+                .piece('H', new OwnedPieceFactory(Horse::new, XiangqiPlayer.BLACK))
+                .piece('E', new OwnedPieceFactory(Elephant::new, XiangqiPlayer.BLACK))
+                .piece('A', new OwnedPieceFactory(Advisor::new, XiangqiPlayer.BLACK))
+                .piece('G', new OwnedPieceFactory(General::new, XiangqiPlayer.BLACK))
+                .piece('C', new OwnedPieceFactory(Cannon::new, XiangqiPlayer.BLACK))
+                .piece('S', new OwnedPieceFactory(Soldier::new, XiangqiPlayer.BLACK))
+                .piece('r', new OwnedPieceFactory(Chariot::new, XiangqiPlayer.RED))
+                .piece('h', new OwnedPieceFactory(Horse::new, XiangqiPlayer.RED))
+                .piece('e', new OwnedPieceFactory(Elephant::new, XiangqiPlayer.RED))
+                .piece('a', new OwnedPieceFactory(Advisor::new, XiangqiPlayer.RED))
+                .piece('g', new OwnedPieceFactory(General::new, XiangqiPlayer.RED))
+                .piece('c', new OwnedPieceFactory(Cannon::new, XiangqiPlayer.RED))
+                .piece('s', new OwnedPieceFactory(Soldier::new, XiangqiPlayer.RED)));
+        bindTo(Arbitrator.class, XiangqiArbitrator.class);
+        bindTo(Notater.class, WXFNotater.class);
         bind(PalaceLines.class);
     }
     
