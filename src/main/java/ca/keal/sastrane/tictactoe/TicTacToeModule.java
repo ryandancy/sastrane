@@ -17,9 +17,9 @@ import ca.keal.sastrane.api.AI;
 import ca.keal.sastrane.api.AbstractGameModule;
 import ca.keal.sastrane.api.Arbitrator;
 import ca.keal.sastrane.api.Board;
+import ca.keal.sastrane.api.Game;
 import ca.keal.sastrane.api.Player;
 import com.google.inject.Key;
-import com.google.inject.name.Names;
 
 import java.util.function.Function;
 
@@ -33,12 +33,8 @@ public class TicTacToeModule extends AbstractGameModule {
     public void configure() {
         super.configure();
         
-        bindConstant()
-                .annotatedWith(Names.named("name"))
-                .to("tictactoe");
-        bindConstant()
-                .annotatedWith(Names.named("package"))
-                .to("ca.keal.sastrane.tictactoe");
+        bind(Game.Name.class).toInstance(new Game.Name("tictactoe"));
+        bind(Game.Package.class).toInstance(new Game.Package("ca.keal.sastrane.tictactoe"));
         bind(Player[].class).toInstance(TicTacToePlayer.values());
         bind(new Key<Function<Double, AI>>() {}).toInstance(TicTacToeAI::new);
         bind(Board.Factory.class).toInstance(Board.factory()

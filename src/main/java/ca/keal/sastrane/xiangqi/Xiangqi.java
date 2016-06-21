@@ -22,7 +22,6 @@ import ca.keal.sastrane.api.Notater;
 import ca.keal.sastrane.api.Player;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.Inject;
-import com.google.inject.name.Named;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -38,8 +37,8 @@ class Xiangqi implements Game, Notatable {
     
     @Getter(AccessLevel.NONE) private final PalaceLines palaceLines;
     
-    private final String name;
-    private final String packageName;
+    private final Game.Name name;
+    private final Game.Package packageName;
     private final Player[] players;
     private final Function<Double, AI> aI;
     private final Board.Factory boardFactory;
@@ -48,9 +47,8 @@ class Xiangqi implements Game, Notatable {
     @Getter(AccessLevel.NONE) private final Void __; // so as not to cause constructor conflicts with Lombok
     
     @Inject
-    public Xiangqi(PalaceLines palaceLines, @Named("name") String name,
-                   @Named("package") String packageName, Player[] players, Function<Double, AI> ai,
-                   Board.Factory boardFactory, Arbitrator arbitrator, Notater notater) {
+    public Xiangqi(PalaceLines palaceLines, Game.Name name, Game.Package packageName, Player[] players,
+                   Function<Double, AI> ai, Board.Factory boardFactory, Arbitrator arbitrator, Notater notater) {
         this(palaceLines, name, packageName, players, ai, boardFactory, arbitrator, notater, null);
     }
     

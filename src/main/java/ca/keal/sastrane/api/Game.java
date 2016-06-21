@@ -16,14 +16,18 @@ package ca.keal.sastrane.api;
 import ca.keal.sastrane.api.piece.PlacingPiece;
 import ca.keal.sastrane.util.Resource;
 import com.google.common.eventbus.EventBus;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 import java.util.function.Function;
 
 public interface Game {
     
-    String getName();
+    Game.Name getName();
     
-    String getPackageName();
+    Game.Package getPackageName();
     
     default String getResourceBundleName() {
         return getPackageName() + ".i18n." + getName();
@@ -34,11 +38,11 @@ public interface Game {
     }
     
     default Resource getIcon() {
-        return new Resource(getPackageName(), getName() + ".png");
+        return new Resource(getPackageName().getPkg(), getName() + ".png");
     }
     
     default Resource getCss() {
-        return new Resource(getPackageName(), getName() + ".css");
+        return new Resource(getPackageName().getPkg(), getName() + ".css");
     }
     
     Player[] getPlayers();
@@ -61,5 +65,35 @@ public interface Game {
     
     // DI here???
     Arbitrator getArbitrator();
+    
+    /** Simple wrapper of String for game names */
+    @Getter
+    @AllArgsConstructor
+    @EqualsAndHashCode
+    class Name {
+        
+        private final String name;
+    
+        @Override
+        public String toString() {
+            return name;
+        }
+        
+    }
+    
+    /** Simple wrapper of String for game packages */
+    @Getter
+    @RequiredArgsConstructor
+    @EqualsAndHashCode
+    class Package {
+        
+        private final String pkg;
+    
+        @Override
+        public String toString() {
+            return pkg;
+        }
+        
+    }
     
 }

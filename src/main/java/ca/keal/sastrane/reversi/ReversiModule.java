@@ -17,11 +17,11 @@ import ca.keal.sastrane.api.AI;
 import ca.keal.sastrane.api.AbstractGameModule;
 import ca.keal.sastrane.api.Arbitrator;
 import ca.keal.sastrane.api.Board;
+import ca.keal.sastrane.api.Game;
 import ca.keal.sastrane.api.Notater;
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.piece.OwnedPieceFactory;
 import com.google.inject.Key;
-import com.google.inject.name.Names;
 
 import java.util.function.Function;
 
@@ -35,12 +35,8 @@ public class ReversiModule extends AbstractGameModule {
     public void configure() {
         super.configure();
         
-        bindConstant()
-                .annotatedWith(Names.named("name"))
-                .to("reversi");
-        bindConstant()
-                .annotatedWith(Names.named("package"))
-                .to("ca.keal.sastrane.reversi");
+        bind(Game.Name.class).toInstance(new Game.Name("reversi"));
+        bind(Game.Package.class).toInstance(new Game.Package("ca.keal.sastrane.reversi"));
         bind(Player[].class).toInstance(ReversiPlayer.values());
         bind(new Key<Function<Double, AI>>() {}).toInstance(ReversiAI::new);
         bind(Board.Factory.class).toInstance(Board.factory()

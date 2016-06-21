@@ -58,7 +58,7 @@ public class Round {
         }
         this.game = game;
         this.playersToMovers = ImmutableMap.copyOf(playersToMovers);
-        bus = new EventBus(game.getName());
+        bus = new EventBus(game.getName().getName());
         game.registerDefaults(bus);
         this.board = game.getBoardFactory().bus(bus).build();
     }

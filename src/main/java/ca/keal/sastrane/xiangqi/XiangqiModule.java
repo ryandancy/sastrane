@@ -17,11 +17,11 @@ import ca.keal.sastrane.api.AI;
 import ca.keal.sastrane.api.AbstractGameModule;
 import ca.keal.sastrane.api.Arbitrator;
 import ca.keal.sastrane.api.Board;
+import ca.keal.sastrane.api.Game;
 import ca.keal.sastrane.api.Notater;
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.piece.OwnedPieceFactory;
 import com.google.inject.Key;
-import com.google.inject.name.Names;
 
 import java.util.function.Function;
 
@@ -35,12 +35,8 @@ public class XiangqiModule extends AbstractGameModule {
     public void configure() {
         super.configure();
         
-        bindConstant()
-                .annotatedWith(Names.named("name"))
-                .to("xiangqi");
-        bindConstant()
-                .annotatedWith(Names.named("package"))
-                .to("ca.keal.sastrane.xiangqi");
+        bind(Game.Name.class).toInstance(new Game.Name("xiangqi"));
+        bind(Game.Package.class).toInstance(new Game.Package("ca.keal.sastrane.xiangqi"));
         bind(Player[].class).toInstance(XiangqiPlayer.values());
         bind(new Key<Function<Double, AI>>() {}).toInstance(XiangqiAI::new);
         bind(Board.Factory.class).toInstance(Board.factory()
