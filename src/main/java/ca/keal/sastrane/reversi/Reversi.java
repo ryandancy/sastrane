@@ -20,7 +20,6 @@ import ca.keal.sastrane.api.Game;
 import ca.keal.sastrane.api.Notatable;
 import ca.keal.sastrane.api.Notater;
 import ca.keal.sastrane.api.Player;
-import ca.keal.sastrane.util.Resource;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import lombok.AccessLevel;
@@ -34,9 +33,7 @@ import java.util.function.Function;
 class Reversi implements Game, Notatable {
     
     private final String name;
-    private final String resourceBundleName;
-    private final Resource icon;
-    private final Resource css;
+    private final String packageName;
     private final Player[] players;
     private final Function<Double, AI> aI;
     private final Board.Factory boardFactory;
@@ -45,10 +42,9 @@ class Reversi implements Game, Notatable {
     @Getter(AccessLevel.NONE) private final Void __; // so as not to cause constructor conflicts with Lombok
     
     @Inject
-    public Reversi(@Named("name") String name, @Named("resource-bundle-name") String resourceBundleName,
-                   @Named("icon") Resource icon, @Named("css") Resource css, Player[] players, Function<Double, AI> ai,
-                   Board.Factory boardFactory, Arbitrator arbitrator, Notater notater) {
-        this(name, resourceBundleName, icon, css, players, ai, boardFactory, arbitrator, notater, null);
+    public Reversi(@Named("name") String name, @Named("package") String packageName, Player[] players,
+                   Function<Double, AI> ai, Board.Factory boardFactory, Arbitrator arbitrator, Notater notater) {
+        this(name, packageName, players, ai, boardFactory, arbitrator, notater, null);
     }
     
 }

@@ -21,17 +21,25 @@ import java.util.function.Function;
 
 public interface Game {
     
-    String getResourceBundleName();
-    
     String getName();
+    
+    String getPackageName();
+    
+    default String getResourceBundleName() {
+        return getPackageName() + ".i18n." + getName();
+    }
     
     default String getI18nName() {
         return getName() + ".name";
     }
     
-    Resource getIcon();
+    default Resource getIcon() {
+        return new Resource(getPackageName(), getName() + ".png");
+    }
     
-    Resource getCss();
+    default Resource getCss() {
+        return new Resource(getPackageName(), getName() + ".css");
+    }
     
     Player[] getPlayers();
     

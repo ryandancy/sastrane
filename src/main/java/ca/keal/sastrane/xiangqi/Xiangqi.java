@@ -20,7 +20,6 @@ import ca.keal.sastrane.api.Game;
 import ca.keal.sastrane.api.Notatable;
 import ca.keal.sastrane.api.Notater;
 import ca.keal.sastrane.api.Player;
-import ca.keal.sastrane.util.Resource;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
@@ -40,9 +39,7 @@ class Xiangqi implements Game, Notatable {
     @Getter(AccessLevel.NONE) private final PalaceLines palaceLines;
     
     private final String name;
-    private final String resourceBundleName;
-    private final Resource icon;
-    private final Resource css;
+    private final String packageName;
     private final Player[] players;
     private final Function<Double, AI> aI;
     private final Board.Factory boardFactory;
@@ -52,10 +49,9 @@ class Xiangqi implements Game, Notatable {
     
     @Inject
     public Xiangqi(PalaceLines palaceLines, @Named("name") String name,
-                   @Named("resource-bundle-name") String resourceBundleName, @Named("icon") Resource icon,
-                   @Named("css") Resource css, Player[] players, Function<Double, AI> ai, Board.Factory boardFactory,
-                   Arbitrator arbitrator, Notater notater) {
-        this(palaceLines, name, resourceBundleName, icon, css, players, ai, boardFactory, arbitrator, notater, null);
+                   @Named("package") String packageName, Player[] players, Function<Double, AI> ai,
+                   Board.Factory boardFactory, Arbitrator arbitrator, Notater notater) {
+        this(palaceLines, name, packageName, players, ai, boardFactory, arbitrator, notater, null);
     }
     
     @Override

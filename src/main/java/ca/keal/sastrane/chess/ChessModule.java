@@ -20,7 +20,6 @@ import ca.keal.sastrane.api.Board;
 import ca.keal.sastrane.api.Notater;
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.piece.OwnedPieceFactory;
-import ca.keal.sastrane.util.Resource;
 import com.google.inject.Key;
 import com.google.inject.name.Names;
 
@@ -40,14 +39,8 @@ public class ChessModule extends AbstractGameModule {
                 .annotatedWith(Names.named("name"))
                 .to("chess");
         bindConstant()
-                .annotatedWith(Names.named("resource-bundle-name"))
-                .to("ca.keal.sastrane.chess.i18n.chess");
-        bind(Resource.class)
-                .annotatedWith(Names.named("icon"))
-                .toInstance(new Resource("ca.keal.sastrane.chess.icon", "chess.png"));
-        bind(Resource.class)
-                .annotatedWith(Names.named("css"))
-                .toInstance(new Resource("ca.keal.sastrane.chess", "chess.css"));
+                .annotatedWith(Names.named("package"))
+                .to("ca.keal.sastrane.chess");
         bind(Player[].class).toInstance(ChessPlayer.values());
         bind(new Key<Function<Double, AI>>() {}).toInstance(ChessAI::new);
         bind(Board.Factory.class).toInstance(Board.factory()

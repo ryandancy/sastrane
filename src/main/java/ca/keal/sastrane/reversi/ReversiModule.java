@@ -20,7 +20,6 @@ import ca.keal.sastrane.api.Board;
 import ca.keal.sastrane.api.Notater;
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.piece.OwnedPieceFactory;
-import ca.keal.sastrane.util.Resource;
 import com.google.inject.Key;
 import com.google.inject.name.Names;
 
@@ -35,19 +34,13 @@ public class ReversiModule extends AbstractGameModule {
     @Override
     public void configure() {
         super.configure();
-    
+        
         bindConstant()
                 .annotatedWith(Names.named("name"))
                 .to("reversi");
         bindConstant()
-                .annotatedWith(Names.named("resource-bundle-name"))
-                .to("ca.keal.sastrane.reversi.i18n.reversi");
-        bind(Resource.class)
-                .annotatedWith(Names.named("icon"))
-                .toInstance(new Resource("ca.keal.sastrane.reversi", "reversi.png"));
-        bind(Resource.class)
-                .annotatedWith(Names.named("css"))
-                .toInstance(new Resource("ca.keal.sastrane.reversi", "reversi.css"));
+                .annotatedWith(Names.named("package"))
+                .to("ca.keal.sastrane.reversi");
         bind(Player[].class).toInstance(ReversiPlayer.values());
         bind(new Key<Function<Double, AI>>() {}).toInstance(ReversiAI::new);
         bind(Board.Factory.class).toInstance(Board.factory()

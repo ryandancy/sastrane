@@ -20,7 +20,6 @@ import ca.keal.sastrane.api.Board;
 import ca.keal.sastrane.api.Notater;
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.piece.OwnedPieceFactory;
-import ca.keal.sastrane.util.Resource;
 import com.google.inject.Key;
 import com.google.inject.name.Names;
 
@@ -40,14 +39,8 @@ public class XiangqiModule extends AbstractGameModule {
                 .annotatedWith(Names.named("name"))
                 .to("xiangqi");
         bindConstant()
-                .annotatedWith(Names.named("resource-bundle-name"))
-                .to("ca.keal.sastrane.xiangqi.i18n.xiangqi");
-        bind(Resource.class)
-                .annotatedWith(Names.named("icon"))
-                .toInstance(new Resource("ca.keal.sastrane.xiangqi", "xiangqi.png"));
-        bind(Resource.class)
-                .annotatedWith(Names.named("css"))
-                .toInstance(new Resource("ca.keal.sastrane.xiangqi", "xiangqi.css"));
+                .annotatedWith(Names.named("package"))
+                .to("ca.keal.sastrane.xiangqi");
         bind(Player[].class).toInstance(XiangqiPlayer.values());
         bind(new Key<Function<Double, AI>>() {}).toInstance(XiangqiAI::new);
         bind(Board.Factory.class).toInstance(Board.factory()
