@@ -20,91 +20,47 @@ import ca.keal.sastrane.api.Game;
 import ca.keal.sastrane.api.Notatable;
 import ca.keal.sastrane.api.Notater;
 import ca.keal.sastrane.api.Player;
-import ca.keal.sastrane.api.piece.OwnedPieceFactory;
 import ca.keal.sastrane.util.Resource;
 import com.google.common.eventbus.EventBus;
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 import java.util.function.Function;
 
+@Getter
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 class Xiangqi implements Game, Notatable {
     
     static final int MAXX = 9;
     static final int MAXY = 10;
     
-    private final PalaceLines palaceLines = new PalaceLines();
+    @Getter(AccessLevel.NONE) private final PalaceLines palaceLines;
     
-    @Override
-    public String getResourceBundleName() {
-        return "ca.keal.sastrane.xiangqi.i18n.xiangqi";
-    }
+    private final String name;
+    private final String resourceBundleName;
+    private final Resource icon;
+    private final Resource css;
+    private final Player[] players;
+    private final Function<Double, AI> aI;
+    private final Board.Factory boardFactory;
+    private final Arbitrator arbitrator;
+    private final Notater notater;
+    @Getter(AccessLevel.NONE) private final Void __; // so as not to cause constructor conflicts with Lombok
     
-    @Override
-    public String getName() {
-        return "xiangqi";
-    }
-    
-    @Override
-    public Resource getIcon() {
-        return new Resource("ca.keal.sastrane.xiangqi", "xiangqi.png");
-    }
-    
-    @Override
-    public Resource getCss() {
-        return new Resource("ca.keal.sastrane.xiangqi", "xiangqi.css");
-    }
-    
-    @Override
-    public Player[] getPlayers() {
-        return XiangqiPlayer.values();
-    }
-    
-    @Override
-    public Function<Double, AI> getAI() {
-        return XiangqiAI::new;
-    }
-    
-    @Override
-    public Board.Factory getBoardFactory() {
-        return Board.factory()
-                        .row("RHEAGAEHR")
-                        .row("         ")
-                        .row(" C     C ")
-                        .row("S S S S S")
-                        .row("         ")
-                        .row("         ")
-                        .row("s s s s s")
-                        .row(" c     c ")
-                        .row("         ")
-                        .row("rheagaehr")
-                        .piece('R', new OwnedPieceFactory(Chariot::new, XiangqiPlayer.BLACK))
-                        .piece('H', new OwnedPieceFactory(Horse::new, XiangqiPlayer.BLACK))
-                        .piece('E', new OwnedPieceFactory(Elephant::new, XiangqiPlayer.BLACK))
-                        .piece('A', new OwnedPieceFactory(Advisor::new, XiangqiPlayer.BLACK))
-                        .piece('G', new OwnedPieceFactory(General::new, XiangqiPlayer.BLACK))
-                        .piece('C', new OwnedPieceFactory(Cannon::new, XiangqiPlayer.BLACK))
-                        .piece('S', new OwnedPieceFactory(Soldier::new, XiangqiPlayer.BLACK))
-                        .piece('r', new OwnedPieceFactory(Chariot::new, XiangqiPlayer.RED))
-                        .piece('h', new OwnedPieceFactory(Horse::new, XiangqiPlayer.RED))
-                        .piece('e', new OwnedPieceFactory(Elephant::new, XiangqiPlayer.RED))
-                        .piece('a', new OwnedPieceFactory(Advisor::new, XiangqiPlayer.RED))
-                        .piece('g', new OwnedPieceFactory(General::new, XiangqiPlayer.RED))
-                        .piece('c', new OwnedPieceFactory(Cannon::new, XiangqiPlayer.RED))
-                        .piece('s', new OwnedPieceFactory(Soldier::new, XiangqiPlayer.RED));
-    }
-    
-    @Override
-    public Arbitrator getArbitrator() {
-        return new XiangqiArbitrator();
+    @Inject
+    public Xiangqi(PalaceLines palaceLines, @Named("name") String name,
+                   @Named("resource-bundle-name") String resourceBundleName, @Named("icon") Resource icon,
+                   @Named("css") Resource css, Player[] players, Function<Double, AI> ai, Board.Factory boardFactory,
+                   Arbitrator arbitrator, Notater notater) {
+        this(palaceLines, name, resourceBundleName, icon, css, players, ai, boardFactory, arbitrator, notater, null);
     }
     
     @Override
     public void registerDefaults(EventBus bus) {
         bus.register(palaceLines);
-    }
-    
-    @Override
-    public Notater getNotater() {
-        return new WXFNotater();
     }
     
 }

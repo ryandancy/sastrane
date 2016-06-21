@@ -20,7 +20,9 @@ import ca.keal.sastrane.api.Result;
 import ca.keal.sastrane.api.Round;
 import ca.keal.sastrane.util.Utils;
 import com.google.common.collect.Multiset;
+import com.google.inject.Singleton;
 
+@Singleton
 class ReversiArbitrator implements Arbitrator {
     
     @Override

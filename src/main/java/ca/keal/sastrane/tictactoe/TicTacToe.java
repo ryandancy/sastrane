@@ -18,59 +18,34 @@ import ca.keal.sastrane.api.Arbitrator;
 import ca.keal.sastrane.api.Board;
 import ca.keal.sastrane.api.Game;
 import ca.keal.sastrane.api.Player;
-import ca.keal.sastrane.api.piece.PlacingPiece;
 import ca.keal.sastrane.util.Resource;
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 import java.util.function.Function;
 
+@Getter
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 class TicTacToe implements Game {
     
-    @Override
-    public String getResourceBundleName() {
-        return "ca.keal.sastrane.tictactoe.i18n.tictactoe";
-    }
+    private final String name;
+    private final String resourceBundleName;
+    private final Resource icon;
+    private final Resource css;
+    private final Player[] players;
+    private final Function<Double, AI> aI;
+    private final Board.Factory boardFactory;
+    private final Arbitrator arbitrator;
+    @Getter(AccessLevel.NONE) private final Void __; // so as not to cause constructor conflicts with Lombok
     
-    @Override
-    public String getName() {
-        return "tictactoe";
-    }
-    
-    @Override
-    public Resource getIcon() {
-        return new Resource("ca.keal.sastrane.tictactoe", "tictactoe.png");
-    }
-    
-    @Override
-    public Resource getCss() {
-        return new Resource("ca.keal.sastrane.tictactoe", "tictactoe.css");
-    }
-    
-    @Override
-    public Player[] getPlayers() {
-        return TicTacToePlayer.values();
-    }
-    
-    @Override
-    public Function<Double, AI> getAI() {
-        return TicTacToeAI::new;
-    }
-    
-    @Override
-    public Board.Factory getBoardFactory() {
-        return Board.factory()
-                .row("   ")
-                .row("   ")
-                .row("   ");
-    }
-    
-    @Override
-    public PlacingPiece[] getPlacingPieces() {
-        return new PlacingPiece[] {new Mark()};
-    }
-    
-    @Override
-    public Arbitrator getArbitrator() {
-        return new TicTacToeArbitrator();
+    @Inject
+    public TicTacToe(@Named("name") String name, @Named("resource-bundle-name") String resourceBundleName,
+                     @Named("icon") Resource icon, @Named("css") Resource css, Player[] players,
+                     Function<Double, AI> ai, Board.Factory boardFactory, Arbitrator arbitrator) {
+        this(name, resourceBundleName, icon, css, players, ai, boardFactory, arbitrator, null);
     }
     
 }

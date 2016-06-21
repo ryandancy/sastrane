@@ -13,12 +13,46 @@
 
 package ca.keal.sastrane.tictactoe;
 
+import ca.keal.sastrane.api.AI;
 import ca.keal.sastrane.api.AbstractGameModule;
+import ca.keal.sastrane.api.Arbitrator;
+import ca.keal.sastrane.api.Board;
+import ca.keal.sastrane.api.Player;
+import ca.keal.sastrane.util.Resource;
+import com.google.inject.Key;
+import com.google.inject.name.Names;
+
+import java.util.function.Function;
 
 public class TicTacToeModule extends AbstractGameModule {
     
     public TicTacToeModule() {
         super(TicTacToe.class);
+    }
+    
+    @Override
+    public void configure() {
+        super.configure();
+        
+        bindConstant()
+                .annotatedWith(Names.named("name"))
+                .to("tictactoe");
+        bindConstant()
+                .annotatedWith(Names.named("resource-bundle-name"))
+                .to("ca.keal.sastrane.tictactoe.i18n.tictactoe");
+        bind(Resource.class)
+                .annotatedWith(Names.named("icon"))
+                .toInstance(new Resource("ca.keal.sastrane.tictactoe", "tictactoe.png"));
+        bind(Resource.class)
+                .annotatedWith(Names.named("css"))
+                .toInstance(new Resource("ca.keal.sastrane.tictactoe", "tictactoe.css"));
+        bind(Player[].class).toInstance(TicTacToePlayer.values());
+        bind(new Key<Function<Double, AI>>() {}).toInstance(TicTacToeAI::new);
+        bind(Board.Factory.class).toInstance(Board.factory()
+                .row("   ")
+                .row("   ")
+                .row("   "));
+        bind(Arbitrator.class).to(TicTacToeArbitrator.class);
     }
     
 }

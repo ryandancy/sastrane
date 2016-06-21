@@ -17,7 +17,9 @@ import ca.keal.sastrane.api.Arbitrator;
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.Result;
 import ca.keal.sastrane.api.Round;
+import com.google.inject.Singleton;
 
+@Singleton
 class ChessArbitrator implements Arbitrator {
     
     static final ChessArbitrator INSTANCE = new ChessArbitrator(); // TODO DI

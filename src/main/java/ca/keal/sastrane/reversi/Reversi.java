@@ -20,72 +20,35 @@ import ca.keal.sastrane.api.Game;
 import ca.keal.sastrane.api.Notatable;
 import ca.keal.sastrane.api.Notater;
 import ca.keal.sastrane.api.Player;
-import ca.keal.sastrane.api.piece.OwnedPieceFactory;
-import ca.keal.sastrane.api.piece.PlacingPiece;
 import ca.keal.sastrane.util.Resource;
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 import java.util.function.Function;
 
+@Getter
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 class Reversi implements Game, Notatable {
     
-    @Override
-    public String getResourceBundleName() {
-        return "ca.keal.sastrane.reversi.i18n.reversi";
-    }
+    private final String name;
+    private final String resourceBundleName;
+    private final Resource icon;
+    private final Resource css;
+    private final Player[] players;
+    private final Function<Double, AI> aI;
+    private final Board.Factory boardFactory;
+    private final Arbitrator arbitrator;
+    private final Notater notater;
+    @Getter(AccessLevel.NONE) private final Void __; // so as not to cause constructor conflicts with Lombok
     
-    @Override
-    public String getName() {
-        return "reversi";
-    }
-    
-    @Override
-    public Resource getIcon() {
-        return new Resource("ca.keal.sastrane.reversi", "reversi.png");
-    }
-    
-    @Override
-    public Resource getCss() {
-        return new Resource("ca.keal.sastrane.reversi", "reversi.css");
-    }
-    
-    @Override
-    public Player[] getPlayers() {
-        return ReversiPlayer.values();
-    }
-    
-    @Override
-    public Function<Double, AI> getAI() {
-        return ReversiAI::new;
-    }
-    
-    @Override
-    public Board.Factory getBoardFactory() {
-        return Board.factory()
-                        .row("        ")
-                        .row("        ")
-                        .row("        ")
-                        .row("   WB   ")
-                        .row("   BW   ")
-                        .row("        ")
-                        .row("        ")
-                        .row("        ")
-                        .piece('B', new OwnedPieceFactory(Disk::new, ReversiPlayer.BLACK))
-                        .piece('W', new OwnedPieceFactory(Disk::new, ReversiPlayer.WHITE));
-    }
-    
-    @Override
-    public PlacingPiece[] getPlacingPieces() {
-        return new PlacingPiece[] {new Disk()};
-    }
-    
-    @Override
-    public Arbitrator getArbitrator() {
-        return new ReversiArbitrator();
-    }
-    
-    @Override
-    public Notater getNotater() {
-        return new GridNotater();
+    @Inject
+    public Reversi(@Named("name") String name, @Named("resource-bundle-name") String resourceBundleName,
+                   @Named("icon") Resource icon, @Named("css") Resource css, Player[] players, Function<Double, AI> ai,
+                   Board.Factory boardFactory, Arbitrator arbitrator, Notater notater) {
+        this(name, resourceBundleName, icon, css, players, ai, boardFactory, arbitrator, notater, null);
     }
     
 }

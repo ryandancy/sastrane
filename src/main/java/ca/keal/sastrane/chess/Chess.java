@@ -20,76 +20,35 @@ import ca.keal.sastrane.api.Game;
 import ca.keal.sastrane.api.Notatable;
 import ca.keal.sastrane.api.Notater;
 import ca.keal.sastrane.api.Player;
-import ca.keal.sastrane.api.piece.OwnedPieceFactory;
 import ca.keal.sastrane.util.Resource;
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 import java.util.function.Function;
 
+@Getter
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 class Chess implements Game, Notatable {
     
-    @Override
-    public String getResourceBundleName() {
-        return "ca.keal.sastrane.chess.i18n.chess";
-    }
+    private final String name;
+    private final String resourceBundleName;
+    private final Resource icon;
+    private final Resource css;
+    private final Player[] players;
+    private final Function<Double, AI> aI;
+    private final Board.Factory boardFactory;
+    private final Arbitrator arbitrator;
+    private final Notater notater;
+    @Getter(AccessLevel.NONE) private final Void __; // so as not to cause constructor conflicts with Lombok
     
-    @Override
-    public String getName() {
-        return "chess";
-    }
-    
-    @Override
-    public Resource getIcon() {
-        return new Resource("ca.keal.sastrane.chess.icon", "chess.png");
-    }
-    
-    @Override
-    public Resource getCss() {
-        return new Resource("ca.keal.sastrane.chess", "chess.css");
-    }
-    
-    @Override
-    public Player[] getPlayers() {
-        return ChessPlayer.values();
-    }
-    
-    @Override
-    public Function<Double, AI> getAI() {
-        return ChessAI::new;
-    }
-    
-    @Override
-    public Board.Factory getBoardFactory() {
-        return Board.factory()
-                .row("RNBQKBNR")
-                .row("PPPPPPPP")
-                .row("        ")
-                .row("        ")
-                .row("        ")
-                .row("        ")
-                .row("pppppppp")
-                .row("rnbqkbnr")
-                .piece('R', new OwnedPieceFactory(Rook::new, ChessPlayer.BLACK))
-                .piece('N', new OwnedPieceFactory(Knight::new, ChessPlayer.BLACK))
-                .piece('B', new OwnedPieceFactory(Bishop::new, ChessPlayer.BLACK))
-                .piece('Q', new OwnedPieceFactory(Queen::new, ChessPlayer.BLACK))
-                .piece('K', new OwnedPieceFactory(King::new, ChessPlayer.BLACK))
-                .piece('P', new OwnedPieceFactory(Pawn::new, ChessPlayer.BLACK))
-                .piece('r', new OwnedPieceFactory(Rook::new, ChessPlayer.WHITE))
-                .piece('n', new OwnedPieceFactory(Knight::new, ChessPlayer.WHITE))
-                .piece('b', new OwnedPieceFactory(Bishop::new, ChessPlayer.WHITE))
-                .piece('q', new OwnedPieceFactory(Queen::new, ChessPlayer.WHITE))
-                .piece('k', new OwnedPieceFactory(King::new, ChessPlayer.WHITE))
-                .piece('p', new OwnedPieceFactory(Pawn::new, ChessPlayer.WHITE));
-    }
-    
-    @Override
-    public Arbitrator getArbitrator() {
-        return ChessArbitrator.INSTANCE;
-    }
-    
-    @Override
-    public Notater getNotater() {
-        return new LongAlgebraicNotater();
+    @Inject
+    public Chess(@Named("name") String name, @Named("resource-bundle-name") String resourceBundleName,
+                 @Named("icon") Resource icon, @Named("css") Resource css, Player[] players, Function<Double, AI> ai,
+                 Board.Factory boardFactory, Arbitrator arbitrator, Notater notater) {
+        this(name, resourceBundleName, icon, css, players, ai, boardFactory, arbitrator, notater, null);
     }
     
 }

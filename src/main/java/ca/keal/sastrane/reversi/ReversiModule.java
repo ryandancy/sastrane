@@ -13,12 +13,56 @@
 
 package ca.keal.sastrane.reversi;
 
+import ca.keal.sastrane.api.AI;
 import ca.keal.sastrane.api.AbstractGameModule;
+import ca.keal.sastrane.api.Arbitrator;
+import ca.keal.sastrane.api.Board;
+import ca.keal.sastrane.api.Notater;
+import ca.keal.sastrane.api.Player;
+import ca.keal.sastrane.api.piece.OwnedPieceFactory;
+import ca.keal.sastrane.util.Resource;
+import com.google.inject.Key;
+import com.google.inject.name.Names;
+
+import java.util.function.Function;
 
 public class ReversiModule extends AbstractGameModule {
     
     public ReversiModule() {
         super(Reversi.class);
+    }
+    
+    @Override
+    public void configure() {
+        super.configure();
+    
+        bindConstant()
+                .annotatedWith(Names.named("name"))
+                .to("reversi");
+        bindConstant()
+                .annotatedWith(Names.named("resource-bundle-name"))
+                .to("ca.keal.sastrane.reversi.i18n.reversi");
+        bind(Resource.class)
+                .annotatedWith(Names.named("icon"))
+                .toInstance(new Resource("ca.keal.sastrane.reversi", "reversi.png"));
+        bind(Resource.class)
+                .annotatedWith(Names.named("css"))
+                .toInstance(new Resource("ca.keal.sastrane.reversi", "reversi.css"));
+        bind(Player[].class).toInstance(ReversiPlayer.values());
+        bind(new Key<Function<Double, AI>>() {}).toInstance(ReversiAI::new);
+        bind(Board.Factory.class).toInstance(Board.factory()
+                .row("        ")
+                .row("        ")
+                .row("        ")
+                .row("   WB   ")
+                .row("   BW   ")
+                .row("        ")
+                .row("        ")
+                .row("        ")
+                .piece('B', new OwnedPieceFactory(Disk::new, ReversiPlayer.BLACK))
+                .piece('W', new OwnedPieceFactory(Disk::new, ReversiPlayer.WHITE)));
+        bind(Arbitrator.class).to(ReversiArbitrator.class);
+        bind(Notater.class).to(GridNotater.class);
     }
     
 }

@@ -24,6 +24,7 @@ import ca.keal.sastrane.api.piece.OwnedPiece;
 import ca.keal.sastrane.api.piece.Piece;
 import ca.keal.sastrane.util.Utils;
 import com.google.common.collect.Multiset;
+import com.google.inject.Singleton;
 
 import java.util.HashMap;
 import java.util.List;
@@ -33,6 +34,7 @@ import java.util.Map;
  * Notates chess using <a href="https://en.wikipedia.org/wiki/Algebraic_notation_(chess)#Long_algebraic_notation">long 
  * algebraic notation</a>.
  */
+@Singleton
 class LongAlgebraicNotater implements Notater {
     
     private static final Map<Class<? extends Piece>, String> PIECE_CHARS = new HashMap<>();
