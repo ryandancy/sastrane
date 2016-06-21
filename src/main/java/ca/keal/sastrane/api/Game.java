@@ -23,54 +23,53 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.function.Function;
 
-public interface Game {
+public abstract class Game {
     
-    Game.Name getName();
+    protected abstract Game.Name getName();
     
-    Game.Package getPackageName();
+    protected abstract Game.Package getPackageName();
     
-    default String getResourceBundleName() {
+    public String getResourceBundleName() {
         return getPackageName() + ".i18n." + getName();
     }
     
-    default String getI18nName() {
+    public String getI18nName() {
         return getName() + ".name";
     }
     
-    default Resource getIcon() {
+    public Resource getIcon() {
         return new Resource(getPackageName().getPkg(), getName() + ".png");
     }
     
-    default Resource getCss() {
+    public Resource getCss() {
         return new Resource(getPackageName().getPkg(), getName() + ".css");
     }
     
-    Player[] getPlayers();
+    public abstract Player[] getPlayers();
     
     /** Difficulty to AI object */
-    Function<Double, AI> getAI();
+    public abstract Function<Double, AI> getAI();
     
-    Board.Factory getBoardFactory();
+    public abstract Board.Factory getBoardFactory();
     
-    default PlacingPiece[] getPlacingPieces() {
+    public PlacingPiece[] getPlacingPieces() {
         return new PlacingPiece[0];
     }
     
-    default boolean isPlaceOnly() {
+    public boolean isPlaceOnly() {
         return getPlacingPieces().length > 0;
     }
     
     /** Register everything with the bus that should always be registered */
-    default void registerDefaults(EventBus bus) {}
+    public void registerDefaults(EventBus bus) {}
     
-    // DI here???
-    Arbitrator getArbitrator();
+    public abstract Arbitrator getArbitrator();
     
     /** Simple wrapper of String for game names */
     @Getter
     @AllArgsConstructor
     @EqualsAndHashCode
-    class Name {
+    public static class Name {
         
         private final String name;
     
@@ -85,7 +84,7 @@ public interface Game {
     @Getter
     @RequiredArgsConstructor
     @EqualsAndHashCode
-    class Package {
+    public static class Package {
         
         private final String pkg;
     

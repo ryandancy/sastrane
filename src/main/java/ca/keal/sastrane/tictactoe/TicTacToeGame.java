@@ -28,7 +28,7 @@ import java.util.function.Function;
 
 @Getter
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-class TicTacToeGame implements Game {
+class TicTacToeGame extends Game {
     
     private final Game.Name name;
     private final Game.Package packageName;

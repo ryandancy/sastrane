@@ -30,7 +30,7 @@ import java.util.function.Function;
 
 @Getter
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-class ReversiGame implements Game, Notatable {
+class ReversiGame extends Game implements Notatable {
     
     private final Game.Name name;
     private final Game.Package packageName;

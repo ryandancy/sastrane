@@ -29,7 +29,7 @@ import java.util.function.Function;
 
 @Getter
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-class ChessGame implements Game, Notatable {
+class ChessGame extends Game implements Notatable {
     
     private final Game.Name name;
     private final Game.Package packageName;

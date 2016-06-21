@@ -30,7 +30,7 @@ import java.util.function.Function;
 
 @Getter
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-class XiangqiGame implements Game, Notatable {
+class XiangqiGame extends Game implements Notatable {
     
     static final int MAXX = 9;
     static final int MAXY = 10;
