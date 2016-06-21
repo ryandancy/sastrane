@@ -21,6 +21,7 @@ import ca.keal.sastrane.api.Game;
 import ca.keal.sastrane.api.Notater;
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.piece.OwnedPieceFactory;
+import ca.keal.sastrane.api.piece.PlacingPiece;
 import com.google.inject.TypeLiteral;
 
 import java.util.function.Function;
@@ -50,6 +51,7 @@ public class ReversiModule extends AbstractGameModule {
                 .row("        ")
                 .piece('B', new OwnedPieceFactory(Disk::new, ReversiPlayer.BLACK))
                 .piece('W', new OwnedPieceFactory(Disk::new, ReversiPlayer.WHITE)));
+        bindToInstance(PlacingPiece[].class, new PlacingPiece[] {new Disk()});
         bindTo(Arbitrator.class, ReversiArbitrator.class);
         bindTo(Notater.class, GridNotater.class);
     }

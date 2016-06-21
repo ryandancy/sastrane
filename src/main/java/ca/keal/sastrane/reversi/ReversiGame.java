@@ -20,6 +20,7 @@ import ca.keal.sastrane.api.Game;
 import ca.keal.sastrane.api.Notatable;
 import ca.keal.sastrane.api.Notater;
 import ca.keal.sastrane.api.Player;
+import ca.keal.sastrane.api.piece.PlacingPiece;
 import com.google.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -36,6 +37,7 @@ class ReversiGame implements Game, Notatable {
     private final Player[] players;
     private final Function<Double, AI> aI;
     private final Board.Factory boardFactory;
+    private final PlacingPiece[] placingPieces;
     private final Arbitrator arbitrator;
     private final Notater notater;
     @Getter(AccessLevel.NONE) private final Void __; // so as not to cause constructor conflicts with Lombok
@@ -43,8 +45,9 @@ class ReversiGame implements Game, Notatable {
     @Inject
     public ReversiGame(@Reversi Game.Name name, @Reversi Game.Package packageName, @Reversi Player[] players,
                        @Reversi Function<Double, AI> ai, @Reversi Board.Factory boardFactory,
-                       @Reversi Arbitrator arbitrator, @Reversi Notater notater) {
-        this(name, packageName, players, ai, boardFactory, arbitrator, notater, null);
+                       @Reversi PlacingPiece[] placingPieces, @Reversi Arbitrator arbitrator,
+                       @Reversi Notater notater) {
+        this(name, packageName, players, ai, boardFactory, placingPieces, arbitrator, notater, null);
     }
     
 }

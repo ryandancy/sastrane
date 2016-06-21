@@ -19,6 +19,7 @@ import ca.keal.sastrane.api.Arbitrator;
 import ca.keal.sastrane.api.Board;
 import ca.keal.sastrane.api.Game;
 import ca.keal.sastrane.api.Player;
+import ca.keal.sastrane.api.piece.PlacingPiece;
 import com.google.inject.TypeLiteral;
 
 import java.util.function.Function;
@@ -41,6 +42,7 @@ public class TicTacToeModule extends AbstractGameModule {
                 .row("   ")
                 .row("   ")
                 .row("   "));
+        bindToInstance(PlacingPiece[].class, new PlacingPiece[] {new Mark()});
         bindTo(Arbitrator.class, TicTacToeArbitrator.class);
     }
     

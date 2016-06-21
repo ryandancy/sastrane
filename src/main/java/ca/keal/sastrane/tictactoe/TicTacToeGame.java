@@ -18,6 +18,7 @@ import ca.keal.sastrane.api.Arbitrator;
 import ca.keal.sastrane.api.Board;
 import ca.keal.sastrane.api.Game;
 import ca.keal.sastrane.api.Player;
+import ca.keal.sastrane.api.piece.PlacingPiece;
 import com.google.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -34,14 +35,15 @@ class TicTacToeGame implements Game {
     private final Player[] players;
     private final Function<Double, AI> aI;
     private final Board.Factory boardFactory;
+    private final PlacingPiece[] placingPieces;
     private final Arbitrator arbitrator;
     @Getter(AccessLevel.NONE) private final Void __; // so as not to cause constructor conflicts with Lombok
     
     @Inject
     public TicTacToeGame(@TicTacToe Game.Name name, @TicTacToe Game.Package packageName, @TicTacToe Player[] players,
                          @TicTacToe Function<Double, AI> ai, @TicTacToe Board.Factory boardFactory,
-                         @TicTacToe Arbitrator arbitrator) {
-        this(name, packageName, players, ai, boardFactory, arbitrator, null);
+                         @TicTacToe PlacingPiece[] placingPieces, @TicTacToe Arbitrator arbitrator) {
+        this(name, packageName, players, ai, boardFactory, placingPieces, arbitrator, null);
     }
     
 }

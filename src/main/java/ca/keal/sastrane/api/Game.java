@@ -53,7 +53,7 @@ public interface Game {
     Board.Factory getBoardFactory();
     
     default PlacingPiece[] getPlacingPieces() {
-        return new PlacingPiece[] {};
+        return new PlacingPiece[0];
     }
     
     default boolean isPlaceOnly() {
