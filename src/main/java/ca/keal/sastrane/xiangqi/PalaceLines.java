@@ -26,7 +26,7 @@ import javafx.scene.shape.Line;
  * A class that hooks onto {@link ca.keal.sastrane.api.event.ToGameEvent.Post} in order to place the diagonal lines that
  * go on the palace. FIXME Completely bugged, lines aren't aligned right and they're on top of the pieces
  */
-class PalaceLines {
+public class PalaceLines {
     
     @Subscribe
     public void afterGameScreenLoaded(ToGameEvent.Post e) {

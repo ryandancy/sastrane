@@ -13,34 +13,14 @@
 
 package ca.keal.sastrane.tictactoe;
 
-import ca.keal.sastrane.api.AI;
-import ca.keal.sastrane.api.Arbitrator;
-import ca.keal.sastrane.api.Board;
-import ca.keal.sastrane.api.Game;
-import ca.keal.sastrane.api.Player;
-import com.google.inject.Inject;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import com.google.inject.BindingAnnotation;
 
-import java.util.function.Function;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-@Getter
-@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-class TicTacToe implements Game {
-    
-    private final Game.Name name;
-    private final Game.Package packageName;
-    private final Player[] players;
-    private final Function<Double, AI> aI;
-    private final Board.Factory boardFactory;
-    private final Arbitrator arbitrator;
-    @Getter(AccessLevel.NONE) private final Void __; // so as not to cause constructor conflicts with Lombok
-    
-    @Inject
-    public TicTacToe(Game.Name name, Game.Package packageName, Player[] players, Function<Double, AI> ai,
-                     Board.Factory boardFactory, Arbitrator arbitrator) {
-        this(name, packageName, players, ai, boardFactory, arbitrator, null);
-    }
-    
-}
+@BindingAnnotation
+@Target({ElementType.CONSTRUCTOR, ElementType.METHOD, ElementType.PARAMETER})
+@Retention(RetentionPolicy.RUNTIME)
+public @interface TicTacToe {}

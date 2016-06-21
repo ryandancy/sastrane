@@ -12,7 +12,7 @@
  */
 
 /**
- * Contains the Sastrane implementation of <a href="http://en.wikipedia.org/wiki/Reversi">Reversi</a>, better known as
+ * Contains the Sastrane implementation of <a href="http://en.wikipedia.org/wiki/Reversi">ReversiGame</a>, better known as
  * Othello.
  */
 @EverythingIsNonnullByDefault

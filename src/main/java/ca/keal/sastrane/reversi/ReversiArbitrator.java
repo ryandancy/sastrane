@@ -54,7 +54,7 @@ class ReversiArbitrator implements Arbitrator {
                 return new Result.Win(player);
             default:
                 // Wait what? This should NEVER happen...
-                throw new RuntimeException("Why am I here? It's dark... and I'm scared... help... (Reversi.count)");
+                throw new RuntimeException("Why am I here? It's dark... and I'm scared... help...");
         }
     }
     

@@ -19,29 +19,41 @@ import ca.keal.sastrane.api.Arbitrator;
 import ca.keal.sastrane.api.Board;
 import ca.keal.sastrane.api.Game;
 import ca.keal.sastrane.api.Player;
-import com.google.inject.Key;
+import com.google.inject.TypeLiteral;
 
 import java.util.function.Function;
 
 public class TicTacToeModule extends AbstractGameModule {
     
     public TicTacToeModule() {
-        super(TicTacToe.class);
+        super(TicTacToeGame.class);
     }
     
     @Override
     public void configure() {
         super.configure();
         
-        bind(Game.Name.class).toInstance(new Game.Name("tictactoe"));
-        bind(Game.Package.class).toInstance(new Game.Package("ca.keal.sastrane.tictactoe"));
-        bind(Player[].class).toInstance(TicTacToePlayer.values());
-        bind(new Key<Function<Double, AI>>() {}).toInstance(TicTacToeAI::new);
-        bind(Board.Factory.class).toInstance(Board.factory()
-                .row("   ")
-                .row("   ")
-                .row("   "));
-        bind(Arbitrator.class).to(TicTacToeArbitrator.class);
+        bind(Game.Name.class)
+                .annotatedWith(TicTacToe.class)
+                .toInstance(new Game.Name("tictactoe"));
+        bind(Game.Package.class)
+                .annotatedWith(TicTacToe.class)
+                .toInstance(new Game.Package("ca.keal.sastrane.tictactoe"));
+        bind(Player[].class)
+                .annotatedWith(TicTacToe.class)
+                .toInstance(TicTacToePlayer.values());
+        bind(new TypeLiteral<Function<Double, AI>>() {})
+                .annotatedWith(TicTacToe.class)
+                .toInstance(TicTacToeAI::new);
+        bind(Board.Factory.class)
+                .annotatedWith(TicTacToe.class)
+                .toInstance(Board.factory()
+                        .row("   ")
+                        .row("   ")
+                        .row("   "));
+        bind(Arbitrator.class)
+                .annotatedWith(TicTacToe.class)
+                .to(TicTacToeArbitrator.class);
     }
     
 }
