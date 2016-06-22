@@ -45,6 +45,8 @@ public abstract class AbstractGameModule<G extends Game> extends AbstractModule 
         Multibinder<Game> gameBinder = Multibinder.newSetBinder(binder(), Game.class);
         gameBinder.addBinding().to(gameCls);
         
+        GameAttrib.fillInDefaults(attribsToValues);
+        
         attribsToValues.forEach((attrib, value) -> {
             if (value.getCls() != null) {
                 doClassBinding(attrib, value);

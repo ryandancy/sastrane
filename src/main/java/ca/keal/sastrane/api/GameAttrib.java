@@ -14,11 +14,18 @@
 package ca.keal.sastrane.api;
 
 import ca.keal.sastrane.util.Resource;
+import com.google.common.eventbus.EventBus;
+import com.google.inject.TypeLiteral;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import javax.annotation.Nullable;
 import java.util.Map;
+import java.util.function.Consumer;
 
 /** The attributes for {@link GameAttribute @GameAttribute}. GAAAH NAMING TROUBLES GAAAAH */
+@AllArgsConstructor
+@NoArgsConstructor
 public enum GameAttrib {
     
     NAME,
@@ -31,8 +38,7 @@ public enum GameAttrib {
         
         @Override
         protected void autoAdd(Map<GameAttrib, PossiblyTypedValue<?>> attribs) {
-            attribs.put(this, new PossiblyTypedValue<>(String.class,
-                    attribs.get(PACKAGE) + ".i18n." + attribs.get(NAME)));
+            attribs.put(this, new PossiblyTypedValue<>(attribs.get(PACKAGE) + ".i18n." + attribs.get(NAME)));
         }
     },
     I18N_NAME {
@@ -43,7 +49,7 @@ public enum GameAttrib {
         
         @Override
         protected void autoAdd(Map<GameAttrib, PossiblyTypedValue<?>> attribs) {
-            attribs.put(this, new PossiblyTypedValue<>(String.class, attribs.get(NAME) + ".name"));
+            attribs.put(this, new PossiblyTypedValue<>(attribs.get(NAME) + ".name"));
         }
     },
     ICON {
@@ -55,7 +61,7 @@ public enum GameAttrib {
         @Override
         @SuppressWarnings("ConstantConditions")
         protected void autoAdd(Map<GameAttrib, PossiblyTypedValue<?>> attribs) {
-            attribs.put(this, new PossiblyTypedValue<>(Resource.class, new Resource(
+            attribs.put(this, new PossiblyTypedValue<>(new Resource(
                     ((Game.Package) attribs.get(PACKAGE).getValue()).getPkg(), attribs.get(NAME) + ".png")));
         }
     },
@@ -69,16 +75,19 @@ public enum GameAttrib {
         @SuppressWarnings("ConstantConditions")
         protected void autoAdd(Map<GameAttrib, PossiblyTypedValue<?>> attribs) {
             assert attribs.get(PACKAGE).getValue() != null;
-            attribs.put(this, new PossiblyTypedValue<>(Resource.class, new Resource(
+            attribs.put(this, new PossiblyTypedValue<>(new Resource(
                     ((Game.Package) attribs.get(PACKAGE).getValue()).getPkg(), attribs.get(NAME).getValue() + ".css")));
         }
     },
     PLAYERS,
     AI,
     BOARD_FACTORY,
-    PLACING_PIECES,
+    PLACING_PIECES(new PossiblyTypedValue<>(new Player[0])),
     ARBITRATOR,
-    NOTATER;
+    NOTATER,
+    DEFAULTS_REGISTRATOR(new PossiblyTypedValue<>(new TypeLiteral<Consumer<EventBus>>() {}, b -> {}));
+    
+    @Nullable private PossiblyTypedValue<?> defaultValue = null;
     
     // null = does not auto-add
     @Nullable
@@ -106,6 +115,15 @@ public enum GameAttrib {
             
             if (allDepsPresent) {
                 attrib.autoAdd(attribs);
+            }
+        }
+    }
+    
+    /** Call after attribs has been filled out */
+    static void fillInDefaults(Map<GameAttrib, PossiblyTypedValue<?>> attribs) {
+        for (GameAttrib attrib : values()) {
+            if (attrib.defaultValue != null && !attribs.containsKey(attrib)) {
+                attribs.put(attrib, attrib.defaultValue);
             }
         }
     }

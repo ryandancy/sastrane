@@ -37,6 +37,11 @@ class PossiblyTypedValue<T> {
         this.valueCls = valueCls;
     }
     
+    @SuppressWarnings("unchecked")
+    PossiblyTypedValue(T value) {
+        this((Class<T>) value.getClass(), value);
+    }
+    
     PossiblyTypedValue(TypeLiteral<T> literal, T value) {
         this.literal = literal;
         this.value = value;
