@@ -26,7 +26,7 @@ import com.google.inject.TypeLiteral;
 
 import java.util.function.Function;
 
-public class ReversiModule extends AbstractGameModule {
+public class ReversiModule extends AbstractGameModule<ReversiGame> {
     
     public ReversiModule() {
         super(ReversiGame.class, Reversi.class);
@@ -36,11 +36,11 @@ public class ReversiModule extends AbstractGameModule {
     public void configure() {
         super.configure();
         
-        bindToInstance(Game.Name.class, new Game.Name("reversi"));
-        bindToInstance(Game.Package.class, new Game.Package("ca.keal.sastrane.reversi"));
-        bindToInstance(Player[].class, ReversiPlayer.values());
-        bindToInstance(new TypeLiteral<Function<Double, AI>>() {}, ReversiAI::new);
-        bindToInstance(Board.Factory.class, Board.factory()
+        bindToInstance("name", Game.Name.class, new Game.Name("reversi"));
+        bindToInstance("package", Game.Package.class, new Game.Package("ca.keal.sastrane.reversi"));
+        bindToInstance("players", Player[].class, ReversiPlayer.values());
+        bindToInstance("ai", new TypeLiteral<Function<Double, AI>>() {}, ReversiAI::new);
+        bindToInstance("board-factory", Board.Factory.class, Board.factory()
                 .row("        ")
                 .row("        ")
                 .row("        ")
@@ -51,9 +51,9 @@ public class ReversiModule extends AbstractGameModule {
                 .row("        ")
                 .piece('B', new OwnedPieceFactory(Disk::new, ReversiPlayer.BLACK))
                 .piece('W', new OwnedPieceFactory(Disk::new, ReversiPlayer.WHITE)));
-        bindToInstance(PlacingPiece[].class, new PlacingPiece[] {new Disk()});
-        bindTo(Arbitrator.class, ReversiArbitrator.class);
-        bindTo(Notater.class, GridNotater.class);
+        bindToInstance("placing-pieces", PlacingPiece[].class, new PlacingPiece[] {new Disk()});
+        bindTo("arbitrator", Arbitrator.class, ReversiArbitrator.class);
+        bindTo("notater", Notater.class, GridNotater.class);
     }
     
 }

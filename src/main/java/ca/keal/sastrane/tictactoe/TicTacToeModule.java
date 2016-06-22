@@ -24,7 +24,7 @@ import com.google.inject.TypeLiteral;
 
 import java.util.function.Function;
 
-public class TicTacToeModule extends AbstractGameModule {
+public class TicTacToeModule extends AbstractGameModule<TicTacToeGame> {
     
     public TicTacToeModule() {
         super(TicTacToeGame.class, TicTacToe.class);
@@ -34,16 +34,16 @@ public class TicTacToeModule extends AbstractGameModule {
     public void configure() {
         super.configure();
         
-        bindToInstance(Game.Name.class, new Game.Name("tictactoe"));
-        bindToInstance(Game.Package.class, new Game.Package("ca.keal.sastrane.tictactoe"));
-        bindToInstance(Player[].class, TicTacToePlayer.values());
-        bindToInstance(new TypeLiteral<Function<Double, AI>>() {}, TicTacToeAI::new);
-        bindToInstance(Board.Factory.class, Board.factory()
+        bindToInstance("name", Game.Name.class, new Game.Name("tictactoe"));
+        bindToInstance("package", Game.Package.class, new Game.Package("ca.keal.sastrane.tictactoe"));
+        bindToInstance("players", Player[].class, TicTacToePlayer.values());
+        bindToInstance("ai", new TypeLiteral<Function<Double, AI>>() {}, TicTacToeAI::new);
+        bindToInstance("board-factory", Board.Factory.class, Board.factory()
                 .row("   ")
                 .row("   ")
                 .row("   "));
-        bindToInstance(PlacingPiece[].class, new PlacingPiece[] {new Mark()});
-        bindTo(Arbitrator.class, TicTacToeArbitrator.class);
+        bindToInstance("placing-pieces", PlacingPiece[].class, new PlacingPiece[] {new Mark()});
+        bindTo("arbitrator", Arbitrator.class, TicTacToeArbitrator.class);
     }
     
 }

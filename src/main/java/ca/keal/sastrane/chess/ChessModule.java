@@ -25,7 +25,7 @@ import com.google.inject.TypeLiteral;
 
 import java.util.function.Function;
 
-public class ChessModule extends AbstractGameModule {
+public class ChessModule extends AbstractGameModule<ChessGame> {
     
     public ChessModule() {
         super(ChessGame.class, Chess.class);
@@ -35,11 +35,11 @@ public class ChessModule extends AbstractGameModule {
     public void configure() {
         super.configure();
         
-        bindToInstance(Game.Name.class, new Game.Name("chess"));
-        bindToInstance(Game.Package.class, new Game.Package("ca.keal.sastrane.chess"));
-        bindToInstance(Player[].class, ChessPlayer.values());
-        bindToInstance(new TypeLiteral<Function<Double, AI>>() {}, ChessAI::new);
-        bindToInstance(Board.Factory.class, Board.factory()
+        bindToInstance("name", Game.Name.class, new Game.Name("chess"));
+        bindToInstance("package", Game.Package.class, new Game.Package("ca.keal.sastrane.chess"));
+        bindToInstance("players", Player[].class, ChessPlayer.values());
+        bindToInstance("ai", new TypeLiteral<Function<Double, AI>>() {}, ChessAI::new);
+        bindToInstance("board-factory", Board.Factory.class, Board.factory()
                 .row("RNBQKBNR")
                 .row("PPPPPPPP")
                 .row("        ")
@@ -60,8 +60,8 @@ public class ChessModule extends AbstractGameModule {
                 .piece('q', new OwnedPieceFactory(Queen::new, ChessPlayer.WHITE))
                 .piece('k', new OwnedPieceFactory(King::new, ChessPlayer.WHITE))
                 .piece('p', new OwnedPieceFactory(Pawn::new, ChessPlayer.WHITE)));
-        bindTo(Arbitrator.class, ChessArbitrator.class);
-        bindTo(Notater.class, LongAlgebraicNotater.class);
+        bindTo("arbitrator", Arbitrator.class, ChessArbitrator.class);
+        bindTo("notater", Notater.class, LongAlgebraicNotater.class);
     }
     
 }

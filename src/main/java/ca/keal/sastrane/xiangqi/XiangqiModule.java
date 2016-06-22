@@ -25,7 +25,7 @@ import com.google.inject.TypeLiteral;
 
 import java.util.function.Function;
 
-public class XiangqiModule extends AbstractGameModule {
+public class XiangqiModule extends AbstractGameModule<XiangqiGame> {
     
     public XiangqiModule() {
         super(XiangqiGame.class, Xiangqi.class);
@@ -35,11 +35,11 @@ public class XiangqiModule extends AbstractGameModule {
     public void configure() {
         super.configure();
         
-        bindToInstance(Game.Name.class, new Game.Name("xiangqi"));
-        bindToInstance(Game.Package.class, new Game.Package("ca.keal.sastrane.xiangqi"));
-        bindToInstance(Player[].class, XiangqiPlayer.values());
-        bindToInstance(new TypeLiteral<Function<Double, AI>>() {}, XiangqiAI::new);
-        bindToInstance(Board.Factory.class, Board.factory()
+        bindToInstance("name", Game.Name.class, new Game.Name("xiangqi"));
+        bindToInstance("package", Game.Package.class, new Game.Package("ca.keal.sastrane.xiangqi"));
+        bindToInstance("players", Player[].class, XiangqiPlayer.values());
+        bindToInstance("ai", new TypeLiteral<Function<Double, AI>>() {}, XiangqiAI::new);
+        bindToInstance("board-factory", Board.Factory.class, Board.factory()
                 .row("RHEAGAEHR")
                 .row("         ")
                 .row(" C     C ")
@@ -64,8 +64,8 @@ public class XiangqiModule extends AbstractGameModule {
                 .piece('g', new OwnedPieceFactory(General::new, XiangqiPlayer.RED))
                 .piece('c', new OwnedPieceFactory(Cannon::new, XiangqiPlayer.RED))
                 .piece('s', new OwnedPieceFactory(Soldier::new, XiangqiPlayer.RED)));
-        bindTo(Arbitrator.class, XiangqiArbitrator.class);
-        bindTo(Notater.class, WXFNotater.class);
+        bindTo("arbitrator", Arbitrator.class, XiangqiArbitrator.class);
+        bindTo("notater", Notater.class, WXFNotater.class);
         bind(PalaceLines.class);
     }
     

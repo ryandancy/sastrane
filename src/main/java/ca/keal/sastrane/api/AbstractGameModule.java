@@ -15,37 +15,53 @@ package ca.keal.sastrane.api;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.TypeLiteral;
+import com.google.inject.multibindings.MapBinder;
 import com.google.inject.multibindings.Multibinder;
+import com.google.inject.name.Names;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
 import java.lang.annotation.Annotation;
 
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
-public abstract class AbstractGameModule extends AbstractModule {
+public abstract class AbstractGameModule<G extends Game> extends AbstractModule {
     
-    private final Class<? extends Game> infoCls;
+    private final TypeLiteral<Class<G>> G_LITERAL = new TypeLiteral<Class<G>>() {};
+    
+    private final Class<G> gameCls;
     private final Class<? extends Annotation> gameAnnoCls;
     
     @Override
     public void configure() {
         Multibinder<Game> gameBinder = Multibinder.newSetBinder(binder(), Game.class);
-        gameBinder.addBinding().to(infoCls);
+        gameBinder.addBinding().to(gameCls);
     }
     
-    protected <T> void bindToInstance(Class<T> cls, T t) {
+    protected <T> void bindToInstance(String name, Class<T> cls, T t) {
+        //noinspection unchecked
+        MapBinder<Class<G>, T> mapBinder = MapBinder.newMapBinder(binder(), (Class<Class<G>>) gameCls.getClass(), cls,
+                Names.named(name));
+        mapBinder.addBinding(gameCls).toInstance(t);
         bind(cls).annotatedWith(gameAnnoCls).toInstance(t);
     }
     
-    protected <T> void bindToInstance(TypeLiteral<T> cls, T t) {
+    protected <T> void bindToInstance(String name, TypeLiteral<T> cls, T t) {
+        MapBinder<Class<G>, T> mapBinder = MapBinder.newMapBinder(binder(), G_LITERAL, cls, Names.named(name));
+        mapBinder.addBinding(gameCls).toInstance(t);
         bind(cls).annotatedWith(gameAnnoCls).toInstance(t);
     }
     
-    protected <T> void bindTo(Class<T> cls, Class<? extends T> impl) {
+    protected <T> void bindTo(String name, Class<T> cls, Class<? extends T> impl) {
+        //noinspection unchecked
+        MapBinder<Class<G>, T> mapBinder = MapBinder.newMapBinder(binder(), (Class<Class<G>>) gameCls.getClass(), cls,
+                Names.named(name));
+        mapBinder.addBinding(gameCls).to(impl);
         bind(cls).annotatedWith(gameAnnoCls).to(impl);
     }
     
-    protected <T> void bindTo(TypeLiteral<T> cls, Class<? extends T> impl) {
+    protected <T> void bindTo(String name, TypeLiteral<T> cls, Class<? extends T> impl) {
+        MapBinder<Class<G>, T> mapBinder = MapBinder.newMapBinder(binder(), G_LITERAL, cls, Names.named(name));
+        mapBinder.addBinding(gameCls).to(impl);
         bind(cls).annotatedWith(gameAnnoCls).to(impl);
     }
     
