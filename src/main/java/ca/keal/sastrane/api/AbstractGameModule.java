@@ -23,12 +23,17 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.lang.annotation.Annotation;
+import java.util.HashMap;
+import java.util.Map;
 
+// A WARNING TO ALL YE WHO DARE ENTER: here be the dragons of GENERICS HELL, forged from the EVILS of type erasure
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class AbstractGameModule<G extends Game> extends AbstractModule {
     
     private final Class<G> gameCls;
     private final Class<? extends Annotation> gameAnnoCls;
+    
+    private final Map<GameAttrib, PossiblyTypedValue<?>> attribsToValues = new HashMap<>();
     
     @Getter(lazy = true)
     @SuppressWarnings("unchecked")
@@ -39,36 +44,62 @@ public abstract class AbstractGameModule<G extends Game> extends AbstractModule 
     public void configure() {
         Multibinder<Game> gameBinder = Multibinder.newSetBinder(binder(), Game.class);
         gameBinder.addBinding().to(gameCls);
+        
+        attribsToValues.forEach((attrib, value) -> {
+            if (value.getCls() != null) {
+                doClassBinding(attrib, value);
+            } else if (value.getLiteral() != null) {
+                doLiteralBinding(attrib, value);
+            } else {
+                doClassBinding(attrib, value);
+            }
+        });
+    }
+    
+    @SuppressWarnings({"unchecked", "ConstantConditions"})
+    private <T> void doClassBinding(GameAttrib attrib, PossiblyTypedValue<T> ptv) {
+        MapBinder<Class<G>, T> mapBinder = MapBinder.newMapBinder(binder(), (Class<Class<G>>) gameCls.getClass(),
+                ptv.getCls(), GameAttrib.attribute(attrib));
+        completeBinding(mapBinder, ptv);
+    }
+    
+    @SuppressWarnings({"unchecked", "ConstantConditions"})
+    private <T> void doLiteralBinding(GameAttrib attrib, PossiblyTypedValue<T> ptv) {
+        MapBinder<Class<G>, T> mapBinder = MapBinder.newMapBinder(binder(), getGLiteral(), ptv.getLiteral(),
+                GameAttrib.attribute(attrib));
+        completeBinding(mapBinder, ptv);
+    }
+    
+    private <T> void completeBinding(MapBinder<Class<G>, T> mapBinder, PossiblyTypedValue<T> ptv) {
+        if (ptv.getValueCls() != null) {
+            mapBinder.addBinding(gameCls).to(ptv.getValueCls());
+        } else {
+            mapBinder.addBinding(gameCls).toInstance(ptv.getValue());
+        }
     }
     
     protected <T> void bindToInstance(GameAttrib attrib, Class<T> cls, T t) {
-        //noinspection unchecked
-        MapBinder<Class<G>, T> mapBinder = MapBinder.newMapBinder(binder(), (Class<Class<G>>) gameCls.getClass(), cls,
-                GameAttrib.attribute(attrib));
-        mapBinder.addBinding(gameCls).toInstance(t);
         bind(cls).annotatedWith(gameAnnoCls).toInstance(t);
+        attribsToValues.put(attrib, new PossiblyTypedValue<>(cls, t));
+        GameAttrib.autoAddAllPossible(attribsToValues);
     }
     
     protected <T> void bindToInstance(GameAttrib attrib, TypeLiteral<T> cls, T t) {
-        MapBinder<Class<G>, T> mapBinder = MapBinder.newMapBinder(binder(), getGLiteral(), cls,
-                GameAttrib.attribute(attrib));
-        mapBinder.addBinding(gameCls).toInstance(t);
         bind(cls).annotatedWith(gameAnnoCls).toInstance(t);
+        attribsToValues.put(attrib, new PossiblyTypedValue<>(cls, t));
+        GameAttrib.autoAddAllPossible(attribsToValues);
     }
     
     protected <T> void bindTo(GameAttrib attrib, Class<T> cls, Class<? extends T> impl) {
-        //noinspection unchecked
-        MapBinder<Class<G>, T> mapBinder = MapBinder.newMapBinder(binder(), (Class<Class<G>>) gameCls.getClass(), cls,
-                GameAttrib.attribute(attrib));
-        mapBinder.addBinding(gameCls).to(impl);
         bind(cls).annotatedWith(gameAnnoCls).to(impl);
+        attribsToValues.put(attrib, new PossiblyTypedValue<>(cls, impl));
+        GameAttrib.autoAddAllPossible(attribsToValues);
     }
     
     protected <T> void bindTo(GameAttrib attrib, TypeLiteral<T> cls, Class<? extends T> impl) {
-        MapBinder<Class<G>, T> mapBinder = MapBinder.newMapBinder(binder(), getGLiteral(), cls,
-                GameAttrib.attribute(attrib));
-        mapBinder.addBinding(gameCls).to(impl);
         bind(cls).annotatedWith(gameAnnoCls).to(impl);
+        attribsToValues.put(attrib, new PossiblyTypedValue<>(cls, impl));
+        GameAttrib.autoAddAllPossible(attribsToValues);
     }
     
 }

@@ -33,8 +33,6 @@ public class TicTacToeModule extends AbstractGameModule<TicTacToeGame> {
     
     @Override
     public void configure() {
-        super.configure();
-        
         bindToInstance(GameAttrib.NAME, Game.Name.class, new Game.Name("tictactoe"));
         bindToInstance(GameAttrib.PACKAGE, Game.Package.class, new Game.Package("ca.keal.sastrane.tictactoe"));
         bindToInstance(GameAttrib.PLAYERS, Player[].class, TicTacToePlayer.values());
@@ -45,6 +43,8 @@ public class TicTacToeModule extends AbstractGameModule<TicTacToeGame> {
                 .row("   "));
         bindToInstance(GameAttrib.PLACING_PIECES, PlacingPiece[].class, new PlacingPiece[] {new Mark()});
         bindTo(GameAttrib.ARBITRATOR, Arbitrator.class, TicTacToeArbitrator.class);
+    
+        super.configure();
     }
     
 }

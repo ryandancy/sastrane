@@ -34,8 +34,6 @@ public class ChessModule extends AbstractGameModule<ChessGame> {
     
     @Override
     public void configure() {
-        super.configure();
-        
         bindToInstance(GameAttrib.NAME, Game.Name.class, new Game.Name("chess"));
         bindToInstance(GameAttrib.PACKAGE, Game.Package.class, new Game.Package("ca.keal.sastrane.chess"));
         bindToInstance(GameAttrib.PLAYERS, Player[].class, ChessPlayer.values());
@@ -63,6 +61,8 @@ public class ChessModule extends AbstractGameModule<ChessGame> {
                 .piece('p', new OwnedPieceFactory(Pawn::new, ChessPlayer.WHITE)));
         bindTo(GameAttrib.ARBITRATOR, Arbitrator.class, ChessArbitrator.class);
         bindTo(GameAttrib.NOTATER, Notater.class, LongAlgebraicNotater.class);
+    
+        super.configure();
     }
     
 }

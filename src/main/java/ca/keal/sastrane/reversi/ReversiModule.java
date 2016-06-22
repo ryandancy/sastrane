@@ -35,8 +35,6 @@ public class ReversiModule extends AbstractGameModule<ReversiGame> {
     
     @Override
     public void configure() {
-        super.configure();
-        
         bindToInstance(GameAttrib.NAME, Game.Name.class, new Game.Name("reversi"));
         bindToInstance(GameAttrib.PACKAGE, Game.Package.class, new Game.Package("ca.keal.sastrane.reversi"));
         bindToInstance(GameAttrib.PLAYERS, Player[].class, ReversiPlayer.values());
@@ -55,6 +53,8 @@ public class ReversiModule extends AbstractGameModule<ReversiGame> {
         bindToInstance(GameAttrib.PLACING_PIECES, PlacingPiece[].class, new PlacingPiece[] {new Disk()});
         bindTo(GameAttrib.ARBITRATOR, Arbitrator.class, ReversiArbitrator.class);
         bindTo(GameAttrib.NOTATER, Notater.class, GridNotater.class);
+    
+        super.configure();
     }
     
 }

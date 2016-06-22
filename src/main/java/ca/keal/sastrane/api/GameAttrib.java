@@ -13,11 +13,102 @@
 
 package ca.keal.sastrane.api;
 
+import ca.keal.sastrane.util.Resource;
+
+import javax.annotation.Nullable;
+import java.util.Map;
+
 /** The attributes for {@link GameAttribute @GameAttribute}. GAAAH NAMING TROUBLES GAAAAH */
 public enum GameAttrib {
     
-    NAME, PACKAGE, RESOURCE_BUNDLE_NAME, I18N_NAME, ICON, CSS, PLAYERS, AI, BOARD_FACTORY, PLACING_PIECES,
-    ARBITRATOR, NOTATER;
+    NAME,
+    PACKAGE,
+    RESOURCE_BUNDLE_NAME {
+        @Override
+        protected GameAttrib[] getAutoAddDependencies() {
+            return new GameAttrib[] {NAME, PACKAGE};
+        }
+        
+        @Override
+        protected void autoAdd(Map<GameAttrib, PossiblyTypedValue<?>> attribs) {
+            attribs.put(this, new PossiblyTypedValue<>(String.class,
+                    attribs.get(PACKAGE) + ".i18n." + attribs.get(NAME)));
+        }
+    },
+    I18N_NAME {
+        @Override
+        protected GameAttrib[] getAutoAddDependencies() {
+            return new GameAttrib[] {NAME};
+        }
+        
+        @Override
+        protected void autoAdd(Map<GameAttrib, PossiblyTypedValue<?>> attribs) {
+            attribs.put(this, new PossiblyTypedValue<>(String.class, attribs.get(NAME) + ".name"));
+        }
+    },
+    ICON {
+        @Override
+        protected GameAttrib[] getAutoAddDependencies() {
+            return new GameAttrib[] {NAME, PACKAGE};
+        }
+        
+        @Override
+        @SuppressWarnings("ConstantConditions")
+        protected void autoAdd(Map<GameAttrib, PossiblyTypedValue<?>> attribs) {
+            attribs.put(this, new PossiblyTypedValue<>(Resource.class, new Resource(
+                    ((Game.Package) attribs.get(PACKAGE).getValue()).getPkg(), attribs.get(NAME) + ".png")));
+        }
+    },
+    CSS {
+        @Override
+        protected GameAttrib[] getAutoAddDependencies() {
+            return new GameAttrib[] {NAME, PACKAGE};
+        }
+        
+        @Override
+        @SuppressWarnings("ConstantConditions")
+        protected void autoAdd(Map<GameAttrib, PossiblyTypedValue<?>> attribs) {
+            assert attribs.get(PACKAGE).getValue() != null;
+            attribs.put(this, new PossiblyTypedValue<>(Resource.class, new Resource(
+                    ((Game.Package) attribs.get(PACKAGE).getValue()).getPkg(), attribs.get(NAME).getValue() + ".css")));
+        }
+    },
+    PLAYERS,
+    AI,
+    BOARD_FACTORY,
+    PLACING_PIECES,
+    ARBITRATOR,
+    NOTATER;
+    
+    // null = does not auto-add
+    @Nullable
+    protected GameAttrib[] getAutoAddDependencies() {
+        return null;
+    }
+    
+    protected void autoAdd(Map<GameAttrib, PossiblyTypedValue<?>> attribs) {}
+    
+    static void autoAddAllPossible(Map<GameAttrib, PossiblyTypedValue<?>> attribs) {
+        for (GameAttrib attrib : values()) {
+            if (attribs.containsKey(attrib)) continue; // no duplicates
+            
+            GameAttrib[] deps = attrib.getAutoAddDependencies();
+            if (deps == null) continue; // null = not an auto adder
+            
+            // check that all the dependencies are present
+            boolean allDepsPresent = true;
+            for (GameAttrib dep : deps) {
+                if (!attribs.containsKey(dep)) {
+                    allDepsPresent = false;
+                    break;
+                }
+            }
+            
+            if (allDepsPresent) {
+                attrib.autoAdd(attribs);
+            }
+        }
+    }
     
     public static GameAttribute attribute(GameAttrib value) {
         return new GameAttributeImpl(value);

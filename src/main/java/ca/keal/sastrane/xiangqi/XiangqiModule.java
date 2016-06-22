@@ -34,8 +34,6 @@ public class XiangqiModule extends AbstractGameModule<XiangqiGame> {
     
     @Override
     public void configure() {
-        super.configure();
-        
         bindToInstance(GameAttrib.NAME, Game.Name.class, new Game.Name("xiangqi"));
         bindToInstance(GameAttrib.PACKAGE, Game.Package.class, new Game.Package("ca.keal.sastrane.xiangqi"));
         bindToInstance(GameAttrib.PLAYERS, Player[].class, XiangqiPlayer.values());
@@ -68,6 +66,8 @@ public class XiangqiModule extends AbstractGameModule<XiangqiGame> {
         bindTo(GameAttrib.ARBITRATOR, Arbitrator.class, XiangqiArbitrator.class);
         bindTo(GameAttrib.NOTATER, Notater.class, WXFNotater.class);
         bind(PalaceLines.class);
+    
+        super.configure();
     }
     
 }
