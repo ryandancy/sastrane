@@ -18,6 +18,7 @@ import ca.keal.sastrane.api.AbstractGameModule;
 import ca.keal.sastrane.api.Arbitrator;
 import ca.keal.sastrane.api.Board;
 import ca.keal.sastrane.api.Game;
+import ca.keal.sastrane.api.GameAttrib;
 import ca.keal.sastrane.api.Notater;
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.piece.OwnedPieceFactory;
@@ -35,11 +36,11 @@ public class ChessModule extends AbstractGameModule<ChessGame> {
     public void configure() {
         super.configure();
         
-        bindToInstance(Game.Parameters.NAME, Game.Name.class, new Game.Name("chess"));
-        bindToInstance(Game.Parameters.PACKAGE, Game.Package.class, new Game.Package("ca.keal.sastrane.chess"));
-        bindToInstance(Game.Parameters.PLAYERS, Player[].class, ChessPlayer.values());
-        bindToInstance(Game.Parameters.AI, new TypeLiteral<Function<Double, AI>>() {}, ChessAI::new);
-        bindToInstance(Game.Parameters.BOARD_FACTORY, Board.Factory.class, Board.factory()
+        bindToInstance(GameAttrib.NAME, Game.Name.class, new Game.Name("chess"));
+        bindToInstance(GameAttrib.PACKAGE, Game.Package.class, new Game.Package("ca.keal.sastrane.chess"));
+        bindToInstance(GameAttrib.PLAYERS, Player[].class, ChessPlayer.values());
+        bindToInstance(GameAttrib.AI, new TypeLiteral<Function<Double, AI>>() {}, ChessAI::new);
+        bindToInstance(GameAttrib.BOARD_FACTORY, Board.Factory.class, Board.factory()
                 .row("RNBQKBNR")
                 .row("PPPPPPPP")
                 .row("        ")
@@ -60,8 +61,8 @@ public class ChessModule extends AbstractGameModule<ChessGame> {
                 .piece('q', new OwnedPieceFactory(Queen::new, ChessPlayer.WHITE))
                 .piece('k', new OwnedPieceFactory(King::new, ChessPlayer.WHITE))
                 .piece('p', new OwnedPieceFactory(Pawn::new, ChessPlayer.WHITE)));
-        bindTo(Game.Parameters.ARBITRATOR, Arbitrator.class, ChessArbitrator.class);
-        bindTo(Game.Parameters.NOTATER, Notater.class, LongAlgebraicNotater.class);
+        bindTo(GameAttrib.ARBITRATOR, Arbitrator.class, ChessArbitrator.class);
+        bindTo(GameAttrib.NOTATER, Notater.class, LongAlgebraicNotater.class);
     }
     
 }

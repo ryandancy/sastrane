@@ -35,11 +35,11 @@ public class XiangqiModule extends AbstractGameModule<XiangqiGame> {
     public void configure() {
         super.configure();
         
-        bindToInstance(Game.Parameters.NAME, Game.Name.class, new Game.Name("xiangqi"));
-        bindToInstance(Game.Parameters.PACKAGE, Game.Package.class, new Game.Package("ca.keal.sastrane.xiangqi"));
-        bindToInstance(Game.Parameters.PLAYERS, Player[].class, XiangqiPlayer.values());
-        bindToInstance(Game.Parameters.AI, new TypeLiteral<Function<Double, AI>>() {}, XiangqiAI::new);
-        bindToInstance(Game.Parameters.BOARD_FACTORY, Board.Factory.class, Board.factory()
+        bindToInstance(GameAttrib.NAME, Game.Name.class, new Game.Name("xiangqi"));
+        bindToInstance(GameAttrib.PACKAGE, Game.Package.class, new Game.Package("ca.keal.sastrane.xiangqi"));
+        bindToInstance(GameAttrib.PLAYERS, Player[].class, XiangqiPlayer.values());
+        bindToInstance(GameAttrib.AI, new TypeLiteral<Function<Double, AI>>() {}, XiangqiAI::new);
+        bindToInstance(GameAttrib.BOARD_FACTORY, Board.Factory.class, Board.factory()
                 .row("RHEAGAEHR")
                 .row("         ")
                 .row(" C     C ")
@@ -64,8 +64,8 @@ public class XiangqiModule extends AbstractGameModule<XiangqiGame> {
                 .piece('g', new OwnedPieceFactory(General::new, XiangqiPlayer.RED))
                 .piece('c', new OwnedPieceFactory(Cannon::new, XiangqiPlayer.RED))
                 .piece('s', new OwnedPieceFactory(Soldier::new, XiangqiPlayer.RED)));
-        bindTo(Game.Parameters.ARBITRATOR, Arbitrator.class, XiangqiArbitrator.class);
-        bindTo(Game.Parameters.NOTATER, Notater.class, WXFNotater.class);
+        bindTo(GameAttrib.ARBITRATOR, Arbitrator.class, XiangqiArbitrator.class);
+        bindTo(GameAttrib.NOTATER, Notater.class, WXFNotater.class);
         bind(PalaceLines.class);
     }
     

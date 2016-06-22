@@ -34,16 +34,16 @@ public class TicTacToeModule extends AbstractGameModule<TicTacToeGame> {
     public void configure() {
         super.configure();
         
-        bindToInstance(Game.Parameters.NAME, Game.Name.class, new Game.Name("tictactoe"));
-        bindToInstance(Game.Parameters.PACKAGE, Game.Package.class, new Game.Package("ca.keal.sastrane.tictactoe"));
-        bindToInstance(Game.Parameters.PLAYERS, Player[].class, TicTacToePlayer.values());
-        bindToInstance(Game.Parameters.AI, new TypeLiteral<Function<Double, AI>>() {}, TicTacToeAI::new);
-        bindToInstance(Game.Parameters.BOARD_FACTORY, Board.Factory.class, Board.factory()
+        bindToInstance(GameAttrib.NAME, Game.Name.class, new Game.Name("tictactoe"));
+        bindToInstance(GameAttrib.PACKAGE, Game.Package.class, new Game.Package("ca.keal.sastrane.tictactoe"));
+        bindToInstance(GameAttrib.PLAYERS, Player[].class, TicTacToePlayer.values());
+        bindToInstance(GameAttrib.AI, new TypeLiteral<Function<Double, AI>>() {}, TicTacToeAI::new);
+        bindToInstance(GameAttrib.BOARD_FACTORY, Board.Factory.class, Board.factory()
                 .row("   ")
                 .row("   ")
                 .row("   "));
-        bindToInstance(Game.Parameters.PLACING_PIECES, PlacingPiece[].class, new PlacingPiece[] {new Mark()});
-        bindTo(Game.Parameters.ARBITRATOR, Arbitrator.class, TicTacToeArbitrator.class);
+        bindToInstance(GameAttrib.PLACING_PIECES, PlacingPiece[].class, new PlacingPiece[] {new Mark()});
+        bindTo(GameAttrib.ARBITRATOR, Arbitrator.class, TicTacToeArbitrator.class);
     }
     
 }
