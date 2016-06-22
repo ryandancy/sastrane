@@ -17,7 +17,6 @@ import com.google.inject.AbstractModule;
 import com.google.inject.TypeLiteral;
 import com.google.inject.multibindings.MapBinder;
 import com.google.inject.multibindings.Multibinder;
-import com.google.inject.name.Names;
 import com.google.inject.util.Types;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -42,30 +41,32 @@ public abstract class AbstractGameModule<G extends Game> extends AbstractModule 
         gameBinder.addBinding().to(gameCls);
     }
     
-    protected <T> void bindToInstance(String name, Class<T> cls, T t) {
+    protected <T> void bindToInstance(GameAttrib attrib, Class<T> cls, T t) {
         //noinspection unchecked
         MapBinder<Class<G>, T> mapBinder = MapBinder.newMapBinder(binder(), (Class<Class<G>>) gameCls.getClass(), cls,
-                Names.named(name));
+                GameAttrib.attribute(attrib));
         mapBinder.addBinding(gameCls).toInstance(t);
         bind(cls).annotatedWith(gameAnnoCls).toInstance(t);
     }
     
-    protected <T> void bindToInstance(String name, TypeLiteral<T> cls, T t) {
-        MapBinder<Class<G>, T> mapBinder = MapBinder.newMapBinder(binder(), getGLiteral(), cls, Names.named(name));
+    protected <T> void bindToInstance(GameAttrib attrib, TypeLiteral<T> cls, T t) {
+        MapBinder<Class<G>, T> mapBinder = MapBinder.newMapBinder(binder(), getGLiteral(), cls,
+                GameAttrib.attribute(attrib));
         mapBinder.addBinding(gameCls).toInstance(t);
         bind(cls).annotatedWith(gameAnnoCls).toInstance(t);
     }
     
-    protected <T> void bindTo(String name, Class<T> cls, Class<? extends T> impl) {
+    protected <T> void bindTo(GameAttrib attrib, Class<T> cls, Class<? extends T> impl) {
         //noinspection unchecked
         MapBinder<Class<G>, T> mapBinder = MapBinder.newMapBinder(binder(), (Class<Class<G>>) gameCls.getClass(), cls,
-                Names.named(name));
+                GameAttrib.attribute(attrib));
         mapBinder.addBinding(gameCls).to(impl);
         bind(cls).annotatedWith(gameAnnoCls).to(impl);
     }
     
-    protected <T> void bindTo(String name, TypeLiteral<T> cls, Class<? extends T> impl) {
-        MapBinder<Class<G>, T> mapBinder = MapBinder.newMapBinder(binder(), getGLiteral(), cls, Names.named(name));
+    protected <T> void bindTo(GameAttrib attrib, TypeLiteral<T> cls, Class<? extends T> impl) {
+        MapBinder<Class<G>, T> mapBinder = MapBinder.newMapBinder(binder(), getGLiteral(), cls,
+                GameAttrib.attribute(attrib));
         mapBinder.addBinding(gameCls).to(impl);
         bind(cls).annotatedWith(gameAnnoCls).to(impl);
     }
