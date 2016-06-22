@@ -30,6 +30,8 @@ import java.util.Map;
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class AbstractGameModule<G extends Game> extends AbstractModule {
     
+    /** A unique string that identifies the game; usually a package name */
+    private final String id;
     private final Class<G> gameCls;
     private final Class<? extends Annotation> gameAnnoCls;
     
@@ -44,6 +46,9 @@ public abstract class AbstractGameModule<G extends Game> extends AbstractModule 
     public void configure() {
         Multibinder<Game> gameBinder = Multibinder.newSetBinder(binder(), Game.class);
         gameBinder.addBinding().to(gameCls);
+        
+        Multibinder<String> idBinder = Multibinder.newSetBinder(binder(), String.class);
+        idBinder.addBinding().toInstance(id);
         
         GameAttrib.fillInDefaults(attribsToValues);
         
@@ -60,23 +65,23 @@ public abstract class AbstractGameModule<G extends Game> extends AbstractModule 
     
     @SuppressWarnings({"unchecked", "ConstantConditions"})
     private <T> void doClassBinding(GameAttrib attrib, PossiblyTypedValue<T> ptv) {
-        MapBinder<Class<G>, T> mapBinder = MapBinder.newMapBinder(binder(), (Class<Class<G>>) gameCls.getClass(),
-                ptv.getCls(), GameAttrib.attribute(attrib));
+        MapBinder<String, T> mapBinder = MapBinder.newMapBinder(binder(), String.class, ptv.getCls(),
+                GameAttrib.attribute(attrib));
         completeBinding(mapBinder, ptv);
     }
     
     @SuppressWarnings({"unchecked", "ConstantConditions"})
     private <T> void doLiteralBinding(GameAttrib attrib, PossiblyTypedValue<T> ptv) {
-        MapBinder<Class<G>, T> mapBinder = MapBinder.newMapBinder(binder(), getGLiteral(), ptv.getLiteral(),
-                GameAttrib.attribute(attrib));
+        MapBinder<String, T> mapBinder = MapBinder.newMapBinder(binder(), TypeLiteral.get(String.class),
+                ptv.getLiteral(), GameAttrib.attribute(attrib));
         completeBinding(mapBinder, ptv);
     }
     
-    private <T> void completeBinding(MapBinder<Class<G>, T> mapBinder, PossiblyTypedValue<T> ptv) {
+    private <T> void completeBinding(MapBinder<String, T> mapBinder, PossiblyTypedValue<T> ptv) {
         if (ptv.getValueCls() != null) {
-            mapBinder.addBinding(gameCls).to(ptv.getValueCls());
+            mapBinder.addBinding(id).to(ptv.getValueCls());
         } else {
-            mapBinder.addBinding(gameCls).toInstance(ptv.getValue());
+            mapBinder.addBinding(id).toInstance(ptv.getValue());
         }
     }
     

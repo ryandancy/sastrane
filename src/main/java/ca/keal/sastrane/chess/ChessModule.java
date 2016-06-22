@@ -29,7 +29,7 @@ import java.util.function.Function;
 public class ChessModule extends AbstractGameModule<ChessGame> {
     
     public ChessModule() {
-        super(ChessGame.class, Chess.class);
+        super("ca.keal.sastrane.chess", ChessGame.class, Chess.class);
     }
     
     @Override

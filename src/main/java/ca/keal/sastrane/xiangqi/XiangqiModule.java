@@ -29,7 +29,7 @@ import java.util.function.Function;
 public class XiangqiModule extends AbstractGameModule<XiangqiGame> {
     
     public XiangqiModule() {
-        super(XiangqiGame.class, Xiangqi.class);
+        super("ca.keal.sastrane.xiangqi", XiangqiGame.class, Xiangqi.class);
     }
     
     @Override

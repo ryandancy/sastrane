@@ -28,7 +28,7 @@ import java.util.function.Function;
 public class TicTacToeModule extends AbstractGameModule<TicTacToeGame> {
     
     public TicTacToeModule() {
-        super(TicTacToeGame.class, TicTacToe.class);
+        super("ca.keal.sastrane.tictactoe", TicTacToeGame.class, TicTacToe.class);
     }
     
     @Override

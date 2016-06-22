@@ -30,7 +30,7 @@ import java.util.function.Function;
 public class ReversiModule extends AbstractGameModule<ReversiGame> {
     
     public ReversiModule() {
-        super(ReversiGame.class, Reversi.class);
+        super("ca.keal.sastrane.reversi", ReversiGame.class, Reversi.class);
     }
     
     @Override
