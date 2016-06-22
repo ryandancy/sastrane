@@ -25,6 +25,22 @@ import java.util.function.Function;
 
 public abstract class Game {
     
+    /** TODO make an enum variant of @Named and turn this into an enum */
+    public static class Parameters {
+        
+        public static final String NAME = "name";
+        public static final String PACKAGE = "package";
+        public static final String PLAYERS = "players";
+        public static final String AI = "ai";
+        public static final String BOARD_FACTORY = "board-factory";
+        public static final String PLACING_PIECES = "placing-pieces";
+        public static final String ARBITRATOR = "arbitrator";
+        public static final String NOTATER = "notater"; // it's temporary, ok?
+    
+        private Parameters() {}
+        
+    }
+    
     protected abstract Game.Name getName();
     
     protected abstract Game.Package getPackageName();

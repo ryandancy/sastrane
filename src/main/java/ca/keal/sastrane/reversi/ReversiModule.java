@@ -36,11 +36,11 @@ public class ReversiModule extends AbstractGameModule<ReversiGame> {
     public void configure() {
         super.configure();
         
-        bindToInstance("name", Game.Name.class, new Game.Name("reversi"));
-        bindToInstance("package", Game.Package.class, new Game.Package("ca.keal.sastrane.reversi"));
-        bindToInstance("players", Player[].class, ReversiPlayer.values());
-        bindToInstance("ai", new TypeLiteral<Function<Double, AI>>() {}, ReversiAI::new);
-        bindToInstance("board-factory", Board.Factory.class, Board.factory()
+        bindToInstance(Game.Parameters.NAME, Game.Name.class, new Game.Name("reversi"));
+        bindToInstance(Game.Parameters.PACKAGE, Game.Package.class, new Game.Package("ca.keal.sastrane.reversi"));
+        bindToInstance(Game.Parameters.PLAYERS, Player[].class, ReversiPlayer.values());
+        bindToInstance(Game.Parameters.AI, new TypeLiteral<Function<Double, AI>>() {}, ReversiAI::new);
+        bindToInstance(Game.Parameters.BOARD_FACTORY, Board.Factory.class, Board.factory()
                 .row("        ")
                 .row("        ")
                 .row("        ")
@@ -51,9 +51,9 @@ public class ReversiModule extends AbstractGameModule<ReversiGame> {
                 .row("        ")
                 .piece('B', new OwnedPieceFactory(Disk::new, ReversiPlayer.BLACK))
                 .piece('W', new OwnedPieceFactory(Disk::new, ReversiPlayer.WHITE)));
-        bindToInstance("placing-pieces", PlacingPiece[].class, new PlacingPiece[] {new Disk()});
-        bindTo("arbitrator", Arbitrator.class, ReversiArbitrator.class);
-        bindTo("notater", Notater.class, GridNotater.class);
+        bindToInstance(Game.Parameters.PLACING_PIECES, PlacingPiece[].class, new PlacingPiece[] {new Disk()});
+        bindTo(Game.Parameters.ARBITRATOR, Arbitrator.class, ReversiArbitrator.class);
+        bindTo(Game.Parameters.NOTATER, Notater.class, GridNotater.class);
     }
     
 }

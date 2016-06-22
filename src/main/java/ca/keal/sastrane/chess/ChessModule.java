@@ -35,11 +35,11 @@ public class ChessModule extends AbstractGameModule<ChessGame> {
     public void configure() {
         super.configure();
         
-        bindToInstance("name", Game.Name.class, new Game.Name("chess"));
-        bindToInstance("package", Game.Package.class, new Game.Package("ca.keal.sastrane.chess"));
-        bindToInstance("players", Player[].class, ChessPlayer.values());
-        bindToInstance("ai", new TypeLiteral<Function<Double, AI>>() {}, ChessAI::new);
-        bindToInstance("board-factory", Board.Factory.class, Board.factory()
+        bindToInstance(Game.Parameters.NAME, Game.Name.class, new Game.Name("chess"));
+        bindToInstance(Game.Parameters.PACKAGE, Game.Package.class, new Game.Package("ca.keal.sastrane.chess"));
+        bindToInstance(Game.Parameters.PLAYERS, Player[].class, ChessPlayer.values());
+        bindToInstance(Game.Parameters.AI, new TypeLiteral<Function<Double, AI>>() {}, ChessAI::new);
+        bindToInstance(Game.Parameters.BOARD_FACTORY, Board.Factory.class, Board.factory()
                 .row("RNBQKBNR")
                 .row("PPPPPPPP")
                 .row("        ")
@@ -60,8 +60,8 @@ public class ChessModule extends AbstractGameModule<ChessGame> {
                 .piece('q', new OwnedPieceFactory(Queen::new, ChessPlayer.WHITE))
                 .piece('k', new OwnedPieceFactory(King::new, ChessPlayer.WHITE))
                 .piece('p', new OwnedPieceFactory(Pawn::new, ChessPlayer.WHITE)));
-        bindTo("arbitrator", Arbitrator.class, ChessArbitrator.class);
-        bindTo("notater", Notater.class, LongAlgebraicNotater.class);
+        bindTo(Game.Parameters.ARBITRATOR, Arbitrator.class, ChessArbitrator.class);
+        bindTo(Game.Parameters.NOTATER, Notater.class, LongAlgebraicNotater.class);
     }
     
 }
