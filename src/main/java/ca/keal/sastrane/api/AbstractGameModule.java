@@ -18,7 +18,9 @@ import com.google.inject.TypeLiteral;
 import com.google.inject.multibindings.MapBinder;
 import com.google.inject.multibindings.Multibinder;
 import com.google.inject.name.Names;
+import com.google.inject.util.Types;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.lang.annotation.Annotation;
@@ -26,10 +28,13 @@ import java.lang.annotation.Annotation;
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class AbstractGameModule<G extends Game> extends AbstractModule {
     
-    private final TypeLiteral<Class<G>> G_LITERAL = new TypeLiteral<Class<G>>() {};
-    
     private final Class<G> gameCls;
     private final Class<? extends Annotation> gameAnnoCls;
+    
+    @Getter(lazy = true)
+    @SuppressWarnings("unchecked")
+    private final TypeLiteral<Class<G>> gLiteral = (TypeLiteral<Class<G>>) TypeLiteral.get(
+            Types.newParameterizedType(Class.class, gameCls)); // because generic type erasure is stupid
     
     @Override
     public void configure() {
@@ -46,7 +51,7 @@ public abstract class AbstractGameModule<G extends Game> extends AbstractModule 
     }
     
     protected <T> void bindToInstance(String name, TypeLiteral<T> cls, T t) {
-        MapBinder<Class<G>, T> mapBinder = MapBinder.newMapBinder(binder(), G_LITERAL, cls, Names.named(name));
+        MapBinder<Class<G>, T> mapBinder = MapBinder.newMapBinder(binder(), getGLiteral(), cls, Names.named(name));
         mapBinder.addBinding(gameCls).toInstance(t);
         bind(cls).annotatedWith(gameAnnoCls).toInstance(t);
     }
@@ -60,7 +65,7 @@ public abstract class AbstractGameModule<G extends Game> extends AbstractModule 
     }
     
     protected <T> void bindTo(String name, TypeLiteral<T> cls, Class<? extends T> impl) {
-        MapBinder<Class<G>, T> mapBinder = MapBinder.newMapBinder(binder(), G_LITERAL, cls, Names.named(name));
+        MapBinder<Class<G>, T> mapBinder = MapBinder.newMapBinder(binder(), getGLiteral(), cls, Names.named(name));
         mapBinder.addBinding(gameCls).to(impl);
         bind(cls).annotatedWith(gameAnnoCls).to(impl);
     }
