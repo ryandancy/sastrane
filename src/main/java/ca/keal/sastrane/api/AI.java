@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -40,8 +41,11 @@ public abstract class AI implements Mover {
     /** 1 >= difficulty >= 0 */
     private final double difficulty;
     
+    private final Map<String, Player[]> players;
+    private final Map<String, Arbitrator> arbitrators;
+    
     private double minimaxAlphaBeta(Round round, int depth, Player player) {
-        Set<Player> otherPlayers = Sets.newHashSet(round.getGame().getPlayers());
+        Set<Player> otherPlayers = Sets.newHashSet(players.get(round.getGameID()));
         otherPlayers.remove(player);
         return minimize(depth, LOSE, WIN, round, player, ImmutableSet.of(player), otherPlayers);
     }
@@ -118,7 +122,7 @@ public abstract class AI implements Mover {
     }
     
     private double doHeuristic(Round round, Set<Player> players) {
-        Result result = round.getGame().getArbitrator().arbitrate(round);
+        Result result = arbitrators.get(round.getGameID()).arbitrate(round);
         if (result instanceof Result.Win) {
             return players.contains(((Result.Win) result).getPlayer()) ? WIN : LOSE;
         } else if (result == Result.DRAW) {
@@ -129,5 +133,9 @@ public abstract class AI implements Mover {
     }
     
     protected abstract double heuristic(Round round, Set<Player> players);
+    
+    public interface Factory {
+        AI create(double difficulty);
+    }
     
 }

@@ -39,7 +39,6 @@ import lombok.SneakyThrows;
 
 import java.util.Arrays;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Setter
@@ -59,7 +58,7 @@ public class NewGameController extends GoBacker {
     private final Map<String, String> i18nNames;
     private final Map<String, Resource> css;
     private final Map<String, Player[]> players;
-    private final Map<String, Function<Double, AI>> ais;
+    private final Map<String, AI.Factory> ais;
     
     @Inject
     public NewGameController(GuiUtils guiUtils, SoundEffects soundFX,
@@ -67,7 +66,7 @@ public class NewGameController extends GoBacker {
                              @GameAttribute(GameAttrib.I18N_NAME) Map<String, String> i18nNames,
                              @GameAttribute(GameAttrib.CSS) Map<String, Resource> css,
                              @GameAttribute(GameAttrib.PLAYERS) Map<String, Player[]> players,
-                             @GameAttribute(GameAttrib.AI) Map<String, Function<Double, AI>> ais) {
+                             @GameAttribute(GameAttrib.AI) Map<String, AI.Factory> ais) {
         super(new Resource("ca.keal.sastrane.gui", "main-menu.fxml"), guiUtils);
         this.soundFX = soundFX;
         
@@ -106,7 +105,7 @@ public class NewGameController extends GoBacker {
                 .collect(Collectors.toMap(PlayerSettings::getPlayer, settings -> {
                     if (settings.getAiOrHumanButtons().getSelectedToggle().getUserData().equals("ai")) {
                         // AI
-                        return ais.get(gameID).apply(settings.getAiDifficulty().getValue());
+                        return ais.get(gameID).create(settings.getAiDifficulty().getValue());
                     } else {
                         // Human player
                         return new HumanMover(controller);

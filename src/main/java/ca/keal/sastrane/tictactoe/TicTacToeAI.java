@@ -14,15 +14,23 @@
 package ca.keal.sastrane.tictactoe;
 
 import ca.keal.sastrane.api.AI;
+import ca.keal.sastrane.api.Arbitrator;
+import ca.keal.sastrane.api.GameAttrib;
+import ca.keal.sastrane.api.GameAttribute;
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.Round;
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 
+import java.util.Map;
 import java.util.Set;
 
 class TicTacToeAI extends AI {
     
-    TicTacToeAI(double difficulty) {
-        super(difficulty);
+    @Inject
+    TicTacToeAI(@Assisted double difficulty, @GameAttribute(GameAttrib.PLAYERS) Map<String, Player[]> players,
+                @GameAttribute(GameAttrib.ARBITRATOR) Map<String, Arbitrator> arbitrators) {
+        super(difficulty, players, arbitrators);
     }
     
     @Override

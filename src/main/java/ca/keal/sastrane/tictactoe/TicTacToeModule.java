@@ -20,9 +20,6 @@ import ca.keal.sastrane.api.Board;
 import ca.keal.sastrane.api.GameAttrib;
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.piece.PlacingPiece;
-import com.google.inject.TypeLiteral;
-
-import java.util.function.Function;
 
 public class TicTacToeModule extends AbstractGameModule {
     
@@ -35,7 +32,7 @@ public class TicTacToeModule extends AbstractGameModule {
         bindToInstance(GameAttrib.NAME, String.class, "tictactoe");
         bindToInstance(GameAttrib.PACKAGE, String.class, "ca.keal.sastrane.tictactoe");
         bindToInstance(GameAttrib.PLAYERS, Player[].class, TicTacToePlayer.values());
-        bindToInstance(GameAttrib.AI, new TypeLiteral<Function<Double, AI>>() {}, TicTacToeAI::new);
+        installFactory(GameAttrib.AI, AI.Factory.class, TicTacToeAI.class);
         bindToInstance(GameAttrib.BOARD_FACTORY, Board.Factory.class, Board.factory()
                 .row("   ")
                 .row("   ")

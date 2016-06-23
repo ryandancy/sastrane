@@ -15,6 +15,7 @@ package ca.keal.sastrane.api;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.TypeLiteral;
+import com.google.inject.assistedinject.FactoryProvider;
 import com.google.inject.multibindings.MapBinder;
 import com.google.inject.multibindings.Multibinder;
 import lombok.AccessLevel;
@@ -87,6 +88,12 @@ public abstract class AbstractGameModule extends AbstractModule {
     
     protected <T> void bindTo(GameAttrib attrib, TypeLiteral<T> cls, Class<? extends T> impl) {
         attribsToValues.put(attrib, new PossiblyTypedValue<>(cls, impl));
+    }
+    
+    @SuppressWarnings("deprecation")
+    protected <F> void installFactory(GameAttrib attrib, Class<F> factoryCls, Class<?> impl) {
+        // We use the deprecated FactoryProvider because it allows us to get a factory instance to which we can bind
+        bindToInstance(attrib, factoryCls, FactoryProvider.newFactory(factoryCls, impl).get());
     }
     
 }

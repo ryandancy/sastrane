@@ -21,9 +21,6 @@ import ca.keal.sastrane.api.GameAttrib;
 import ca.keal.sastrane.api.Notater;
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.piece.OwnedPieceFactory;
-import com.google.inject.TypeLiteral;
-
-import java.util.function.Function;
 
 public class ChessModule extends AbstractGameModule {
     
@@ -36,7 +33,7 @@ public class ChessModule extends AbstractGameModule {
         bindToInstance(GameAttrib.NAME, String.class, "chess");
         bindToInstance(GameAttrib.PACKAGE, String.class, "ca.keal.sastrane.chess");
         bindToInstance(GameAttrib.PLAYERS, Player[].class, ChessPlayer.values());
-        bindToInstance(GameAttrib.AI, new TypeLiteral<Function<Double, AI>>() {}, ChessAI::new);
+        installFactory(GameAttrib.AI, AI.Factory.class, ChessAI.class);
         bindToInstance(GameAttrib.BOARD_FACTORY, Board.Factory.class, Board.factory()
                 .row("RNBQKBNR")
                 .row("PPPPPPPP")

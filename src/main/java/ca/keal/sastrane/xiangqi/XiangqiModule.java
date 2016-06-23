@@ -21,9 +21,6 @@ import ca.keal.sastrane.api.GameAttrib;
 import ca.keal.sastrane.api.Notater;
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.piece.OwnedPieceFactory;
-import com.google.inject.TypeLiteral;
-
-import java.util.function.Function;
 
 public class XiangqiModule extends AbstractGameModule {
     
@@ -36,7 +33,7 @@ public class XiangqiModule extends AbstractGameModule {
         bindToInstance(GameAttrib.NAME, String.class, "xiangqi");
         bindToInstance(GameAttrib.PACKAGE, String.class, "ca.keal.sastrane.xiangqi");
         bindToInstance(GameAttrib.PLAYERS, Player[].class, XiangqiPlayer.values());
-        bindToInstance(GameAttrib.AI, new TypeLiteral<Function<Double, AI>>() {}, XiangqiAI::new);
+        installFactory(GameAttrib.AI, AI.Factory.class, XiangqiAI.class);
         bindToInstance(GameAttrib.BOARD_FACTORY, Board.Factory.class, Board.factory()
                 .row("RHEAGAEHR")
                 .row("         ")

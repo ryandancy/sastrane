@@ -14,18 +14,26 @@
 package ca.keal.sastrane.reversi;
 
 import ca.keal.sastrane.api.AI;
+import ca.keal.sastrane.api.Arbitrator;
+import ca.keal.sastrane.api.GameAttrib;
+import ca.keal.sastrane.api.GameAttribute;
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.Round;
 import ca.keal.sastrane.util.Utils;
 import com.google.common.collect.Multiset;
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 import lombok.SneakyThrows;
 
+import java.util.Map;
 import java.util.Set;
 
 class ReversiAI extends AI {
     
-    ReversiAI(double difficulty) {
-        super(difficulty);
+    @Inject
+    ReversiAI(@Assisted double difficulty, @GameAttribute(GameAttrib.PLAYERS) Map<String, Player[]> players,
+              @GameAttribute(GameAttrib.ARBITRATOR) Map<String, Arbitrator> arbitrators) {
+        super(difficulty, players, arbitrators);
     }
     
     @Override

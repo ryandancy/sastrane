@@ -14,11 +14,16 @@
 package ca.keal.sastrane.chess;
 
 import ca.keal.sastrane.api.AI;
+import ca.keal.sastrane.api.Arbitrator;
+import ca.keal.sastrane.api.GameAttrib;
+import ca.keal.sastrane.api.GameAttribute;
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.Round;
 import ca.keal.sastrane.api.Square;
 import ca.keal.sastrane.api.piece.OwnedPiece;
 import ca.keal.sastrane.api.piece.Piece;
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -37,8 +42,10 @@ class ChessAI extends AI {
         pieceToNaiveValue.put(King.class, 1e9); // not Double.MAX_VALUE to avoid overflow
     }
     
-    ChessAI(double difficulty) {
-        super(difficulty);
+    @Inject
+    ChessAI(@Assisted double difficulty, @GameAttribute(GameAttrib.PLAYERS) Map<String, Player[]> players,
+            @GameAttribute(GameAttrib.ARBITRATOR) Map<String, Arbitrator> arbitrators) {
+        super(difficulty, players, arbitrators);
     }
     
     @Override

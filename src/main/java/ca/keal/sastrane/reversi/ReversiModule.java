@@ -22,9 +22,6 @@ import ca.keal.sastrane.api.Notater;
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.piece.OwnedPieceFactory;
 import ca.keal.sastrane.api.piece.PlacingPiece;
-import com.google.inject.TypeLiteral;
-
-import java.util.function.Function;
 
 public class ReversiModule extends AbstractGameModule {
     
@@ -37,7 +34,7 @@ public class ReversiModule extends AbstractGameModule {
         bindToInstance(GameAttrib.NAME, String.class, "reversi");
         bindToInstance(GameAttrib.PACKAGE, String.class, "ca.keal.sastrane.reversi");
         bindToInstance(GameAttrib.PLAYERS, Player[].class, ReversiPlayer.values());
-        bindToInstance(GameAttrib.AI, new TypeLiteral<Function<Double, AI>>() {}, ReversiAI::new);
+        installFactory(GameAttrib.AI, AI.Factory.class, ReversiAI.class);
         bindToInstance(GameAttrib.BOARD_FACTORY, Board.Factory.class, Board.factory()
                 .row("        ")
                 .row("        ")
