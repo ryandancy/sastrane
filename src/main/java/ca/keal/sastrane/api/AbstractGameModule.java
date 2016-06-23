@@ -17,36 +17,23 @@ import com.google.inject.AbstractModule;
 import com.google.inject.TypeLiteral;
 import com.google.inject.multibindings.MapBinder;
 import com.google.inject.multibindings.Multibinder;
-import com.google.inject.util.Types;
 import lombok.AccessLevel;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.lang.annotation.Annotation;
 import java.util.HashMap;
 import java.util.Map;
 
 // A WARNING TO ALL YE WHO DARE ENTER: here be the dragons of GENERICS HELL, forged from the EVILS of type erasure
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
-public abstract class AbstractGameModule<G extends Game> extends AbstractModule {
+public abstract class AbstractGameModule extends AbstractModule {
     
     /** A unique string that identifies the game; usually a package name */
     private final String id;
-    private final Class<G> gameCls;
-    private final Class<? extends Annotation> gameAnnoCls;
     
     private final Map<GameAttrib, PossiblyTypedValue<?>> attribsToValues = new HashMap<>();
     
-    @Getter(lazy = true)
-    @SuppressWarnings("unchecked")
-    private final TypeLiteral<Class<G>> gLiteral = (TypeLiteral<Class<G>>) TypeLiteral.get(
-            Types.newParameterizedType(Class.class, gameCls)); // because generic type erasure is stupid
-    
     @Override
     public void configure() {
-        Multibinder<Game> gameBinder = Multibinder.newSetBinder(binder(), Game.class);
-        gameBinder.addBinding().to(gameCls);
-        
         Multibinder<String> idBinder = Multibinder.newSetBinder(binder(), String.class);
         idBinder.addBinding().toInstance(id);
         
@@ -86,25 +73,21 @@ public abstract class AbstractGameModule<G extends Game> extends AbstractModule 
     }
     
     protected <T> void bindToInstance(GameAttrib attrib, Class<T> cls, T t) {
-        bind(cls).annotatedWith(gameAnnoCls).toInstance(t);
         attribsToValues.put(attrib, new PossiblyTypedValue<>(cls, t));
         GameAttrib.autoAddAllPossible(attribsToValues);
     }
     
     protected <T> void bindToInstance(GameAttrib attrib, TypeLiteral<T> cls, T t) {
-        bind(cls).annotatedWith(gameAnnoCls).toInstance(t);
         attribsToValues.put(attrib, new PossiblyTypedValue<>(cls, t));
         GameAttrib.autoAddAllPossible(attribsToValues);
     }
     
     protected <T> void bindTo(GameAttrib attrib, Class<T> cls, Class<? extends T> impl) {
-        bind(cls).annotatedWith(gameAnnoCls).to(impl);
         attribsToValues.put(attrib, new PossiblyTypedValue<>(cls, impl));
         GameAttrib.autoAddAllPossible(attribsToValues);
     }
     
     protected <T> void bindTo(GameAttrib attrib, TypeLiteral<T> cls, Class<? extends T> impl) {
-        bind(cls).annotatedWith(gameAnnoCls).to(impl);
         attribsToValues.put(attrib, new PossiblyTypedValue<>(cls, impl));
         GameAttrib.autoAddAllPossible(attribsToValues);
     }

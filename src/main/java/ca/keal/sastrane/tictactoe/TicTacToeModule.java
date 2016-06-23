@@ -17,7 +17,6 @@ import ca.keal.sastrane.api.AI;
 import ca.keal.sastrane.api.AbstractGameModule;
 import ca.keal.sastrane.api.Arbitrator;
 import ca.keal.sastrane.api.Board;
-import ca.keal.sastrane.api.Game;
 import ca.keal.sastrane.api.GameAttrib;
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.piece.PlacingPiece;
@@ -25,16 +24,16 @@ import com.google.inject.TypeLiteral;
 
 import java.util.function.Function;
 
-public class TicTacToeModule extends AbstractGameModule<TicTacToeGame> {
+public class TicTacToeModule extends AbstractGameModule {
     
     public TicTacToeModule() {
-        super("ca.keal.sastrane.tictactoe", TicTacToeGame.class, TicTacToe.class);
+        super("ca.keal.sastrane.tictactoe");
     }
     
     @Override
     public void configure() {
-        bindToInstance(GameAttrib.NAME, Game.Name.class, new Game.Name("tictactoe"));
-        bindToInstance(GameAttrib.PACKAGE, Game.Package.class, new Game.Package("ca.keal.sastrane.tictactoe"));
+        bindToInstance(GameAttrib.NAME, String.class, "tictactoe");
+        bindToInstance(GameAttrib.PACKAGE, String.class, "ca.keal.sastrane.tictactoe");
         bindToInstance(GameAttrib.PLAYERS, Player[].class, TicTacToePlayer.values());
         bindToInstance(GameAttrib.AI, new TypeLiteral<Function<Double, AI>>() {}, TicTacToeAI::new);
         bindToInstance(GameAttrib.BOARD_FACTORY, Board.Factory.class, Board.factory()

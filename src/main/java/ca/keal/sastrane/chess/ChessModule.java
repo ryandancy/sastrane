@@ -17,7 +17,6 @@ import ca.keal.sastrane.api.AI;
 import ca.keal.sastrane.api.AbstractGameModule;
 import ca.keal.sastrane.api.Arbitrator;
 import ca.keal.sastrane.api.Board;
-import ca.keal.sastrane.api.Game;
 import ca.keal.sastrane.api.GameAttrib;
 import ca.keal.sastrane.api.Notater;
 import ca.keal.sastrane.api.Player;
@@ -26,16 +25,16 @@ import com.google.inject.TypeLiteral;
 
 import java.util.function.Function;
 
-public class ChessModule extends AbstractGameModule<ChessGame> {
+public class ChessModule extends AbstractGameModule {
     
     public ChessModule() {
-        super("ca.keal.sastrane.chess", ChessGame.class, Chess.class);
+        super("ca.keal.sastrane.chess");
     }
     
     @Override
     public void configure() {
-        bindToInstance(GameAttrib.NAME, Game.Name.class, new Game.Name("chess"));
-        bindToInstance(GameAttrib.PACKAGE, Game.Package.class, new Game.Package("ca.keal.sastrane.chess"));
+        bindToInstance(GameAttrib.NAME, String.class, "chess");
+        bindToInstance(GameAttrib.PACKAGE, String.class, "ca.keal.sastrane.chess");
         bindToInstance(GameAttrib.PLAYERS, Player[].class, ChessPlayer.values());
         bindToInstance(GameAttrib.AI, new TypeLiteral<Function<Double, AI>>() {}, ChessAI::new);
         bindToInstance(GameAttrib.BOARD_FACTORY, Board.Factory.class, Board.factory()
