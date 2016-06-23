@@ -16,7 +16,11 @@ package ca.keal.sastrane.config;
 import org.aeonbits.owner.Accessible;
 import org.aeonbits.owner.Config;
 import org.aeonbits.owner.Config.Sources;
+import org.aeonbits.owner.Converter;
 import org.aeonbits.owner.Mutable;
+
+import java.lang.reflect.Method;
+import java.util.Locale;
 
 @Sources("file:" + SastraneConfig.FILE_PATH)
 public interface SastraneConfig extends Config, Accessible, Mutable {
@@ -34,5 +38,20 @@ public interface SastraneConfig extends Config, Accessible, Mutable {
     @Key(MUSIC_VOLUME_KEY)
     @DefaultValue("0.5")
     double musicVolume();
+    
+    String LOCALE_KEY = "locale";
+    
+    @Key(LOCALE_KEY)
+    @DefaultValue("en-US")
+    @ConverterClass(LocaleConverter.class)
+    Locale locale();
+    
+    /** Simple wrapper over {@link Locale#forLanguageTag(String)} as a {@link Converter} for OWNER. */
+    class LocaleConverter implements Converter<Locale> {
+        @Override
+        public Locale convert(Method method, String s) {
+            return Locale.forLanguageTag(s);
+        }
+    }
     
 }

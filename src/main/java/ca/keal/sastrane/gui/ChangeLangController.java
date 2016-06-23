@@ -13,6 +13,8 @@
 
 package ca.keal.sastrane.gui;
 
+import ca.keal.sastrane.config.ConfigUtils;
+import ca.keal.sastrane.config.SastraneConfig;
 import ca.keal.sastrane.util.I18n;
 import ca.keal.sastrane.util.Resource;
 import com.google.inject.Inject;
@@ -33,10 +35,12 @@ public class ChangeLangController extends GoBacker implements Initializable {
     @FXML private FlowPane langs;
     
     private final I18n i18n;
+    private final SastraneConfig cfg;
     
     @Inject
-    public ChangeLangController(I18n i18n, GuiUtils guiUtils) {
+    public ChangeLangController(I18n i18n, SastraneConfig cfg, GuiUtils guiUtils) {
         super(new Resource("ca.keal.sastrane.gui", "main-menu.fxml"), guiUtils);
+        this.cfg = cfg;
         this.i18n = i18n;
     }
     
@@ -49,7 +53,7 @@ public class ChangeLangController extends GoBacker implements Initializable {
         
         supportedLangs.forEach((lang, name) -> {
             Label label = new Label((String) name);
-            Locale locale = new Locale((String) lang);
+            Locale locale = Locale.forLanguageTag((String) lang);
             if (i18n.getLocale().equals(locale)) {
                 label.getStyleClass().add("current");
             }
@@ -59,9 +63,13 @@ public class ChangeLangController extends GoBacker implements Initializable {
         });
     }
     
+    @SneakyThrows
     private void changeLang(Event e, Locale locale) {
         i18n.setLocale(locale);
         goBack(e);
+        
+        cfg.setProperty(SastraneConfig.LOCALE_KEY, locale.toLanguageTag());
+        ConfigUtils.save(cfg);
     }
     
 }

@@ -76,6 +76,7 @@ public class Main extends GuiceApplication {
         soundFX.loadAll(new Resource("ca.keal.sastrane.audio.soundfx", "soundfx.properties"));
         music.shuffleAll(Resource.getAllFromFile(new Resource("ca.keal.sastrane.audio.music", "soundtrack.config")));
         
+        i18n.setLocale(cfg.locale());
         i18n.load("ca.keal.sastrane.i18n.sastrane");
         
         // Register all the games
