@@ -74,7 +74,6 @@ public enum GameAttrib {
         @Override
         @SuppressWarnings("ConstantConditions")
         protected void autoAdd(Map<GameAttrib, PossiblyTypedValue<?>> attribs) {
-            assert attribs.get(PACKAGE).getValue() != null;
             attribs.put(this, new PossiblyTypedValue<>(new Resource(
                     (String) attribs.get(PACKAGE).getValue(), attribs.get(NAME).getValue() + ".css")));
         }
@@ -83,6 +82,19 @@ public enum GameAttrib {
     AI,
     BOARD_FACTORY,
     PLACING_PIECES(new PossiblyTypedValue<>(new Player[0])),
+    /** Override this to return false if your game has both placing and non-placing pieces */
+    IS_PLACE_ONLY(new PossiblyTypedValue<>(false)) {
+        @Override
+        protected GameAttrib[] getAutoAddDependencies() {
+            return new GameAttrib[] {PLACING_PIECES};
+        }
+        
+        @Override
+        @SuppressWarnings("ConstantConditions")
+        protected void autoAdd(Map<GameAttrib, PossiblyTypedValue<?>> attribs) {
+            attribs.put(this, new PossiblyTypedValue<>(((Player[]) attribs.get(PLACING_PIECES).getValue()).length > 0));
+        }
+    },
     ARBITRATOR,
     NOTATER,
     DEFAULTS_REGISTRATOR(new PossiblyTypedValue<>(new TypeLiteral<Consumer<EventBus>>() {}, b -> {}));

@@ -15,7 +15,8 @@ package ca.keal.sastrane.gui;
 
 import ca.keal.sastrane.api.AI;
 import ca.keal.sastrane.api.Decision;
-import ca.keal.sastrane.api.Notatable;
+import ca.keal.sastrane.api.GameAttrib;
+import ca.keal.sastrane.api.GameAttribute;
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.Round;
 import ca.keal.sastrane.api.Square;
@@ -105,12 +106,31 @@ public class GameController extends GoBacker implements Initializable {
     private List<Square> selection = new ArrayList<>();
     private List<Move> selectionMoves = new ArrayList<>();
     
+    private String notation;
+    
     private final SoundEffects soundFX;
     
+    private final Map<String, String> i18nNames;
+    private final Map<String, Resource> css;
+    private final Map<String, Player[]> players;
+    private final Map<String, PlacingPiece[]> placingPieces;
+    private final Map<String, Boolean> isPlaceOnlies; // *really* awkward name
+    
     @Inject
-    public GameController(SoundEffects soundFX, GuiUtils guiUtils) {
+    public GameController(GuiUtils guiUtils, SoundEffects soundFX,
+                          @GameAttribute(GameAttrib.I18N_NAME) Map<String, String> i18nNames,
+                          @GameAttribute(GameAttrib.CSS) Map<String, Resource> css,
+                          @GameAttribute(GameAttrib.PLAYERS) Map<String, Player[]> players,
+                          @GameAttribute(GameAttrib.PLACING_PIECES) Map<String, PlacingPiece[]> placingPieces,
+                          @GameAttribute(GameAttrib.IS_PLACE_ONLY) Map<String, Boolean> isPlaceOnlies) {
         super(new Resource("ca.keal.sastrane.gui", "main-menu.fxml"), guiUtils);
         this.soundFX = soundFX;
+        
+        this.i18nNames = i18nNames;
+        this.css = css;
+        this.players = players;
+        this.placingPieces = placingPieces;
+        this.isPlaceOnlies = isPlaceOnlies;
     }
     
     @SneakyThrows
@@ -119,18 +139,18 @@ public class GameController extends GoBacker implements Initializable {
         this.round.getBoard().addListener(change -> updateBoardGrid());
         this.round.getBus().register(this);
         
-        String titleText = I18n.localize(round.getGame().getI18nName());
+        String titleText = I18n.localize(i18nNames.get(round.getGameID()));
         guiUtils.setTitle(titleText);
         title.setText(titleText);
         
-        game.getStylesheets().add(round.getGame().getCss().getFilename());
+        game.getStylesheets().add(css.get(round.getGameID()).getFilename());
         
-        int numPlacingPieces = round.getGame().getPlacingPieces().length;
-        if (numPlacingPieces > 1 || (numPlacingPieces == 1 && !round.getGame().isPlaceOnly())) {
+        int numPlacingPieces = placingPieces.get(round.getGameID()).length;
+        if (numPlacingPieces > 1 || (numPlacingPieces == 1 && !isPlaceOnlies.get(round.getGameID()))) {
             playersToPieceChooserGroups = new HashMap<>();
-            for (Player player : round.getGame().getPlayers()) {
+            for (Player player : players.get(round.getGameID())) {
                 ToggleGroup pieceChooserGroup = new ToggleGroup();
-                for (PlacingPiece piece : round.getGame().getPlacingPieces()) {
+                for (PlacingPiece piece : placingPieces.get(round.getGameID())) {
                     addPlacingPiece(piece, player, pieceChooserGroup);
                 }
                 playersToPieceChooserGroups.put(player, pieceChooserGroup);
@@ -185,8 +205,8 @@ public class GameController extends GoBacker implements Initializable {
         updateBoardGrid();
         
         // Total hack: check CSS file for grid-type property (it's a looked-up colour so the CSS parser accepts it)
-        String css = Files.toString(new File(round.getGame().getCss().get().toURI()), StandardCharsets.UTF_8);
-        if (css.matches("(?s).*(?:-sastrane-)?grid-type:\\s*point.*")) {
+        String cssStr = Files.toString(new File(css.get(round.getGameID()).get().toURI()), StandardCharsets.UTF_8);
+        if (cssStr.matches("(?s).*(?:-sastrane-)?grid-type:\\s*point.*")) {
             usePoints();
         }
         
@@ -377,8 +397,8 @@ public class GameController extends GoBacker implements Initializable {
     
     @Nullable
     private PlacingPiece getCurrentPlacingPiece() {
-        if (round.getGame().getPlacingPieces().length == 0) return null;
-        if (playersToPieceChooserGroups == null) return round.getGame().getPlacingPieces()[0];
+        if (placingPieces.get(round.getGameID()).length == 0) return null;
+        if (playersToPieceChooserGroups == null) return placingPieces.get(round.getGameID())[0];
         return (PlacingPiece) playersToPieceChooserGroups.get(round.getCurrentTurn()).getUserData();
     }
     
@@ -414,8 +434,9 @@ public class GameController extends GoBacker implements Initializable {
                     winText.setText(I18n.localize("gui.game.result.win", I18n.localize(winner.getI18nName())));
                 }
                 
-                if (e.getRound().getGame() instanceof Notatable) {
+                if (e.getNotation() != null) {
                     notationBtn.setVisible(true);
+                    notation = e.getNotation();
                 }
                 
                 winPane.setMouseTransparent(false);
@@ -456,7 +477,7 @@ public class GameController extends GoBacker implements Initializable {
         
         SimpleTextController controller = loader.getController();
         controller.setTitle(I18n.localize("gui.game.over.notation"));
-        controller.setText(((Notatable) round.getGame()).getNotater().notate(round.getMoves()));
+        controller.setText(notation);
         controller.setPreviousScene(new Resource("ca.keal.sastrane.gui", "main-menu.fxml"));
         controller.useMonospacedFont();
         
