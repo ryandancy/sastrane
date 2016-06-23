@@ -25,7 +25,7 @@ import java.lang.annotation.Annotation;
 @SuppressWarnings("ClassExplicitlyAnnotation")
 class GameAttributeImpl implements GameAttribute {
     
-    private final GameAttrib value;
+    private final GameAttr value;
     
     @Override
     public Class<? extends Annotation> annotationType() {

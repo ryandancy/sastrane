@@ -20,12 +20,12 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-/** Like @Named, but for {@link GameAttrib}s. Annotates a Map of games to attributes (like package or arbitrator) */
+/** Like @Named, but for {@link GameAttr}s. Annotates a Map of games to attributes (like package or arbitrator) */
 @BindingAnnotation
 @Target({ElementType.PARAMETER, ElementType.CONSTRUCTOR, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface GameAttribute {
     
-    GameAttrib value();
+    GameAttr value();
     
 }

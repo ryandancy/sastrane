@@ -37,7 +37,7 @@ public class GameRegistrar {
     private final Map<String, String> resourceBundleNames;
     
     @Inject
-    public GameRegistrar(@GameAttribute(GameAttrib.RESOURCE_BUNDLE_NAME) Map<String, String> resourceBundleNames) {
+    public GameRegistrar(@GameAttribute(GameAttr.RESOURCE_BUNDLE_NAME) Map<String, String> resourceBundleNames) {
         this.resourceBundleNames = resourceBundleNames;
     }
     

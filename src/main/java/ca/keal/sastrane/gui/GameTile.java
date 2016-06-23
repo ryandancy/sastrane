@@ -13,7 +13,7 @@
 
 package ca.keal.sastrane.gui;
 
-import ca.keal.sastrane.api.GameAttrib;
+import ca.keal.sastrane.api.GameAttr;
 import ca.keal.sastrane.api.GameAttribute;
 import ca.keal.sastrane.util.Resource;
 import com.google.inject.Inject;
@@ -47,9 +47,9 @@ public class GameTile extends VBox implements Initializable {
     
     @Inject
     @SneakyThrows
-    GameTile(@Assisted String gameID, @GameAttribute(GameAttrib.I18N_NAME) Map<String, String> i18nNames,
-             @GameAttribute(GameAttrib.ICON) Map<String, Resource> icons,
-             @GameAttribute(GameAttrib.CSS) Map<String, Resource> css, GuiUtils guiUtils) {
+    GameTile(@Assisted String gameID, @GameAttribute(GameAttr.I18N_NAME) Map<String, String> i18nNames,
+             @GameAttribute(GameAttr.ICON) Map<String, Resource> icons,
+             @GameAttribute(GameAttr.CSS) Map<String, Resource> css, GuiUtils guiUtils) {
         this.gameID = gameID;
         this.i18nNames = i18nNames;
         this.icons = icons;

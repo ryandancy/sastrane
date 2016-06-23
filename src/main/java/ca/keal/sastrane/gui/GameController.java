@@ -15,7 +15,7 @@ package ca.keal.sastrane.gui;
 
 import ca.keal.sastrane.api.AI;
 import ca.keal.sastrane.api.Decision;
-import ca.keal.sastrane.api.GameAttrib;
+import ca.keal.sastrane.api.GameAttr;
 import ca.keal.sastrane.api.GameAttribute;
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.Round;
@@ -118,11 +118,11 @@ public class GameController extends GoBacker implements Initializable {
     
     @Inject
     public GameController(GuiUtils guiUtils, SoundEffects soundFX,
-                          @GameAttribute(GameAttrib.I18N_NAME) Map<String, String> i18nNames,
-                          @GameAttribute(GameAttrib.CSS) Map<String, Resource> css,
-                          @GameAttribute(GameAttrib.PLAYERS) Map<String, Player[]> players,
-                          @GameAttribute(GameAttrib.PLACING_PIECES) Map<String, PlacingPiece[]> placingPieces,
-                          @GameAttribute(GameAttrib.IS_PLACE_ONLY) Map<String, Boolean> isPlaceOnlies) {
+                          @GameAttribute(GameAttr.I18N_NAME) Map<String, String> i18nNames,
+                          @GameAttribute(GameAttr.CSS) Map<String, Resource> css,
+                          @GameAttribute(GameAttr.PLAYERS) Map<String, Player[]> players,
+                          @GameAttribute(GameAttr.PLACING_PIECES) Map<String, PlacingPiece[]> placingPieces,
+                          @GameAttribute(GameAttr.IS_PLACE_ONLY) Map<String, Boolean> isPlaceOnlies) {
         super(new Resource("ca.keal.sastrane.gui", "main-menu.fxml"), guiUtils);
         this.soundFX = soundFX;
         

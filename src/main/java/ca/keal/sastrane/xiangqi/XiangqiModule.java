@@ -17,7 +17,7 @@ import ca.keal.sastrane.api.AI;
 import ca.keal.sastrane.api.AbstractGameModule;
 import ca.keal.sastrane.api.Arbitrator;
 import ca.keal.sastrane.api.Board;
-import ca.keal.sastrane.api.GameAttrib;
+import ca.keal.sastrane.api.GameAttr;
 import ca.keal.sastrane.api.Notater;
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.piece.OwnedPieceFactory;
@@ -30,11 +30,11 @@ public class XiangqiModule extends AbstractGameModule {
     
     @Override
     public void configure() {
-        bindToInstance(GameAttrib.NAME, String.class, "xiangqi");
-        bindToInstance(GameAttrib.PACKAGE, String.class, "ca.keal.sastrane.xiangqi");
-        bindToInstance(GameAttrib.PLAYERS, Player[].class, XiangqiPlayer.values());
-        installFactory(GameAttrib.AI, AI.Factory.class, XiangqiAI.class);
-        bindToInstance(GameAttrib.BOARD_FACTORY, Board.Factory.class, Board.factory()
+        bindToInstance(GameAttr.NAME, String.class, "xiangqi");
+        bindToInstance(GameAttr.PACKAGE, String.class, "ca.keal.sastrane.xiangqi");
+        bindToInstance(GameAttr.PLAYERS, Player[].class, XiangqiPlayer.values());
+        installFactory(GameAttr.AI, AI.Factory.class, XiangqiAI.class);
+        bindToInstance(GameAttr.BOARD_FACTORY, Board.Factory.class, Board.factory()
                 .row("RHEAGAEHR")
                 .row("         ")
                 .row(" C     C ")
@@ -59,8 +59,8 @@ public class XiangqiModule extends AbstractGameModule {
                 .piece('g', new OwnedPieceFactory(General::new, XiangqiPlayer.RED))
                 .piece('c', new OwnedPieceFactory(Cannon::new, XiangqiPlayer.RED))
                 .piece('s', new OwnedPieceFactory(Soldier::new, XiangqiPlayer.RED)));
-        bindTo(GameAttrib.ARBITRATOR, Arbitrator.class, XiangqiArbitrator.class);
-        bindTo(GameAttrib.NOTATER, Notater.class, WXFNotater.class);
+        bindTo(GameAttr.ARBITRATOR, Arbitrator.class, XiangqiArbitrator.class);
+        bindTo(GameAttr.NOTATER, Notater.class, WXFNotater.class);
         bind(PalaceLines.class);
     
         super.configure();

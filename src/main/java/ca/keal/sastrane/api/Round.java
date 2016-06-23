@@ -61,13 +61,13 @@ public class Round {
     
     @Inject
     public Round(@Assisted String gameID, @Assisted Map<Player, Mover> playersToMovers,
-                 @GameAttribute(GameAttrib.NAME) Map<String, String> names,
-                 @GameAttribute(GameAttrib.BOARD_FACTORY) Map<String, Board.Factory> boardFactories,
-                 @GameAttribute(GameAttrib.DEFAULTS_REGISTRATOR) Map<String, Consumer<EventBus>> defaultsRegistrators,
-                 @GameAttribute(GameAttrib.PLAYERS) Map<String, Player[]> players,
-                 @GameAttribute(GameAttrib.PLACING_PIECES) Map<String, PlacingPiece[]> placingPieces,
-                 @GameAttribute(GameAttrib.ARBITRATOR) Map<String, Arbitrator> arbitrators,
-                 @GameAttribute(GameAttrib.NOTATER) Map<String, Notater> notaters) {
+                 @GameAttribute(GameAttr.NAME) Map<String, String> names,
+                 @GameAttribute(GameAttr.BOARD_FACTORY) Map<String, Board.Factory> boardFactories,
+                 @GameAttribute(GameAttr.DEFAULTS_REGISTRATOR) Map<String, Consumer<EventBus>> defaultsRegistrators,
+                 @GameAttribute(GameAttr.PLAYERS) Map<String, Player[]> players,
+                 @GameAttribute(GameAttr.PLACING_PIECES) Map<String, PlacingPiece[]> placingPieces,
+                 @GameAttribute(GameAttr.ARBITRATOR) Map<String, Arbitrator> arbitrators,
+                 @GameAttribute(GameAttr.NOTATER) Map<String, Notater> notaters) {
         if (!Utils.areElementsEqual(playersToMovers.keySet(), Arrays.asList(players.get(gameID)))) {
             throw new IllegalArgumentException("Round: playersToMovers.keySet() must = game.getCombatants()");
         }

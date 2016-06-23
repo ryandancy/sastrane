@@ -32,15 +32,15 @@ public abstract class AbstractGameModule extends AbstractModule {
     /** A unique string that identifies the game; usually a package name */
     private final String id;
     
-    private final Map<GameAttrib, PossiblyTypedValue<?>> attribsToValues = new HashMap<>();
+    private final Map<GameAttr, PossiblyTypedValue<?>> attribsToValues = new HashMap<>();
     
     @Override
     public void configure() {
         Multibinder<String> idBinder = Multibinder.newSetBinder(binder(), String.class);
         idBinder.addBinding().toInstance(id);
 
-        GameAttrib.autoAddAllPossible(attribsToValues);
-        GameAttrib.fillInDefaults(attribsToValues);
+        GameAttr.autoAddAllPossible(attribsToValues);
+        GameAttr.fillInDefaults(attribsToValues);
 
         attribsToValues.forEach((attrib, value) -> {
             if (value.getLiteral() != null) {
@@ -52,16 +52,16 @@ public abstract class AbstractGameModule extends AbstractModule {
     }
     
     @SuppressWarnings({"unchecked", "ConstantConditions"})
-    private <T> void doClassBinding(GameAttrib attrib, PossiblyTypedValue<T> ptv) {
+    private <T> void doClassBinding(GameAttr attrib, PossiblyTypedValue<T> ptv) {
         MapBinder<String, T> mapBinder = MapBinder.newMapBinder(binder(), String.class, ptv.getCls(),
-                GameAttrib.attribute(attrib));
+                GameAttr.attribute(attrib));
         completeBinding(mapBinder, ptv);
     }
     
     @SuppressWarnings({"unchecked", "ConstantConditions"})
-    private <T> void doLiteralBinding(GameAttrib attrib, PossiblyTypedValue<T> ptv) {
+    private <T> void doLiteralBinding(GameAttr attrib, PossiblyTypedValue<T> ptv) {
         MapBinder<String, T> mapBinder = MapBinder.newMapBinder(binder(), TypeLiteral.get(String.class),
-                ptv.getLiteral(), GameAttrib.attribute(attrib));
+                ptv.getLiteral(), GameAttr.attribute(attrib));
         completeBinding(mapBinder, ptv);
     }
     
@@ -75,32 +75,32 @@ public abstract class AbstractGameModule extends AbstractModule {
         }
     }
     
-    protected <T> void bindToInstance(GameAttrib attrib, Class<T> cls, T t) {
+    protected <T> void bindToInstance(GameAttr attrib, Class<T> cls, T t) {
         attribsToValues.put(attrib, new PossiblyTypedValue<>(cls, t));
     }
     
-    protected <T> void bindToInstance(GameAttrib attrib, TypeLiteral<T> cls, T t) {
+    protected <T> void bindToInstance(GameAttr attrib, TypeLiteral<T> cls, T t) {
         attribsToValues.put(attrib, new PossiblyTypedValue<>(cls, t));
     }
     
-    protected <T> void bindTo(GameAttrib attrib, Class<T> cls, Class<? extends T> impl) {
+    protected <T> void bindTo(GameAttr attrib, Class<T> cls, Class<? extends T> impl) {
         attribsToValues.put(attrib, new PossiblyTypedValue<>(cls, impl));
     }
     
-    protected <T> void bindTo(GameAttrib attrib, TypeLiteral<T> cls, Class<? extends T> impl) {
+    protected <T> void bindTo(GameAttr attrib, TypeLiteral<T> cls, Class<? extends T> impl) {
         attribsToValues.put(attrib, new PossiblyTypedValue<>(cls, impl));
     }
     
-    protected <T> void bindToProvider(GameAttrib attrib, Class<T> cls, Provider<T> provider) {
+    protected <T> void bindToProvider(GameAttr attrib, Class<T> cls, Provider<T> provider) {
         attribsToValues.put(attrib, new PossiblyTypedValue<>(cls, provider));
     }
     
-    protected <T> void bindToProvider(GameAttrib attrib, TypeLiteral<T> cls, Provider<T> provider) {
+    protected <T> void bindToProvider(GameAttr attrib, TypeLiteral<T> cls, Provider<T> provider) {
         attribsToValues.put(attrib, new PossiblyTypedValue<>(cls, provider));
     }
     
     @SuppressWarnings("deprecation")
-    protected <F> void installFactory(GameAttrib attrib, Class<F> factoryCls, Class<?> impl) {
+    protected <F> void installFactory(GameAttr attrib, Class<F> factoryCls, Class<?> impl) {
         // We use the deprecated FactoryProvider because it's a provider - FactoryModuleBuilder wouldn't work
         bindToProvider(attrib, factoryCls, FactoryProvider.newFactory(factoryCls, impl));
     }

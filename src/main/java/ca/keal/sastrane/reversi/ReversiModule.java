@@ -17,7 +17,7 @@ import ca.keal.sastrane.api.AI;
 import ca.keal.sastrane.api.AbstractGameModule;
 import ca.keal.sastrane.api.Arbitrator;
 import ca.keal.sastrane.api.Board;
-import ca.keal.sastrane.api.GameAttrib;
+import ca.keal.sastrane.api.GameAttr;
 import ca.keal.sastrane.api.Notater;
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.piece.OwnedPieceFactory;
@@ -31,11 +31,11 @@ public class ReversiModule extends AbstractGameModule {
     
     @Override
     public void configure() {
-        bindToInstance(GameAttrib.NAME, String.class, "reversi");
-        bindToInstance(GameAttrib.PACKAGE, String.class, "ca.keal.sastrane.reversi");
-        bindToInstance(GameAttrib.PLAYERS, Player[].class, ReversiPlayer.values());
-        installFactory(GameAttrib.AI, AI.Factory.class, ReversiAI.class);
-        bindToInstance(GameAttrib.BOARD_FACTORY, Board.Factory.class, Board.factory()
+        bindToInstance(GameAttr.NAME, String.class, "reversi");
+        bindToInstance(GameAttr.PACKAGE, String.class, "ca.keal.sastrane.reversi");
+        bindToInstance(GameAttr.PLAYERS, Player[].class, ReversiPlayer.values());
+        installFactory(GameAttr.AI, AI.Factory.class, ReversiAI.class);
+        bindToInstance(GameAttr.BOARD_FACTORY, Board.Factory.class, Board.factory()
                 .row("        ")
                 .row("        ")
                 .row("        ")
@@ -46,9 +46,9 @@ public class ReversiModule extends AbstractGameModule {
                 .row("        ")
                 .piece('B', new OwnedPieceFactory(Disk::new, ReversiPlayer.BLACK))
                 .piece('W', new OwnedPieceFactory(Disk::new, ReversiPlayer.WHITE)));
-        bindToInstance(GameAttrib.PLACING_PIECES, PlacingPiece[].class, new PlacingPiece[] {new Disk()});
-        bindTo(GameAttrib.ARBITRATOR, Arbitrator.class, ReversiArbitrator.class);
-        bindTo(GameAttrib.NOTATER, Notater.class, GridNotater.class);
+        bindToInstance(GameAttr.PLACING_PIECES, PlacingPiece[].class, new PlacingPiece[] {new Disk()});
+        bindTo(GameAttr.ARBITRATOR, Arbitrator.class, ReversiArbitrator.class);
+        bindTo(GameAttr.NOTATER, Notater.class, GridNotater.class);
     
         super.configure();
     }

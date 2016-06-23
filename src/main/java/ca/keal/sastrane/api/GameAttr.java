@@ -27,54 +27,54 @@ import java.util.function.Consumer;
 /** The attributes for {@link GameAttribute @GameAttribute}. GAAAH NAMING TROUBLES GAAAAH */
 @AllArgsConstructor
 @NoArgsConstructor
-public enum GameAttrib {
+public enum GameAttr {
     
     NAME,
     PACKAGE,
     RESOURCE_BUNDLE_NAME {
         @Override
-        protected GameAttrib[] getAutoAddDependencies() {
-            return new GameAttrib[] {NAME, PACKAGE};
+        protected GameAttr[] getAutoAddDependencies() {
+            return new GameAttr[] {NAME, PACKAGE};
         }
         
         @Override
-        protected void autoAdd(Map<GameAttrib, PossiblyTypedValue<?>> attribs) {
+        protected void autoAdd(Map<GameAttr, PossiblyTypedValue<?>> attribs) {
             attribs.put(this, new PossiblyTypedValue<>(attribs.get(PACKAGE) + ".i18n." + attribs.get(NAME)));
         }
     },
     I18N_NAME {
         @Override
-        protected GameAttrib[] getAutoAddDependencies() {
-            return new GameAttrib[] {NAME};
+        protected GameAttr[] getAutoAddDependencies() {
+            return new GameAttr[] {NAME};
         }
         
         @Override
-        protected void autoAdd(Map<GameAttrib, PossiblyTypedValue<?>> attribs) {
+        protected void autoAdd(Map<GameAttr, PossiblyTypedValue<?>> attribs) {
             attribs.put(this, new PossiblyTypedValue<>(attribs.get(NAME) + ".name"));
         }
     },
     ICON {
         @Override
-        protected GameAttrib[] getAutoAddDependencies() {
-            return new GameAttrib[] {NAME, PACKAGE};
+        protected GameAttr[] getAutoAddDependencies() {
+            return new GameAttr[] {NAME, PACKAGE};
         }
         
         @Override
         @SuppressWarnings("ConstantConditions")
-        protected void autoAdd(Map<GameAttrib, PossiblyTypedValue<?>> attribs) {
+        protected void autoAdd(Map<GameAttr, PossiblyTypedValue<?>> attribs) {
             attribs.put(this, new PossiblyTypedValue<>(new Resource(
                     (String) attribs.get(PACKAGE).getValue(), attribs.get(NAME) + ".png")));
         }
     },
     CSS {
         @Override
-        protected GameAttrib[] getAutoAddDependencies() {
-            return new GameAttrib[] {NAME, PACKAGE};
+        protected GameAttr[] getAutoAddDependencies() {
+            return new GameAttr[] {NAME, PACKAGE};
         }
         
         @Override
         @SuppressWarnings("ConstantConditions")
-        protected void autoAdd(Map<GameAttrib, PossiblyTypedValue<?>> attribs) {
+        protected void autoAdd(Map<GameAttr, PossiblyTypedValue<?>> attribs) {
             attribs.put(this, new PossiblyTypedValue<>(new Resource(
                     (String) attribs.get(PACKAGE).getValue(), attribs.get(NAME) + ".css")));
         }
@@ -86,13 +86,13 @@ public enum GameAttrib {
     /** Override this to return false if your game has both placing and non-placing pieces */
     IS_PLACE_ONLY(new PossiblyTypedValue<>(false)) {
         @Override
-        protected GameAttrib[] getAutoAddDependencies() {
-            return new GameAttrib[] {PLACING_PIECES};
+        protected GameAttr[] getAutoAddDependencies() {
+            return new GameAttr[] {PLACING_PIECES};
         }
         
         @Override
         @SuppressWarnings("ConstantConditions")
-        protected void autoAdd(Map<GameAttrib, PossiblyTypedValue<?>> attribs) {
+        protected void autoAdd(Map<GameAttr, PossiblyTypedValue<?>> attribs) {
             attribs.put(this, new PossiblyTypedValue<>(
                     ((PlacingPiece[]) attribs.get(PLACING_PIECES).getValue()).length > 0));
         }
@@ -105,22 +105,22 @@ public enum GameAttrib {
     
     // null = does not auto-add
     @Nullable
-    protected GameAttrib[] getAutoAddDependencies() {
+    protected GameAttr[] getAutoAddDependencies() {
         return null;
     }
     
-    protected void autoAdd(Map<GameAttrib, PossiblyTypedValue<?>> attribs) {}
+    protected void autoAdd(Map<GameAttr, PossiblyTypedValue<?>> attribs) {}
     
-    static void autoAddAllPossible(Map<GameAttrib, PossiblyTypedValue<?>> attribs) {
-        for (GameAttrib attrib : values()) {
+    static void autoAddAllPossible(Map<GameAttr, PossiblyTypedValue<?>> attribs) {
+        for (GameAttr attrib : values()) {
             if (attribs.containsKey(attrib)) continue; // no duplicates
             
-            GameAttrib[] deps = attrib.getAutoAddDependencies();
+            GameAttr[] deps = attrib.getAutoAddDependencies();
             if (deps == null) continue; // null = not an auto adder
             
             // check that all the dependencies are present
             boolean allDepsPresent = true;
-            for (GameAttrib dep : deps) {
+            for (GameAttr dep : deps) {
                 if (!attribs.containsKey(dep)) {
                     allDepsPresent = false;
                     break;
@@ -134,15 +134,15 @@ public enum GameAttrib {
     }
     
     /** Call after attribs has been filled out */
-    static void fillInDefaults(Map<GameAttrib, PossiblyTypedValue<?>> attribs) {
-        for (GameAttrib attrib : values()) {
+    static void fillInDefaults(Map<GameAttr, PossiblyTypedValue<?>> attribs) {
+        for (GameAttr attrib : values()) {
             if (attrib.defaultValue != null && !attribs.containsKey(attrib)) {
                 attribs.put(attrib, attrib.defaultValue);
             }
         }
     }
     
-    public static GameAttribute attribute(GameAttrib value) {
+    public static GameAttribute attribute(GameAttr value) {
         return new GameAttributeImpl(value);
     }
     

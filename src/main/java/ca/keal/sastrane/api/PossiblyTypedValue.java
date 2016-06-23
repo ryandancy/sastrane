@@ -20,7 +20,7 @@ import lombok.Getter;
 
 import javax.annotation.Nullable;
 
-/** Internal utility class for AbstractGameModule and GameAttrib */
+/** Internal utility class for AbstractGameModule and GameAttr */
 @Getter
 @EqualsAndHashCode
 class PossiblyTypedValue<T> {

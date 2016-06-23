@@ -14,7 +14,7 @@
 package ca.keal.sastrane.gui;
 
 import ca.keal.sastrane.api.AI;
-import ca.keal.sastrane.api.GameAttrib;
+import ca.keal.sastrane.api.GameAttr;
 import ca.keal.sastrane.api.GameAttribute;
 import ca.keal.sastrane.api.Mover;
 import ca.keal.sastrane.api.Player;
@@ -64,10 +64,10 @@ public class NewGameController extends GoBacker {
     @Inject
     public NewGameController(GuiUtils guiUtils, SoundEffects soundFX,
                              PlayerSettings.Factory playerSettingsFactory, Round.Factory roundFactory,
-                             @GameAttribute(GameAttrib.I18N_NAME) Map<String, String> i18nNames,
-                             @GameAttribute(GameAttrib.CSS) Map<String, Resource> css,
-                             @GameAttribute(GameAttrib.PLAYERS) Map<String, Player[]> players,
-                             @GameAttribute(GameAttrib.AI) Map<String, Provider<AI.Factory>> ais) {
+                             @GameAttribute(GameAttr.I18N_NAME) Map<String, String> i18nNames,
+                             @GameAttribute(GameAttr.CSS) Map<String, Resource> css,
+                             @GameAttribute(GameAttr.PLAYERS) Map<String, Player[]> players,
+                             @GameAttribute(GameAttr.AI) Map<String, Provider<AI.Factory>> ais) {
         super(new Resource("ca.keal.sastrane.gui", "main-menu.fxml"), guiUtils);
         this.soundFX = soundFX;
         

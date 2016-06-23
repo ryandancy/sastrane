@@ -17,7 +17,7 @@ import ca.keal.sastrane.api.AI;
 import ca.keal.sastrane.api.AbstractGameModule;
 import ca.keal.sastrane.api.Arbitrator;
 import ca.keal.sastrane.api.Board;
-import ca.keal.sastrane.api.GameAttrib;
+import ca.keal.sastrane.api.GameAttr;
 import ca.keal.sastrane.api.Notater;
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.piece.OwnedPieceFactory;
@@ -30,11 +30,11 @@ public class ChessModule extends AbstractGameModule {
     
     @Override
     public void configure() {
-        bindToInstance(GameAttrib.NAME, String.class, "chess");
-        bindToInstance(GameAttrib.PACKAGE, String.class, "ca.keal.sastrane.chess");
-        bindToInstance(GameAttrib.PLAYERS, Player[].class, ChessPlayer.values());
-        installFactory(GameAttrib.AI, AI.Factory.class, ChessAI.class);
-        bindToInstance(GameAttrib.BOARD_FACTORY, Board.Factory.class, Board.factory()
+        bindToInstance(GameAttr.NAME, String.class, "chess");
+        bindToInstance(GameAttr.PACKAGE, String.class, "ca.keal.sastrane.chess");
+        bindToInstance(GameAttr.PLAYERS, Player[].class, ChessPlayer.values());
+        installFactory(GameAttr.AI, AI.Factory.class, ChessAI.class);
+        bindToInstance(GameAttr.BOARD_FACTORY, Board.Factory.class, Board.factory()
                 .row("RNBQKBNR")
                 .row("PPPPPPPP")
                 .row("        ")
@@ -55,8 +55,8 @@ public class ChessModule extends AbstractGameModule {
                 .piece('q', new OwnedPieceFactory(Queen::new, ChessPlayer.WHITE))
                 .piece('k', new OwnedPieceFactory(King::new, ChessPlayer.WHITE))
                 .piece('p', new OwnedPieceFactory(Pawn::new, ChessPlayer.WHITE)));
-        bindTo(GameAttrib.ARBITRATOR, Arbitrator.class, ChessArbitrator.class);
-        bindTo(GameAttrib.NOTATER, Notater.class, LongAlgebraicNotater.class);
+        bindTo(GameAttr.ARBITRATOR, Arbitrator.class, ChessArbitrator.class);
+        bindTo(GameAttr.NOTATER, Notater.class, LongAlgebraicNotater.class);
     
         super.configure();
     }

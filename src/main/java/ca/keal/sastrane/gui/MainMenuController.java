@@ -13,7 +13,7 @@
 
 package ca.keal.sastrane.gui;
 
-import ca.keal.sastrane.api.GameAttrib;
+import ca.keal.sastrane.api.GameAttr;
 import ca.keal.sastrane.api.GameAttribute;
 import ca.keal.sastrane.api.GameRegistrar;
 import ca.keal.sastrane.gui.audio.SoundEffects;
@@ -47,7 +47,7 @@ public class MainMenuController implements Initializable {
     
     @Inject
     public MainMenuController(GameRegistrar registrar, SoundEffects soundFX, GameTile.Factory gameTileFactory,
-                              GuiUtils guiUtils, @GameAttribute(GameAttrib.I18N_NAME) Map<String, String> i18nNames) {
+                              GuiUtils guiUtils, @GameAttribute(GameAttr.I18N_NAME) Map<String, String> i18nNames) {
         this.registrar = registrar;
         this.soundFX = soundFX;
         this.gameTileFactory = gameTileFactory;
