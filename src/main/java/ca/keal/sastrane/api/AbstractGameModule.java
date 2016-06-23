@@ -14,6 +14,7 @@
 package ca.keal.sastrane.api;
 
 import com.google.inject.AbstractModule;
+import com.google.inject.Provider;
 import com.google.inject.TypeLiteral;
 import com.google.inject.assistedinject.FactoryProvider;
 import com.google.inject.multibindings.MapBinder;
@@ -37,14 +38,12 @@ public abstract class AbstractGameModule extends AbstractModule {
     public void configure() {
         Multibinder<String> idBinder = Multibinder.newSetBinder(binder(), String.class);
         idBinder.addBinding().toInstance(id);
-        
+
         GameAttrib.autoAddAllPossible(attribsToValues);
         GameAttrib.fillInDefaults(attribsToValues);
-        
+
         attribsToValues.forEach((attrib, value) -> {
-            if (value.getCls() != null) {
-                doClassBinding(attrib, value);
-            } else if (value.getLiteral() != null) {
+            if (value.getLiteral() != null) {
                 doLiteralBinding(attrib, value);
             } else {
                 doClassBinding(attrib, value);
@@ -67,7 +66,9 @@ public abstract class AbstractGameModule extends AbstractModule {
     }
     
     private <T> void completeBinding(MapBinder<String, T> mapBinder, PossiblyTypedValue<T> ptv) {
-        if (ptv.getValueCls() != null) {
+        if (ptv.getValueProvider() != null) {
+            mapBinder.addBinding(id).toProvider(ptv.getValueProvider());
+        } else if (ptv.getValueCls() != null) {
             mapBinder.addBinding(id).to(ptv.getValueCls());
         } else {
             mapBinder.addBinding(id).toInstance(ptv.getValue());
@@ -90,10 +91,18 @@ public abstract class AbstractGameModule extends AbstractModule {
         attribsToValues.put(attrib, new PossiblyTypedValue<>(cls, impl));
     }
     
+    protected <T> void bindToProvider(GameAttrib attrib, Class<T> cls, Provider<T> provider) {
+        attribsToValues.put(attrib, new PossiblyTypedValue<>(cls, provider));
+    }
+    
+    protected <T> void bindToProvider(GameAttrib attrib, TypeLiteral<T> cls, Provider<T> provider) {
+        attribsToValues.put(attrib, new PossiblyTypedValue<>(cls, provider));
+    }
+    
     @SuppressWarnings("deprecation")
     protected <F> void installFactory(GameAttrib attrib, Class<F> factoryCls, Class<?> impl) {
-        // We use the deprecated FactoryProvider because it allows us to get a factory instance to which we can bind
-        bindToInstance(attrib, factoryCls, FactoryProvider.newFactory(factoryCls, impl).get());
+        // We use the deprecated FactoryProvider because it's a provider - FactoryModuleBuilder wouldn't work
+        bindToProvider(attrib, factoryCls, FactoryProvider.newFactory(factoryCls, impl));
     }
     
 }

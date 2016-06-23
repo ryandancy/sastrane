@@ -13,6 +13,7 @@
 
 package ca.keal.sastrane.api;
 
+import com.google.inject.Provider;
 import com.google.inject.TypeLiteral;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -28,6 +29,7 @@ class PossiblyTypedValue<T> {
     @Nullable private TypeLiteral<T> literal = null;
     @Nullable private Class<? extends T> valueCls = null;
     @Nullable private T value = null;
+    @Nullable private Provider<T> valueProvider = null;
     
     PossiblyTypedValue(Class<T> cls, T value) {
         this.cls = cls;
@@ -37,6 +39,11 @@ class PossiblyTypedValue<T> {
     PossiblyTypedValue(Class<T> cls, Class<? extends T> valueCls) {
         this.cls = cls;
         this.valueCls = valueCls;
+    }
+    
+    PossiblyTypedValue(Class<T> cls, Provider<T> valueProvider) {
+        this.cls = cls;
+        this.valueProvider = valueProvider;
     }
     
     @SuppressWarnings("unchecked")
@@ -54,12 +61,19 @@ class PossiblyTypedValue<T> {
         this.valueCls = valueCls;
     }
     
+    PossiblyTypedValue(TypeLiteral<T> literal, Provider<T> valueProvider) {
+        this.literal = literal;
+        this.valueProvider = valueProvider;
+    }
+    
     @Override
     public String toString() {
         if (value != null) {
             return value.toString();
         } else if (valueCls != null) {
             return valueCls.toString();
+        } else if (valueProvider != null) {
+            return valueProvider.toString();
         } else {
             return "null";
         }

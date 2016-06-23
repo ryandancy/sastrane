@@ -25,6 +25,7 @@ import ca.keal.sastrane.main.Main;
 import ca.keal.sastrane.util.I18n;
 import ca.keal.sastrane.util.Resource;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -58,7 +59,7 @@ public class NewGameController extends GoBacker {
     private final Map<String, String> i18nNames;
     private final Map<String, Resource> css;
     private final Map<String, Player[]> players;
-    private final Map<String, AI.Factory> ais;
+    private final Map<String, Provider<AI.Factory>> ais;
     
     @Inject
     public NewGameController(GuiUtils guiUtils, SoundEffects soundFX,
@@ -66,7 +67,7 @@ public class NewGameController extends GoBacker {
                              @GameAttribute(GameAttrib.I18N_NAME) Map<String, String> i18nNames,
                              @GameAttribute(GameAttrib.CSS) Map<String, Resource> css,
                              @GameAttribute(GameAttrib.PLAYERS) Map<String, Player[]> players,
-                             @GameAttribute(GameAttrib.AI) Map<String, AI.Factory> ais) {
+                             @GameAttribute(GameAttrib.AI) Map<String, Provider<AI.Factory>> ais) {
         super(new Resource("ca.keal.sastrane.gui", "main-menu.fxml"), guiUtils);
         this.soundFX = soundFX;
         
@@ -105,7 +106,7 @@ public class NewGameController extends GoBacker {
                 .collect(Collectors.toMap(PlayerSettings::getPlayer, settings -> {
                     if (settings.getAiOrHumanButtons().getSelectedToggle().getUserData().equals("ai")) {
                         // AI
-                        return ais.get(gameID).create(settings.getAiDifficulty().getValue());
+                        return ais.get(gameID).get().create(settings.getAiDifficulty().getValue());
                     } else {
                         // Human player
                         return new HumanMover(controller);
