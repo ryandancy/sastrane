@@ -21,5 +21,5 @@
          styleClass="game-tile" minWidth="100" minHeight="100">
     <!-- the following line has no errors, but Intellij is convinced that ${} expressions must be coerced to Double -->
     <ImageView fx:id="imgView" VBox.vgrow="always" fitWidth="${gameTile.minWidth}" fitHeight="${gameTile.minHeight}" />
-    <Label fx:id="displayName" labelFor="$imgView" />
+    <Label fx:id="displayName" labelFor="$imgView" prefWidth="${imgView.fitWidth}" />
 </fx:root>
