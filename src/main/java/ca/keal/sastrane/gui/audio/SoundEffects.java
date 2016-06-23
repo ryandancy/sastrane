@@ -14,23 +14,49 @@
 package ca.keal.sastrane.gui.audio;
 
 import ca.keal.sastrane.util.Resource;
+import com.google.inject.Singleton;
+import javafx.scene.media.AudioClip;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.SneakyThrows;
 
-public interface SoundEffects {
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+/**
+ * Acts as a cache for sound effects and allows up to two effects to be played at the same time. Thanks, <a
+ * href="https://dzone.com/articles/javafx-2-gametutorial-part-5">Carl Dea"</a>.
+ */
+@Singleton
+public class SoundEffects {
     
-    void setVolume(double volume);
+    private final ExecutorService pool = Executors.newFixedThreadPool(2);
+    private final Map<String, AudioClip> cache = new HashMap<>();
+    @Getter @Setter private double volume = .5;
     
-    double getVolume();
+    public void load(String nickname, Resource resource) {
+        if (!cache.containsKey(nickname)) {
+            cache.put(nickname, new AudioClip(resource.getFullFilename()));
+        }
+    }
     
-    void load(String nickname, Resource effect);
+    @SneakyThrows
+    public void loadAll(Resource propertiesFile) {
+        Properties nicksToNames = new Properties();
+        nicksToNames.load(propertiesFile.get().openStream());
+        
+        nicksToNames.forEach((nick, name) -> load((String) nick, new Resource(propertiesFile.getPkg(), (String) name)));
+    }
     
-    /**
-     * Loads a .properties file and loads each name-value pair; name to nickname, value used as a Resource for the
-     * effect.
-     */
-    void loadAll(Resource propertiesFile);
+    public void play(String nickname) {
+        pool.execute(() -> cache.get(nickname).play(volume));
+    }
     
-    void play(String nickname);
-    
-    void stop();
+    public void stop() {
+        pool.shutdown();
+    }
     
 }

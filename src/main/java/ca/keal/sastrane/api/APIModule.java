@@ -20,7 +20,7 @@ public class APIModule extends AbstractModule {
     
     @Override
     public void configure() {
-        bind(GameRegistrar.class).to(GameRegistrarImpl.class);
+        bind(GameRegistrar.class).to(GameRegistrar.class);
         install(new FactoryModuleBuilder().build(Round.Factory.class));
     }
     

@@ -20,7 +20,7 @@ public class GuiModule extends AbstractModule {
     
     @Override
     public void configure() {
-        bind(GuiUtils.class).to(GuiUtilsImpl.class);
+        bind(GuiUtils.class);
         install(new FactoryModuleBuilder().build(PlayerSettings.Factory.class));
         install(new FactoryModuleBuilder().build(GameTile.Factory.class));
     }

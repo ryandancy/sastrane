@@ -19,8 +19,8 @@ public class AudioModule extends AbstractModule {
     
     @Override
     public void configure() {
-        bind(Music.class).to(MusicImpl.class);
-        bind(SoundEffects.class).to(SoundEffectsImpl.class);
+        bind(Music.class);
+        bind(SoundEffects.class);
     }
     
 }
