@@ -18,6 +18,7 @@ import ca.keal.sastrane.api.GameAttribute;
 import ca.keal.sastrane.api.GameRegistrar;
 import ca.keal.sastrane.gui.audio.SoundEffects;
 import ca.keal.sastrane.main.Main;
+import ca.keal.sastrane.util.I18n;
 import ca.keal.sastrane.util.Resource;
 import com.google.inject.Inject;
 import javafx.fxml.FXML;
@@ -30,6 +31,7 @@ import javafx.scene.layout.FlowPane;
 import lombok.SneakyThrows;
 
 import java.net.URL;
+import java.text.Collator;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
@@ -39,6 +41,7 @@ public class MainMenuController implements Initializable {
     @FXML private FlowPane tiles;
     
     private final GameRegistrar registrar;
+    private final I18n i18n;
     private final SoundEffects soundFX;
     private final GameTile.Factory gameTileFactory;
     private final GuiUtils guiUtils;
@@ -46,9 +49,11 @@ public class MainMenuController implements Initializable {
     private final Map<String, String> i18nNames;
     
     @Inject
-    public MainMenuController(GameRegistrar registrar, SoundEffects soundFX, GameTile.Factory gameTileFactory,
-                              GuiUtils guiUtils, @GameAttribute(GameAttr.I18N_NAME) Map<String, String> i18nNames) {
+    public MainMenuController(GameRegistrar registrar, I18n i18n, SoundEffects soundFX,
+                              GameTile.Factory gameTileFactory, GuiUtils guiUtils,
+                              @GameAttribute(GameAttr.I18N_NAME) Map<String, String> i18nNames) {
         this.registrar = registrar;
+        this.i18n = i18n;
         this.soundFX = soundFX;
         this.gameTileFactory = gameTileFactory;
         this.guiUtils = guiUtils;
@@ -57,9 +62,13 @@ public class MainMenuController implements Initializable {
     
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        Collator collator = Collator.getInstance(i18n.getLocale());
+        collator.setStrength(Collator.SECONDARY); // ignore case
+        collator.setDecomposition(Collator.CANONICAL_DECOMPOSITION);
+        
         tiles.getChildren().addAll(registrar.stream()
-                .sorted((g0, g1) -> resources.getString(i18nNames.get(g0))
-                        .compareToIgnoreCase(resources.getString(i18nNames.get(g1))))
+                .sorted((id0, id1) -> collator.compare(resources.getString(i18nNames.get(id0)),
+                        resources.getString(i18nNames.get(id1))))
                 .map(gameTileFactory::create)
                 .peek(tile -> tile.setOnMouseClicked(this::handleTileClick))
                 .collect(Collectors.toList()));
