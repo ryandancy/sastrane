@@ -13,6 +13,7 @@
 
 package ca.keal.sastrane.api;
 
+import ca.keal.sastrane.api.piece.PlacingPiece;
 import ca.keal.sastrane.util.Resource;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.TypeLiteral;
@@ -75,7 +76,7 @@ public enum GameAttrib {
         @SuppressWarnings("ConstantConditions")
         protected void autoAdd(Map<GameAttrib, PossiblyTypedValue<?>> attribs) {
             attribs.put(this, new PossiblyTypedValue<>(new Resource(
-                    (String) attribs.get(PACKAGE).getValue(), attribs.get(NAME).getValue() + ".css")));
+                    (String) attribs.get(PACKAGE).getValue(), attribs.get(NAME) + ".css")));
         }
     },
     PLAYERS,
@@ -92,7 +93,8 @@ public enum GameAttrib {
         @Override
         @SuppressWarnings("ConstantConditions")
         protected void autoAdd(Map<GameAttrib, PossiblyTypedValue<?>> attribs) {
-            attribs.put(this, new PossiblyTypedValue<>(((Player[]) attribs.get(PLACING_PIECES).getValue()).length > 0));
+            attribs.put(this, new PossiblyTypedValue<>(
+                    ((PlacingPiece[]) attribs.get(PLACING_PIECES).getValue()).length > 0));
         }
     },
     ARBITRATOR,

@@ -14,12 +14,14 @@
 package ca.keal.sastrane.api;
 
 import com.google.inject.TypeLiteral;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 import javax.annotation.Nullable;
 
 /** Internal utility class for AbstractGameModule and GameAttrib */
 @Getter
+@EqualsAndHashCode
 class PossiblyTypedValue<T> {
     
     @Nullable private Class<T> cls = null;
@@ -50,6 +52,17 @@ class PossiblyTypedValue<T> {
     PossiblyTypedValue(TypeLiteral<T> literal, Class<? extends T> valueCls) {
         this.literal = literal;
         this.valueCls = valueCls;
+    }
+    
+    @Override
+    public String toString() {
+        if (value != null) {
+            return value.toString();
+        } else if (valueCls != null) {
+            return valueCls.toString();
+        } else {
+            return "null";
+        }
     }
     
 }
