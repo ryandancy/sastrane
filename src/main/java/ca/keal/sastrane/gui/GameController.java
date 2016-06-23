@@ -108,6 +108,7 @@ public class GameController extends GoBacker implements Initializable {
     
     private String notation;
     
+    private final I18n i18n;
     private final SoundEffects soundFX;
     
     private final Map<String, String> i18nNames;
@@ -117,14 +118,16 @@ public class GameController extends GoBacker implements Initializable {
     private final Map<String, Boolean> isPlaceOnlies; // *really* awkward name
     
     @Inject
-    public GameController(GuiUtils guiUtils, SoundEffects soundFX,
+    public GameController(GuiUtils guiUtils, I18n i18n, SoundEffects soundFX,
                           @GameAttribute(GameAttr.I18N_NAME) Map<String, String> i18nNames,
                           @GameAttribute(GameAttr.CSS) Map<String, Resource> css,
                           @GameAttribute(GameAttr.PLAYERS) Map<String, Player[]> players,
                           @GameAttribute(GameAttr.PLACING_PIECES) Map<String, PlacingPiece[]> placingPieces,
                           @GameAttribute(GameAttr.IS_PLACE_ONLY) Map<String, Boolean> isPlaceOnlies) {
         super(new Resource("ca.keal.sastrane.gui", "main-menu.fxml"), guiUtils);
+        
         this.soundFX = soundFX;
+        this.i18n = i18n;
         
         this.i18nNames = i18nNames;
         this.css = css;
@@ -139,7 +142,7 @@ public class GameController extends GoBacker implements Initializable {
         this.round.getBoard().addListener(change -> updateBoardGrid());
         this.round.getBus().register(this);
         
-        String titleText = I18n.localize(i18nNames.get(round.getGameID()));
+        String titleText = i18n.localize(i18nNames.get(round.getGameID()));
         guiUtils.setTitle(titleText);
         title.setText(titleText);
         
@@ -369,7 +372,7 @@ public class GameController extends GoBacker implements Initializable {
             img.fitHeightProperty().bind(optionBox.heightProperty().multiply(.6));
             img.setPreserveRatio(true);
             
-            Label label = new Label(I18n.localize(option.getI18nName()));
+            Label label = new Label(i18n.localize(option.getI18nName()));
             label.getStyleClass().add("name");
             label.setLabelFor(img);
             label.fontProperty().bind(Bindings.createObjectBinding(
@@ -422,7 +425,7 @@ public class GameController extends GoBacker implements Initializable {
                 if (winner == null) {
                     soundFX.play("lose");
                     winImg.setImage(new Image(new Resource("ca.keal.sastrane.icon", "draw.png").get().openStream()));
-                    winText.setText(I18n.localize("gui.game.result.draw"));
+                    winText.setText(i18n.localize("gui.game.result.draw"));
                 } else {
                     if (e.getRound().getPlayersToMovers().get(winner) instanceof AI
                             && !(e.getRound().getPlayersToMovers().values().stream().allMatch(p -> p instanceof AI))) {
@@ -431,7 +434,7 @@ public class GameController extends GoBacker implements Initializable {
                         soundFX.play("win");
                     }
                     winImg.setImage(new Image(winner.getIcon().get().openStream()));
-                    winText.setText(I18n.localize("gui.game.result.win", I18n.localize(winner.getI18nName())));
+                    winText.setText(i18n.localize("gui.game.result.win", i18n.localize(winner.getI18nName())));
                 }
                 
                 if (e.getNotation() != null) {
@@ -476,7 +479,7 @@ public class GameController extends GoBacker implements Initializable {
         Scene scene = guiUtils.getScene((Parent) loader.load(), previousScene);
         
         SimpleTextController controller = loader.getController();
-        controller.setTitle(I18n.localize("gui.game.over.notation"));
+        controller.setTitle(i18n.localize("gui.game.over.notation"));
         controller.setText(notation);
         controller.setPreviousScene(new Resource("ca.keal.sastrane.gui", "main-menu.fxml"));
         controller.useMonospacedFont();

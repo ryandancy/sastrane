@@ -32,9 +32,12 @@ public class ChangeLangController extends GoBacker implements Initializable {
     
     @FXML private FlowPane langs;
     
+    private final I18n i18n;
+    
     @Inject
-    public ChangeLangController(GuiUtils guiUtils) {
+    public ChangeLangController(I18n i18n, GuiUtils guiUtils) {
         super(new Resource("ca.keal.sastrane.gui", "main-menu.fxml"), guiUtils);
+        this.i18n = i18n;
     }
     
     @Override
@@ -47,7 +50,7 @@ public class ChangeLangController extends GoBacker implements Initializable {
         supportedLangs.forEach((lang, name) -> {
             Label label = new Label((String) name);
             Locale locale = new Locale((String) lang);
-            if (I18n.getLocale().equals(locale)) {
+            if (i18n.getLocale().equals(locale)) {
                 label.getStyleClass().add("current");
             }
             label.getStyleClass().add("lang");
@@ -57,7 +60,7 @@ public class ChangeLangController extends GoBacker implements Initializable {
     }
     
     private void changeLang(Event e, Locale locale) {
-        I18n.setLocale(locale);
+        i18n.setLocale(locale);
         goBack(e);
     }
     

@@ -49,6 +49,7 @@ public class Main extends GuiceApplication {
     @Inject private Music music;
     @Inject private SoundEffects soundFX;
     @Inject private GuiUtils guiUtils;
+    @Inject private I18n i18n;
     
     private static void setStage(Stage stage) {
         if (!stageSet) {
@@ -75,7 +76,7 @@ public class Main extends GuiceApplication {
         soundFX.loadAll(new Resource("ca.keal.sastrane.audio.soundfx", "soundfx.properties"));
         music.shuffleAll(Resource.getAllFromFile(new Resource("ca.keal.sastrane.audio.music", "soundtrack.config")));
         
-        I18n.load("ca.keal.sastrane.i18n.sastrane");
+        i18n.load("ca.keal.sastrane.i18n.sastrane");
         
         // Register all the games
         gameIDs.forEach(registrar::register);

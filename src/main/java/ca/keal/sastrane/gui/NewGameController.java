@@ -51,6 +51,7 @@ public class NewGameController extends GoBacker {
     
     @Getter private String gameID;
     
+    private final I18n i18n;
     private final SoundEffects soundFX;
     
     private final PlayerSettings.Factory playerSettingsFactory;
@@ -62,13 +63,15 @@ public class NewGameController extends GoBacker {
     private final Map<String, Provider<AI.Factory>> ais;
     
     @Inject
-    public NewGameController(GuiUtils guiUtils, SoundEffects soundFX,
+    public NewGameController(GuiUtils guiUtils, I18n i18n, SoundEffects soundFX,
                              PlayerSettings.Factory playerSettingsFactory, Round.Factory roundFactory,
                              @GameAttribute(GameAttr.I18N_NAME) Map<String, String> i18nNames,
                              @GameAttribute(GameAttr.CSS) Map<String, Resource> css,
                              @GameAttribute(GameAttr.PLAYERS) Map<String, Player[]> players,
                              @GameAttribute(GameAttr.AI) Map<String, Provider<AI.Factory>> ais) {
         super(new Resource("ca.keal.sastrane.gui", "main-menu.fxml"), guiUtils);
+        
+        this.i18n = i18n;
         this.soundFX = soundFX;
         
         this.playerSettingsFactory = playerSettingsFactory;
@@ -83,7 +86,7 @@ public class NewGameController extends GoBacker {
     void setGame(String gameID) {
         this.gameID = gameID;
         container.getStylesheets().add(css.get(gameID).getFilename());
-        title.setText(I18n.localize("gui.newgame.title", I18n.localize(i18nNames.get(gameID))));
+        title.setText(i18n.localize("gui.newgame.title", i18n.localize(i18nNames.get(gameID))));
         playerSettingsContainer.getChildren().addAll(Arrays.stream(players.get(gameID))
                 .map(playerSettingsFactory::create)
                 .peek(settings -> settings.getStylesheets().add(css.get(gameID).getFilename()))

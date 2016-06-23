@@ -13,6 +13,7 @@
 
 package ca.keal.sastrane.util;
 
+import com.google.inject.Singleton;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -23,22 +24,23 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
-public final class I18n {
+@Singleton
+public class I18n {
     
-    private static final List<String> baseNames = new ArrayList<>();
-    private static final List<ResourceBundle> bundles = new ArrayList<>();
+    private final List<String> baseNames = new ArrayList<>();
+    private final List<ResourceBundle> bundles = new ArrayList<>();
     
-    @Getter private static Locale locale = new Locale("en_US");
+    @Getter private Locale locale = new Locale("en_US");
     
-    public static void setLocale(Locale locale) {
-        I18n.locale = locale;
+    public void setLocale(Locale locale) {
+        this.locale = locale;
         
         if (bundles.size() > 0) {
             bundles.clear();
         }
     }
     
-    public static void load(String baseName) {
+    public void load(String baseName) {
         baseNames.add(baseName);
         
         if (bundles.size() > 0) {
@@ -46,7 +48,7 @@ public final class I18n {
         }
     }
     
-    public static String localize(String key, Object... formatArgs) {
+    public String localize(String key, Object... formatArgs) {
         if (bundles.size() == 0) {
             createBundles();
         }
@@ -60,7 +62,7 @@ public final class I18n {
         return key;
     }
     
-    public static ResourceBundle getBundle() {
+    public ResourceBundle getBundle() {
         if (bundles.size() == 0) {
             createBundles();
         }
@@ -81,7 +83,7 @@ public final class I18n {
         };
     }
     
-    private static void createBundles() {
+    private void createBundles() {
         bundles.addAll(baseNames.stream()
                 .map(baseName -> ResourceBundle.getBundle(baseName, getLocale()))
                 .collect(Collectors.toList()));

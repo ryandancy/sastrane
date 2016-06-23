@@ -31,14 +31,17 @@ public class SimpleTextController extends GoBacker {
     @FXML private Label title;
     @FXML private Text text;
     
+    private final I18n i18n;
+    
     @Inject
-    public SimpleTextController(GuiUtils guiUtils) {
+    public SimpleTextController(I18n i18n, GuiUtils guiUtils) {
         super(new Resource("ca.keal.sastrane.gui", "settings.fxml"), guiUtils);
+        this.i18n = i18n;
     }
     
     /** i18nTitle is passed through I18n.localize before setting the title */
     void setTitle(String i18nTitle) {
-        title.setText(I18n.localize(i18nTitle));
+        title.setText(i18n.localize(i18nTitle));
     }
     
     void setPreviousScene(Resource previous) {
@@ -56,12 +59,12 @@ public class SimpleTextController extends GoBacker {
      */
     @SneakyThrows
     void setTextFromFile(String i18nFilename) {
-        String pkg = I18n.localize(i18nFilename + ".package");
+        String pkg = i18n.localize(i18nFilename + ".package");
         if (pkg.equals(i18nFilename + ".package")) {
-            pkg = I18n.localize("text.package.default");
+            pkg = i18n.localize("text.package.default");
         }
         
-        String filename = I18n.localize(i18nFilename);
+        String filename = i18n.localize(i18nFilename);
         
         Resource resource = new Resource(pkg, filename);
         text.setText(Resources.toString(resource.get(), StandardCharsets.UTF_8));

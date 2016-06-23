@@ -34,15 +34,17 @@ public class GameRegistrar {
     @Delegate(types = GameCollection.class, excludes = Exceptions.class)
     private final Set<String> impl = new HashSet<>();
     
+    private final I18n i18n;
     private final Map<String, String> resourceBundleNames;
     
     @Inject
-    public GameRegistrar(@GameAttribute(GameAttr.RESOURCE_BUNDLE_NAME) Map<String, String> resourceBundleNames) {
-        this.resourceBundleNames = resourceBundleNames;
+    public GameRegistrar(I18n i18n, @GameAttribute(GameAttr.RESOURCE_BUNDLE_NAME) Map<String, String> bundleNames) {
+        this.i18n = i18n;
+        this.resourceBundleNames = bundleNames;
     }
     
     public boolean add(String gameID) {
-        I18n.load(resourceBundleNames.get(gameID));
+        i18n.load(resourceBundleNames.get(gameID));
         return impl.add(gameID);
     }
     

@@ -40,6 +40,7 @@ import java.lang.reflect.InvocationTargetException;
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class GuiUtils {
     
+    private final I18n i18n;
     private final SoundEffects soundFX;
     private final Injector injector;
     
@@ -50,7 +51,7 @@ public class GuiUtils {
     public FXMLLoader getFXMLLoader(Resource resource) {
         FXMLLoader loader = guicifyLoader(new FXMLLoader());
         loader.setLocation(resource.get());
-        loader.setResources(I18n.getBundle());
+        loader.setResources(i18n.getBundle());
         return loader;
     }
     
@@ -111,11 +112,11 @@ public class GuiUtils {
     
     /** Passes title through I18n.localize("gui.title") before setting */
     public void setTitle(String title) {
-        Main.getStage().setTitle(I18n.localize("gui.title", title));
+        Main.getStage().setTitle(i18n.localize("gui.title", title));
     }
     
     public void setTitleToDefault() {
-        Main.getStage().setTitle(I18n.localize("gui.title.default"));
+        Main.getStage().setTitle(i18n.localize("gui.title.default"));
     }
     
     /**
