@@ -62,7 +62,7 @@ public enum GameAttrib {
         @SuppressWarnings("ConstantConditions")
         protected void autoAdd(Map<GameAttrib, PossiblyTypedValue<?>> attribs) {
             attribs.put(this, new PossiblyTypedValue<>(new Resource(
-                    ((Game.Package) attribs.get(PACKAGE).getValue()).getPkg(), attribs.get(NAME) + ".png")));
+                    (String) attribs.get(PACKAGE).getValue(), attribs.get(NAME) + ".png")));
         }
     },
     CSS {
@@ -76,7 +76,7 @@ public enum GameAttrib {
         protected void autoAdd(Map<GameAttrib, PossiblyTypedValue<?>> attribs) {
             assert attribs.get(PACKAGE).getValue() != null;
             attribs.put(this, new PossiblyTypedValue<>(new Resource(
-                    ((Game.Package) attribs.get(PACKAGE).getValue()).getPkg(), attribs.get(NAME).getValue() + ".css")));
+                    (String) attribs.get(PACKAGE).getValue(), attribs.get(NAME).getValue() + ".css")));
         }
     },
     PLAYERS,

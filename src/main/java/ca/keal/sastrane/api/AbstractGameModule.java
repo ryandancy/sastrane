@@ -37,6 +37,7 @@ public abstract class AbstractGameModule extends AbstractModule {
         Multibinder<String> idBinder = Multibinder.newSetBinder(binder(), String.class);
         idBinder.addBinding().toInstance(id);
         
+        GameAttrib.autoAddAllPossible(attribsToValues);
         GameAttrib.fillInDefaults(attribsToValues);
         
         attribsToValues.forEach((attrib, value) -> {
@@ -74,22 +75,18 @@ public abstract class AbstractGameModule extends AbstractModule {
     
     protected <T> void bindToInstance(GameAttrib attrib, Class<T> cls, T t) {
         attribsToValues.put(attrib, new PossiblyTypedValue<>(cls, t));
-        GameAttrib.autoAddAllPossible(attribsToValues);
     }
     
     protected <T> void bindToInstance(GameAttrib attrib, TypeLiteral<T> cls, T t) {
         attribsToValues.put(attrib, new PossiblyTypedValue<>(cls, t));
-        GameAttrib.autoAddAllPossible(attribsToValues);
     }
     
     protected <T> void bindTo(GameAttrib attrib, Class<T> cls, Class<? extends T> impl) {
         attribsToValues.put(attrib, new PossiblyTypedValue<>(cls, impl));
-        GameAttrib.autoAddAllPossible(attribsToValues);
     }
     
     protected <T> void bindTo(GameAttrib attrib, TypeLiteral<T> cls, Class<? extends T> impl) {
         attribsToValues.put(attrib, new PossiblyTypedValue<>(cls, impl));
-        GameAttrib.autoAddAllPossible(attribsToValues);
     }
     
 }
