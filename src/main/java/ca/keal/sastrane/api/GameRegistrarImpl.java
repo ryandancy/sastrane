@@ -14,33 +14,42 @@
 package ca.keal.sastrane.api;
 
 import ca.keal.sastrane.util.I18n;
+import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import lombok.experimental.Delegate;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 @Singleton
 class GameRegistrarImpl implements GameRegistrar {
     
-    private interface GameCollection extends Collection<Game> {} // for the generics
+    private interface GameCollection extends Collection<String> {} // for the generics
     private interface Exceptions {
-        boolean add(Game game);
+        boolean add(String gameID);
     }
     
     @Delegate(types = GameCollection.class, excludes = Exceptions.class)
-    private final Set<Game> impl = new HashSet<>();
+    private final Set<String> impl = new HashSet<>();
     
-    @Override
-    public boolean add(Game game) {
-        I18n.load(game.getResourceBundleName());
-        return impl.add(game);
+    private final Map<String, String> resourceBundleNames;
+    
+    @Inject
+    public GameRegistrarImpl(@GameAttribute(GameAttrib.RESOURCE_BUNDLE_NAME) Map<String, String> resourceBundleNames) {
+        this.resourceBundleNames = resourceBundleNames;
     }
     
     @Override
-    public void register(Game game) {
-        add(game);
+    public boolean add(String gameID) {
+        I18n.load(resourceBundleNames.get(gameID));
+        return impl.add(gameID);
+    }
+    
+    @Override
+    public void register(String gameID) {
+        add(gameID);
     }
     
 }

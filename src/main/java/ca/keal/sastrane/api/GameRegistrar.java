@@ -15,8 +15,8 @@ package ca.keal.sastrane.api;
 
 import java.util.Collection;
 
-public interface GameRegistrar extends Collection<Game> {
+public interface GameRegistrar extends Collection<String> {
     
-    void register(Game game);
+    void register(String gameID);
     
 }
