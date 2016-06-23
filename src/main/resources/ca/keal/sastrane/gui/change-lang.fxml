@@ -15,9 +15,10 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 
 <BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="ca.keal.sastrane.gui.ChangeLangController"
             stylesheets="@sastrane.css">
@@ -28,6 +29,8 @@
         </StackPane>
     </top>
     <center>
-        <FlowPane fx:id="langs" styleClass="langs" />
+        <ScrollPane>
+            <VBox fx:id="langs" styleClass="langs" />
+        </ScrollPane>
     </center>
 </BorderPane>

@@ -21,8 +21,8 @@ import com.google.inject.Inject;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
-import javafx.scene.layout.FlowPane;
+import javafx.scene.control.Hyperlink;
+import javafx.scene.layout.VBox;
 import lombok.SneakyThrows;
 
 import java.net.URL;
@@ -32,7 +32,7 @@ import java.util.ResourceBundle;
 
 public class ChangeLangController extends GoBacker implements Initializable {
     
-    @FXML private FlowPane langs;
+    @FXML private VBox langs;
     
     private final I18n i18n;
     private final SastraneConfig cfg;
@@ -51,15 +51,15 @@ public class ChangeLangController extends GoBacker implements Initializable {
         Properties supportedLangs = new Properties();
         supportedLangs.load(new Resource("ca.keal.sastrane.i18n", "langs.properties").get().openStream());
         
-        supportedLangs.forEach((lang, name) -> {
-            Label label = new Label((String) name);
-            Locale locale = Locale.forLanguageTag((String) lang);
+        supportedLangs.forEach((langCode, name) -> {
+            Hyperlink lang = new Hyperlink((String) name);
+            Locale locale = Locale.forLanguageTag((String) langCode);
             if (i18n.getLocale().equals(locale)) {
-                label.getStyleClass().add("current");
+                lang.getStyleClass().add("current");
             }
-            label.getStyleClass().add("lang");
-            label.setOnMouseClicked(e -> changeLang(e, locale));
-            langs.getChildren().add(label);
+            lang.getStyleClass().add("lang");
+            lang.setOnAction(e -> changeLang(e, locale));
+            langs.getChildren().add(lang);
         });
     }
     
