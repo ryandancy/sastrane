@@ -14,6 +14,8 @@
 package ca.keal.sastrane.gui;
 
 import ca.keal.sastrane.api.Game;
+import ca.keal.sastrane.api.GameAttrib;
+import ca.keal.sastrane.api.GameAttribute;
 import ca.keal.sastrane.api.GameRegistrar;
 import ca.keal.sastrane.gui.audio.SoundEffects;
 import ca.keal.sastrane.main.Main;
@@ -26,14 +28,13 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
-import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 
 import java.net.URL;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
-@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class MainMenuController implements Initializable {
     
     @FXML private FlowPane tiles;
@@ -43,11 +44,23 @@ public class MainMenuController implements Initializable {
     private final GameTile.Factory gameTileFactory;
     private final GuiUtils guiUtils;
     
+    private final Map<String, String> i18nNames;
+    
+    @Inject
+    public MainMenuController(GameRegistrar registrar, SoundEffects soundFX, GameTile.Factory gameTileFactory,
+                              GuiUtils guiUtils, @GameAttribute(GameAttrib.I18N_NAME) Map<String, String> i18nNames) {
+        this.registrar = registrar;
+        this.soundFX = soundFX;
+        this.gameTileFactory = gameTileFactory;
+        this.guiUtils = guiUtils;
+        this.i18nNames = i18nNames;
+    }
+    
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         tiles.getChildren().addAll(registrar.stream()
-                .sorted((g0, g1) -> resources.getString(g0.getI18nName())
-                        .compareToIgnoreCase(resources.getString(g1.getI18nName())))
+                .sorted((g0, g1) -> resources.getString(i18nNames.get(g0))
+                        .compareToIgnoreCase(resources.getString(i18nNames.get(g1))))
                 .map(gameTileFactory::create)
                 .peek(tile -> tile.setOnMouseClicked(this::handleTileClick))
                 .collect(Collectors.toList()));
