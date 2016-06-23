@@ -19,12 +19,10 @@ import ca.keal.sastrane.api.Result;
 import ca.keal.sastrane.api.Round;
 import ca.keal.sastrane.api.Square;
 import ca.keal.sastrane.api.piece.OwnedPiece;
-import com.google.inject.Singleton;
 
 import javax.annotation.Nullable;
 import java.util.function.BiFunction;
 
-@Singleton
 class TicTacToeArbitrator implements Arbitrator {
     
     @Override
