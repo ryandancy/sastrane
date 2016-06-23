@@ -15,10 +15,10 @@ package ca.keal.sastrane.reversi;
 
 import ca.keal.sastrane.api.Arbitrator;
 import ca.keal.sastrane.api.Board;
+import ca.keal.sastrane.api.GameUtils;
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.Result;
 import ca.keal.sastrane.api.Round;
-import ca.keal.sastrane.util.Utils;
 import com.google.common.collect.Multiset;
 
 class ReversiArbitrator implements Arbitrator {
@@ -42,7 +42,7 @@ class ReversiArbitrator implements Arbitrator {
     }
     
     private Result count(Board board, Player player, Player opponent) {
-        Multiset<Player> players = Utils.countPlayers(board);
+        Multiset<Player> players = GameUtils.countPlayers(board);
         switch (Integer.compare(players.count(player), players.count(opponent))) {
             case -1:
                 return new Result.Win(opponent);

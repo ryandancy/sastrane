@@ -14,6 +14,7 @@
 package ca.keal.sastrane.chess;
 
 import ca.keal.sastrane.api.Board;
+import ca.keal.sastrane.api.GameUtils;
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.Round;
 import ca.keal.sastrane.api.Square;
@@ -23,7 +24,6 @@ import ca.keal.sastrane.api.piece.MoveCountingPiece;
 import ca.keal.sastrane.api.piece.OwnedPiece;
 import ca.keal.sastrane.api.piece.RecursiveMovingPiece;
 import ca.keal.sastrane.util.Resource;
-import ca.keal.sastrane.util.Utils;
 import com.google.common.eventbus.EventBus;
 
 import java.util.ArrayList;
@@ -53,7 +53,7 @@ class King implements RecursiveMovingPiece, MoveCountingPiece {
     // https://en.wikipedia.org/wiki/Castling#Requirements
     private List<Move> getCastlingMoves(Round round, Square boardPos, Player player) {
         // Don't need to check for king on first rank because numMoves == 0 implies so
-        if (numMoves != 0 || Utils.canBeMovedTo(round, boardPos, player)) return new ArrayList<>();
+        if (numMoves != 0 || GameUtils.canBeMovedTo(round, boardPos, player)) return new ArrayList<>();
         List<Move> moves = new ArrayList<>();
         
         for (int rookX = 0; rookX <= round.getBoard().getMaxX(); rookX += round.getBoard().getMaxX()) {
@@ -93,7 +93,7 @@ class King implements RecursiveMovingPiece, MoveCountingPiece {
         }
         
         // Ensure that the position the king will 'pass through' is not in check
-        return !Utils.canBeMovedTo(round, player.perspectivize(boardPos.withX(boardPos.getX() + inc), boardPos),
+        return !GameUtils.canBeMovedTo(round, player.perspectivize(boardPos.withX(boardPos.getX() + inc), boardPos),
                 player);
     }
     

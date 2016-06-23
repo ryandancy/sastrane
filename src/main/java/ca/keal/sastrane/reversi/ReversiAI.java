@@ -17,9 +17,9 @@ import ca.keal.sastrane.api.AI;
 import ca.keal.sastrane.api.Arbitrator;
 import ca.keal.sastrane.api.GameAttr;
 import ca.keal.sastrane.api.GameAttribute;
+import ca.keal.sastrane.api.GameUtils;
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.Round;
-import ca.keal.sastrane.util.Utils;
 import com.google.common.collect.Multiset;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
@@ -44,7 +44,7 @@ class ReversiAI extends AI {
         if (players.size() != 1) throw new IllegalArgumentException("ReversiAI.heuristic: players.size() != 1");
         Player player = players.toArray(new Player[1])[0];
         
-        Multiset<Player> counts = Utils.countPlayers(round.getBoard());
+        Multiset<Player> counts = GameUtils.countPlayers(round.getBoard());
         return 2 * counts.count(player) - counts.size(); // equivalent to count(player) - (size() - count(player))
     }
     

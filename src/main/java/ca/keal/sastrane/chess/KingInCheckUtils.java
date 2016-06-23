@@ -13,13 +13,13 @@
 
 package ca.keal.sastrane.chess;
 
+import ca.keal.sastrane.api.GameUtils;
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.Round;
 import ca.keal.sastrane.api.Square;
 import ca.keal.sastrane.api.move.Move;
 import ca.keal.sastrane.api.piece.OwnedPiece;
 import ca.keal.sastrane.util.TriFunction;
-import ca.keal.sastrane.util.Utils;
 
 import java.util.List;
 import java.util.function.Predicate;
@@ -45,7 +45,7 @@ class KingInCheckUtils {
         for (Square square : round.getBoard()) {
             OwnedPiece atSquare = round.getBoard().get(square);
             if (atSquare != null && atSquare.getOwner() == player && atSquare.getPiece() instanceof King) {
-                return Utils.canBeMovedTo(round, square, player);
+                return GameUtils.canBeMovedTo(round, square, player);
             }
         }
         return false;

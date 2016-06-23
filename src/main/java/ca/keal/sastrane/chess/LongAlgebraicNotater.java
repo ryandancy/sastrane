@@ -13,6 +13,7 @@
 
 package ca.keal.sastrane.chess;
 
+import ca.keal.sastrane.api.GameUtils;
 import ca.keal.sastrane.api.Notater;
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.Result;
@@ -22,7 +23,6 @@ import ca.keal.sastrane.api.StateChange;
 import ca.keal.sastrane.api.move.MovingMove;
 import ca.keal.sastrane.api.piece.OwnedPiece;
 import ca.keal.sastrane.api.piece.Piece;
-import ca.keal.sastrane.util.Utils;
 import com.google.common.collect.Multiset;
 
 import java.util.HashMap;
@@ -90,8 +90,8 @@ class LongAlgebraicNotater implements Notater {
             res.append(PIECE_CHARS.get(change.getMovedPiece().getPiece().getClass()));
             appendSquareID(move.getFrom(), res);
             
-            Multiset<Player> beforeCount = Utils.countPlayers(change.getBefore());
-            Multiset<Player> afterCount = Utils.countPlayers(change.getAfter());
+            Multiset<Player> beforeCount = GameUtils.countPlayers(change.getBefore());
+            Multiset<Player> afterCount = GameUtils.countPlayers(change.getAfter());
             Player notMover = change.getMovedPiece().getOwner() == ChessPlayer.WHITE ? ChessPlayer.BLACK
                     : ChessPlayer.WHITE;
             
