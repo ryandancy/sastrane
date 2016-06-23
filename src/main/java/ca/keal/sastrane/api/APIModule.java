@@ -14,12 +14,14 @@
 package ca.keal.sastrane.api;
 
 import com.google.inject.AbstractModule;
+import com.google.inject.assistedinject.FactoryModuleBuilder;
 
 public class APIModule extends AbstractModule {
     
     @Override
     public void configure() {
         bind(GameRegistrar.class).to(GameRegistrarImpl.class);
+        install(new FactoryModuleBuilder().build(Round.Factory.class));
     }
     
 }

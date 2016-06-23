@@ -24,6 +24,8 @@ import ca.keal.sastrane.api.piece.PlacingPiece;
 import ca.keal.sastrane.util.Utils;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.eventbus.EventBus;
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -34,38 +36,58 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
-@Getter
 @ToString
 @EqualsAndHashCode
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Round {
     
-    private final Game game;
-    private final Map<Player, Mover> playersToMovers;
-    private final Board board;
-    private EventBus bus;
+    @Getter private final String gameID;
+    @Getter private final Map<Player, Mover> playersToMovers;
+    @Getter private final Board board;
+    @Getter private EventBus bus;
     
-    private int moveNum = 0;
-    private boolean ended = false;
+    @Getter private int moveNum = 0;
+    @Getter private boolean ended = false;
     
     @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
-    private List<StateChange> moves = new ArrayList<>();
+    @Getter private List<StateChange> moves = new ArrayList<>();
     
-    public Round(Game game, Map<Player, Mover> playersToMovers) {
-        if (!Utils.areElementsEqual(playersToMovers.keySet(), Arrays.asList(game.getPlayers()))) {
+    private final Map<String, Player[]> players;
+    private final Map<String, PlacingPiece[]> placingPieces;
+    private final Map<String, Arbitrator> arbitrators;
+    private final Map<String, Notater> notaters;
+    
+    @Inject
+    public Round(@Assisted String gameID, @Assisted Map<Player, Mover> playersToMovers,
+                 @GameAttribute(GameAttrib.NAME) Map<String, String> names,
+                 @GameAttribute(GameAttrib.BOARD_FACTORY) Map<String, Board.Factory> boardFactories,
+                 @GameAttribute(GameAttrib.DEFAULTS_REGISTRATOR) Map<String, Consumer<EventBus>> defaultsRegistrators,
+                 @GameAttribute(GameAttrib.PLAYERS) Map<String, Player[]> players,
+                 @GameAttribute(GameAttrib.PLACING_PIECES) Map<String, PlacingPiece[]> placingPieces,
+                 @GameAttribute(GameAttrib.ARBITRATOR) Map<String, Arbitrator> arbitrators,
+                 @GameAttribute(GameAttrib.NOTATER) Map<String, Notater> notaters) {
+        if (!Utils.areElementsEqual(playersToMovers.keySet(), Arrays.asList(players.get(gameID)))) {
             throw new IllegalArgumentException("Round: playersToMovers.keySet() must = game.getCombatants()");
         }
-        this.game = game;
+        this.gameID = gameID;
         this.playersToMovers = ImmutableMap.copyOf(playersToMovers);
-        bus = new EventBus(game.getName().getName());
-        game.registerDefaults(bus);
-        this.board = game.getBoardFactory().bus(bus).build();
+        bus = new EventBus(names.get(gameID));
+        defaultsRegistrators.get(gameID).accept(bus);
+        this.board = boardFactories.get(gameID).bus(bus).build();
+        
+        this.players = players;
+        this.placingPieces = placingPieces;
+        this.arbitrators = arbitrators;
+        this.notaters = notaters;
     }
     
+    // TODO make this a static method and use the factory
     public Round(Round round) {
-        this(round.getGame(), ImmutableMap.copyOf(round.getPlayersToMovers()), new Board(round.getBoard()),
-                round.getBus(), round.getMoveNum(), round.isEnded(), new ArrayList<>(round.getMoves()));
+        this(round.gameID, ImmutableMap.copyOf(round.playersToMovers), new Board(round.board), round.bus, round.moveNum,
+                round.ended, new ArrayList<>(round.moves), round.players, round.placingPieces, round.arbitrators,
+                round.notaters);
     }
     
     public void nextTurn() {
@@ -86,16 +108,12 @@ public class Round {
         
         bus.post(new TurnEvent.Post(this));
         
-        Result result = game.getArbitrator().arbitrate(this);
+        Result result = arbitrators.get(gameID).arbitrate(this);
         if (result != Result.NOT_OVER) {
             ended = true;
-            
-            String notation;
-            if (game instanceof Notatable) {
-                notation = ((Notatable) game).getNotater().notate(moves);
-            } else {
-                notation = null;
-            }
+    
+            Notater notater = notaters.get(gameID);
+            String notation = notater == null ? null : notater.notate(moves); // notater == null -> not notatable
             
             bus.post(new WinEvent(this, result, notation));
         }
@@ -112,7 +130,7 @@ public class Round {
     }
     
     public Player getCurrentTurn() {
-        return game.getPlayers()[moveNum % game.getPlayers().length];
+        return players.get(gameID)[moveNum % players.get(gameID).length];
     }
     
     public Round copyWithMove(Move move) {
@@ -129,7 +147,7 @@ public class Round {
                 moves.addAll(((MovingPiece) atSquare.getPiece()).getPossibleMoves(this, square, atSquare.getOwner()));
             }
         }
-        for (PlacingPiece placingPiece : game.getPlacingPieces()) {
+        for (PlacingPiece placingPiece : placingPieces.get(gameID)) {
             moves.addAll(placingPiece.getPossiblePlacements(this, player));
         }
         return moves;
@@ -141,6 +159,11 @@ public class Round {
     
     public StateChange getLastMove(int n) {
         return moves.get(moves.size() - 1 - n);
+    }
+    
+    /** For AssistedInject */
+    public interface Factory {
+        Round create(String gameID, Map<Player, Mover> playersToMovers);
     }
     
 }
