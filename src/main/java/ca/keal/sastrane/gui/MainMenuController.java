@@ -13,7 +13,6 @@
 
 package ca.keal.sastrane.gui;
 
-import ca.keal.sastrane.api.Game;
 import ca.keal.sastrane.api.GameAttrib;
 import ca.keal.sastrane.api.GameAttribute;
 import ca.keal.sastrane.api.GameRegistrar;
@@ -74,8 +73,8 @@ public class MainMenuController implements Initializable {
         Scene previousScene = Main.getStage().getScene();
         Scene scene = guiUtils.getScene((Parent) loader.load(), previousScene);
         
-        Game game = ((GameTile) e.getSource()).getGame();
-        ((NewGameController) loader.getController()).setGame(game);
+        String gameID = ((GameTile) e.getSource()).getGameID();
+        ((NewGameController) loader.getController()).setGame(gameID);
         
         Main.getStage().setScene(scene);
     }

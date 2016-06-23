@@ -13,7 +13,8 @@
 
 package ca.keal.sastrane.gui;
 
-import ca.keal.sastrane.api.Game;
+import ca.keal.sastrane.api.GameAttrib;
+import ca.keal.sastrane.api.GameAttribute;
 import ca.keal.sastrane.util.Resource;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
@@ -28,6 +29,7 @@ import lombok.Setter;
 import lombok.SneakyThrows;
 
 import java.net.URL;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 @Getter
@@ -38,25 +40,32 @@ public class GameTile extends VBox implements Initializable {
     @FXML private ImageView imgView;
     @FXML private Label displayName;
     
-    private final Game game;
+    private final String gameID;
+    
+    private final Map<String, String> i18nNames;
+    private final Map<String, Resource> icons;
     
     @Inject
     @SneakyThrows
-    GameTile(GuiUtils guiUtils, @Assisted Game game) {
-        this.game = game;
+    GameTile(@Assisted String gameID, @GameAttribute(GameAttrib.I18N_NAME) Map<String, String> i18nNames,
+             @GameAttribute(GameAttrib.ICON) Map<String, Resource> icons,
+             @GameAttribute(GameAttrib.CSS) Map<String, Resource> css, GuiUtils guiUtils) {
+        this.gameID = gameID;
+        this.i18nNames = i18nNames;
+        this.icons = icons;
         guiUtils.loadCustom(this, new Resource("ca.keal.sastrane.gui", "game-tile.fxml"));
-        getStylesheets().add(game.getCss().getFilename());
+        getStylesheets().add(css.get(gameID).getFilename());
     }
     
     @Override
     @SneakyThrows
     public void initialize(URL location, ResourceBundle resources) {
-        imgView.setImage(new Image(game.getIcon().get().openStream()));
-        displayName.setText(resources.getString(game.getI18nName()));
+        imgView.setImage(new Image(icons.get(gameID).get().openStream()));
+        displayName.setText(resources.getString(i18nNames.get(gameID)));
     }
     
     interface Factory {
-        GameTile create(Game game);
+        GameTile create(String gameID);
     }
     
 }
