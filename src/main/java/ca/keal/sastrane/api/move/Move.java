@@ -31,7 +31,7 @@ public interface Move {
     
         @Override
         public Square getEndPos() {
-            return null;
+            throw new UnsupportedOperationException("Move.PASS: getEndPos()");
         }
         
     };
