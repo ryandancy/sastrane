@@ -24,6 +24,8 @@ import ca.keal.sastrane.api.move.MovingMove;
 import ca.keal.sastrane.api.piece.OwnedPiece;
 import ca.keal.sastrane.api.piece.Piece;
 import com.google.common.collect.Multiset;
+import com.google.inject.Inject;
+import lombok.RequiredArgsConstructor;
 
 import java.util.HashMap;
 import java.util.List;
@@ -33,6 +35,7 @@ import java.util.Map;
  * Notates chess using <a href="https://en.wikipedia.org/wiki/Algebraic_notation_(chess)#Long_algebraic_notation">long 
  * algebraic notation</a>.
  */
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 class LongAlgebraicNotater implements Notater {
     
     private static final Map<Class<? extends Piece>, String> PIECE_CHARS = new HashMap<>();
@@ -45,6 +48,8 @@ class LongAlgebraicNotater implements Notater {
         PIECE_CHARS.put(Queen.class, "Q");
         PIECE_CHARS.put(King.class, "K");
     }
+    
+    private final ChessArbitrator arbitrator;
     
     @Override
     public String notate(List<StateChange> moves) {
@@ -123,7 +128,7 @@ class LongAlgebraicNotater implements Notater {
         }
         
         // game end: 1-0 for white wins, 0-1 black wins, 1/2-1/2 tie
-        Result result = ChessArbitrator.INSTANCE.arbitrate(moves.get(moves.size() - 1).getAfterRound()); // TODO DI here
+        Result result = arbitrator.arbitrate(moves.get(moves.size() - 1).getAfterRound());
         if (result instanceof Result.Win) {
             res.append(System.lineSeparator());
             if (((Result.Win) result).getPlayer() == ChessPlayer.WHITE) {

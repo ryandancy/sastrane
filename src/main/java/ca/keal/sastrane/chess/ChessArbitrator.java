@@ -20,8 +20,6 @@ import ca.keal.sastrane.api.Round;
 
 class ChessArbitrator implements Arbitrator {
     
-    static final ChessArbitrator INSTANCE = new ChessArbitrator(); // TODO DI
-    
     @Override
     public Result arbitrate(Round round) {
         Player player = ChessPlayer.WHITE;
