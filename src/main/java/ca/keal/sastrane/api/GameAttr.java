@@ -99,7 +99,9 @@ public enum GameAttr {
     },
     ARBITRATOR,
     NOTATER,
-    DEFAULTS_REGISTRATOR(new PossiblyTypedValue<>(new TypeLiteral<Consumer<EventBus>>() {}, b -> {}));
+    DEFAULTS_REGISTRATOR(new PossiblyTypedValue<>(new TypeLiteral<Consumer<EventBus>>() {}, b -> {})),
+    ALLOW_PASSING(new PossiblyTypedValue<>(false)),
+    AUTO_PASS(new PossiblyTypedValue<>(false));
     
     @Nullable private PossiblyTypedValue<?> defaultValue = null;
     

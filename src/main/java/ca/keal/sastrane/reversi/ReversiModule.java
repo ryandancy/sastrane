@@ -49,6 +49,7 @@ public class ReversiModule extends AbstractGameModule {
         bindToInstance(GameAttr.PLACING_PIECES, PlacingPiece[].class, new PlacingPiece[] {new Disk()});
         bindTo(GameAttr.ARBITRATOR, Arbitrator.class, ReversiArbitrator.class);
         bindTo(GameAttr.NOTATER, Notater.class, GridNotater.class);
+        bindToInstance(GameAttr.AUTO_PASS, Boolean.class, true);
     
         super.configure();
     }

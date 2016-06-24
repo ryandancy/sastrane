@@ -44,6 +44,8 @@ public abstract class AI implements Mover {
     private final Map<String, Player[]> players;
     private final Map<String, Arbitrator> arbitrators;
     
+    private final Map<String, Boolean> canPass;
+    
     private double minimaxAlphaBeta(Round round, int depth, Player player) {
         Set<Player> otherPlayers = Sets.newHashSet(players.get(round.getGameID()));
         otherPlayers.remove(player);
@@ -60,7 +62,7 @@ public abstract class AI implements Mover {
             return doHeuristic(round, maximizingSet);
         }
         
-        List<Move> moves = round.getAllPossibleMoves(maximizing);
+        List<Move> moves = getAllPossibleMovesIncludingPass(round, maximizing);
         if (moves.size() == 0) {
             return doHeuristic(round, maximizingSet);
         }
@@ -83,7 +85,7 @@ public abstract class AI implements Mover {
         
         List<Move> moves = new ArrayList<>();
         for (Player player : minimizing) {
-            moves.addAll(round.getAllPossibleMoves(player));
+            moves.addAll(getAllPossibleMovesIncludingPass(round, player));
         }
         
         if (moves.size() == 0) {
@@ -102,10 +104,20 @@ public abstract class AI implements Mover {
     
     @Override
     public Move getMove(Round round, Player player) {
-        return round.getAllPossibleMoves(player).stream()
+        return getAllPossibleMovesIncludingPass(round, player).stream()
                 .max(Comparator.comparing(move -> minimaxAlphaBeta(round, move, getDepth(difficulty), player),
                         Double::compare))
                 .get();
+    }
+    
+    private List<Move> getAllPossibleMovesIncludingPass(Round round, Player player) {
+        List<Move> moves = round.getAllPossibleMoves(player);
+        if (round.willAutoPass(player)
+                || (canPass.get(round.getGameID()) && (moves.size() == 0 || !round.isLastMovePass()))) {
+            moves.add(Move.PASS);
+        }
+        // Log on moves.size() == 0???
+        return moves;
     }
     
     @Override

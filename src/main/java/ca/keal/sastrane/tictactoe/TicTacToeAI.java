@@ -29,8 +29,9 @@ class TicTacToeAI extends AI {
     
     @Inject
     TicTacToeAI(@Assisted double difficulty, @GameAttribute(GameAttr.PLAYERS) Map<String, Player[]> players,
-                @GameAttribute(GameAttr.ARBITRATOR) Map<String, Arbitrator> arbitrators) {
-        super(difficulty, players, arbitrators);
+                @GameAttribute(GameAttr.ARBITRATOR) Map<String, Arbitrator> arbitrators,
+                @GameAttribute(GameAttr.ALLOW_PASSING) Map<String, Boolean> canPass) {
+        super(difficulty, players, arbitrators, canPass);
     }
     
     @Override

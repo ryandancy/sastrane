@@ -54,4 +54,10 @@
     <right>
         <TilePane fx:id="pieceChooser" styleClass="piece-chooser" />
     </right>
+    <bottom>
+        <StackPane>
+            <Button fx:id="passBtn" text="%gui.game.pass" onAction="#onPass" StackPane.alignment="center"
+                    visible="false" />
+        </StackPane>
+    </bottom>
 </BorderPane>

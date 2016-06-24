@@ -19,6 +19,23 @@ import ca.keal.sastrane.api.Square;
 
 public interface Move {
     
+    Move PASS = new Move() {
+        
+        @Override
+        public void move(Board board) {}
+    
+        @Override
+        public Move perspectivize(Player player) {
+            return this;
+        }
+    
+        @Override
+        public Square getEndPos() {
+            return null;
+        }
+        
+    };
+    
     void move(Board board);
     
     Move perspectivize(Player player);

@@ -25,20 +25,21 @@ class ReversiArbitrator implements Arbitrator {
     
     @Override
     public Result arbitrate(Round round) {
-        Player player = ReversiPlayer.BLACK;
-        Player opponent = ReversiPlayer.WHITE;
-        
-        for (int i = 0; i < 2; i++) {
-            if (round.getAllPossibleMoves(player).size() == 0) {
-                return count(round.getBoard(), player, opponent);
+        // Count players if no player can move, otherwise it's not over because auto-passing
+        boolean noneCanMove = true;
+        for (Player player : ReversiPlayer.values()) {
+            if (round.getAllPossibleMoves(player).size() != 0) {
+                noneCanMove = false;
+                break;
             }
-        
-            Player temp = player;
-            player = opponent;
-            opponent = temp;
         }
-    
-        return Result.NOT_OVER;
+        
+        if (noneCanMove) {
+            return count(round.getBoard(), round.getCurrentTurn(),
+                    round.getCurrentTurn() == ReversiPlayer.WHITE ? ReversiPlayer.BLACK : ReversiPlayer.WHITE);
+        } else {
+            return Result.NOT_OVER;
+        }
     }
     
     private Result count(Board board, Player player, Player opponent) {

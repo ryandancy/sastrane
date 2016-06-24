@@ -96,6 +96,7 @@ public class GameController extends GoBacker implements Initializable {
     @FXML private Label winText;
     @FXML private Button winBtn;
     @FXML private Button notationBtn;
+    @FXML private Button passBtn;
     
     private Round round;
     @Nullable private Map<Player, ToggleGroup> playersToPieceChooserGroups = null;
@@ -116,6 +117,7 @@ public class GameController extends GoBacker implements Initializable {
     private final Map<String, Player[]> players;
     private final Map<String, PlacingPiece[]> placingPieces;
     private final Map<String, Boolean> isPlaceOnlies; // *really* awkward name
+    private final Map<String, Boolean> isPassingAllowed;
     
     @Inject
     public GameController(GuiUtils guiUtils, I18n i18n, SoundEffects soundFX,
@@ -123,7 +125,8 @@ public class GameController extends GoBacker implements Initializable {
                           @GameAttribute(GameAttr.CSS) Map<String, Resource> css,
                           @GameAttribute(GameAttr.PLAYERS) Map<String, Player[]> players,
                           @GameAttribute(GameAttr.PLACING_PIECES) Map<String, PlacingPiece[]> placingPieces,
-                          @GameAttribute(GameAttr.IS_PLACE_ONLY) Map<String, Boolean> isPlaceOnlies) {
+                          @GameAttribute(GameAttr.IS_PLACE_ONLY) Map<String, Boolean> isPlaceOnlies,
+                          @GameAttribute(GameAttr.ALLOW_PASSING) Map<String, Boolean> isPassingAllowed) {
         super(new Resource("ca.keal.sastrane.gui", "main-menu.fxml"), guiUtils);
         
         this.soundFX = soundFX;
@@ -134,6 +137,7 @@ public class GameController extends GoBacker implements Initializable {
         this.players = players;
         this.placingPieces = placingPieces;
         this.isPlaceOnlies = isPlaceOnlies;
+        this.isPassingAllowed = isPassingAllowed;
     }
     
     @SneakyThrows
@@ -159,6 +163,11 @@ public class GameController extends GoBacker implements Initializable {
                 playersToPieceChooserGroups.put(player, pieceChooserGroup);
             }
             pieceChooser.setVisible(true);
+        }
+        
+        boolean fullAIGame = round.getPlayersToMovers().values().stream().allMatch(m -> m instanceof AI);
+        if (!fullAIGame && isPassingAllowed.get(round.getGameID())) {
+            passBtn.setVisible(true);
         }
         
         for (int y = 0; y <= round.getBoard().getMaxY(); y++) {
@@ -322,6 +331,11 @@ public class GameController extends GoBacker implements Initializable {
                         .findAny().get()));
             }
         }
+    }
+    
+    @FXML
+    private void onPass() {
+        round.getBus().post(new UserMoveEvent(round, Move.PASS));
     }
     
     private void select(Square selectionBase, List<Move> possibleMoves, List<Square> selection) {
