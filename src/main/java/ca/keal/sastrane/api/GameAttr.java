@@ -82,7 +82,7 @@ public enum GameAttr {
     PLAYERS,
     AI,
     BOARD_FACTORY,
-    PLACING_PIECES(new PossiblyTypedValue<>(new Player[0])),
+    PLACING_PIECES(new PossiblyTypedValue<>(new PlacingPiece[0])),
     /** Override this to return false if your game has both placing and non-placing pieces */
     IS_PLACE_ONLY(new PossiblyTypedValue<>(false)) {
         @Override
