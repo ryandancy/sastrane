@@ -156,7 +156,7 @@ public class GuiUtils {
     }
     
     public String getLookupString(Square square) {
-        return String.format(".x%d.y%d", square.getX(), square.getY());
+        return String.format(".square.x%d.y%d", square.getX(), square.getY());
     }
     
 }

@@ -176,6 +176,9 @@ public class GameController extends GoBacker implements Initializable {
                 NumberBinding cellDimen = Bindings.min(boardGrid.widthProperty().divide(round.getBoard().getMaxX() + 1),
                         boardGrid.heightProperty().divide(round.getBoard().getMaxY() + 1));
                 if (round.getBoard().isOn(new Square(x, y))) {
+                    StackPane fullSquarePane = new StackPane();
+                    fullSquarePane.getStyleClass().add("square-container");
+                    
                     StackPane imgPane = new StackPane();
                     imgPane.getStyleClass().addAll("square", (x + y % 2) % 2 == 0 ? "even" : "odd", "x" + x, "y" + y);
                     if (x == round.getBoard().getMaxX()) {
@@ -203,7 +206,20 @@ public class GameController extends GoBacker implements Initializable {
                     
                     final int finalX = x, finalY = y;
                     imgPane.setOnMouseClicked(e -> onTileClick(finalX, finalY));
-                    cell = imgPane;
+                    
+                    Region bg = new Region();
+                    bg.getStyleClass().addAll("background", (x + y % 2) % 2 == 0 ? "even" : "odd", "x" + x, "y" + y);
+                    if (x == round.getBoard().getMaxX()) {
+                        bg.getStyleClass().add("maxx");
+                    }
+                    if (y == round.getBoard().getMaxY()) {
+                        bg.getStyleClass().add("maxy");
+                    }
+                    overlay.minHeightProperty().bind(cellDimen);
+                    overlay.minWidthProperty().bind(cellDimen);
+                    
+                    fullSquarePane.getChildren().addAll(bg, imgPane);
+                    cell = fullSquarePane;
                 } else {
                     Region filler = new Region();
                     filler.setVisible(false);
@@ -252,23 +268,21 @@ public class GameController extends GoBacker implements Initializable {
         boardGrid.translateYProperty().bind(gridTranslate);
         
         boardGrid.lookupAll(".square.maxx").forEach(s -> s.setStyle("-fx-border-color: transparent transparent "
-                + "transparent black; -fx-background-color: transparent;"));
+                + "transparent black"));
+        boardGrid.lookupAll(".background.maxx").forEach(s -> s.setStyle("-fx-background-color: transparent"));
         boardGrid.lookupAll(".square.maxy").forEach(s -> s.setStyle("-fx-border-color: black transparent transparent "
-                + "transparent; -fx-background-color: transparent;"));
-        boardGrid.lookup(".square.maxx.maxy").setStyle("-fx-border-color: transparent;"
-                + "-fx-background-color: transparent;");
+                + "transparent"));
+        boardGrid.lookupAll(".background.maxy").forEach(s -> s.setStyle("-fx-background-color: transparent"));
+        boardGrid.lookup(".square.maxx.maxy").setStyle("-fx-border-color: transparent");
     }
     
     @SneakyThrows
     private void updateBoardGrid() {
         for (Square square : round.getBoard()) {
             Node squareNode = guiUtils.getNodeFromGridPane(boardGrid, square.getX(), square.getY());
-            if (!(squareNode instanceof StackPane)) continue;
-            StackPane squarePane = (StackPane) squareNode;
-            if (!(squarePane.getChildren().size() >= 1 && squarePane.getChildren().get(0) instanceof ImageView)) {
-                continue;
-            }
-            ImageView squareImage = (ImageView) squarePane.getChildren().get(0);
+            if (squareNode == null) continue;
+            ImageView squareImage = (ImageView) squareNode.lookup(".img");
+            if (squareImage == null) continue;
             
             OwnedPiece atSquare = round.getBoard().get(square);
             squareImage.setImage((atSquare == null) ? null : new Image(atSquare.getPiece().getImage()

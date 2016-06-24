@@ -11,10 +11,10 @@
  * specific language governing permissions and limitations under the License.
  */
 
-.square.odd {
+.background.odd {
     -fx-background-image: url(/ca/keal/sastrane/chess/icon/black-tile.png);
 }
 
-.square.even {
+.background.even {
     -fx-background-color: #F2D7AC;
 }

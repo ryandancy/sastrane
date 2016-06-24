@@ -17,6 +17,9 @@
 
 .square {
     -fx-border-color: black transparent transparent black;
+}
+
+.background {
     -fx-background-color: orange;
 }
 

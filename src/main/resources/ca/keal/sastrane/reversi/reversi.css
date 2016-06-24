@@ -11,7 +11,10 @@
  * specific language governing permissions and limitations under the License.
  */
 
-.square {
+.background {
     -fx-background-color: #059F1B;
+}
+
+.square {
     -fx-border-color: black;
 }
