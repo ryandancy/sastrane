@@ -47,7 +47,8 @@
                            fitHeight="${winPane.height * 0.5}" preserveRatio="true" />
                 <Label fx:id="winText" styleClass="who-won" labelFor="$winImg" />
                 <Button fx:id="winBtn" text="%gui.game.over.back" onAction="#goBack" />
-                <Button fx:id="notationBtn" text="%gui.game.over.notation" onAction="#toNotation" visible="false" />
+                <Button fx:id="notationBtn" text="%gui.game.over.notation" onAction="#toNotation" visible="false"
+                        managed="${notationBtn.visible}" />
             </VBox>
         </StackPane>
     </center>
@@ -57,7 +58,7 @@
     <bottom>
         <StackPane>
             <Button fx:id="passBtn" text="%gui.game.pass" onAction="#onPass" StackPane.alignment="center"
-                    visible="false" />
+                    visible="false" managed="${passBtn.visible}" />
         </StackPane>
     </bottom>
 </BorderPane>
