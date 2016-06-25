@@ -33,7 +33,7 @@ import java.util.List;
  * A decoration class that places the diagonal lines of the xiangqi palace.
  */
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
-public class PalaceLinesDecor extends BoardDecor {
+class PalaceLinesDecor extends BoardDecor {
     
     private final GuiUtils guiUtils;
     
