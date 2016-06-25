@@ -14,8 +14,10 @@
 package ca.keal.sastrane.go;
 
 import ca.keal.sastrane.api.AbstractGameModule;
+import ca.keal.sastrane.api.Board;
 import ca.keal.sastrane.api.GameAttr;
 import ca.keal.sastrane.api.Player;
+import ca.keal.sastrane.api.piece.PlacingPiece;
 
 /**
  * Implements the Chinese rules of go.
@@ -31,6 +33,27 @@ public class GoModule extends AbstractGameModule {
         bindToInstance(GameAttr.NAME, String.class, "go");
         bindToInstance(GameAttr.PACKAGE, String.class, "ca.keal.sastrane.go");
         bindToInstance(GameAttr.PLAYERS, Player[].class, GoPlayer.values());
+        bindToInstance(GameAttr.BOARD_FACTORY, Board.Factory.class, Board.factory()
+                .row("                   ")
+                .row("                   ")
+                .row("                   ")
+                .row("                   ")
+                .row("                   ")
+                .row("                   ")
+                .row("                   ")
+                .row("                   ")
+                .row("                   ")
+                .row("                   ") // A 19x19 empty square
+                .row("                   ")
+                .row("                   ")
+                .row("                   ")
+                .row("                   ")
+                .row("                   ")
+                .row("                   ")
+                .row("                   ")
+                .row("                   ")
+                .row("                   "));
+        bindToInstance(GameAttr.PLACING_PIECES, PlacingPiece[].class, new PlacingPiece[] {new Stone()});
         bindToInstance(GameAttr.ALLOW_PASSING, Boolean.class, true);
         
         super.configure();
