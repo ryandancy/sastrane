@@ -51,6 +51,10 @@ tictactoe.png, is in the public domain. Modifications: converted to PNG.
 <https://commons.wikimedia.org/wiki/User:Inductiveload> (own work), found at src/main/resources/ca/keal/sastrane/xiangqi
 /xiangqi.png, has been released by its author into the public domain. Modifications: converted to PNG.
 
+    "FloorGoban.JPG" <https://commons.wikimedia.org/wiki/File:FloorGoban.JPG> by Goban1 (own work), found at src/main/
+resources/ca/keal/sastrane/go/go.png, has been released by its author into the public domain. Modifications: converted
+to PNG.
+
     white.png and black.png in src/main/resources/ca/keal/sastrane/chess/icon and all images in src/main/resources/ca/
 keal/sastrane/chess/piece have been extracted and modified from the Chess Merida font <http://www.chessvariants.com/
 index/zipfile.php?itemid=FontMerida2> by Armando Hdez. Modifications: extracted images, changed colours.
