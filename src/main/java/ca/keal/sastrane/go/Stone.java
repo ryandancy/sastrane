@@ -14,10 +14,12 @@
 package ca.keal.sastrane.go;
 
 import ca.keal.sastrane.api.Board;
+import ca.keal.sastrane.api.GameUtils;
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.Round;
 import ca.keal.sastrane.api.Square;
 import ca.keal.sastrane.api.StateChange;
+import ca.keal.sastrane.api.move.Move;
 import ca.keal.sastrane.api.move.PlacingMove;
 import ca.keal.sastrane.api.piece.PlacingPiece;
 import ca.keal.sastrane.util.Resource;
@@ -28,8 +30,10 @@ import java.util.List;
 class Stone implements PlacingPiece {
     
     /**
-     * Add a {@link GoMove} at a point if it isn't occupied and the position isn't prohibited by the superko rule.
-     * @see #doesKoProhibit(Round, GoMove)
+     * Add a {@link GoMove} at a point if it isn't occupied and the move isn't suicide or forbidden by the superko rule.
+     *
+     * @see #isSuicidal(Move, Board, Player)
+     * @see #doesKoProhibit(Move, Round)
      */
     @Override
     public List<PlacingMove> getPossiblePlacements(Round round, Player player) {
@@ -38,7 +42,7 @@ class Stone implements PlacingPiece {
         for (Square square : round.getBoard()) {
             if (round.getBoard().get(square) == null) {
                 GoMove move = new GoMove(player, square);
-                if (!doesKoProhibit(round, move)) {
+                if (!isSuicidal(move, round.getBoard(), player) && !doesKoProhibit(move, round)) {
                     moves.add(move);
                 }
             }
@@ -48,11 +52,20 @@ class Stone implements PlacingPiece {
     }
     
     /**
+     * Returns whether a move is <a href="http://senseis.xmp.net/?Suicide">suicide</a>, defined as one's own stone(s)
+     * being taken as a result of one's move. Suicide is forbidden under Chinese rules.
+     */
+    private boolean isSuicidal(Move move, Board board, Player player) {
+        // The move is suicide if there are more or the same number of player's stones before than after
+        return GameUtils.countPlayers(board).count(player) >= GameUtils.countPlayers(move.whatIf(board)).count(player);
+    }
+    
+    /**
      * Returns whether <a href="http://senseis.xmp.net/?PositionalSuperko">positional superko</a>, used in the Chinese
      * rules, prohibits playing at {@code pos}. The positional superko rule (PSK) states that no previous board position
      * may <i>ever</i> occur a second time, preventing long-lasting cycles that prevent the game from coming to an end.
      */
-    private boolean doesKoProhibit(Round round, GoMove move) {
+    private boolean doesKoProhibit(Move move, Round round) {
         Round withMove = round.copyWithMove(move);
         Board newBoard = withMove.getBoard();
         for (StateChange change : withMove.getMoves()) {
