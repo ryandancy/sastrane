@@ -11,27 +11,10 @@
  * specific language governing permissions and limitations under the License.
  */
 
+/**
+ * Contains the Sastrane implementation of <a href="http://en.wikipedia.org/wiki/Go_(game)">go</a>.
+ */
+@EverythingIsNonnullByDefault
 package ca.keal.sastrane.go;
 
-import ca.keal.sastrane.api.AbstractGameModule;
-import ca.keal.sastrane.api.GameAttr;
-
-/**
- * Implements the Chinese rules of go.
- */
-public class GoModule extends AbstractGameModule {
-    
-    public GoModule() {
-        super("ca.keal.sastrane.go");
-    }
-    
-    @Override
-    public void configure() {
-        bindToInstance(GameAttr.NAME, String.class, "go");
-        bindToInstance(GameAttr.PACKAGE, String.class, "ca.keal.sastrane.go");
-        bindToInstance(GameAttr.ALLOW_PASSING, Boolean.class, true);
-        
-        super.configure();
-    }
-    
-}
+import ca.keal.sastrane.util.EverythingIsNonnullByDefault;
