@@ -13,27 +13,26 @@
 
 package ca.keal.sastrane.go;
 
-import ca.keal.sastrane.api.AbstractGameModule;
-import ca.keal.sastrane.api.GameAttr;
 import ca.keal.sastrane.api.Player;
+import ca.keal.sastrane.api.Square;
+import ca.keal.sastrane.util.Resource;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-/**
- * Implements the Chinese rules of go.
- */
-public class GoModule extends AbstractGameModule {
+@Getter
+@RequiredArgsConstructor
+enum GoPlayer implements Player {
     
-    public GoModule() {
-        super("ca.keal.sastrane.go");
-    }
+    BLACK("black", "go.player.black", new Resource("ca.keal.sastrane.go", "stone_black.png")),
+    WHITE("white", "go.player.white", new Resource("ca.keal.sastrane.go", "stone_white.png"));
+    
+    private final String name;
+    private final String i18nName;
+    private final Resource icon;
     
     @Override
-    public void configure() {
-        bindToInstance(GameAttr.NAME, String.class, "go");
-        bindToInstance(GameAttr.PACKAGE, String.class, "ca.keal.sastrane.go");
-        bindToInstance(GameAttr.PLAYERS, Player[].class, GoPlayer.values());
-        bindToInstance(GameAttr.ALLOW_PASSING, Boolean.class, true);
-        
-        super.configure();
+    public Square perspectivize(Square pos, Square original) {
+        return pos;
     }
     
 }
