@@ -18,7 +18,9 @@ import com.google.common.collect.HashMultiset;
 import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Random;
 
 public final class Utils {
@@ -50,6 +52,23 @@ public final class Utils {
      */
     public static <E> boolean areElementsEqual(Collection<E> a, Collection<E> b) {
         return HashMultiset.create(a).equals(HashMultiset.create(b));
+    }
+    
+    /**
+     * Returns the list with only the specified indexes, all the others filtered out.
+     */
+    public static <E> List<E> selectIndexes(List<E> list, int... indexes) {
+        List<E> newList = new ArrayList<>();
+        for (int i = 0; i < list.size(); i++) {
+            // this is what we have to write to get a simple contains on an array
+            for (int idx : indexes) {
+                if (i == idx) {
+                    newList.add(list.get(i));
+                    break;
+                }
+            }
+        }
+        return newList;
     }
     
 }

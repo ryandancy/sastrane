@@ -17,16 +17,11 @@ import ca.keal.sastrane.api.AI;
 import ca.keal.sastrane.api.AbstractGameModule;
 import ca.keal.sastrane.api.Arbitrator;
 import ca.keal.sastrane.api.Board;
+import ca.keal.sastrane.api.BoardDecor;
 import ca.keal.sastrane.api.GameAttr;
 import ca.keal.sastrane.api.Notater;
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.piece.OwnedPieceFactory;
-import com.google.common.eventbus.EventBus;
-import com.google.inject.Inject;
-import com.google.inject.TypeLiteral;
-import lombok.RequiredArgsConstructor;
-
-import java.util.function.Consumer;
 
 public class XiangqiModule extends AbstractGameModule {
     
@@ -67,22 +62,9 @@ public class XiangqiModule extends AbstractGameModule {
                 .piece('s', new OwnedPieceFactory(Soldier::new, XiangqiPlayer.RED)));
         bindTo(GameAttr.ARBITRATOR, Arbitrator.class, XiangqiArbitrator.class);
         bindTo(GameAttr.NOTATER, Notater.class, WXFNotater.class);
-        bind(PalaceLines.class);
-        bindTo(GameAttr.DEFAULTS_REGISTRATOR, new TypeLiteral<Consumer<EventBus>>() {}, DefaultsRegistrator.class);
+        bindTo(GameAttr.BOARD_DECOR, BoardDecor.class, PalaceLinesDecor.class);
         
         super.configure();
-    }
-    
-    @RequiredArgsConstructor(onConstructor = @__(@Inject))
-    private static class DefaultsRegistrator implements Consumer<EventBus> {
-        
-        private final PalaceLines lines;
-        
-        @Override
-        public void accept(EventBus bus) {
-            bus.register(lines);
-        }
-        
     }
     
 }

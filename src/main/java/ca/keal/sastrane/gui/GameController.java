@@ -14,6 +14,7 @@
 package ca.keal.sastrane.gui;
 
 import ca.keal.sastrane.api.AI;
+import ca.keal.sastrane.api.BoardDecor;
 import ca.keal.sastrane.api.Decision;
 import ca.keal.sastrane.api.GameAttr;
 import ca.keal.sastrane.api.GameAttribute;
@@ -80,6 +81,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class GameController extends GoBacker implements Initializable {
@@ -115,6 +117,7 @@ public class GameController extends GoBacker implements Initializable {
     private final Map<String, String> i18nNames;
     private final Map<String, Resource> css;
     private final Map<String, Player[]> players;
+    private final Map<String, Set<BoardDecor>> decors;
     private final Map<String, PlacingPiece[]> placingPieces;
     private final Map<String, Boolean> isPlaceOnlies; // *really* awkward name
     private final Map<String, Boolean> isPassingAllowed;
@@ -124,6 +127,7 @@ public class GameController extends GoBacker implements Initializable {
                           @GameAttribute(GameAttr.I18N_NAME) Map<String, String> i18nNames,
                           @GameAttribute(GameAttr.CSS) Map<String, Resource> css,
                           @GameAttribute(GameAttr.PLAYERS) Map<String, Player[]> players,
+                          @GameAttribute(GameAttr.BOARD_DECOR) Map<String, Set<BoardDecor>> decors,
                           @GameAttribute(GameAttr.PLACING_PIECES) Map<String, PlacingPiece[]> placingPieces,
                           @GameAttribute(GameAttr.IS_PLACE_ONLY) Map<String, Boolean> isPlaceOnlies,
                           @GameAttribute(GameAttr.ALLOW_PASSING) Map<String, Boolean> isPassingAllowed) {
@@ -135,6 +139,7 @@ public class GameController extends GoBacker implements Initializable {
         this.i18nNames = i18nNames;
         this.css = css;
         this.players = players;
+        this.decors = decors;
         this.placingPieces = placingPieces;
         this.isPlaceOnlies = isPlaceOnlies;
         this.isPassingAllowed = isPassingAllowed;
@@ -175,7 +180,8 @@ public class GameController extends GoBacker implements Initializable {
                 Node cell;
                 NumberBinding cellDimen = Bindings.min(boardGrid.widthProperty().divide(round.getBoard().getMaxX() + 1),
                         boardGrid.heightProperty().divide(round.getBoard().getMaxY() + 1));
-                if (round.getBoard().isOn(new Square(x, y))) {
+                Square square = new Square(x, y);
+                if (round.getBoard().isOn(square)) {
                     StackPane fullSquarePane = new StackPane();
                     fullSquarePane.getStyleClass().add("square-container");
                     
@@ -218,7 +224,18 @@ public class GameController extends GoBacker implements Initializable {
                     overlay.minHeightProperty().bind(cellDimen);
                     overlay.minWidthProperty().bind(cellDimen);
                     
-                    fullSquarePane.getChildren().addAll(bg, imgPane);
+                    StackPane decorContainer = new StackPane();
+                    decorContainer.getStyleClass().add("decors");
+                    Set<BoardDecor> decorSet = decors.get(round.getGameID());
+                    if (decorSet != null) {
+                        decorSet.stream()
+                                .sorted()
+                                .filter(d -> d.getSquares().contains(square))
+                                .map(d -> d.getDecor(square, round.getBoard(), boardGrid))
+                                .forEach(decorContainer.getChildren()::add);
+                    }
+                    
+                    fullSquarePane.getChildren().addAll(bg, decorContainer, imgPane);
                     cell = fullSquarePane;
                 } else {
                     Region filler = new Region();
@@ -358,7 +375,7 @@ public class GameController extends GoBacker implements Initializable {
         this.selectionBase = selectionBase;
         this.selection = selection;
         selectionMoves = possibleMoves;
-    
+        
         guiUtils.lookup(game, selectionBase)
                 .pseudoClassStateChanged(PseudoClass.getPseudoClass("selection-base"), true);
         for (Square square : selection) {

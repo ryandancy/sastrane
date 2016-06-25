@@ -66,6 +66,7 @@ public abstract class AbstractGameModule extends AbstractModule {
     }
     
     private <T> void completeBinding(MapBinder<String, T> mapBinder, PossiblyTypedValue<T> ptv) {
+        mapBinder.permitDuplicates();
         if (ptv.getValueProvider() != null) {
             mapBinder.addBinding(id).toProvider(ptv.getValueProvider());
         } else if (ptv.getValueCls() != null) {

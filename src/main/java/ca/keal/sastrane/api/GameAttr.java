@@ -79,6 +79,7 @@ public enum GameAttr {
                     (String) attribs.get(PACKAGE).getValue(), attribs.get(NAME) + ".css")));
         }
     },
+    BOARD_DECOR,
     PLAYERS,
     AI,
     BOARD_FACTORY,
