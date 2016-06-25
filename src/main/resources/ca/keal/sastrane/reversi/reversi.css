@@ -11,6 +11,10 @@
  * specific language governing permissions and limitations under the License.
  */
 
+.root {
+    board-overlay-background: hsba(0, 100%, 100%, .6);
+}
+
 .background {
     -fx-background-color: #059F1B;
 }

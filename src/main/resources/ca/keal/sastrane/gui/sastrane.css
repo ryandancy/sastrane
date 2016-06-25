@@ -15,6 +15,7 @@
     background: #A88C27;
     -fx-background-color: background;
     button-background: #927921;
+    board-overlay-background: hsba(0, 100%, 100%, .5);
 }
 
 * {
@@ -255,7 +256,7 @@
 }
 
 #decision .option {
-    -fx-background-color: hsba(0, 90%, 100%, .8);
+    -fx-background-color: derive(board-overlay-background, -10%);
     -fx-padding: 10;
     -fx-alignment: center;
     -fx-spacing: 5;
@@ -266,7 +267,7 @@
 }
 
 #win {
-    -fx-background-color: hsba(0, 100%, 100%, .5);
+    -fx-background-color: board-overlay-background;
     -fx-padding: 40;
 }
 

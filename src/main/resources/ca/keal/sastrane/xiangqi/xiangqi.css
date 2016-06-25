@@ -11,6 +11,15 @@
  * specific language governing permissions and limitations under the License.
  */
 
+.root {
+    board-overlay-background: hsba(350, 100%, 100%, .7);
+}
+
+#win .button {
+    /* The buttons clash horribly with the orange */
+    -fx-background-color: #BE6F00;
+}
+
 #board {
     -sastrane-grid-type: point;
 }
