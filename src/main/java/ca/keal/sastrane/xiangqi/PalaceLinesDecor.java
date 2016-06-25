@@ -16,12 +16,14 @@ package ca.keal.sastrane.xiangqi;
 import ca.keal.sastrane.api.Board;
 import ca.keal.sastrane.api.BoardDecor;
 import ca.keal.sastrane.api.Square;
+import ca.keal.sastrane.gui.GuiUtils;
 import ca.keal.sastrane.util.Utils;
-import javafx.beans.binding.Bindings;
+import com.google.inject.Inject;
 import javafx.beans.binding.NumberBinding;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Line;
+import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,7 +32,10 @@ import java.util.List;
 /**
  * A decoration class that places the diagonal lines of the xiangqi palace.
  */
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class PalaceLinesDecor extends BoardDecor {
+    
+    private final GuiUtils guiUtils;
     
     @Override
     public List<Square> getSquares() {
@@ -58,8 +63,7 @@ public class PalaceLinesDecor extends BoardDecor {
     
     private Line line(Board board, GridPane grid, DiagLineDirection dir) {
         Line line = new Line();
-        NumberBinding cellDimen = Bindings.min(grid.widthProperty().divide(board.getMaxX() + 1),
-                grid.heightProperty().divide(board.getMaxY() + 1)).add(10); // DRY???
+        NumberBinding cellDimen = guiUtils.getCellSizeBinding(board, grid).add(10);
         
         line.getStyleClass().add("decor");
         if (dir == DiagLineDirection.NW_SE) {

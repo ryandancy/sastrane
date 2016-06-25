@@ -13,6 +13,7 @@
 
 package ca.keal.sastrane.gui;
 
+import ca.keal.sastrane.api.Board;
 import ca.keal.sastrane.api.Square;
 import ca.keal.sastrane.gui.audio.SoundEffects;
 import ca.keal.sastrane.main.Main;
@@ -21,6 +22,8 @@ import ca.keal.sastrane.util.Resource;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Singleton;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.NumberBinding;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.JavaFXBuilderFactory;
 import javafx.scene.Node;
@@ -157,6 +160,11 @@ public class GuiUtils {
     
     public String getLookupString(Square square) {
         return String.format(".square.x%d.y%d", square.getX(), square.getY());
+    }
+    
+    public NumberBinding getCellSizeBinding(Board board, GridPane grid) {
+        return Bindings.min(grid.widthProperty().divide(board.getMaxX() + 1),
+                grid.heightProperty().divide(board.getMaxY() + 1));
     }
     
 }

@@ -178,8 +178,7 @@ public class GameController extends GoBacker implements Initializable {
         for (int y = 0; y <= round.getBoard().getMaxY(); y++) {
             for (int x = 0; x <= round.getBoard().getMaxX(); x++) {
                 Node cell;
-                NumberBinding cellDimen = Bindings.min(boardGrid.widthProperty().divide(round.getBoard().getMaxX() + 1),
-                        boardGrid.heightProperty().divide(round.getBoard().getMaxY() + 1));
+                NumberBinding cellDimen = guiUtils.getCellSizeBinding(round.getBoard(), boardGrid);
                 Square square = new Square(x, y);
                 if (round.getBoard().isOn(square)) {
                     StackPane fullSquarePane = new StackPane();
