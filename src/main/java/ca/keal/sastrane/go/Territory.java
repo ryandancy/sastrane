@@ -44,6 +44,27 @@ class Territory {
     }
     
     /**
+     * Get a list of all of {@code player}'s territories anywhere on the board.
+     */
+    static List<Territory> getAllOfPlayer(Player player, Board board) {
+        List<Territory> terrs = new ArrayList<>();
+        for (Square square : board) {
+            if (board.get(square) != null) continue; // we only want empty points
+            
+            if (terrs.stream().anyMatch(t -> t.getPoints().contains(square))) {
+                // It's a duplicate territory
+                continue;
+            }
+            
+            Territory terr = at(square, board);
+            if (terr.getPlayer() != player) continue; // neutral or opponent's territory
+            
+            terrs.add(terr);
+        }
+        return terrs;
+    }
+    
+    /**
      * Attempt to find a territory containing {@code square} on {@code board}, and return an empty territory if
      * {@code square} is occupied.
      */
