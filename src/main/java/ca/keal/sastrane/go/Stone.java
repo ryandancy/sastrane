@@ -29,6 +29,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @NoArgsConstructor
@@ -39,7 +40,7 @@ class Stone implements PlacingPiece {
     private Player player;
     
     /**
-     * Returns a list of all squares <a href="http://senseis.xmp.net/?Adjacent">adjacent</a> to this stone. Adjacency is
+     * Return a list of all squares <a href="http://senseis.xmp.net/?Adjacent">adjacent</a> to this stone. Adjacency is
      * only horizontal and vertical; there is no diagonal adjacency in go.
      */
     List<Square> getAdjacent(Board board) {
@@ -56,6 +57,16 @@ class Stone implements PlacingPiece {
         if (board.isOn(square)) {
             squares.add(square);
         }
+    }
+    
+    /**
+     * Return a list of all <a href="http://senseis.xmp.net/?LibertyIntroductory">liberties</a> this stone has; that is,
+     * all empty points adjacent to this stone.
+     */
+    List<Square> getLiberties(Board board) {
+        return getAdjacent(board).stream()
+                .filter(adj -> board.get(adj) == null)
+                .collect(Collectors.toList());
     }
     
     /**

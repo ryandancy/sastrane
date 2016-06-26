@@ -21,7 +21,9 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Represents an unbroken group of like-coloured stones.
@@ -38,6 +40,17 @@ class Chain {
     Player getPlayer() {
         if (isEmpty()) throw new IllegalStateException("Empty chain has no player");
         return stones.get(0).getPlayer();
+    }
+    
+    /**
+     * Return all <a href="http://senseis.xmp.net/?LibertyIntroductory">liberties</a> of this chain.
+     * @implNote Simply defers to {@link Stone#getLiberties(Board)}
+     */
+    // Return Set<Square> here and in Stone???
+    List<Square> getLiberties(Board board) {
+        return new ArrayList<>(stones.stream()
+                .map(s -> s.getLiberties(board))
+                .collect(HashSet::new, Set::addAll, Set::addAll));
     }
     
     /**
