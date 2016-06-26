@@ -59,7 +59,14 @@ class GoMove extends PlacingMove {
      * line can be drawn between them through only like-coloured stones.
      */
     private void removeAllStonesWithoutLiberties(Player player, Board board) {
-        // TODO
+        Chain.getAllOfPlayer(player, board).stream()
+                .filter(chain -> chain.getLiberties(board).isEmpty())
+                .forEach(chain -> removeChain(chain, board));
+    }
+    
+    /** Convenience method for removing whole chains from the board. */
+    private void removeChain(Chain chain, Board board) {
+        chain.getStones().forEach(s -> removeStone(s.getSquare(), board));
     }
     
     /** Convenience method for removing stones from the board. */
