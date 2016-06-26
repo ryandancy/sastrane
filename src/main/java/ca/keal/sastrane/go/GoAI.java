@@ -20,6 +20,7 @@ import ca.keal.sastrane.api.GameAttribute;
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.Round;
 import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 import com.google.inject.name.Named;
 
 import java.util.Map;
@@ -30,7 +31,7 @@ class GoAI extends AI {
     private final double komi;
     
     @Inject
-    public GoAI(double difficulty, @Named("komi") double komi,
+    public GoAI(@Assisted double difficulty, @Named("komi") double komi,
                 @GameAttribute(GameAttr.PLAYERS) Map<String, Player[]> players,
                 @GameAttribute(GameAttr.ARBITRATOR) Map<String, Arbitrator> arbitrators,
                 @GameAttribute(GameAttr.ALLOW_PASSING) Map<String, Boolean> canPass) {
