@@ -61,6 +61,9 @@ public class GoModule extends AbstractGameModule {
         bindTo(GameAttr.ARBITRATOR, Arbitrator.class, GoArbitrator.class);
         bindToInstance(GameAttr.ALLOW_PASSING, Boolean.class, true);
         
+        // NOTE: There does not appear to be any standard human-readable computer go notation system, which is why this
+        // implementation does not include one. The kifu system only really works when written by hand.
+        
         // Chinese rules: komi is 7.5 points (http://senseis.xmp.net/?Komi)
         bindConstant().annotatedWith(Names.named("komi")).to(7.5);
         
