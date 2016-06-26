@@ -40,31 +40,11 @@ class Stone implements PlacingPiece {
     private Player player;
     
     /**
-     * Return a list of all squares <a href="http://senseis.xmp.net/?Adjacent">adjacent</a> to this stone. Adjacency is
-     * only horizontal and vertical; there is no diagonal adjacency in go.
-     */
-    List<Square> getAdjacent(Board board) {
-        List<Square> adjacents = new ArrayList<>();
-        for (int delta = -1; delta <= 1; delta += 2) {
-            addIfOnBoard(adjacents, square.withX(square.getX() + delta), board);
-            addIfOnBoard(adjacents, square.withY(square.getY() + delta), board);
-        }
-        return adjacents;
-    }
-    
-    /** Adds {@code square} to {@code squares} if it's on {@code board}. */
-    private void addIfOnBoard(List<Square> squares, Square square, Board board) {
-        if (board.isOn(square)) {
-            squares.add(square);
-        }
-    }
-    
-    /**
      * Return a list of all <a href="http://senseis.xmp.net/?LibertyIntroductory">liberties</a> this stone has; that is,
      * all empty points adjacent to this stone.
      */
     List<Square> getLiberties(Board board) {
-        return getAdjacent(board).stream()
+        return GoUtils.getAdjacent(square, board).stream()
                 .filter(adj -> board.get(adj) == null)
                 .collect(Collectors.toList());
     }

@@ -99,7 +99,7 @@ class Chain {
     /** Recursively adds all stones part of the chain. */
     private static void addStonesInChain(List<Stone> stones, Stone start, Board board) {
         stones.add(start);
-        for (Square adj : start.getAdjacent(board)) {
+        for (Square adj : GoUtils.getAdjacent(start.getSquare(), board)) {
             OwnedPiece piece = board.get(adj);
             if (piece == null) continue; // empty point
             
