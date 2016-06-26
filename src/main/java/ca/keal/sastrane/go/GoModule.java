@@ -14,10 +14,12 @@
 package ca.keal.sastrane.go;
 
 import ca.keal.sastrane.api.AbstractGameModule;
+import ca.keal.sastrane.api.Arbitrator;
 import ca.keal.sastrane.api.Board;
 import ca.keal.sastrane.api.GameAttr;
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.piece.PlacingPiece;
+import com.google.inject.name.Names;
 
 /**
  * Implements the Chinese rules of go.
@@ -54,7 +56,11 @@ public class GoModule extends AbstractGameModule {
                 .row("                   ")
                 .row("                   "));
         bindToInstance(GameAttr.PLACING_PIECES, PlacingPiece[].class, new PlacingPiece[] {new Stone()});
+        bindTo(GameAttr.ARBITRATOR, Arbitrator.class, GoArbitrator.class);
         bindToInstance(GameAttr.ALLOW_PASSING, Boolean.class, true);
+        
+        // Chinese rules: komi is 7.5 points (http://senseis.xmp.net/?Komi)
+        bindConstant().annotatedWith(Names.named("komi")).to(7.5);
         
         super.configure();
     }
