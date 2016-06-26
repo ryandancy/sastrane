@@ -14,6 +14,8 @@
 package ca.keal.sastrane.go;
 
 import ca.keal.sastrane.api.Board;
+import ca.keal.sastrane.api.GameUtils;
+import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.Square;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -42,6 +44,27 @@ final class GoUtils {
         if (board.isOn(square)) {
             squares.add(square);
         }
+    }
+    
+    /**
+     * Get a player's score, before komi is factored in. Chinese rules use <a
+     * href="http://senseis.xmp.net/?AreaScoring"><i>area scoring</i></a>, meaning that a player's score is the sum of
+     * two components:
+     * <ul>
+     *     <li>
+     *         the number of empty points surrounded by the player's stones (i.e. that player's
+     *         <a href="http://senseis.xmp.net/?Territory">territory</a>), and
+     *     </li>
+     *     <li>the number of the player's stones on the board.</li>
+     * </ul>
+     */
+    static double getScore(Player player, double komi, Board board) {
+        // Number of player's stones on the board + player's territory
+        return GameUtils.countPlayers(board).count(player)
+            + Territory.getAllOfPlayer(player, board).stream()
+                    .flatMap(t -> t.getPoints().stream()) // get all points of all territories
+                    .mapToInt(p -> 1).sum()               // count them
+            + (player == GoPlayer.WHITE ? komi : 0);
     }
     
 }

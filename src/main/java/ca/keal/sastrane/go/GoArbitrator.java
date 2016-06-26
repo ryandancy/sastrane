@@ -15,8 +15,6 @@ package ca.keal.sastrane.go;
 
 import ca.keal.sastrane.api.Arbitrator;
 import ca.keal.sastrane.api.Board;
-import ca.keal.sastrane.api.GameUtils;
-import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.Result;
 import ca.keal.sastrane.api.Round;
 import ca.keal.sastrane.api.StateChange;
@@ -57,8 +55,8 @@ class GoArbitrator implements Arbitrator {
     }
     
     private Result getVictor(Board board) {
-        int scoreBlack = getScoreBeforeKomi(GoPlayer.BLACK, board);
-        double scoreWhite = getScoreBeforeKomi(GoPlayer.WHITE, board) + komi;
+        double scoreBlack = GoUtils.getScore(GoPlayer.BLACK, komi, board);
+        double scoreWhite = GoUtils.getScore(GoPlayer.WHITE, komi, board);
         
         if (scoreBlack == scoreWhite) {
             // Under Chinese rules this shouldn't happen, because komi is fractional, but whatever
@@ -66,26 +64,6 @@ class GoArbitrator implements Arbitrator {
         }
         
         return new Result.Win(scoreBlack > scoreWhite ? GoPlayer.BLACK : GoPlayer.WHITE);
-    }
-    
-    /**
-     * Get a player's score, before komi is factored in. Chinese rules use <a
-     * href="http://senseis.xmp.net/?AreaScoring"><i>area scoring</i></a>, meaning that a player's score is the sum of
-     * two components:
-     * <ul>
-     *     <li>
-     *         the number of empty points surrounded by the player's stones (i.e. that player's
-     *         <a href="http://senseis.xmp.net/?Territory">territory</a>), and
-     *     </li>
-     *     <li>the number of the player's stones on the board.</li>
-     * </ul>
-     */
-    private int getScoreBeforeKomi(Player player, Board board) {
-        // Number of player's stones on the board + player's territory
-        return GameUtils.countPlayers(board).count(player)
-            + Territory.getAllOfPlayer(player, board).stream()
-                    .flatMap(t -> t.getPoints().stream()) // get all points of all territories
-                    .mapToInt(p -> 1).sum();              // count them
     }
     
 }
