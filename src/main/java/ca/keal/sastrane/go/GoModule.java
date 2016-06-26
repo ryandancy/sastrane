@@ -13,6 +13,7 @@
 
 package ca.keal.sastrane.go;
 
+import ca.keal.sastrane.api.AI;
 import ca.keal.sastrane.api.AbstractGameModule;
 import ca.keal.sastrane.api.Arbitrator;
 import ca.keal.sastrane.api.Board;
@@ -35,6 +36,7 @@ public class GoModule extends AbstractGameModule {
         bindToInstance(GameAttr.NAME, String.class, "go");
         bindToInstance(GameAttr.PACKAGE, String.class, "ca.keal.sastrane.go");
         bindToInstance(GameAttr.PLAYERS, Player[].class, GoPlayer.values());
+        installFactory(GameAttr.AI, AI.Factory.class, GoAI.class);
         bindToInstance(GameAttr.BOARD_FACTORY, Board.Factory.class, Board.factory()
                 .row("                   ")
                 .row("                   ")
