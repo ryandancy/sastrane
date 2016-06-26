@@ -24,7 +24,7 @@ class GoMove extends PlacingMove {
     private final GoPlayer player;
     
     GoMove(GoPlayer player, Square pos) {
-        super(new OwnedPiece(new Stone(), player), pos);
+        super(new OwnedPiece(new Stone(pos, player), player), pos);
         this.player = player;
     }
     
