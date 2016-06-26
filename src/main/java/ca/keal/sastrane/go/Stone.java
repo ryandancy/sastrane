@@ -38,10 +38,11 @@ class Stone implements PlacingPiece {
     @Override
     public List<PlacingMove> getPossiblePlacements(Round round, Player player) {
         List<PlacingMove> moves = new ArrayList<>();
+        assert player instanceof GoPlayer;
         
         for (Square square : round.getBoard()) {
             if (round.getBoard().get(square) == null) {
-                GoMove move = new GoMove(player, square);
+                GoMove move = new GoMove((GoPlayer) player, square);
                 if (!isSuicidal(move, round.getBoard(), player) && !doesKoProhibit(move, round)) {
                     moves.add(move);
                 }

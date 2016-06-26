@@ -35,4 +35,8 @@ enum GoPlayer implements Player {
         return pos;
     }
     
+    public GoPlayer getOpponent() {
+        return this == BLACK ? WHITE : BLACK;
+    }
+    
 }

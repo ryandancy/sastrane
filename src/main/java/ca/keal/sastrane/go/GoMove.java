@@ -13,6 +13,7 @@
 
 package ca.keal.sastrane.go;
 
+import ca.keal.sastrane.api.Board;
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.Square;
 import ca.keal.sastrane.api.move.PlacingMove;
@@ -20,8 +21,50 @@ import ca.keal.sastrane.api.piece.OwnedPiece;
 
 class GoMove extends PlacingMove {
     
-    GoMove(Player player, Square pos) {
+    private final GoPlayer player;
+    
+    GoMove(GoPlayer player, Square pos) {
         super(new OwnedPiece(new Stone(), player), pos);
+        this.player = player;
+    }
+    
+    /**
+     * Follows the steps of moving described <a href="https://en.wikipedia.org/wiki/Rules_of_go#Moving">on
+     * Wikipedia</a>. They are:
+     * <ol>
+     *     <li>Place the stone on the desired intersection.</li>
+     *     <li>Remove any of the opponent's stones with no liberties.</li>
+     *     <li>Remove any of one's own stones with no liberties.</li>
+     * </ol>
+     * Chinese rules prohibit suicide, which means that step #3 never occurs. However, the implementation of suicide
+     * prohibition in {@link Stone} requires that step #3 be implemented here, and so it is.
+     * 
+     * @implNote Step #1 is handled by PlacingMove, which means that this method implements steps #2 and #3.
+     */
+    @Override
+    public void move(Board board) {
+        // Step #1 (placing the stone) is handled by PlacingMove
+        super.move(board);
+        
+        // Step #2: Remove all opponent's stones with no liberties
+        removeAllStonesWithoutLiberties(player.getOpponent(), board);
+        
+        // Step #3: Remove all own stones with no liberties
+        removeAllStonesWithoutLiberties(player, board);
+    }
+    
+    /**
+     * Removes all of {@code player}'s stones without liberties. A <i>liberty</i> of a stone is an empty point adjacent
+     * to that stone or a stone connected to it. Two like-coloured stones are said to be <i>connected</i> if a unbroken
+     * line can be drawn between them through only like-coloured stones.
+     */
+    private void removeAllStonesWithoutLiberties(Player player, Board board) {
+        // TODO
+    }
+    
+    /** Convenience method for removing stones from the board. */
+    private void removeStone(Square square, Board board) {
+        board.set(square, null);
     }
     
 }
