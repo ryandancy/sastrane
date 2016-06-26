@@ -23,18 +23,20 @@ import ca.keal.sastrane.api.move.Move;
 import ca.keal.sastrane.api.move.PlacingMove;
 import ca.keal.sastrane.api.piece.PlacingPiece;
 import ca.keal.sastrane.util.Resource;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 class Stone implements PlacingPiece {
     
-    private final Square square;
-    private final Player player;
+    private Square square;
+    private Player player;
     
     /**
      * Add a {@link GoMove} at a point if it isn't occupied and the move isn't suicide or forbidden by the superko rule.
