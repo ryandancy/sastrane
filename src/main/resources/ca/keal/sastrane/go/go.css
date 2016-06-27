@@ -21,4 +21,5 @@
 
 .square {
     -fx-border-color: black transparent transparent black;
+    -fx-padding: 0;
 }

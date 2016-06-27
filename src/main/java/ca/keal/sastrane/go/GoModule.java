@@ -20,8 +20,15 @@ import ca.keal.sastrane.api.Board;
 import ca.keal.sastrane.api.BoardDecor;
 import ca.keal.sastrane.api.GameAttr;
 import ca.keal.sastrane.api.Player;
+import ca.keal.sastrane.api.event.ToGameEvent;
 import ca.keal.sastrane.api.piece.PlacingPiece;
+import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
+import com.google.inject.TypeLiteral;
 import com.google.inject.name.Names;
+import javafx.scene.layout.Pane;
+
+import java.util.function.Consumer;
 
 /**
  * Implements the Chinese rules of go.
@@ -62,6 +69,24 @@ public class GoModule extends AbstractGameModule {
         bindTo(GameAttr.ARBITRATOR, Arbitrator.class, GoArbitrator.class);
         bindTo(GameAttr.BOARD_DECOR, BoardDecor.class, StarPointsDecor.class);
         bindToInstance(GameAttr.ALLOW_PASSING, Boolean.class, true);
+        
+        bindToInstance(GameAttr.DEFAULTS_REGISTRATOR, new TypeLiteral<Consumer<EventBus>>() {},
+                bus -> bus.register(new Object() {
+                    /**
+                     * The magic number that's multiplied by the scene's width/height to get the board's pref
+                     * width/height.
+                     */
+                    // Provide an API for overriding the default instead of hooking into ToGameEvent.Post???
+                    private static final double PREF_WH_FACTOR = 0.7;
+                    
+                    @Subscribe
+                    public void afterGameScreenLoad(ToGameEvent.Post e) {
+                        Pane gameRoot = (Pane) e.getGameScene().getRoot();
+                        Pane boardGrid = (Pane) e.getGameScene().lookup("#board");
+                        boardGrid.prefWidthProperty().bind(gameRoot.widthProperty().multiply(PREF_WH_FACTOR));
+                        boardGrid.prefHeightProperty().bind(gameRoot.heightProperty().multiply(PREF_WH_FACTOR));
+                    }
+                }));
         
         // NOTE: There does not appear to be any standard human-readable computer go notation system, which is why this
         // implementation does not include one. The kifu system only really works when written by hand.
