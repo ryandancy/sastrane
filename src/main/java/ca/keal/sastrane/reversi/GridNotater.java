@@ -17,6 +17,7 @@ import ca.keal.sastrane.api.Board;
 import ca.keal.sastrane.api.Notater;
 import ca.keal.sastrane.api.Square;
 import ca.keal.sastrane.api.StateChange;
+import ca.keal.sastrane.api.move.Move;
 import ca.keal.sastrane.api.piece.OwnedPiece;
 
 import java.util.List;
@@ -50,6 +51,9 @@ class GridNotater implements Notater {
         }
         
         for (int i = 0; i < moves.size(); i++) {
+            StateChange change = moves.get(i);
+            if (change.getMove() == Move.PASS) continue;
+            
             Square square = moves.get(i).getMove().getEndPos();
             grid[square.getY()][square.getX()] = i + 1;
         }

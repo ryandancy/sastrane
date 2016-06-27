@@ -109,9 +109,7 @@ public class Round {
         bus.post(new MoveEvent.Post(this, move));
         
         lastMovePass = move == Move.PASS;
-        if (!lastMovePass) {
-            moves.add(new StateChange(oldBoard, move, new Round(this)));
-        }
+        moves.add(new StateChange(oldBoard, move, new Round(this)));
         
         bus.post(new TurnEvent.Post(this));
         
