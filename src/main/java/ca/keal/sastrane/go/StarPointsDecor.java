@@ -38,22 +38,22 @@ class StarPointsDecor extends BoardDecor {
     @Override
     public List<Square> getSquares() {
         return Arrays.asList(
-                new Square(4, 4),  new Square(10, 4),  new Square(14, 4),
-                new Square(4, 10), new Square(10, 10), new Square(14, 10),
-                new Square(4, 14), new Square(10, 14), new Square(14, 14));
+                new Square(3, 3),  new Square(9, 3),  new Square(15, 3),
+                new Square(3, 9),  new Square(9, 9),  new Square(15, 9),
+                new Square(3, 15), new Square(9, 15), new Square(15, 15));
     }
     
     @Override
     public Node getDecor(Square square, Board board, GridPane grid) {
-        NumberBinding dotSize = guiUtils.getCellSizeBinding(board, grid).divide(10);
+        NumberBinding cellSize = guiUtils.getCellSizeBinding(board, grid);
         
         Circle dot = new Circle();
         dot.setCenterX(0);
         dot.setCenterY(0);
-        dot.radiusProperty().bind(dotSize);
+        dot.radiusProperty().bind(cellSize.multiply(0.15));
         
         // Move the dot into the centre of the point
-        NumberBinding offset = dotSize.divide(2).negate();
+        NumberBinding offset = cellSize.divide(2).add(cellSize.multiply(0.073)).negate();
         dot.translateXProperty().bind(offset);
         dot.translateYProperty().bind(offset);
         
