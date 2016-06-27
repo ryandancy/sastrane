@@ -21,7 +21,9 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import javax.annotation.Nullable;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.List;
 
 /**
@@ -85,25 +87,28 @@ class Territory {
         boolean playerInit = false;
         points.add(start);
         
-        for (Square adj : GoUtils.getAdjacent(start, board)) {
+        Deque<Square> toCheck = new ArrayDeque<>(GoUtils.getAdjacent(start, board));
+        while (!toCheck.isEmpty()) {
+            Square adj = toCheck.removeFirst();
+            points.add(adj);
+            
             OwnedPiece piece = board.get(adj);
             if (piece != null) {
                 // Not an empty point
-                if (playerInit) {
-                    player = null; // neutral territory
-                } else {
+                if (!playerInit) {
                     player = piece.getOwner();
                     playerInit = true;
+                } else if (piece.getOwner() != player) {
+                    player = null;
                 }
                 continue;
             }
             
-            if (points.contains(adj)) continue; // prevent duplicates / infitite recursion
-            
-            getPlayerAndAddPointsInTerritory(points, adj, board);
+            GoUtils.getAdjacent(adj, board).stream()
+                    .filter(sq -> !points.contains(sq))
+                    .forEach(toCheck::push);
         }
         
-        assert playerInit : "player not init";
         return player;
     }
     
