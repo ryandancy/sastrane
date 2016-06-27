@@ -17,6 +17,7 @@ import ca.keal.sastrane.api.AI;
 import ca.keal.sastrane.api.AbstractGameModule;
 import ca.keal.sastrane.api.Arbitrator;
 import ca.keal.sastrane.api.Board;
+import ca.keal.sastrane.api.BoardDecor;
 import ca.keal.sastrane.api.GameAttr;
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.piece.PlacingPiece;
@@ -59,6 +60,7 @@ public class GoModule extends AbstractGameModule {
                 .row("                   "));
         bindToInstance(GameAttr.PLACING_PIECES, PlacingPiece[].class, new PlacingPiece[] {new Stone()});
         bindTo(GameAttr.ARBITRATOR, Arbitrator.class, GoArbitrator.class);
+        bindTo(GameAttr.BOARD_DECOR, BoardDecor.class, StarPointsDecor.class);
         bindToInstance(GameAttr.ALLOW_PASSING, Boolean.class, true);
         
         // NOTE: There does not appear to be any standard human-readable computer go notation system, which is why this
