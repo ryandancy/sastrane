@@ -18,3 +18,7 @@
 .background {
     -fx-background-color: #DCB35C;
 }
+
+.square {
+    -fx-border-color: black transparent transparent black;
+}
