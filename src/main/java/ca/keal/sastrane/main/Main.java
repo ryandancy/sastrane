@@ -18,6 +18,7 @@ import ca.keal.sastrane.api.GameRegistrar;
 import ca.keal.sastrane.chess.ChessModule;
 import ca.keal.sastrane.config.ConfigModule;
 import ca.keal.sastrane.config.SastraneConfig;
+import ca.keal.sastrane.go.GoModule;
 import ca.keal.sastrane.gui.GuiModule;
 import ca.keal.sastrane.gui.GuiUtils;
 import ca.keal.sastrane.gui.audio.AudioModule;
@@ -98,6 +99,7 @@ public class Main extends GuiceApplication {
         modules.add(new GuiModule());
         modules.add(new AudioModule());
         modules.add(new ChessModule());
+        modules.add(new GoModule());
         modules.add(new ReversiModule());
         modules.add(new TicTacToeModule());
         modules.add(new XiangqiModule());
