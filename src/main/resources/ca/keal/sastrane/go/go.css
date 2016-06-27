@@ -11,6 +11,10 @@
  * specific language governing permissions and limitations under the License.
  */
 
+.root {
+    board-overlay-background: hsba(0, 100%, 100%, .75);
+}
+
 #board {
     -sastrane-grid-type: point;
 }
