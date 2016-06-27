@@ -48,4 +48,10 @@ class GoAI extends AI {
                 .sum();
     }
     
+    @Override
+    protected int getDepth(double difficulty) {
+        // Go has so many possibilities that anything > 3 plies deep would take an incredible amount of time
+        return (int) Math.round(2 * difficulty) + 1;
+    }
+    
 }
