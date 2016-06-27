@@ -247,4 +247,66 @@ public class BoardTest {
         Assert.assertEquals(board, new Board(FXCollections.observableMap(expected)));
     }
     
+    // equals()
+    
+    public void testEquals1() {
+        Board b1 = Board.factory().row("a").piece('a', opfMock).build();
+        Board b2 = Board.factory().row("a").piece('a', opfMock).build();
+        Assert.assertEquals(b1, b2);
+    }
+    
+    public void testEquals2() {
+        Board b1 = Board.factory().row("a").piece('a', opfMock).build();
+        Board b2 = Board.factory().row(" ").build();
+        Assert.assertNotEquals(b1, b2);
+    }
+    
+    public void testEquals3() {
+        Board b1 = Board.factory().row(" ").build();
+        Board b2 = Board.factory().row(" ").build();
+        Assert.assertEquals(b1, b2);
+    }
+    
+    public void testEquals4() {
+        Board b1 = Board.factory().row("  ").build();
+        Board b2 = Board.factory().row(" ").build();
+        Assert.assertNotEquals(b1, b2);
+    }
+    
+    public void testEquals5() {
+        Board b1 = Board.factory().row(" a ").piece('a', opfMock).build();
+        Board b2 = Board.factory().row(" a ").piece('a', opfMock).build();
+        Assert.assertEquals(b1, b2);
+    }
+    
+    public void testEquals6() {
+        Board b1 = Board.factory().row(" a ").piece('a', opfMock).build();
+        Board b2 = Board.factory().row("a  ").piece('a', opfMock).build();
+        Assert.assertNotEquals(b1, b2);
+    }
+    
+    public void testEquals7() {
+        Board b1 = Board.factory().row("__a").piece('a', opfMock).build();
+        Board b2 = Board.factory().row("__a").piece('a', opfMock).build();
+        Assert.assertEquals(b1, b2);
+    }
+    
+    public void testEquals8() {
+        Board b1 = Board.factory().row("_a_").piece('a', opfMock).build();
+        Board b2 = Board.factory().row("__a").piece('a', opfMock).build();
+        Assert.assertNotEquals(b1, b2);
+    }
+    
+    public void testEquals9() {
+        Board b1 = Board.factory().row(" a ").row("a a").piece('a', opfMock).build();
+        Board b2 = Board.factory().row(" a ").row("a a").piece('a', opfMock).build();
+        Assert.assertEquals(b1, b2);
+    }
+    
+    public void testEquals10() {
+        Board b1 = Board.factory().row(" a ").row("a a").piece('a', opfMock).build();
+        Board b2 = Board.factory().row("a a").row(" a ").piece('a', opfMock).build();
+        Assert.assertNotEquals(b1, b2);
+    }
+    
 }
