@@ -127,7 +127,7 @@ public class Round {
     }
     
     boolean willAutoPass(Player player) {
-        return getAllPossibleMoves(player).size() == 0 && autoPassEnabled.get(gameID);
+        return autoPassEnabled.get(gameID) && getAllPossibleMoves(player).size() == 0;
     }
     
     public void start() {
