@@ -106,10 +106,11 @@ public class Round {
         
         bus.post(new MoveEvent.Pre(this, move));
         move.move(board);
-        bus.post(new MoveEvent.Post(this, move));
         
         lastMovePass = move == Move.PASS;
         moves.add(new StateChange(oldBoard, move, new Round(this)));
+        
+        bus.post(new MoveEvent.Post(this, move));
         
         bus.post(new TurnEvent.Post(this));
         
