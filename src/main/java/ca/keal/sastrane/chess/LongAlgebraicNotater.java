@@ -25,7 +25,9 @@ import ca.keal.sastrane.api.piece.OwnedPiece;
 import ca.keal.sastrane.api.piece.Piece;
 import com.google.common.collect.Multiset;
 import com.google.inject.Inject;
+import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
 import java.util.HashMap;
 import java.util.List;
@@ -36,6 +38,8 @@ import java.util.Map;
  * algebraic notation</a>.
  */
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
+@EqualsAndHashCode
+@ToString
 class LongAlgebraicNotater implements Notater {
     
     private static final Map<Class<? extends Piece>, String> PIECE_CHARS = new HashMap<>();

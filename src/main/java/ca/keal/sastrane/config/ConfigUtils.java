@@ -14,11 +14,15 @@
 package ca.keal.sastrane.config;
 
 import ca.keal.sastrane.util.Utils;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import lombok.val;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+@EqualsAndHashCode
+@ToString
 public final class ConfigUtils {
     
     private ConfigUtils() {}

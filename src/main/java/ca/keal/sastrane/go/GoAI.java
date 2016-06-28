@@ -22,10 +22,14 @@ import ca.keal.sastrane.api.Round;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.name.Named;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import java.util.Map;
 import java.util.Set;
 
+@EqualsAndHashCode(callSuper = true)
+@ToString
 class GoAI extends AI {
     
     private final double komi;

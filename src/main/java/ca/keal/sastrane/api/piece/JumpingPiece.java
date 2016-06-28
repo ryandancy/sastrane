@@ -17,12 +17,16 @@ import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.Round;
 import ca.keal.sastrane.api.Square;
 import ca.keal.sastrane.api.move.Move;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@EqualsAndHashCode
+@ToString
 public abstract class JumpingPiece implements MovingPiece {
     
     private static final Map<Integer, Offset> quadrantsToSigns = new HashMap<>();

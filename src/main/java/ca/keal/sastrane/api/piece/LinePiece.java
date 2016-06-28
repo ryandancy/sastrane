@@ -18,6 +18,8 @@ import ca.keal.sastrane.api.Round;
 import ca.keal.sastrane.api.Square;
 import ca.keal.sastrane.api.move.Move;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,6 +35,8 @@ import java.util.Map;
  * multiple inheritance.
  */
 @AllArgsConstructor
+@EqualsAndHashCode
+@ToString
 public abstract class LinePiece implements MovingPiece {
     
     private static final Map<Integer, Offset> directionToOffset = new HashMap<>();

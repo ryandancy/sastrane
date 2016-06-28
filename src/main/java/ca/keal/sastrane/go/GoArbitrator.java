@@ -21,9 +21,13 @@ import ca.keal.sastrane.api.StateChange;
 import ca.keal.sastrane.api.move.Move;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import java.util.List;
 
+@EqualsAndHashCode
+@ToString
 class GoArbitrator implements Arbitrator {
     
     /** 

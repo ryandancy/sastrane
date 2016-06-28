@@ -23,11 +23,15 @@ import ca.keal.sastrane.api.Round;
 import com.google.common.collect.Multiset;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
+import lombok.EqualsAndHashCode;
 import lombok.SneakyThrows;
+import lombok.ToString;
 
 import java.util.Map;
 import java.util.Set;
 
+@EqualsAndHashCode(callSuper = true)
+@ToString
 class ReversiAI extends AI {
     
     @Inject

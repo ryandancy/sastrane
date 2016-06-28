@@ -14,7 +14,11 @@
 package ca.keal.sastrane.gui.audio;
 
 import com.google.inject.AbstractModule;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
+@EqualsAndHashCode(callSuper = true)
+@ToString
 public class AudioModule extends AbstractModule {
     
     @Override

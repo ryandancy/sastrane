@@ -18,7 +18,11 @@ import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.Square;
 import ca.keal.sastrane.api.move.PlacingMove;
 import ca.keal.sastrane.api.piece.OwnedPiece;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
+@EqualsAndHashCode(callSuper = true)
+@ToString
 class GoMove extends PlacingMove {
     
     private final GoPlayer player;

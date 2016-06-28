@@ -28,7 +28,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
+import lombok.EqualsAndHashCode;
 import lombok.SneakyThrows;
+import lombok.ToString;
 
 import java.net.URL;
 import java.text.Collator;
@@ -36,6 +38,8 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
+@EqualsAndHashCode
+@ToString
 public class MainMenuController implements Initializable {
     
     @FXML private FlowPane tiles;

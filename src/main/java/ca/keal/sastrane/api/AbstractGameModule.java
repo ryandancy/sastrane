@@ -20,13 +20,17 @@ import com.google.inject.assistedinject.FactoryProvider;
 import com.google.inject.multibindings.MapBinder;
 import com.google.inject.multibindings.Multibinder;
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
 import java.util.HashMap;
 import java.util.Map;
 
 // A WARNING TO ALL YE WHO DARE ENTER: here be the dragons of GENERICS HELL, forged from the EVILS of type erasure
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
+@EqualsAndHashCode(callSuper = true)
+@ToString
 public abstract class AbstractGameModule extends AbstractModule {
     
     /** A unique string that identifies the game; usually a package name */

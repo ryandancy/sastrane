@@ -19,6 +19,8 @@ import ca.keal.sastrane.api.Square;
 import ca.keal.sastrane.api.StateChange;
 import ca.keal.sastrane.api.move.Move;
 import ca.keal.sastrane.api.piece.OwnedPiece;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import java.util.List;
 
@@ -26,6 +28,8 @@ import java.util.List;
  * Notates Reversi games using a grid on which move numbers are recorded, à la 
  * <a href="http://usothello.org/trans/Transcripts_day1_2014.pdf">US Othello championship transcript</a>.
  */
+@EqualsAndHashCode
+@ToString
 class GridNotater implements Notater {
     
     private static final int NOTHING = 0;

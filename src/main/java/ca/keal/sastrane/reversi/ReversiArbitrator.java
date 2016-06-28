@@ -20,7 +20,11 @@ import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.Result;
 import ca.keal.sastrane.api.Round;
 import com.google.common.collect.Multiset;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
+@EqualsAndHashCode
+@ToString
 class ReversiArbitrator implements Arbitrator {
     
     @Override

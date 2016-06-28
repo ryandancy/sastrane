@@ -23,7 +23,9 @@ import javafx.beans.binding.NumberBinding;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Line;
+import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,6 +35,8 @@ import java.util.List;
  * A decoration class that places the diagonal lines of the xiangqi palace.
  */
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
+@EqualsAndHashCode(callSuper = true)
+@ToString
 class PalaceLinesDecor extends BoardDecor {
     
     private final GuiUtils guiUtils;

@@ -22,11 +22,15 @@ import ca.keal.sastrane.api.piece.MoveCountingPiece;
 import ca.keal.sastrane.api.piece.RecursiveMovingPiece;
 import ca.keal.sastrane.util.Resource;
 import com.google.common.eventbus.EventBus;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.ToString;
 
 import java.util.List;
 
 @Getter
+@EqualsAndHashCode(callSuper = true)
+@ToString
 class Rook extends LinePiece implements MoveCountingPiece, RecursiveMovingPiece {
     
     private int numMoves = 0;

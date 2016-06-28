@@ -24,11 +24,15 @@ import ca.keal.sastrane.api.piece.OwnedPiece;
 import ca.keal.sastrane.api.piece.Piece;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+@EqualsAndHashCode(callSuper = true)
+@ToString
 class ChessAI extends AI {
     
     private static final Map<Class<? extends Piece>, Double> pieceToNaiveValue = new HashMap<>();

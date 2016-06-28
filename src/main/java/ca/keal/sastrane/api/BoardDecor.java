@@ -15,12 +15,16 @@ package ca.keal.sastrane.api;
 
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import java.util.List;
 
 /**
  * Represents a decoration on the board, e.g. the diagonal lines of the palace in xiangqi.
  */
+@EqualsAndHashCode
+@ToString
 public abstract class BoardDecor implements Comparable<BoardDecor> {
     
     /** If there are multiple decors on the same square, override this to take control of the order of decors. */

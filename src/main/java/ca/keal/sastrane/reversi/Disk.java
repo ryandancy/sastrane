@@ -21,12 +21,16 @@ import ca.keal.sastrane.api.move.PlacingMove;
 import ca.keal.sastrane.api.piece.OwnedPiece;
 import ca.keal.sastrane.api.piece.PlacingPiece;
 import ca.keal.sastrane.util.Resource;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+@EqualsAndHashCode(callSuper = true)
+@ToString
 class Disk extends PlacingPiece {
     
     @Nullable

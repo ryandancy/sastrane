@@ -67,8 +67,10 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import lombok.EqualsAndHashCode;
 import lombok.Setter;
 import lombok.SneakyThrows;
+import lombok.ToString;
 
 import javax.annotation.Nullable;
 import java.io.File;
@@ -84,6 +86,8 @@ import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@EqualsAndHashCode(callSuper = true)
+@ToString
 public class GameController extends GoBacker implements Initializable {
     
     @FXML private BorderPane game;

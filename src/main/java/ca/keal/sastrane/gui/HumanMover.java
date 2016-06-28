@@ -23,13 +23,17 @@ import ca.keal.sastrane.api.move.Move;
 import com.google.common.eventbus.Subscribe;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import javafx.application.Platform;
+import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import lombok.ToString;
 
 import java.util.concurrent.atomic.AtomicReference;
 
 // TODO reduce repitition here - there's a *lot* of similarity between getMove() and decide()
 @RequiredArgsConstructor
+@EqualsAndHashCode
+@ToString
 class HumanMover implements Mover {
     
     private final GameController controller;

@@ -21,11 +21,15 @@ import ca.keal.sastrane.api.move.MovingMove;
 import ca.keal.sastrane.api.piece.JumpingPiece;
 import ca.keal.sastrane.api.piece.RecursiveMovingPiece;
 import ca.keal.sastrane.util.Resource;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 /** Similar to chess' knight, except can't move through a piece **/
+@EqualsAndHashCode(callSuper = true)
+@ToString
 class Horse extends JumpingPiece implements RecursiveMovingPiece {
     
     Horse() {

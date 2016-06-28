@@ -20,11 +20,15 @@ import ca.keal.sastrane.api.Square;
 import ca.keal.sastrane.api.move.Move;
 import ca.keal.sastrane.api.piece.OwnedPiece;
 import ca.keal.sastrane.util.TriFunction;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+@EqualsAndHashCode
+@ToString
 class KingInCheckUtils {
     
     private KingInCheckUtils() {}

@@ -20,10 +20,14 @@ import ca.keal.sastrane.api.move.Move;
 import ca.keal.sastrane.api.piece.JumpingPiece;
 import ca.keal.sastrane.api.piece.RecursiveMovingPiece;
 import ca.keal.sastrane.util.Resource;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@EqualsAndHashCode(callSuper = true)
+@ToString
 class Advisor extends JumpingPiece implements RecursiveMovingPiece {
     
     Advisor() {

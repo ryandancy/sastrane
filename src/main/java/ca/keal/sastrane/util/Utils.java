@@ -14,6 +14,8 @@
 package ca.keal.sastrane.util;
 
 import com.google.common.collect.HashMultiset;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,6 +25,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
+@EqualsAndHashCode
+@ToString
 public final class Utils {
     
     public static final Random RANDOM = new Random();

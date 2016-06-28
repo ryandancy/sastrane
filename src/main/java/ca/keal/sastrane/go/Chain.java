@@ -17,8 +17,10 @@ import ca.keal.sastrane.api.Board;
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.Square;
 import ca.keal.sastrane.api.piece.OwnedPiece;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -29,6 +31,8 @@ import java.util.Set;
  * Represents an unbroken group of like-coloured stones.
  */
 @RequiredArgsConstructor
+@EqualsAndHashCode
+@ToString
 class Chain {
     
     @Getter private final List<Stone> stones;

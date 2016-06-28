@@ -16,6 +16,8 @@ package ca.keal.sastrane.api;
 import ca.keal.sastrane.util.I18n;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import lombok.experimental.Delegate;
 
 import java.util.Collection;
@@ -24,6 +26,8 @@ import java.util.Map;
 import java.util.Set;
 
 @Singleton
+@EqualsAndHashCode
+@ToString
 public class GameRegistrar {
     
     private interface GameCollection extends Collection<String> {} // for the generics

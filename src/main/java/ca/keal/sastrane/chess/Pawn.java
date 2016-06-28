@@ -25,7 +25,9 @@ import ca.keal.sastrane.api.piece.RecursiveMovingPiece;
 import ca.keal.sastrane.util.Resource;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +35,8 @@ import java.util.stream.Collectors;
 
 // Doesn't implement MoveCountingPiece because it handles MoveEvent.Post itself
 @Getter
+@EqualsAndHashCode
+@ToString
 class Pawn implements RecursiveMovingPiece {
     
     private boolean lastMoveDouble;

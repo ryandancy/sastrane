@@ -18,7 +18,9 @@ import ca.keal.sastrane.util.Utils;
 import com.google.inject.Singleton;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.ToString;
 
 import javax.annotation.Nullable;
 
@@ -26,6 +28,8 @@ import javax.annotation.Nullable;
  * Plays background music. Thanks, <a href="https://dzone.com/articles/javafx-2-gametutorial-part-5">Carl Dea</a>.
  */
 @Singleton
+@EqualsAndHashCode
+@ToString
 public class Music {
     
     @Nullable private MediaPlayer player = null;

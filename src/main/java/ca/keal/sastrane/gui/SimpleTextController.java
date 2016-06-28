@@ -22,10 +22,14 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import lombok.EqualsAndHashCode;
 import lombok.SneakyThrows;
+import lombok.ToString;
 
 import java.nio.charset.StandardCharsets;
 
+@EqualsAndHashCode(callSuper = true)
+@ToString
 public class SimpleTextController extends GoBacker {
     
     @FXML private Label title;

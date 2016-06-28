@@ -14,8 +14,12 @@
 package ca.keal.sastrane.config;
 
 import com.google.inject.AbstractModule;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.aeonbits.owner.ConfigFactory;
 
+@EqualsAndHashCode(callSuper = true)
+@ToString
 public class ConfigModule extends AbstractModule {
     
     @Override

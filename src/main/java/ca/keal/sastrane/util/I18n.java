@@ -14,7 +14,9 @@
 package ca.keal.sastrane.util;
 
 import com.google.inject.Singleton;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +27,8 @@ import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 @Singleton
+@EqualsAndHashCode
+@ToString
 public class I18n {
     
     private final List<String> baseNames = new ArrayList<>();

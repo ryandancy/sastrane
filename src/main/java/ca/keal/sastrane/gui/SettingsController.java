@@ -27,11 +27,15 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import lombok.EqualsAndHashCode;
 import lombok.SneakyThrows;
+import lombok.ToString;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
+@EqualsAndHashCode(callSuper = true)
+@ToString
 public class SettingsController extends GoBacker implements Initializable {
     
     @FXML private VolumeSelector soundfxVolume;

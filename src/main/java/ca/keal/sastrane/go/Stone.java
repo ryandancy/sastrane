@@ -24,8 +24,10 @@ import ca.keal.sastrane.api.move.PlacingMove;
 import ca.keal.sastrane.api.piece.PlacingPiece;
 import ca.keal.sastrane.util.Resource;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -34,6 +36,8 @@ import java.util.stream.Collectors;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
+@ToString
 class Stone extends PlacingPiece {
     
     private Square square;

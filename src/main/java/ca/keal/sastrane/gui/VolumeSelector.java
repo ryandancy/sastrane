@@ -24,13 +24,17 @@ import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.SneakyThrows;
+import lombok.ToString;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 @FXMLComponent
+@EqualsAndHashCode(callSuper = true)
+@ToString
 public class VolumeSelector extends VBox implements Initializable {
     
     @FXML private Label titleLabel;

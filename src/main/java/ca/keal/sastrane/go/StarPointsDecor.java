@@ -22,7 +22,9 @@ import javafx.beans.binding.NumberBinding;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Circle;
+import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
 import java.util.Arrays;
 import java.util.List;
@@ -30,6 +32,8 @@ import java.util.List;
 /**
  * A decoration representing the <a href="http://senseis.xmp.net/?StarPoint">star points</a>.
  */
+@EqualsAndHashCode(callSuper = true)
+@ToString
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 class StarPointsDecor extends BoardDecor {
     

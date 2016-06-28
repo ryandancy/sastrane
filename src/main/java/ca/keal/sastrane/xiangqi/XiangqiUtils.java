@@ -28,6 +28,9 @@ import java.util.stream.Collectors;
 
 final class XiangqiUtils {
     
+    static final int MAXX = 8;
+    static final int MAXY = 9;
+    
     /** river is between ranks 4 and 5 */
     private static final int RIVER_Y = 4;
     

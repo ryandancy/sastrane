@@ -15,7 +15,11 @@ package ca.keal.sastrane.gui;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
+@EqualsAndHashCode(callSuper = true)
+@ToString
 public class GuiModule extends AbstractModule {
     
     @Override

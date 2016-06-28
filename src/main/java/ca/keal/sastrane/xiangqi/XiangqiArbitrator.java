@@ -17,7 +17,11 @@ import ca.keal.sastrane.api.Arbitrator;
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.Result;
 import ca.keal.sastrane.api.Round;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
+@EqualsAndHashCode
+@ToString
 class XiangqiArbitrator implements Arbitrator {
     
     @Override

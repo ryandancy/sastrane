@@ -24,12 +24,16 @@ import ca.keal.sastrane.api.piece.OwnedPiece;
 import ca.keal.sastrane.api.piece.Piece;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
 // This class is *VERY* similar to ChessAI... consolidate???
+@EqualsAndHashCode(callSuper = true)
+@ToString
 class XiangqiAI extends AI {
     
     private static final Map<Class<? extends Piece>, Double> pieceToNaiveValue = new HashMap<>();

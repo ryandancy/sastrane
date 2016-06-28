@@ -34,15 +34,19 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
+import lombok.ToString;
 
 import java.util.Arrays;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 @Setter
+@EqualsAndHashCode(callSuper = true)
+@ToString
 public class NewGameController extends GoBacker {
     
     @FXML @Getter private BorderPane container;

@@ -16,9 +16,11 @@ package ca.keal.sastrane.gui.audio;
 import ca.keal.sastrane.util.Resource;
 import com.google.inject.Singleton;
 import javafx.scene.media.AudioClip;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
+import lombok.ToString;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,6 +33,8 @@ import java.util.concurrent.Executors;
  * href="https://dzone.com/articles/javafx-2-gametutorial-part-5">Carl Dea"</a>.
  */
 @Singleton
+@EqualsAndHashCode
+@ToString
 public class SoundEffects {
     
     private final ExecutorService pool = Executors.newFixedThreadPool(2);

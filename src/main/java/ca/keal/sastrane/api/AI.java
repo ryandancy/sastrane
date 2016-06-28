@@ -16,8 +16,10 @@ package ca.keal.sastrane.api;
 import ca.keal.sastrane.api.move.Move;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,6 +34,8 @@ import java.util.Set;
  */
 @Getter
 @RequiredArgsConstructor
+@EqualsAndHashCode
+@ToString
 public abstract class AI implements Mover {
     
     protected static final double WIN = Double.MAX_VALUE / 2;

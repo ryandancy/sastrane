@@ -17,11 +17,15 @@ import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.Round;
 import ca.keal.sastrane.api.Square;
 import ca.keal.sastrane.api.move.PlacingMove;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
+@EqualsAndHashCode
+@ToString
 public abstract class PlacingPiece implements Piece {
     
     /** Gets a list of all PlacingMoves this piece could possibly execute (i.e. be placed at). */

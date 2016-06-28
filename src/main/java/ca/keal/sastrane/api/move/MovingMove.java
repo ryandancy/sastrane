@@ -16,10 +16,14 @@ package ca.keal.sastrane.api.move;
 import ca.keal.sastrane.api.Board;
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.Square;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
 @RequiredArgsConstructor
+@EqualsAndHashCode
+@ToString
 public class MovingMove implements Move {
     
     @Getter private final Square from;

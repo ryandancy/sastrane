@@ -21,10 +21,14 @@ import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.Round;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import java.util.Map;
 import java.util.Set;
 
+@EqualsAndHashCode(callSuper = true)
+@ToString
 class TicTacToeAI extends AI {
     
     @Inject

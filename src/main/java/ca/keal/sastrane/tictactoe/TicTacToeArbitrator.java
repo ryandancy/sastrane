@@ -19,10 +19,14 @@ import ca.keal.sastrane.api.Result;
 import ca.keal.sastrane.api.Round;
 import ca.keal.sastrane.api.Square;
 import ca.keal.sastrane.api.piece.OwnedPiece;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.annotation.Nullable;
 import java.util.function.BiFunction;
 
+@EqualsAndHashCode
+@ToString
 class TicTacToeArbitrator implements Arbitrator {
     
     @Override

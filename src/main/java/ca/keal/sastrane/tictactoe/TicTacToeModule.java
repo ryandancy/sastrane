@@ -20,7 +20,11 @@ import ca.keal.sastrane.api.Board;
 import ca.keal.sastrane.api.GameAttr;
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.piece.PlacingPiece;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
+@EqualsAndHashCode(callSuper = true)
+@ToString
 public class TicTacToeModule extends AbstractGameModule {
     
     public TicTacToeModule() {

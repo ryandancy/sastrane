@@ -21,9 +21,13 @@ import ca.keal.sastrane.api.piece.LinePiece;
 import ca.keal.sastrane.api.piece.OwnedPiece;
 import ca.keal.sastrane.api.piece.RecursiveMovingPiece;
 import ca.keal.sastrane.util.Resource;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import java.util.List;
 
+@EqualsAndHashCode(callSuper = true)
+@ToString
 class Cannon extends LinePiece implements RecursiveMovingPiece {
     
     Cannon() {

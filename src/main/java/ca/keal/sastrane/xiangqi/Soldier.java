@@ -25,10 +25,14 @@ import ca.keal.sastrane.api.piece.RecursiveMovingPiece;
 import ca.keal.sastrane.util.Resource;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.ToString;
 
 import java.util.List;
 
+@EqualsAndHashCode(callSuper = true)
+@ToString
 class Soldier extends JumpingPiece implements RecursiveMovingPiece {
     
     @Getter private boolean acrossRiver = false;

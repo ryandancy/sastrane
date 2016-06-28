@@ -23,13 +23,17 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.layout.VBox;
+import lombok.EqualsAndHashCode;
 import lombok.SneakyThrows;
+import lombok.ToString;
 
 import java.net.URL;
 import java.util.Locale;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
+@EqualsAndHashCode(callSuper = true)
+@ToString
 public class ChangeLangController extends GoBacker implements Initializable {
     
     @FXML private VBox langs;

@@ -27,12 +27,16 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.TypeLiteral;
 import com.google.inject.name.Names;
 import javafx.scene.layout.Pane;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import java.util.function.Consumer;
 
 /**
  * Implements the Chinese rules of go.
  */
+@EqualsAndHashCode(callSuper = true)
+@ToString
 public class GoModule extends AbstractGameModule {
     
     public GoModule() {

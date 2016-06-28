@@ -34,11 +34,15 @@ import com.google.inject.Inject;
 import com.google.inject.Module;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.ToString;
 
 import java.util.List;
 import java.util.Set;
 
+@EqualsAndHashCode(callSuper = true)
+@ToString
 public class Main extends GuiceApplication {
     
     @Getter private static Stage stage;

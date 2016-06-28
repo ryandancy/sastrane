@@ -21,10 +21,14 @@ import ca.keal.sastrane.api.piece.JumpingPiece;
 import ca.keal.sastrane.api.piece.OwnedPiece;
 import ca.keal.sastrane.api.piece.RecursiveMovingPiece;
 import ca.keal.sastrane.util.Resource;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@EqualsAndHashCode(callSuper = true)
+@ToString
 class General extends JumpingPiece implements RecursiveMovingPiece {
     
     General() {

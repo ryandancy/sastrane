@@ -20,12 +20,16 @@ import ca.keal.sastrane.api.piece.Piece;
 import ca.keal.sastrane.api.piece.RecursiveMovingPiece;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@EqualsAndHashCode
+@ToString
 public final class GameUtils {
     
     private GameUtils() {}

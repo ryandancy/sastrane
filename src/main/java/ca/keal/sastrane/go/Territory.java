@@ -17,8 +17,10 @@ import ca.keal.sastrane.api.Board;
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.Square;
 import ca.keal.sastrane.api.piece.OwnedPiece;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
 import javax.annotation.Nullable;
 import java.util.ArrayDeque;
@@ -34,6 +36,8 @@ import java.util.List;
 // This is VERY similar to Chain...combine???
 @Getter
 @RequiredArgsConstructor
+@EqualsAndHashCode
+@ToString
 class Territory {
     
     private final List<Square> points;

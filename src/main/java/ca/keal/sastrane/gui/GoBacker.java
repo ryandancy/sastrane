@@ -17,12 +17,16 @@ import ca.keal.sastrane.util.Resource;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.SneakyThrows;
+import lombok.ToString;
 
 /**
  * A controller with the ability to go back to a previous scene.
  */
 @AllArgsConstructor
+@EqualsAndHashCode
+@ToString
 abstract class GoBacker {
     
     protected Resource previous;

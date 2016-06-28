@@ -31,8 +31,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.util.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import lombok.ToString;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
@@ -41,6 +43,8 @@ import java.lang.reflect.InvocationTargetException;
 
 @Singleton
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
+@EqualsAndHashCode
+@ToString
 public class GuiUtils {
     
     private final I18n i18n;

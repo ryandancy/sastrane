@@ -20,9 +20,13 @@ import ca.keal.sastrane.api.move.Move;
 import ca.keal.sastrane.api.piece.JumpingPiece;
 import ca.keal.sastrane.api.piece.RecursiveMovingPiece;
 import ca.keal.sastrane.util.Resource;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import java.util.List;
 
+@EqualsAndHashCode(callSuper = true)
+@ToString
 class Knight extends JumpingPiece implements RecursiveMovingPiece {
     
     Knight() {
