@@ -27,14 +27,14 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-class Stone implements PlacingPiece {
+class Stone extends PlacingPiece {
     
     private Square square;
     private Player player;
@@ -49,27 +49,17 @@ class Stone implements PlacingPiece {
                 .collect(Collectors.toList());
     }
     
-    /**
-     * Add a {@link GoMove} at a point if it isn't occupied and the move isn't suicide or forbidden by the superko rule.
-     *
-     * @see #isSuicidal(Move, Board, Player)
-     * @see #doesKoProhibit(Move, Round)
-     */
+    @Nullable
     @Override
-    public List<PlacingMove> getPossiblePlacements(Round round, Player player) {
-        List<PlacingMove> moves = new ArrayList<>();
-        assert player instanceof GoPlayer;
+    public PlacingMove getMoveAt(Square square, Round round, Player player) {
+        if (round.getBoard().get(square) != null) return null;
         
-        for (Square square : round.getBoard()) {
-            if (round.getBoard().get(square) == null) {
-                GoMove move = new GoMove((GoPlayer) player, square);
-                if (!isSuicidal(move, round.getBoard(), player) && !doesKoProhibit(move, round)) {
-                    moves.add(move);
-                }
-            }
+        GoMove move = new GoMove((GoPlayer) player, square);
+        if (!isSuicidal(move, round.getBoard(), player) && !doesKoProhibit(move, round)) {
+            return move;
         }
         
-        return moves;
+        return null; // can't place there
     }
     
     /**

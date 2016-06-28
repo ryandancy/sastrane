@@ -21,20 +21,18 @@ import ca.keal.sastrane.api.piece.OwnedPiece;
 import ca.keal.sastrane.api.piece.PlacingPiece;
 import ca.keal.sastrane.util.Resource;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.annotation.Nullable;
 
-class Mark implements PlacingPiece {
+class Mark extends PlacingPiece {
     
+    @Nullable
     @Override
-    public List<PlacingMove> getPossiblePlacements(Round round, Player player) {
-        List<PlacingMove> moves = new ArrayList<>();
-        for (Square square : round.getBoard()) {
-            if (round.getBoard().get(square) == null) {
-                moves.add(new PlacingMove(new OwnedPiece(new Mark(), player), square));
-            }
+    public PlacingMove getMoveAt(Square square, Round round, Player player) {
+        if (round.getBoard().get(square) == null) {
+            return new PlacingMove(new OwnedPiece(new Mark(), player), square);
+        } else {
+            return null;
         }
-        return moves;
     }
     
     @Override

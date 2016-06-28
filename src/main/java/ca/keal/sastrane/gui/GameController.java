@@ -353,12 +353,10 @@ public class GameController extends GoBacker implements Initializable {
                     .collect(Collectors.toList()));
         } else {
             // placing
-            List<PlacingMove> placements = placingPiece.getPossiblePlacements(round, round.getCurrentTurn());
-            if (placements.stream().map(PlacingMove::getPos).anyMatch(square::equals)) {
+            PlacingMove move = placingPiece.getMoveAt(square, round, round.getCurrentTurn());
+            if (move != null) {
                 soundFX.play("click");
-                round.getBus().post(new UserMoveEvent(round, placements.stream()
-                        .filter(placement -> placement.getPos().equals(square))
-                        .findAny().get()));
+                round.getBus().post(new UserMoveEvent(round, move));
             }
         }
     }

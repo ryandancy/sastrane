@@ -22,25 +22,24 @@ import ca.keal.sastrane.api.piece.OwnedPiece;
 import ca.keal.sastrane.api.piece.PlacingPiece;
 import ca.keal.sastrane.util.Resource;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-class Disk implements PlacingPiece {
+class Disk extends PlacingPiece {
     
+    @Nullable
     @Override
-    public List<PlacingMove> getPossiblePlacements(Round round, Player player) {
-        List<PlacingMove> moves = new ArrayList<>();
+    public PlacingMove getMoveAt(Square square, Round round, Player player) {
+        if (round.getBoard().get(square) != null) return null;
         
-        for (Square square : round.getBoard()) {
-            if (round.getBoard().get(square) != null) continue;
-            List<Square> originals = getOriginalsAt(square, round.getBoard(), player);
-            if (originals.size() != 0) {
-                moves.add(new ReversiMove(player, originals, square));
-            }
+        List<Square> originals = getOriginalsAt(square, round.getBoard(), player);
+        if (originals.size() != 0) {
+            return new ReversiMove(player, originals, square);
         }
         
-        return moves;
+        return null;
     }
     
     private List<Square> getOriginalsAt(Square square, Board board, Player player) {

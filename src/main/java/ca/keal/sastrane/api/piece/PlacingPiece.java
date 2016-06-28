@@ -15,12 +15,29 @@ package ca.keal.sastrane.api.piece;
 
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.Round;
+import ca.keal.sastrane.api.Square;
 import ca.keal.sastrane.api.move.PlacingMove;
 
+import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.List;
 
-public interface PlacingPiece extends Piece {
+public abstract class PlacingPiece implements Piece {
     
-    List<PlacingMove> getPossiblePlacements(Round round, Player player);
+    /** Gets a list of all PlacingMoves this piece could possibly execute (i.e. be placed at). */
+    public List<PlacingMove> getPossiblePlacements(Round round, Player player) {
+        List<PlacingMove> moves = new ArrayList<>();
+        for (Square square : round.getBoard()) {
+            PlacingMove move = getMoveAt(square, round, player);
+            if (move != null) {
+                moves.add(move);
+            }
+        }
+        return moves;
+    }
+    
+    /** returns null -> can't place at square. */
+    @Nullable
+    public abstract PlacingMove getMoveAt(Square square, Round round, Player player);
     
 }
