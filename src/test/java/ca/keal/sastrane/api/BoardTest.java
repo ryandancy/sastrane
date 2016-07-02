@@ -42,7 +42,7 @@ public class BoardTest {
     
     // Board(List<String>, Map<Character, OwnedPieceFactory>)
     
-    public void testBuilderConstructor() {
+    public void factory_withAllSquareTypesAndTwoPieceTypes_buildsCorrectBoard() {
         Piece a = mock(Piece.class);
         Piece b = mock(Piece.class);
         Player player = mock(Player.class);
@@ -64,12 +64,12 @@ public class BoardTest {
         Assert.assertEquals(board, new Board(FXCollections.observableMap(expected)));
     }
     
-    public void testBuilderConstructorEmpty() {
+    public void factory_withoutArgs_buildsEmptyBoard() {
         Board board = Board.factory().build();
         Assert.assertEquals(board, new Board(FXCollections.emptyObservableMap()));
     }
     
-    public void testBuilderConstructorNoPieces() {
+    public void factory_withoutPiecesButWithEmptySquares_buildsBoardWithAllSquaresEmpty() {
         Board board = Board.factory()
                 .row("   ")
                 .row("   ")
@@ -85,7 +85,7 @@ public class BoardTest {
     }
     
     @Test(expectedExceptions = IllegalArgumentException.class)
-    public void testBuilderConstructorNotEnoughPieces() {
+    public void factory_withoutEnoughPieces_fails() {
         Board.factory()
                 .row("abc")
                 .piece('a', opfMock)
@@ -93,7 +93,7 @@ public class BoardTest {
     }
     
     @Test(expectedExceptions = IllegalArgumentException.class)
-    public void testBuilderConstructorTooManyPieces() {
+    public void factory_withTooManyPieces_fails() {
         Board.factory()
                 .row("")
                 .piece('x', opfMock)
@@ -101,7 +101,7 @@ public class BoardTest {
     }
     
     @Test(expectedExceptions = IllegalArgumentException.class)
-    public void testBuilderConstructorContainsSpace() {
+    public void factory_withSpaceAsPiece_fails() {
         Board.factory()
                 .row(" ")
                 .piece(' ', opfMock)
@@ -109,7 +109,7 @@ public class BoardTest {
     }
     
     @Test(expectedExceptions = IllegalArgumentException.class)
-    public void testBuilderConstructorContainsUnderscore() {
+    public void factory_withUnderscoreAsPiece_fails() {
         Board.factory()
                 .row("_")
                 .piece('_', opfMock)
@@ -117,7 +117,7 @@ public class BoardTest {
     }
     
     @Test(expectedExceptions = IllegalArgumentException.class)
-    public void testBuilderConstructorUneven() {
+    public void factory_withUnevenRows_fails() {
         Board.factory()
                 .row(" ")
                 .row("    ")
@@ -126,7 +126,7 @@ public class BoardTest {
     
     // getMaxX()
     
-    public void testGetMaxX1() {
+    public void getMaxX_withUnevenRows_returnsCorrectMaxX() {
         Board board = Board.factory()
                 .row("   _")
                 .row(" _  ")
@@ -136,14 +136,14 @@ public class BoardTest {
         Assert.assertEquals(board.getMaxX(), 3);
     }
     
-    public void testGetMaxX2() {
+    public void getMaxX_withEmptyBoard_returns0() {
         Board board = Board.factory().row("").build();
         Assert.assertEquals(board.getMaxX(), 0);
     }
     
     // getMaxY()
     
-    public void testGetMaxY() {
+    public void getMaxY_withUnevenColumns_returnsCorrectMaxY() {
         Board board = Board.factory()
                 .row("__  ")
                 .row(" _ _")
@@ -153,29 +153,29 @@ public class BoardTest {
         Assert.assertEquals(board.getMaxY(), 3);
     }
     
-    public void testGetMaxY2() {
+    public void getMaxY_withEmptyBoard_returns0() {
         Board board = Board.factory().row("").build();
         Assert.assertEquals(board.getMaxY(), 0);
     }
     
     // isOn()
     
-    public void testIsOn1() {
+    public void isOn_withOnlySquareOnEmpty1x1Board_returnsTrue() {
         Board board = Board.factory().row(" ").build();
         Assert.assertTrue(board.isOn(new Square(0, 0)));
     }
     
-    public void testIsOn2() {
+    public void isOn_withSquareOff1x1Board_returnsFalse() {
         Board board = Board.factory().row(" ").build();
         Assert.assertFalse(board.isOn(new Square(0, 1)));
     }
     
-    public void testIsOn3() {
+    public void isOn_withEmptyBoardViaUnderscore_returnsFalse() {
         Board board = Board.factory().row("_").build();
         Assert.assertFalse(board.isOn(new Square(0, 0)));
     }
     
-    public void testIsOn4() {
+    public void isOn_withOnlySquareOn1x1BoardWithPiece_returnsTrue() {
         Board board = Board.factory()
                 .row("x")
                 .piece('x', opfMock)
@@ -185,7 +185,7 @@ public class BoardTest {
     
     // get()
     
-    public void testGet1() {
+    public void get_withPieceCorrectlyAddressed_getsPiecePutOnBoard() {
         Piece piece = mock(Piece.class);
         Player player = mock(Player.class);
         Board board = Board.factory()
@@ -196,23 +196,23 @@ public class BoardTest {
     }
     
     @Test(expectedExceptions = NoSuchElementException.class)
-    public void testGet2() {
+    public void get_withSquareOffBoard_fails() {
         Board.factory().row(" ").build().get(new Square(0, 1));
     }
     
     @Test(expectedExceptions = NoSuchElementException.class)
-    public void testGet3() {
+    public void get_withEmptyBoardViaUnderscore_fails() {
         Board.factory().row("_").build().get(new Square(0, 0));
     }
     
-    public void testGet4() {
+    public void get_withOnlySquareOnEmptyBoard_returnsNull() {
         Board board = Board.factory().row(" ").build();
         Assert.assertEquals(board.get(new Square(0, 0)), null);
     }
     
     // set()
     
-    public void testSet1() {
+    public void set_pieceOnEmptySquare_succeeds() {
         Board board = Board.factory().row(" ").build();
         OwnedPiece op = mock(OwnedPiece.class);
         board.set(new Square(0, 0), op);
@@ -222,16 +222,16 @@ public class BoardTest {
     }
     
     @Test(expectedExceptions = IllegalArgumentException.class)
-    public void testSet2() {
+    public void set_pieceOffBoard_fails() {
         Board.factory().row(" ").build().set(new Square(0, 1), mock(OwnedPiece.class));
     }
     
     @Test(expectedExceptions = IllegalArgumentException.class)
-    public void testSet3() {
+    public void set_pieceOffBoardViaUnderscore_fails() {
         Board.factory().row("_").build().set(new Square(0, 0), mock(OwnedPiece.class));
     }
     
-    public void testSet4() {
+    public void set_nullOnNull_succeeds() {
         Board board = Board.factory().row(" ").build();
         board.set(new Square(0, 0), null);
         HashMap<Square, OwnedPiece> expected = new HashMap<>();
@@ -239,7 +239,7 @@ public class BoardTest {
         Assert.assertEquals(board, new Board(FXCollections.observableMap(expected)));
     }
     
-    public void testSet5() {
+    public void set_nullOnPiece_succeeds() {
         Board board = Board.factory().row("a").piece('a', opfMock).build();
         board.set(new Square(0, 0), null);
         HashMap<Square, OwnedPiece> expected = new HashMap<>();
@@ -249,61 +249,61 @@ public class BoardTest {
     
     // equals()
     
-    public void testEquals1() {
+    public void equals_withTwoBoardsWithSamePiece_returnsTrue() {
         Board b1 = Board.factory().row("a").piece('a', opfMock).build();
         Board b2 = Board.factory().row("a").piece('a', opfMock).build();
         Assert.assertEquals(b1, b2);
     }
     
-    public void testEquals2() {
+    public void equals_withOneBoardWithPieceOneWithout_returnsFalse() {
         Board b1 = Board.factory().row("a").piece('a', opfMock).build();
         Board b2 = Board.factory().row(" ").build();
         Assert.assertNotEquals(b1, b2);
     }
     
-    public void testEquals3() {
+    public void equals_withTwoEmptyBoards_returnsTrue() {
         Board b1 = Board.factory().row(" ").build();
         Board b2 = Board.factory().row(" ").build();
         Assert.assertEquals(b1, b2);
     }
     
-    public void testEquals4() {
+    public void equals_withEmptyBoardsOfDifferentSizes_returnsFalse() {
         Board b1 = Board.factory().row("  ").build();
         Board b2 = Board.factory().row(" ").build();
         Assert.assertNotEquals(b1, b2);
     }
     
-    public void testEquals5() {
+    public void equals_withTwoIdenticalBoardsWithPieceAndEmptySquares_returnsTrue() {
         Board b1 = Board.factory().row(" a ").piece('a', opfMock).build();
         Board b2 = Board.factory().row(" a ").piece('a', opfMock).build();
         Assert.assertEquals(b1, b2);
     }
     
-    public void testEquals6() {
+    public void equals_withTwoBoardsSameDimensAndPieceCountsButDifferentPositions_returnsFalse() {
         Board b1 = Board.factory().row(" a ").piece('a', opfMock).build();
         Board b2 = Board.factory().row("a  ").piece('a', opfMock).build();
         Assert.assertNotEquals(b1, b2);
     }
     
-    public void testEquals7() {
+    public void equals_withTwoIdenticalBoardsWithUnderscores_returnsTrue() {
         Board b1 = Board.factory().row("__a").piece('a', opfMock).build();
         Board b2 = Board.factory().row("__a").piece('a', opfMock).build();
         Assert.assertEquals(b1, b2);
     }
     
-    public void testEquals8() {
+    public void equals_withTwoBoardsSamePiecesWithDifferentUnderscorePositions_returnsFalse() {
         Board b1 = Board.factory().row("_a_").piece('a', opfMock).build();
         Board b2 = Board.factory().row("__a").piece('a', opfMock).build();
         Assert.assertNotEquals(b1, b2);
     }
     
-    public void testEquals9() {
+    public void equals_withMultipleRowsMixedSameBoards_returnsTrue() {
         Board b1 = Board.factory().row(" a ").row("a a").piece('a', opfMock).build();
         Board b2 = Board.factory().row(" a ").row("a a").piece('a', opfMock).build();
         Assert.assertEquals(b1, b2);
     }
     
-    public void testEquals10() {
+    public void equals_withMultipleRowsMixedBoardsOnlyDifferentByRowPosition_returnsFalse() {
         Board b1 = Board.factory().row(" a ").row("a a").piece('a', opfMock).build();
         Board b2 = Board.factory().row("a a").row(" a ").piece('a', opfMock).build();
         Assert.assertNotEquals(b1, b2);
