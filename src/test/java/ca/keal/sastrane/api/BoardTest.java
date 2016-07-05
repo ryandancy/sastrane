@@ -303,7 +303,7 @@ public class BoardTest {
                 .row("aaaa")
                 .piece('a', opfMock)
                 .build();
-        Assert.assertEquals(board.getMaxX(), 2);
+        Assert.assertEquals(board.getMaxY(), 2);
     }
     
     // isOn()
