@@ -24,6 +24,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 import static org.mockito.Mockito.mock;
@@ -49,7 +50,7 @@ public class BoardTest {
                 .row("a")
                 .piece('a', new OwnedPieceFactory(() -> piece, player))
                 .build();
-        HashMap<Square, OwnedPiece> expected = new HashMap<>();
+        Map<Square, OwnedPiece> expected = new HashMap<>();
         expected.put(new Square(0, 0), new OwnedPiece(piece, player));
         Assert.assertEquals(board, new Board(FXCollections.observableMap(expected)));
     }
@@ -63,7 +64,7 @@ public class BoardTest {
                 .piece('a', new OwnedPieceFactory(() -> a, player))
                 .piece('b', new OwnedPieceFactory(() -> b, player))
                 .build();
-        HashMap<Square, OwnedPiece> expected = new HashMap<>();
+        Map<Square, OwnedPiece> expected = new HashMap<>();
         expected.put(new Square(0, 0), new OwnedPiece(a, player));
         expected.put(new Square(1, 0), new OwnedPiece(b, player));
         Assert.assertEquals(board, new Board(FXCollections.observableMap(expected)));
@@ -71,7 +72,7 @@ public class BoardTest {
     
     public void factory_withEmptySquare_buildsCorrectBoard() {
         Board board = Board.factory().row(" ").build();
-        HashMap<Square, OwnedPiece> expected = new HashMap<>();
+        Map<Square, OwnedPiece> expected = new HashMap<>();
         expected.put(new Square(0, 0), null);
         Assert.assertEquals(board, new Board(FXCollections.observableMap(expected)));
     }
@@ -92,7 +93,7 @@ public class BoardTest {
                 .piece('a', new OwnedPieceFactory(() -> a, player))
                 .piece('b', new OwnedPieceFactory(() -> b, player))
                 .build();
-        HashMap<Square, OwnedPiece> expected = new HashMap<>();
+        Map<Square, OwnedPiece> expected = new HashMap<>();
         expected.put(new Square(0, 0), null);
         expected.put(new Square(1, 0), null);
         expected.put(new Square(2, 0), null);
@@ -113,7 +114,7 @@ public class BoardTest {
                 .row("   ")
                 .row("   ")
                 .build();
-        HashMap<Square, OwnedPiece> expected = new HashMap<>();
+        Map<Square, OwnedPiece> expected = new HashMap<>();
         expected.put(new Square(0, 0), null);
         expected.put(new Square(1, 0), null);
         expected.put(new Square(2, 0), null);
@@ -383,7 +384,7 @@ public class BoardTest {
         Board board = Board.factory().row(" ").build();
         OwnedPiece op = mock(OwnedPiece.class);
         board.set(new Square(0, 0), op);
-        HashMap<Square, OwnedPiece> expected = new HashMap<>();
+        Map<Square, OwnedPiece> expected = new HashMap<>();
         expected.put(new Square(0, 0), op);
         Assert.assertEquals(board, new Board(FXCollections.observableMap(expected)));
     }
@@ -401,7 +402,7 @@ public class BoardTest {
     public void set_nullOnNull_succeeds() {
         Board board = Board.factory().row(" ").build();
         board.set(new Square(0, 0), null);
-        HashMap<Square, OwnedPiece> expected = new HashMap<>();
+        Map<Square, OwnedPiece> expected = new HashMap<>();
         expected.put(new Square(0, 0), null);
         Assert.assertEquals(board, new Board(FXCollections.observableMap(expected)));
     }
@@ -409,7 +410,7 @@ public class BoardTest {
     public void set_nullOnPiece_succeeds() {
         Board board = Board.factory().row("a").piece('a', opfMock).build();
         board.set(new Square(0, 0), null);
-        HashMap<Square, OwnedPiece> expected = new HashMap<>();
+        Map<Square, OwnedPiece> expected = new HashMap<>();
         expected.put(new Square(0, 0), null);
         Assert.assertEquals(board, new Board(FXCollections.observableMap(expected)));
     }
