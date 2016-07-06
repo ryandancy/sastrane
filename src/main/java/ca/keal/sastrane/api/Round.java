@@ -46,7 +46,7 @@ public class Round {
     @Getter private final String gameID;
     @Getter private final Map<Player, Mover> playersToMovers;
     @Getter private final Board board;
-    @Getter private EventBus bus;
+    @Getter private final EventBus bus;
     
     @Getter private int moveNum = 0;
     @Getter private boolean lastMovePass = false;
