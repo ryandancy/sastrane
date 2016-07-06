@@ -72,7 +72,7 @@ public class Round {
                  @GameAttribute(GameAttr.NOTATER) Map<String, Notater> notaters,
                  @GameAttribute(GameAttr.AUTO_PASS) Map<String, Boolean> autoPassEnabled) {
         if (!Utils.areElementsEqual(playersToMovers.keySet(), Arrays.asList(players.get(gameID)))) {
-            throw new IllegalArgumentException("Round: playersToMovers.keySet() must = game.getCombatants()");
+            throw new IllegalArgumentException("Round: playersToMovers.keySet() must = players");
         }
         this.gameID = gameID;
         this.playersToMovers = ImmutableMap.copyOf(playersToMovers);
