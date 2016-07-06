@@ -19,7 +19,6 @@ import ca.keal.sastrane.api.piece.Piece;
 import javafx.collections.FXCollections;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -29,6 +28,10 @@ import java.util.NoSuchElementException;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertNotEquals;
+import static org.testng.Assert.assertTrue;
 
 @Test
 public class BoardTest {
@@ -52,7 +55,7 @@ public class BoardTest {
                 .build();
         Map<Square, OwnedPiece> expected = new HashMap<>();
         expected.put(new Square(0, 0), new OwnedPiece(piece, player));
-        Assert.assertEquals(board, new Board(FXCollections.observableMap(expected)));
+        assertEquals(board, new Board(FXCollections.observableMap(expected)));
     }
     
     public void factory_withTwoDifferentPieceTypes_buildsCorrectBoard() {
@@ -67,19 +70,19 @@ public class BoardTest {
         Map<Square, OwnedPiece> expected = new HashMap<>();
         expected.put(new Square(0, 0), new OwnedPiece(a, player));
         expected.put(new Square(1, 0), new OwnedPiece(b, player));
-        Assert.assertEquals(board, new Board(FXCollections.observableMap(expected)));
+        assertEquals(board, new Board(FXCollections.observableMap(expected)));
     }
     
     public void factory_withEmptySquare_buildsCorrectBoard() {
         Board board = Board.factory().row(" ").build();
         Map<Square, OwnedPiece> expected = new HashMap<>();
         expected.put(new Square(0, 0), null);
-        Assert.assertEquals(board, new Board(FXCollections.observableMap(expected)));
+        assertEquals(board, new Board(FXCollections.observableMap(expected)));
     }
     
     public void factory_withUnderscore_buildsEmptyBoard() {
         Board board = Board.factory().row("_").build();
-        Assert.assertEquals(board, new Board(FXCollections.observableHashMap()));
+        assertEquals(board, new Board(FXCollections.observableHashMap()));
     }
     
     public void factory_withAllSquareTypesAndTwoPieceTypes_buildsCorrectBoard() {
@@ -101,12 +104,12 @@ public class BoardTest {
         expected.put(new Square(1, 1), new OwnedPiece(b, player));
         expected.put(new Square(2, 1), new OwnedPiece(a, player));
         expected.put(new Square(1, 2), new OwnedPiece(a, player));
-        Assert.assertEquals(board, new Board(FXCollections.observableMap(expected)));
+        assertEquals(board, new Board(FXCollections.observableMap(expected)));
     }
     
     public void factory_withoutArgs_buildsEmptyBoard() {
         Board board = Board.factory().build();
-        Assert.assertEquals(board, new Board(FXCollections.emptyObservableMap()));
+        assertEquals(board, new Board(FXCollections.emptyObservableMap()));
     }
     
     public void factory_withoutPiecesButWithEmptySquares_buildsBoardWithAllSquaresEmpty() {
@@ -121,7 +124,7 @@ public class BoardTest {
         expected.put(new Square(0, 1), null);
         expected.put(new Square(1, 1), null);
         expected.put(new Square(2, 1), null);
-        Assert.assertEquals(board, new Board(FXCollections.observableMap(expected)));
+        assertEquals(board, new Board(FXCollections.observableMap(expected)));
     }
     
     @Test(expectedExceptions = IllegalArgumentException.class)
@@ -170,7 +173,7 @@ public class BoardTest {
         Board board = Board.factory()
                 .row("     ")
                 .build();
-        Assert.assertEquals(board.getMaxX(), 4);
+        assertEquals(board.getMaxX(), 4);
     }
     
     public void getMaxX_withBasicBoardMultipleRows_returnsCorrectMaxX() {
@@ -178,7 +181,7 @@ public class BoardTest {
                 .row("   ")
                 .row("   ")
                 .build();
-        Assert.assertEquals(board.getMaxX(), 2);
+        assertEquals(board.getMaxX(), 2);
     }
     
     public void getMaxX_withUnevenRows_returnsCorrectMaxX() {
@@ -188,12 +191,12 @@ public class BoardTest {
                 .row("_ __")
                 .row("___ ")
                 .build();
-        Assert.assertEquals(board.getMaxX(), 3);
+        assertEquals(board.getMaxX(), 3);
     }
     
     public void getMaxX_withEmptyBoard_returns0() {
         Board board = Board.factory().build();
-        Assert.assertEquals(board.getMaxX(), 0);
+        assertEquals(board.getMaxX(), 0);
     }
     
     public void getMaxX_withAllUnderscoresInRightmostColumn_doesNotCountRightmostColumn() {
@@ -203,7 +206,7 @@ public class BoardTest {
                 .row("  _")
                 .row("  _")
                 .build();
-        Assert.assertEquals(board.getMaxX(), 1);
+        assertEquals(board.getMaxX(), 1);
     }
     
     public void getMaxX_withAllUnderscoresInLeftmostColumn_countsLeftmostColumn() {
@@ -213,7 +216,7 @@ public class BoardTest {
                 .row("_  ")
                 .row("_  ")
                 .build();
-        Assert.assertEquals(board.getMaxX(), 2);
+        assertEquals(board.getMaxX(), 2);
     }
     
     public void getMaxX_withAllUnderscoresInMiddleColumn_countsThatColumn() {
@@ -223,7 +226,7 @@ public class BoardTest {
                 .row(" _ ")
                 .row(" _ ")
                 .build();
-        Assert.assertEquals(board.getMaxX(), 2);
+        assertEquals(board.getMaxX(), 2);
     }
     
     public void getMaxX_withPieces_returnsCorrectMaxX() {
@@ -233,7 +236,7 @@ public class BoardTest {
                 .row("aaaa")
                 .piece('a', opfMock)
                 .build();
-        Assert.assertEquals(board.getMaxX(), 3);
+        assertEquals(board.getMaxX(), 3);
     }
     
     // getMaxY()
@@ -244,7 +247,7 @@ public class BoardTest {
                 .row(" ")
                 .row(" ")
                 .build();
-        Assert.assertEquals(board.getMaxY(), 2);
+        assertEquals(board.getMaxY(), 2);
     }
     
     public void getMaxY_withBasicBoardMultipleColumns_returnsCorrectMaxY() {
@@ -252,7 +255,7 @@ public class BoardTest {
                 .row("   ")
                 .row("   ")
                 .build();
-        Assert.assertEquals(board.getMaxY(), 1);
+        assertEquals(board.getMaxY(), 1);
     }
     
     public void getMaxY_withUnevenColumns_returnsCorrectMaxY() {
@@ -262,12 +265,12 @@ public class BoardTest {
                 .row("_ __")
                 .row(" _  ")
                 .build();
-        Assert.assertEquals(board.getMaxY(), 3);
+        assertEquals(board.getMaxY(), 3);
     }
     
     public void getMaxY_withEmptyBoard_returns0() {
         Board board = Board.factory().build();
-        Assert.assertEquals(board.getMaxY(), 0);
+        assertEquals(board.getMaxY(), 0);
     }
     
     public void getMaxY_withAllUnderscoresInBottomRow_doesNotCountBottomRow() {
@@ -276,7 +279,7 @@ public class BoardTest {
                 .row("    ")
                 .row("____")
                 .build();
-        Assert.assertEquals(board.getMaxY(), 1);
+        assertEquals(board.getMaxY(), 1);
     }
     
     public void getMaxY_withAllUnderscoresInTopRow_countsTopRow() {
@@ -285,7 +288,7 @@ public class BoardTest {
                 .row("    ")
                 .row("    ")
                 .build();
-        Assert.assertEquals(board.getMaxY(), 2);
+        assertEquals(board.getMaxY(), 2);
     }
     
     public void getMaxY_withAllUnderscoresInMiddleRow_countsThatRow() {
@@ -294,7 +297,7 @@ public class BoardTest {
                 .row("____")
                 .row("    ")
                 .build();
-        Assert.assertEquals(board.getMaxY(), 2);
+        assertEquals(board.getMaxY(), 2);
     }
     
     public void getMaxY_withPieces_returnsCorrectMaxY() {
@@ -304,24 +307,24 @@ public class BoardTest {
                 .row("aaaa")
                 .piece('a', opfMock)
                 .build();
-        Assert.assertEquals(board.getMaxY(), 2);
+        assertEquals(board.getMaxY(), 2);
     }
     
     // isOn()
     
     public void isOn_withOnlySquareOnEmpty1x1Board_returnsTrue() {
         Board board = Board.factory().row(" ").build();
-        Assert.assertTrue(board.isOn(new Square(0, 0)));
+        assertTrue(board.isOn(new Square(0, 0)));
     }
     
     public void isOn_withSquareOff1x1Board_returnsFalse() {
         Board board = Board.factory().row(" ").build();
-        Assert.assertFalse(board.isOn(new Square(0, 1)));
+        assertFalse(board.isOn(new Square(0, 1)));
     }
     
     public void isOn_withEmptyBoardViaUnderscore_returnsFalse() {
         Board board = Board.factory().row("_").build();
-        Assert.assertFalse(board.isOn(new Square(0, 0)));
+        assertFalse(board.isOn(new Square(0, 0)));
     }
     
     public void isOn_withOnlySquareOn1x1BoardWithPiece_returnsTrue() {
@@ -329,7 +332,7 @@ public class BoardTest {
                 .row("x")
                 .piece('x', opfMock)
                 .build();
-        Assert.assertTrue(board.isOn(new Square(0, 0)));
+        assertTrue(board.isOn(new Square(0, 0)));
     }
     
     public void isOn_withUnderscoreInMiddleOfBoard_returnsFalse() {
@@ -338,7 +341,7 @@ public class BoardTest {
                 .row(" _ ")
                 .row("   ")
                 .build();
-        Assert.assertFalse(board.isOn(new Square(1, 1)));
+        assertFalse(board.isOn(new Square(1, 1)));
     }
     
     public void isOn_withPieceInMiddleOfUnderscores_returnsTrue() {
@@ -348,7 +351,7 @@ public class BoardTest {
                 .row("___")
                 .piece('a', opfMock)
                 .build();
-        Assert.assertTrue(board.isOn(new Square(1, 1)));
+        assertTrue(board.isOn(new Square(1, 1)));
     }
     
     // get()
@@ -360,7 +363,7 @@ public class BoardTest {
                 .row("x")
                 .piece('x', new OwnedPieceFactory(() -> piece, player))
                 .build();
-        Assert.assertEquals(board.get(new Square(0, 0)), new OwnedPiece(piece, player));
+        assertEquals(board.get(new Square(0, 0)), new OwnedPiece(piece, player));
     }
     
     @Test(expectedExceptions = NoSuchElementException.class)
@@ -375,7 +378,7 @@ public class BoardTest {
     
     public void get_withOnlySquareOnEmptyBoard_returnsNull() {
         Board board = Board.factory().row(" ").build();
-        Assert.assertEquals(board.get(new Square(0, 0)), null);
+        assertEquals(board.get(new Square(0, 0)), null);
     }
     
     // set()
@@ -386,7 +389,7 @@ public class BoardTest {
         board.set(new Square(0, 0), op);
         Map<Square, OwnedPiece> expected = new HashMap<>();
         expected.put(new Square(0, 0), op);
-        Assert.assertEquals(board, new Board(FXCollections.observableMap(expected)));
+        assertEquals(board, new Board(FXCollections.observableMap(expected)));
     }
     
     @Test(expectedExceptions = IllegalArgumentException.class)
@@ -404,7 +407,7 @@ public class BoardTest {
         board.set(new Square(0, 0), null);
         Map<Square, OwnedPiece> expected = new HashMap<>();
         expected.put(new Square(0, 0), null);
-        Assert.assertEquals(board, new Board(FXCollections.observableMap(expected)));
+        assertEquals(board, new Board(FXCollections.observableMap(expected)));
     }
     
     public void set_nullOnPiece_succeeds() {
@@ -412,7 +415,7 @@ public class BoardTest {
         board.set(new Square(0, 0), null);
         Map<Square, OwnedPiece> expected = new HashMap<>();
         expected.put(new Square(0, 0), null);
-        Assert.assertEquals(board, new Board(FXCollections.observableMap(expected)));
+        assertEquals(board, new Board(FXCollections.observableMap(expected)));
     }
     
     // equals()
@@ -420,61 +423,61 @@ public class BoardTest {
     public void equals_withTwoBoardsWithSamePiece_returnsTrue() {
         Board b1 = Board.factory().row("a").piece('a', opfMock).build();
         Board b2 = Board.factory().row("a").piece('a', opfMock).build();
-        Assert.assertEquals(b1, b2);
+        assertEquals(b1, b2);
     }
     
     public void equals_withOneBoardWithPieceOneWithout_returnsFalse() {
         Board b1 = Board.factory().row("a").piece('a', opfMock).build();
         Board b2 = Board.factory().row(" ").build();
-        Assert.assertNotEquals(b1, b2);
+        assertNotEquals(b1, b2);
     }
     
     public void equals_withTwoEmptyBoards_returnsTrue() {
         Board b1 = Board.factory().row(" ").build();
         Board b2 = Board.factory().row(" ").build();
-        Assert.assertEquals(b1, b2);
+        assertEquals(b1, b2);
     }
     
     public void equals_withEmptyBoardsOfDifferentSizes_returnsFalse() {
         Board b1 = Board.factory().row("  ").build();
         Board b2 = Board.factory().row(" ").build();
-        Assert.assertNotEquals(b1, b2);
+        assertNotEquals(b1, b2);
     }
     
     public void equals_withTwoIdenticalBoardsWithPieceAndEmptySquares_returnsTrue() {
         Board b1 = Board.factory().row(" a ").piece('a', opfMock).build();
         Board b2 = Board.factory().row(" a ").piece('a', opfMock).build();
-        Assert.assertEquals(b1, b2);
+        assertEquals(b1, b2);
     }
     
     public void equals_withTwoBoardsSameDimensAndPieceCountsButDifferentPositions_returnsFalse() {
         Board b1 = Board.factory().row(" a ").piece('a', opfMock).build();
         Board b2 = Board.factory().row("a  ").piece('a', opfMock).build();
-        Assert.assertNotEquals(b1, b2);
+        assertNotEquals(b1, b2);
     }
     
     public void equals_withTwoIdenticalBoardsWithUnderscores_returnsTrue() {
         Board b1 = Board.factory().row("__a").piece('a', opfMock).build();
         Board b2 = Board.factory().row("__a").piece('a', opfMock).build();
-        Assert.assertEquals(b1, b2);
+        assertEquals(b1, b2);
     }
     
     public void equals_withTwoBoardsSamePiecesWithDifferentUnderscorePositions_returnsFalse() {
         Board b1 = Board.factory().row("_a_").piece('a', opfMock).build();
         Board b2 = Board.factory().row("__a").piece('a', opfMock).build();
-        Assert.assertNotEquals(b1, b2);
+        assertNotEquals(b1, b2);
     }
     
     public void equals_withMultipleRowsMixedSameBoards_returnsTrue() {
         Board b1 = Board.factory().row(" a ").row("a a").piece('a', opfMock).build();
         Board b2 = Board.factory().row(" a ").row("a a").piece('a', opfMock).build();
-        Assert.assertEquals(b1, b2);
+        assertEquals(b1, b2);
     }
     
     public void equals_withMultipleRowsMixedBoardsOnlyDifferentByRowPosition_returnsFalse() {
         Board b1 = Board.factory().row(" a ").row("a a").piece('a', opfMock).build();
         Board b2 = Board.factory().row("a a").row(" a ").piece('a', opfMock).build();
-        Assert.assertNotEquals(b1, b2);
+        assertNotEquals(b1, b2);
     }
     
 }
