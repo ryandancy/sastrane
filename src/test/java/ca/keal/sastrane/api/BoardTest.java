@@ -167,6 +167,30 @@ public class BoardTest {
                 .build();
     }
     
+    // The copy constructor
+    
+    public void copyConstructor_withFieldsSet_returnsBoardEqualToParameter() {
+        Board oldBoard = Board.factory()
+                .row("_ _ ")
+                .row("a  _")
+                .row("  aa")
+                .piece('a', opfMock)
+                .build();
+        Board newBoard = new Board(oldBoard);
+        assertEquals(newBoard, oldBoard);
+    }
+    
+    public void copyConstructor_withFieldsSet_returnsBoardNotReferenceEqualToParameter() {
+        Board oldBoard = Board.factory()
+                .row("_ _ ")
+                .row("a  _")
+                .row("  aa")
+                .piece('a', opfMock)
+                .build();
+        Board newBoard = new Board(oldBoard);
+        assertFalse(oldBoard == newBoard);
+    }
+    
     // getMaxX()
     
     public void getMaxX_withBasicBoardOneRow_returnsCorrectMaxX() {
