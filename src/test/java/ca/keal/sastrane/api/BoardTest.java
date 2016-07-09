@@ -16,9 +16,11 @@ package ca.keal.sastrane.api;
 import ca.keal.sastrane.api.piece.OwnedPiece;
 import ca.keal.sastrane.api.piece.OwnedPieceFactory;
 import ca.keal.sastrane.api.piece.Piece;
+import com.google.common.eventbus.EventBus;
 import javafx.collections.FXCollections;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.stubbing.Answer;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -26,7 +28,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
@@ -165,6 +170,29 @@ public class BoardTest {
                 .row(" ")
                 .row("    ")
                 .build();
+    }
+    
+    public void factory_withBus_callsEachPieceWithBus() {
+        EventBus bus = mock(EventBus.class);
+        OwnedPieceFactory a = mock(OwnedPieceFactory.class);
+        OwnedPieceFactory b = mock(OwnedPieceFactory.class);
+        
+        Answer<Void> answer = call -> {
+            assertTrue(call.getArguments()[0] == bus);
+            return null;
+        };
+        when(a.getPiece(any(EventBus.class))).thenAnswer(answer);
+        when(b.getPiece(any(EventBus.class))).thenAnswer(answer);
+        
+        Board.factory()
+                .row("ab")
+                .piece('a', a)
+                .piece('b', b)
+                .bus(bus)
+                .build();
+        
+        verify(a, times(1)).getPiece(any(EventBus.class));
+        verify(b, times(1)).getPiece(any(EventBus.class));
     }
     
     // The copy constructor
