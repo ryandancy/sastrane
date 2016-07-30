@@ -27,6 +27,7 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Represents a <a href="http://senseis.xmp.net/?Territory">territory</a> of a player. A <i>territory</i> is defined as
@@ -53,7 +54,8 @@ class Territory {
      * Get a list of all of {@code player}'s territories anywhere on the board.
      */
     static List<Territory> getAllOfPlayer(Player player, Board board) {
-        List<Territory> terrs = new ArrayList<>();
+        List<Territory> terrs = new ArrayList<>(); // all territories, not just player's
+        
         for (Square square : board) {
             if (board.get(square) != null) continue; // we only want empty points
             
@@ -62,12 +64,12 @@ class Territory {
                 continue;
             }
             
-            Territory terr = at(square, board);
-            if (terr.getPlayer() != player) continue; // neutral or opponent's territory
-            
-            terrs.add(terr);
+            terrs.add(at(square, board));
         }
-        return terrs;
+        
+        return terrs.stream()
+                .filter(t -> t.getPlayer() == player)
+                .collect(Collectors.toList());
     }
     
     /**
@@ -79,22 +81,32 @@ class Territory {
         // Return null if piece != null for better performance???
         if (piece != null) return new Territory(new ArrayList<>(), null);
         
-        List<Square> points = new ArrayList<>();
+        boolean[][] points = new boolean[board.getMaxX()][board.getMaxY()];
         Player player = getPlayerAndAddPointsInTerritory(points, square, board);
         
-        return new Territory(points, player);
+        List<Square> squares = new ArrayList<>();
+        
+        for (int x = 0; x < points.length; x++) {
+            for (int y = 0; y < points[x].length; y++) {
+                if (points[x][y]) {
+                    squares.add(new Square(x, y));
+                }
+            }
+        }
+        
+        return new Territory(squares, player);
     }
     
     @Nullable
-    private static Player getPlayerAndAddPointsInTerritory(List<Square> points, Square start, Board board) {
+    private static Player getPlayerAndAddPointsInTerritory(boolean[][] points, Square start, Board board) {
         Player player = null;
         boolean playerInit = false;
-        points.add(start);
+        points[start.getX()][start.getY()] = true;
         
         Deque<Square> toCheck = new ArrayDeque<>(GoUtils.getAdjacent(start, board));
         while (!toCheck.isEmpty()) {
-            Square adj = toCheck.removeFirst();
-            points.add(adj);
+            Square adj = toCheck.removeLast();
+            points[start.getX()][start.getY()] = true;
             
             OwnedPiece piece = board.get(adj);
             if (piece != null) {
@@ -107,9 +119,9 @@ class Territory {
                 }
                 continue;
             }
-            
+    
             GoUtils.getAdjacent(adj, board).stream()
-                    .filter(sq -> !points.contains(sq))
+                    .filter(sq -> !points[sq.getX()][sq.getY()])
                     .forEach(toCheck::push);
         }
         
