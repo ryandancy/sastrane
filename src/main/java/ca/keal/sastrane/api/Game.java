@@ -16,15 +16,23 @@ package ca.keal.sastrane.api;
 import ca.keal.sastrane.api.piece.PlacingPiece;
 import ca.keal.sastrane.util.Resource;
 import com.google.common.eventbus.EventBus;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
 import javax.annotation.Nullable;
 import java.util.function.Consumer;
 
+@RequiredArgsConstructor
+@EqualsAndHashCode
+@ToString
 public abstract class Game {
     
-    public abstract String getName();
+    @Getter private final String name;
+    private final String pkg;
     
-    public abstract String getPackage();
+    public String getPackage() { return pkg; }
     
     public String getResourceBundleName() {
         return getName() + ".i18n." + getPackage();
