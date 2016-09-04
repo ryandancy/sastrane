@@ -35,7 +35,7 @@ import ca.keal.sastrane.main.Main;
 import ca.keal.sastrane.util.I18n;
 import ca.keal.sastrane.util.Resource;
 import com.google.common.eventbus.Subscribe;
-import com.google.common.io.Files;
+import com.google.common.io.CharStreams;
 import com.google.inject.Inject;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
@@ -73,8 +73,8 @@ import lombok.SneakyThrows;
 import lombok.ToString;
 
 import javax.annotation.Nullable;
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.UncheckedIOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -253,7 +253,9 @@ public class GameController extends GoBacker implements Initializable {
         updateBoardGrid();
         
         // Total hack: check CSS file for grid-type property (it's a looked-up colour so the CSS parser accepts it)
-        String cssStr = Files.toString(new File(css.get(round.getGameID()).get().toURI()), StandardCharsets.UTF_8);
+        // String cssStr = Files.toString(new File(css.get(round.getGameID()).get().toURI()), StandardCharsets.UTF_8);
+        String cssStr = CharStreams.toString(new InputStreamReader(css.get(round.getGameID()).get().openStream(),
+                StandardCharsets.UTF_8));
         if (cssStr.matches("(?s).*(?:-sastrane-)?grid-type:\\s*point.*")) {
             usePoints();
         }
