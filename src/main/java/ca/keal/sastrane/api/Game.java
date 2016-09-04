@@ -56,7 +56,7 @@ public abstract class Game {
     
     public abstract Player[] getPlayers();
     
-    public abstract AI getAI();
+    public abstract AI.Factory getAIFactory();
     
     public abstract Board.Factory getBoardFactory();
     
