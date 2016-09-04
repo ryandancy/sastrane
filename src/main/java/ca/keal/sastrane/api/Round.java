@@ -36,14 +36,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
 
 @ToString
 @EqualsAndHashCode
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Round {
     
-    @Getter private final String gameID;
+    @Getter private final Game game;
     @Getter private final Map<Player, Mover> playersToMovers;
     @Getter private final Board board;
     @Getter private final EventBus bus;
@@ -55,43 +54,22 @@ public class Round {
     @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
     @Getter private List<StateChange> moves = new ArrayList<>();
     
-    private final Map<String, Player[]> players;
-    private final Map<String, PlacingPiece[]> placingPieces;
-    private final Map<String, Arbitrator> arbitrators;
-    private final Map<String, Notater> notaters;
-    private final Map<String, Boolean> autoPassEnabled;
-    
     @Inject
-    public Round(@Assisted String gameID, @Assisted Map<Player, Mover> playersToMovers,
-                 @GameAttribute(GameAttr.NAME) Map<String, String> names,
-                 @GameAttribute(GameAttr.BOARD_FACTORY) Map<String, Board.Factory> boardFactories,
-                 @GameAttribute(GameAttr.DEFAULTS_REGISTRATOR) Map<String, Consumer<EventBus>> defaultsRegistrators,
-                 @GameAttribute(GameAttr.PLAYERS) Map<String, Player[]> players,
-                 @GameAttribute(GameAttr.PLACING_PIECES) Map<String, PlacingPiece[]> placingPieces,
-                 @GameAttribute(GameAttr.ARBITRATOR) Map<String, Arbitrator> arbitrators,
-                 @GameAttribute(GameAttr.NOTATER) Map<String, Notater> notaters,
-                 @GameAttribute(GameAttr.AUTO_PASS) Map<String, Boolean> autoPassEnabled) {
-        if (!Utils.areElementsEqual(playersToMovers.keySet(), Arrays.asList(players.get(gameID)))) {
+    public Round(@Assisted Game game, @Assisted Map<Player, Mover> playersToMovers) {
+        if (!Utils.areElementsEqual(playersToMovers.keySet(), Arrays.asList(game.getPlayers()))) {
             throw new IllegalArgumentException("Round: playersToMovers.keySet() must = players");
         }
-        this.gameID = gameID;
+        this.game = game;
         this.playersToMovers = ImmutableMap.copyOf(playersToMovers);
-        bus = new EventBus(names.get(gameID));
-        defaultsRegistrators.get(gameID).accept(bus);
-        this.board = boardFactories.get(gameID).bus(bus).build();
-        
-        this.players = players;
-        this.placingPieces = placingPieces;
-        this.arbitrators = arbitrators;
-        this.notaters = notaters;
-        this.autoPassEnabled = autoPassEnabled;
+        bus = new EventBus(game.getName());
+        game.getDefaultsRegistrator().accept(bus);
+        this.board = game.getBoardFactory().bus(bus).build();
     }
     
     // TODO make this a static method and use the factory
     public Round(Round round) {
-        this(round.gameID, ImmutableMap.copyOf(round.playersToMovers), new Board(round.board), round.bus, round.moveNum,
-                round.lastMovePass, round.ended, new ArrayList<>(round.moves), round.players, round.placingPieces,
-                round.arbitrators, round.notaters, round.autoPassEnabled);
+        this(round.game, ImmutableMap.copyOf(round.playersToMovers), new Board(round.board), round.bus, round.moveNum,
+                round.lastMovePass, round.ended, new ArrayList<>(round.moves));
     }
     
     public void nextTurn() {
@@ -114,11 +92,11 @@ public class Round {
         
         bus.post(new TurnEvent.Post(this));
         
-        Result result = arbitrators.get(gameID).arbitrate(this);
+        Result result = game.getArbitrator().arbitrate(this);
         if (result != Result.NOT_OVER) {
             ended = true;
     
-            Notater notater = notaters.get(gameID);
+            Notater notater = game.getNotater();
             String notation = notater == null ? null : notater.notate(moves); // notater == null -> not notatable
             
             bus.post(new WinEvent(this, result, notation));
@@ -128,7 +106,7 @@ public class Round {
     }
     
     boolean willAutoPass(Player player) {
-        return autoPassEnabled.get(gameID) && getAllPossibleMoves(player).size() == 0;
+        return game.isAutoPassingEnabled() && getAllPossibleMoves(player).size() == 0;
     }
     
     public void start() {
@@ -140,7 +118,7 @@ public class Round {
     }
     
     public Player getCurrentTurn() {
-        return players.get(gameID)[moveNum % players.get(gameID).length];
+        return game.getPlayers()[moveNum % game.getPlayers().length];
     }
     
     public Round copyWithMove(Move move) {
@@ -157,7 +135,7 @@ public class Round {
                 moves.addAll(((MovingPiece) atSquare.getPiece()).getPossibleMoves(this, square, atSquare.getOwner()));
             }
         }
-        for (PlacingPiece placingPiece : placingPieces.get(gameID)) {
+        for (PlacingPiece placingPiece : game.getPlacingPieces()) {
             moves.addAll(placingPiece.getPossiblePlacements(this, player));
         }
         return moves;
@@ -173,7 +151,7 @@ public class Round {
     
     /** For AssistedInject */
     public interface Factory {
-        Round create(String gameID, Map<Player, Mover> playersToMovers);
+        Round create(Game game, Map<Player, Mover> playersToMovers);
     }
     
 }

@@ -13,8 +13,7 @@
 
 package ca.keal.sastrane.gui;
 
-import ca.keal.sastrane.api.GameAttr;
-import ca.keal.sastrane.api.GameAttribute;
+import ca.keal.sastrane.api.Game;
 import ca.keal.sastrane.api.GameRegistrar;
 import ca.keal.sastrane.gui.audio.SoundEffects;
 import ca.keal.sastrane.main.Main;
@@ -34,7 +33,6 @@ import lombok.ToString;
 
 import java.net.URL;
 import java.text.Collator;
-import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
@@ -50,18 +48,14 @@ public class MainMenuController implements Initializable {
     private final GameTile.Factory gameTileFactory;
     private final GuiUtils guiUtils;
     
-    private final Map<String, String> i18nNames;
-    
     @Inject
     public MainMenuController(GameRegistrar registrar, I18n i18n, SoundEffects soundFX,
-                              GameTile.Factory gameTileFactory, GuiUtils guiUtils,
-                              @GameAttribute(GameAttr.I18N_NAME) Map<String, String> i18nNames) {
+                              GameTile.Factory gameTileFactory, GuiUtils guiUtils) {
         this.registrar = registrar;
         this.i18n = i18n;
         this.soundFX = soundFX;
         this.gameTileFactory = gameTileFactory;
         this.guiUtils = guiUtils;
-        this.i18nNames = i18nNames;
     }
     
     @Override
@@ -71,8 +65,8 @@ public class MainMenuController implements Initializable {
         collator.setDecomposition(Collator.CANONICAL_DECOMPOSITION);
         
         tiles.getChildren().addAll(registrar.stream()
-                .sorted((id0, id1) -> collator.compare(resources.getString(i18nNames.get(id0)),
-                        resources.getString(i18nNames.get(id1))))
+                .sorted((game0, game1) -> collator.compare(resources.getString(game0.getI18nName()),
+                        resources.getString(game1.getI18nName())))
                 .map(gameTileFactory::create)
                 .peek(tile -> tile.setOnMouseClicked(this::handleTileClick))
                 .collect(Collectors.toList()));
@@ -86,8 +80,8 @@ public class MainMenuController implements Initializable {
         Scene previousScene = Main.getStage().getScene();
         Scene scene = guiUtils.getScene((Parent) loader.load(), previousScene);
         
-        String gameID = ((GameTile) e.getSource()).getGameID();
-        ((NewGameController) loader.getController()).setGame(gameID);
+        Game game = ((GameTile) e.getSource()).getGame();
+        ((NewGameController) loader.getController()).setGame(game);
         
         Main.getStage().setScene(scene);
     }

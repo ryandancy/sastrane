@@ -22,7 +22,6 @@ import lombok.experimental.Delegate;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 @Singleton
@@ -30,30 +29,28 @@ import java.util.Set;
 @ToString
 public class GameRegistrar {
     
-    private interface GameCollection extends Collection<String> {} // for the generics
+    private interface GameCollection extends Collection<Game> {} // for the generics
     private interface Exceptions {
-        boolean add(String gameID);
+        boolean add(Game game);
     }
     
     @Delegate(types = GameCollection.class, excludes = Exceptions.class)
-    private final Set<String> impl = new HashSet<>();
+    private final Set<Game> impl = new HashSet<>();
     
     private final I18n i18n;
-    private final Map<String, String> resourceBundleNames;
     
     @Inject
-    public GameRegistrar(I18n i18n, @GameAttribute(GameAttr.RESOURCE_BUNDLE_NAME) Map<String, String> bundleNames) {
+    public GameRegistrar(I18n i18n) {
         this.i18n = i18n;
-        this.resourceBundleNames = bundleNames;
     }
     
-    public boolean add(String gameID) {
-        i18n.load(resourceBundleNames.get(gameID));
-        return impl.add(gameID);
+    public boolean add(Game game) {
+        i18n.load(game.getResourceBundleName());
+        return impl.add(game);
     }
     
-    public void register(String gameID) {
-        add(gameID);
+    public void register(Game game) {
+        add(game);
     }
     
 }

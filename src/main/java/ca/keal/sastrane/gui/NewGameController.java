@@ -13,9 +13,7 @@
 
 package ca.keal.sastrane.gui;
 
-import ca.keal.sastrane.api.AI;
-import ca.keal.sastrane.api.GameAttr;
-import ca.keal.sastrane.api.GameAttribute;
+import ca.keal.sastrane.api.Game;
 import ca.keal.sastrane.api.Mover;
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.Round;
@@ -25,7 +23,6 @@ import ca.keal.sastrane.main.Main;
 import ca.keal.sastrane.util.I18n;
 import ca.keal.sastrane.util.Resource;
 import com.google.inject.Inject;
-import com.google.inject.Provider;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -53,7 +50,7 @@ public class NewGameController extends GoBacker {
     @FXML @Getter private Label title;
     @FXML @Getter private FlowPane playerSettingsContainer;
     
-    @Getter private String gameID;
+    @Getter private Game game;
     
     private final I18n i18n;
     private final SoundEffects soundFX;
@@ -61,18 +58,9 @@ public class NewGameController extends GoBacker {
     private final PlayerSettings.Factory playerSettingsFactory;
     private final Round.Factory roundFactory;
     
-    private final Map<String, String> i18nNames;
-    private final Map<String, Resource> css;
-    private final Map<String, Player[]> players;
-    private final Map<String, Provider<AI.Factory>> ais;
-    
     @Inject
     public NewGameController(GuiUtils guiUtils, I18n i18n, SoundEffects soundFX,
-                             PlayerSettings.Factory playerSettingsFactory, Round.Factory roundFactory,
-                             @GameAttribute(GameAttr.I18N_NAME) Map<String, String> i18nNames,
-                             @GameAttribute(GameAttr.CSS) Map<String, Resource> css,
-                             @GameAttribute(GameAttr.PLAYERS) Map<String, Player[]> players,
-                             @GameAttribute(GameAttr.AI) Map<String, Provider<AI.Factory>> ais) {
+                             PlayerSettings.Factory playerSettingsFactory, Round.Factory roundFactory) {
         super(new Resource("ca.keal.sastrane.gui", "main-menu.fxml"), guiUtils);
         
         this.i18n = i18n;
@@ -80,20 +68,15 @@ public class NewGameController extends GoBacker {
         
         this.playerSettingsFactory = playerSettingsFactory;
         this.roundFactory = roundFactory;
-        
-        this.i18nNames = i18nNames;
-        this.css = css;
-        this.players = players;
-        this.ais = ais;
     }
     
-    void setGame(String gameID) {
-        this.gameID = gameID;
-        container.getStylesheets().add(css.get(gameID).getFilename());
-        title.setText(i18n.localize("gui.newgame.title", i18n.localize(i18nNames.get(gameID))));
-        playerSettingsContainer.getChildren().addAll(Arrays.stream(players.get(gameID))
+    void setGame(Game game) {
+        this.game = game;
+        container.getStylesheets().add(game.getCss().getFilename());
+        title.setText(i18n.localize("gui.newgame.title", i18n.localize(game.getI18nName())));
+        playerSettingsContainer.getChildren().addAll(Arrays.stream(game.getPlayers())
                 .map(playerSettingsFactory::create)
-                .peek(settings -> settings.getStylesheets().add(css.get(gameID).getFilename()))
+                .peek(settings -> settings.getStylesheets().add(game.getCss().getFilename()))
                 .collect(Collectors.toList()));
     }
     
@@ -113,13 +96,13 @@ public class NewGameController extends GoBacker {
                 .collect(Collectors.toMap(PlayerSettings::getPlayer, settings -> {
                     if (settings.getAiOrHumanButtons().getSelectedToggle().getUserData().equals("ai")) {
                         // AI
-                        return ais.get(gameID).get().create(settings.getAiDifficulty().getValue());
+                        return game.getAIFactory().create(settings.getAiDifficulty().getValue());
                     } else {
                         // Human player
                         return new HumanMover(controller);
                     }
                 }));
-        Round round = roundFactory.create(gameID, playersToMovers);
+        Round round = roundFactory.create(game, playersToMovers);
         
         round.getBus().post(new ToGameEvent.Pre(previousScene, scene, round, playersToMovers));
         controller.setRound(round);
