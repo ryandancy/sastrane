@@ -14,36 +14,32 @@
 package ca.keal.sastrane.chess;
 
 import ca.keal.sastrane.api.AI;
-import ca.keal.sastrane.api.AbstractGameModule;
-import ca.keal.sastrane.api.Arbitrator;
 import ca.keal.sastrane.api.Board;
 import ca.keal.sastrane.api.Game;
-import ca.keal.sastrane.api.GameAttr;
-import ca.keal.sastrane.api.Notater;
-import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.piece.OwnedPieceFactory;
-import com.google.inject.multibindings.Multibinder;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import com.google.inject.assistedinject.FactoryProvider;
 
-@EqualsAndHashCode(callSuper = true)
-@ToString
-public class ChessModule extends AbstractGameModule {
+class Chess extends Game {
     
-    public ChessModule() {
-        super("ca.keal.sastrane.chess");
+    Chess() {
+        super("chess", "ca.keal.sastrane.chess");
     }
     
     @Override
-    public void configure() {
-        Multibinder.newSetBinder(binder(), Game.class).addBinding().to(Chess.class);
-        
-        // Old - TODO remove
-        bindToInstance(GameAttr.NAME, String.class, "chess");
-        bindToInstance(GameAttr.PACKAGE, String.class, "ca.keal.sastrane.chess");
-        bindToInstance(GameAttr.PLAYERS, Player[].class, ChessPlayer.values());
-        installFactory(GameAttr.AI, AI.Factory.class, ChessAI.class);
-        bindToInstance(GameAttr.BOARD_FACTORY, Board.Factory.class, Board.factory()
+    public ChessPlayer[] getPlayers() {
+        return ChessPlayer.values();
+    }
+    
+    @Override
+    @SuppressWarnings("deprecation")
+    public AI.Factory getAIFactory() {
+        // TODO abstract away the deprecation - or find a way to inject from ChessModule to here
+        return FactoryProvider.newFactory(AI.Factory.class, ChessAI.class).get();
+    }
+    
+    @Override
+    public Board.Factory getBoardFactory() {
+        return Board.factory()
                 .row("RNBQKBNR")
                 .row("PPPPPPPP")
                 .row("        ")
@@ -63,11 +59,17 @@ public class ChessModule extends AbstractGameModule {
                 .piece('b', new OwnedPieceFactory(Bishop::new, ChessPlayer.WHITE))
                 .piece('q', new OwnedPieceFactory(Queen::new, ChessPlayer.WHITE))
                 .piece('k', new OwnedPieceFactory(King::new, ChessPlayer.WHITE))
-                .piece('p', new OwnedPieceFactory(Pawn::new, ChessPlayer.WHITE)));
-        bindTo(GameAttr.ARBITRATOR, Arbitrator.class, ChessArbitrator.class);
-        bindTo(GameAttr.NOTATER, Notater.class, LongAlgebraicNotater.class);
+                .piece('p', new OwnedPieceFactory(Pawn::new, ChessPlayer.WHITE));
+    }
     
-        super.configure();
+    @Override
+    public ChessArbitrator getArbitrator() {
+        return new ChessArbitrator();
+    }
+    
+    @Override
+    public LongAlgebraicNotater getNotater() {
+        return new LongAlgebraicNotater(getArbitrator());
     }
     
 }
