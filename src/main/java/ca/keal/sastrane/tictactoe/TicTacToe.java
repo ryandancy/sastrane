@@ -16,7 +16,7 @@ package ca.keal.sastrane.tictactoe;
 import ca.keal.sastrane.api.AI;
 import ca.keal.sastrane.api.Board;
 import ca.keal.sastrane.api.Game;
-import com.google.inject.assistedinject.FactoryProvider;
+import ca.keal.sastrane.util.Utils;
 
 class TicTacToe extends Game {
     
@@ -30,9 +30,8 @@ class TicTacToe extends Game {
     }
     
     @Override
-    @SuppressWarnings("deprecation")
     public AI.Factory getAIFactory() {
-        return FactoryProvider.newFactory(AI.Factory.class, TicTacToeAI.class).get();
+        return Utils.instantiateFactory(AI.Factory.class, TicTacToeAI.class);
     }
     
     @Override

@@ -17,7 +17,7 @@ import ca.keal.sastrane.api.AI;
 import ca.keal.sastrane.api.Board;
 import ca.keal.sastrane.api.Game;
 import ca.keal.sastrane.api.piece.OwnedPieceFactory;
-import com.google.inject.assistedinject.FactoryProvider;
+import ca.keal.sastrane.util.Utils;
 
 class Reversi extends Game {
     
@@ -31,9 +31,8 @@ class Reversi extends Game {
     }
     
     @Override
-    @SuppressWarnings("deprecation")
     public AI.Factory getAIFactory() {
-        return FactoryProvider.newFactory(AI.Factory.class, ReversiAI.class).get();
+        return Utils.instantiateFactory(AI.Factory.class, ReversiAI.class);
     }
     
     @Override

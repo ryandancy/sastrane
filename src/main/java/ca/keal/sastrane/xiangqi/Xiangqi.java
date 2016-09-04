@@ -18,8 +18,8 @@ import ca.keal.sastrane.api.Board;
 import ca.keal.sastrane.api.Game;
 import ca.keal.sastrane.api.piece.OwnedPieceFactory;
 import ca.keal.sastrane.gui.GuiUtils;
+import ca.keal.sastrane.util.Utils;
 import com.google.inject.Inject;
-import com.google.inject.assistedinject.FactoryProvider;
 
 class Xiangqi extends Game {
     
@@ -37,9 +37,8 @@ class Xiangqi extends Game {
     }
     
     @Override
-    @SuppressWarnings("deprecation")
     public AI.Factory getAIFactory() {
-        return FactoryProvider.newFactory(AI.Factory.class, XiangqiAI.class).get();
+        return Utils.instantiateFactory(AI.Factory.class, XiangqiAI.class);
     }
     
     @Override

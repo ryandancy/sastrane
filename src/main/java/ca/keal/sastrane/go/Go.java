@@ -18,10 +18,10 @@ import ca.keal.sastrane.api.Board;
 import ca.keal.sastrane.api.Game;
 import ca.keal.sastrane.api.event.ToGameEvent;
 import ca.keal.sastrane.gui.GuiUtils;
+import ca.keal.sastrane.util.Utils;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
-import com.google.inject.assistedinject.FactoryProvider;
 import com.google.inject.name.Named;
 import javafx.scene.layout.Pane;
 
@@ -45,9 +45,8 @@ class Go extends Game {
     }
     
     @Override
-    @SuppressWarnings("deprecation")
     public AI.Factory getAIFactory() {
-        return FactoryProvider.newFactory(AI.Factory.class, GoAI.class).get();
+        return Utils.instantiateFactory(AI.Factory.class, GoAI.class);
     }
     
     @Override

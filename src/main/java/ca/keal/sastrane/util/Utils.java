@@ -14,6 +14,7 @@
 package ca.keal.sastrane.util;
 
 import com.google.common.collect.HashMultiset;
+import com.google.inject.assistedinject.FactoryProvider;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
@@ -73,6 +74,13 @@ public final class Utils {
             }
         }
         return newList;
+    }
+    
+    /** Returns factoryCls instantiated with implCls */
+    @SuppressWarnings("deprecation")
+    public static <F, I> F instantiateFactory(Class<F> factoryCls, Class<I> implCls) {
+        // Horrible, no-good, very bad hack using deprecated APIs
+        return FactoryProvider.newFactory(factoryCls, implCls).get();
     }
     
 }

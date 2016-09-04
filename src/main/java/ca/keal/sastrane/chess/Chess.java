@@ -17,7 +17,7 @@ import ca.keal.sastrane.api.AI;
 import ca.keal.sastrane.api.Board;
 import ca.keal.sastrane.api.Game;
 import ca.keal.sastrane.api.piece.OwnedPieceFactory;
-import com.google.inject.assistedinject.FactoryProvider;
+import ca.keal.sastrane.util.Utils;
 
 class Chess extends Game {
     
@@ -31,10 +31,8 @@ class Chess extends Game {
     }
     
     @Override
-    @SuppressWarnings("deprecation")
     public AI.Factory getAIFactory() {
-        // TODO abstract away the deprecation - or find a way to inject from ChessModule to here
-        return FactoryProvider.newFactory(AI.Factory.class, ChessAI.class).get();
+        return Utils.instantiateFactory(AI.Factory.class, ChessAI.class);
     }
     
     @Override
