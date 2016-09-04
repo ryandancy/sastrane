@@ -18,6 +18,7 @@ import ca.keal.sastrane.api.AbstractGameModule;
 import ca.keal.sastrane.api.Arbitrator;
 import ca.keal.sastrane.api.Board;
 import ca.keal.sastrane.api.BoardDecor;
+import ca.keal.sastrane.api.Game;
 import ca.keal.sastrane.api.GameAttr;
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.event.ToGameEvent;
@@ -25,6 +26,7 @@ import ca.keal.sastrane.api.piece.PlacingPiece;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.TypeLiteral;
+import com.google.inject.multibindings.Multibinder;
 import com.google.inject.name.Names;
 import javafx.scene.layout.Pane;
 import lombok.EqualsAndHashCode;
@@ -45,6 +47,12 @@ public class GoModule extends AbstractGameModule {
     
     @Override
     public void configure() {
+        Multibinder.newSetBinder(binder(), Game.class).addBinding().to(Go.class);
+    
+        // Chinese rules: komi is 7.5 points (http://senseis.xmp.net/?Komi)
+        bindConstant().annotatedWith(Names.named("komi")).to(7.5);
+        
+        // Old
         bindToInstance(GameAttr.NAME, String.class, "go");
         bindToInstance(GameAttr.PACKAGE, String.class, "ca.keal.sastrane.go");
         bindToInstance(GameAttr.PLAYERS, Player[].class, GoPlayer.values());
@@ -94,9 +102,6 @@ public class GoModule extends AbstractGameModule {
         
         // NOTE: There does not appear to be any standard human-readable computer go notation system, which is why this
         // implementation does not include one. The kifu system only really works when written by hand.
-        
-        // Chinese rules: komi is 7.5 points (http://senseis.xmp.net/?Komi)
-        bindConstant().annotatedWith(Names.named("komi")).to(7.5);
         
         super.configure();
     }

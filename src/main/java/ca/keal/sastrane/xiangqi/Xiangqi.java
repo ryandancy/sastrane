@@ -14,37 +14,37 @@
 package ca.keal.sastrane.xiangqi;
 
 import ca.keal.sastrane.api.AI;
-import ca.keal.sastrane.api.AbstractGameModule;
-import ca.keal.sastrane.api.Arbitrator;
 import ca.keal.sastrane.api.Board;
-import ca.keal.sastrane.api.BoardDecor;
 import ca.keal.sastrane.api.Game;
-import ca.keal.sastrane.api.GameAttr;
-import ca.keal.sastrane.api.Notater;
-import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.piece.OwnedPieceFactory;
-import com.google.inject.multibindings.Multibinder;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import ca.keal.sastrane.gui.GuiUtils;
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.FactoryProvider;
 
-@EqualsAndHashCode(callSuper = true)
-@ToString
-public class XiangqiModule extends AbstractGameModule {
+class Xiangqi extends Game {
     
-    public XiangqiModule() {
-        super("ca.keal.sastrane.xiangqi");
+    private final GuiUtils guiUtils;
+    
+    @Inject
+    Xiangqi(GuiUtils guiUtils) {
+        super("xiangqi", "ca.keal.sastrane.xiangqi");
+        this.guiUtils = guiUtils;
     }
     
     @Override
-    public void configure() {
-        Multibinder.newSetBinder(binder(), Game.class).addBinding().to(Xiangqi.class);
-        
-        // Old
-        bindToInstance(GameAttr.NAME, String.class, "xiangqi");
-        bindToInstance(GameAttr.PACKAGE, String.class, "ca.keal.sastrane.xiangqi");
-        bindToInstance(GameAttr.PLAYERS, Player[].class, XiangqiPlayer.values());
-        installFactory(GameAttr.AI, AI.Factory.class, XiangqiAI.class);
-        bindToInstance(GameAttr.BOARD_FACTORY, Board.Factory.class, Board.factory()
+    public XiangqiPlayer[] getPlayers() {
+        return XiangqiPlayer.values();
+    }
+    
+    @Override
+    @SuppressWarnings("deprecation")
+    public AI.Factory getAIFactory() {
+        return FactoryProvider.newFactory(AI.Factory.class, XiangqiAI.class).get();
+    }
+    
+    @Override
+    public Board.Factory getBoardFactory() {
+        return Board.factory()
                 .row("RHEAGAEHR")
                 .row("         ")
                 .row(" C     C ")
@@ -68,12 +68,21 @@ public class XiangqiModule extends AbstractGameModule {
                 .piece('a', new OwnedPieceFactory(Advisor::new, XiangqiPlayer.RED))
                 .piece('g', new OwnedPieceFactory(General::new, XiangqiPlayer.RED))
                 .piece('c', new OwnedPieceFactory(Cannon::new, XiangqiPlayer.RED))
-                .piece('s', new OwnedPieceFactory(Soldier::new, XiangqiPlayer.RED)));
-        bindTo(GameAttr.ARBITRATOR, Arbitrator.class, XiangqiArbitrator.class);
-        bindTo(GameAttr.NOTATER, Notater.class, WXFNotater.class);
-        bindTo(GameAttr.BOARD_DECOR, BoardDecor.class, PalaceLinesDecor.class);
-        
-        super.configure();
+                .piece('s', new OwnedPieceFactory(Soldier::new, XiangqiPlayer.RED));
     }
     
+    @Override
+    public XiangqiArbitrator getArbitrator() {
+        return new XiangqiArbitrator();
+    }
+    
+    @Override
+    public WXFNotater getNotater() {
+        return new WXFNotater();
+    }
+    
+    @Override
+    public PalaceLinesDecor[] getBoardDecor() {
+        return new PalaceLinesDecor[] {new PalaceLinesDecor(guiUtils)};
+    }
 }

@@ -17,9 +17,11 @@ import ca.keal.sastrane.api.AI;
 import ca.keal.sastrane.api.AbstractGameModule;
 import ca.keal.sastrane.api.Arbitrator;
 import ca.keal.sastrane.api.Board;
+import ca.keal.sastrane.api.Game;
 import ca.keal.sastrane.api.GameAttr;
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.piece.PlacingPiece;
+import com.google.inject.multibindings.Multibinder;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
@@ -33,6 +35,9 @@ public class TicTacToeModule extends AbstractGameModule {
     
     @Override
     public void configure() {
+        Multibinder.newSetBinder(binder(), Game.class).addBinding().to(TicTacToe.class);
+        
+        // Old
         bindToInstance(GameAttr.NAME, String.class, "tictactoe");
         bindToInstance(GameAttr.PACKAGE, String.class, "ca.keal.sastrane.tictactoe");
         bindToInstance(GameAttr.PLAYERS, Player[].class, TicTacToePlayer.values());

@@ -17,11 +17,13 @@ import ca.keal.sastrane.api.AI;
 import ca.keal.sastrane.api.AbstractGameModule;
 import ca.keal.sastrane.api.Arbitrator;
 import ca.keal.sastrane.api.Board;
+import ca.keal.sastrane.api.Game;
 import ca.keal.sastrane.api.GameAttr;
 import ca.keal.sastrane.api.Notater;
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.piece.OwnedPieceFactory;
 import ca.keal.sastrane.api.piece.PlacingPiece;
+import com.google.inject.multibindings.Multibinder;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
@@ -35,6 +37,9 @@ public class ReversiModule extends AbstractGameModule {
     
     @Override
     public void configure() {
+        Multibinder.newSetBinder(binder(), Game.class).addBinding().to(Reversi.class);
+        
+        // Old
         bindToInstance(GameAttr.NAME, String.class, "reversi");
         bindToInstance(GameAttr.PACKAGE, String.class, "ca.keal.sastrane.reversi");
         bindToInstance(GameAttr.PLAYERS, Player[].class, ReversiPlayer.values());
