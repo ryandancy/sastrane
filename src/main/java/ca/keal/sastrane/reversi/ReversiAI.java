@@ -14,9 +14,6 @@
 package ca.keal.sastrane.reversi;
 
 import ca.keal.sastrane.api.AI;
-import ca.keal.sastrane.api.Arbitrator;
-import ca.keal.sastrane.api.GameAttr;
-import ca.keal.sastrane.api.GameAttribute;
 import ca.keal.sastrane.api.GameUtils;
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.Round;
@@ -27,7 +24,6 @@ import lombok.EqualsAndHashCode;
 import lombok.SneakyThrows;
 import lombok.ToString;
 
-import java.util.Map;
 import java.util.Set;
 
 @EqualsAndHashCode(callSuper = true)
@@ -35,10 +31,8 @@ import java.util.Set;
 class ReversiAI extends AI {
     
     @Inject
-    ReversiAI(@Assisted double difficulty, @GameAttribute(GameAttr.PLAYERS) Map<String, Player[]> players,
-              @GameAttribute(GameAttr.ARBITRATOR) Map<String, Arbitrator> arbitrators,
-              @GameAttribute(GameAttr.ALLOW_PASSING) Map<String, Boolean> canPass) {
-        super(difficulty, players, arbitrators, canPass);
+    ReversiAI(@Assisted double difficulty) {
+        super(difficulty);
     }
     
     @Override

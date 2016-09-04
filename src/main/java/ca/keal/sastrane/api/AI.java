@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -45,13 +44,8 @@ public abstract class AI implements Mover {
     /** 1 >= difficulty >= 0 */
     private final double difficulty;
     
-    private final Map<String, Player[]> players;
-    private final Map<String, Arbitrator> arbitrators;
-    
-    private final Map<String, Boolean> canPass;
-    
     private double minimaxAlphaBeta(Round round, int depth, Player player) {
-        Set<Player> otherPlayers = Sets.newHashSet(players.get(round.getGameID()));
+        Set<Player> otherPlayers = Sets.newHashSet(round.getGame().getPlayers());
         otherPlayers.remove(player);
         return minimize(depth, LOSE, WIN, round, player, ImmutableSet.of(player), otherPlayers);
     }
@@ -117,7 +111,7 @@ public abstract class AI implements Mover {
     private List<Move> getAllPossibleMovesIncludingPass(Round round, Player player) {
         List<Move> moves = round.getAllPossibleMoves(player);
         if (round.willAutoPass(player)
-                || (canPass.get(round.getGameID()) && (moves.size() == 0 || !round.isLastMovePass()))) {
+                || (round.getGame().allowPassing() && (moves.size() == 0 || !round.isLastMovePass()))) {
             moves.add(Move.PASS);
         }
         // Log on moves.size() == 0???
@@ -138,7 +132,7 @@ public abstract class AI implements Mover {
     }
     
     private double doHeuristic(Round round, Set<Player> players) {
-        Result result = arbitrators.get(round.getGameID()).arbitrate(round);
+        Result result = round.getGame().getArbitrator().arbitrate(round);
         if (result instanceof Result.Win) {
             return players.contains(((Result.Win) result).getPlayer()) ? WIN : LOSE;
         } else if (result == Result.DRAW) {

@@ -14,9 +14,6 @@
 package ca.keal.sastrane.go;
 
 import ca.keal.sastrane.api.AI;
-import ca.keal.sastrane.api.Arbitrator;
-import ca.keal.sastrane.api.GameAttr;
-import ca.keal.sastrane.api.GameAttribute;
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.Round;
 import com.google.inject.Inject;
@@ -25,7 +22,6 @@ import com.google.inject.name.Named;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
-import java.util.Map;
 import java.util.Set;
 
 @EqualsAndHashCode(callSuper = true)
@@ -35,11 +31,8 @@ class GoAI extends AI {
     private final double komi;
     
     @Inject
-    public GoAI(@Assisted double difficulty, @Named("komi") double komi,
-                @GameAttribute(GameAttr.PLAYERS) Map<String, Player[]> players,
-                @GameAttribute(GameAttr.ARBITRATOR) Map<String, Arbitrator> arbitrators,
-                @GameAttribute(GameAttr.ALLOW_PASSING) Map<String, Boolean> canPass) {
-        super(difficulty, players, arbitrators, canPass);
+    public GoAI(@Assisted double difficulty, @Named("komi") double komi) {
+        super(difficulty);
         this.komi = komi;
     }
     

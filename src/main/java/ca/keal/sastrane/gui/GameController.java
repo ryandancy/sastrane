@@ -16,8 +16,6 @@ package ca.keal.sastrane.gui;
 import ca.keal.sastrane.api.AI;
 import ca.keal.sastrane.api.BoardDecor;
 import ca.keal.sastrane.api.Decision;
-import ca.keal.sastrane.api.GameAttr;
-import ca.keal.sastrane.api.GameAttribute;
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.Round;
 import ca.keal.sastrane.api.Square;
@@ -79,11 +77,11 @@ import java.io.UncheckedIOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @EqualsAndHashCode(callSuper = true)
@@ -118,35 +116,12 @@ public class GameController extends GoBacker implements Initializable {
     private final I18n i18n;
     private final SoundEffects soundFX;
     
-    private final Map<String, String> i18nNames;
-    private final Map<String, Resource> css;
-    private final Map<String, Player[]> players;
-    private final Map<String, Set<BoardDecor>> decors;
-    private final Map<String, PlacingPiece[]> placingPieces;
-    private final Map<String, Boolean> isPlaceOnlies; // *really* awkward name
-    private final Map<String, Boolean> isPassingAllowed;
-    
     @Inject
-    public GameController(GuiUtils guiUtils, I18n i18n, SoundEffects soundFX,
-                          @GameAttribute(GameAttr.I18N_NAME) Map<String, String> i18nNames,
-                          @GameAttribute(GameAttr.CSS) Map<String, Resource> css,
-                          @GameAttribute(GameAttr.PLAYERS) Map<String, Player[]> players,
-                          @GameAttribute(GameAttr.BOARD_DECOR) Map<String, Set<BoardDecor>> decors,
-                          @GameAttribute(GameAttr.PLACING_PIECES) Map<String, PlacingPiece[]> placingPieces,
-                          @GameAttribute(GameAttr.IS_PLACE_ONLY) Map<String, Boolean> isPlaceOnlies,
-                          @GameAttribute(GameAttr.ALLOW_PASSING) Map<String, Boolean> isPassingAllowed) {
+    public GameController(GuiUtils guiUtils, I18n i18n, SoundEffects soundFX) {
         super(new Resource("ca.keal.sastrane.gui", "main-menu.fxml"), guiUtils);
         
         this.soundFX = soundFX;
         this.i18n = i18n;
-        
-        this.i18nNames = i18nNames;
-        this.css = css;
-        this.players = players;
-        this.decors = decors;
-        this.placingPieces = placingPieces;
-        this.isPlaceOnlies = isPlaceOnlies;
-        this.isPassingAllowed = isPassingAllowed;
     }
     
     @SneakyThrows
@@ -155,18 +130,18 @@ public class GameController extends GoBacker implements Initializable {
         this.round.getBoard().addListener(change -> updateBoardGrid());
         this.round.getBus().register(this);
         
-        String titleText = i18n.localize(i18nNames.get(round.getGameID()));
+        String titleText = i18n.localize(round.getGame().getI18nName());
         guiUtils.setTitle(titleText);
         title.setText(titleText);
         
-        game.getStylesheets().add(css.get(round.getGameID()).getFilename());
+        game.getStylesheets().add(round.getGame().getCss().getFilename());
         
-        int numPlacingPieces = placingPieces.get(round.getGameID()).length;
-        if (numPlacingPieces > 1 || (numPlacingPieces == 1 && !isPlaceOnlies.get(round.getGameID()))) {
+        int numPlacingPieces = round.getGame().getPlacingPieces().length;
+        if (numPlacingPieces > 1 || (numPlacingPieces == 1 && !round.getGame().isPlaceOnly())) {
             playersToPieceChooserGroups = new HashMap<>();
-            for (Player player : players.get(round.getGameID())) {
+            for (Player player : round.getGame().getPlayers()) {
                 ToggleGroup pieceChooserGroup = new ToggleGroup();
-                for (PlacingPiece piece : placingPieces.get(round.getGameID())) {
+                for (PlacingPiece piece : round.getGame().getPlacingPieces()) {
                     addPlacingPiece(piece, player, pieceChooserGroup);
                 }
                 playersToPieceChooserGroups.put(player, pieceChooserGroup);
@@ -175,7 +150,7 @@ public class GameController extends GoBacker implements Initializable {
         }
         
         boolean fullAIGame = round.getPlayersToMovers().values().stream().allMatch(m -> m instanceof AI);
-        if (!fullAIGame && isPassingAllowed.get(round.getGameID())) {
+        if (!fullAIGame && round.getGame().allowPassing()) {
             passBtn.setVisible(true);
         }
         
@@ -229,14 +204,12 @@ public class GameController extends GoBacker implements Initializable {
                     
                     StackPane decorContainer = new StackPane();
                     decorContainer.getStyleClass().add("decors");
-                    Set<BoardDecor> decorSet = decors.get(round.getGameID());
-                    if (decorSet != null) {
-                        decorSet.stream()
-                                .sorted()
-                                .filter(d -> d.getSquares().contains(square))
-                                .map(d -> d.getDecor(square, round.getBoard(), boardGrid))
-                                .forEach(decorContainer.getChildren()::add);
-                    }
+                    BoardDecor[] decors = round.getGame().getBoardDecor();
+                    Arrays.stream(decors)
+                            .sorted()
+                            .filter(d -> d.getSquares().contains(square))
+                            .map(d -> d.getDecor(square, round.getBoard(), boardGrid))
+                            .forEach(decorContainer.getChildren()::add);
                     
                     fullSquarePane.getChildren().addAll(bg, decorContainer, imgPane);
                     cell = fullSquarePane;
@@ -253,8 +226,7 @@ public class GameController extends GoBacker implements Initializable {
         updateBoardGrid();
         
         // Total hack: check CSS file for grid-type property (it's a looked-up colour so the CSS parser accepts it)
-        // String cssStr = Files.toString(new File(css.get(round.getGameID()).get().toURI()), StandardCharsets.UTF_8);
-        String cssStr = CharStreams.toString(new InputStreamReader(css.get(round.getGameID()).get().openStream(),
+        String cssStr = CharStreams.toString(new InputStreamReader(round.getGame().getCss().get().openStream(),
                 StandardCharsets.UTF_8));
         if (cssStr.matches("(?s).*(?:-sastrane-)?grid-type:\\s*point.*")) {
             usePoints();
@@ -448,8 +420,8 @@ public class GameController extends GoBacker implements Initializable {
     
     @Nullable
     private PlacingPiece getCurrentPlacingPiece() {
-        if (placingPieces.get(round.getGameID()).length == 0) return null;
-        if (playersToPieceChooserGroups == null) return placingPieces.get(round.getGameID())[0];
+        if (round.getGame().getPlacingPieces().length == 0) return null;
+        if (playersToPieceChooserGroups == null) return round.getGame().getPlacingPieces()[0];
         return (PlacingPiece) playersToPieceChooserGroups.get(round.getCurrentTurn()).getUserData();
     }
     
