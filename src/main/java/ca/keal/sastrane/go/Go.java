@@ -23,6 +23,7 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import javafx.scene.layout.Pane;
 
 import java.util.function.Consumer;
@@ -102,8 +103,9 @@ class Go extends Game {
              */
             // Provide an API for overriding the default instead of hooking into ToGameEvent.Post???
             private static final double PREF_WH_FACTOR = 0.7;
-    
+            
             @Subscribe
+            @SuppressFBWarnings("UMAC_UNCALLABLE_METHOD_OF_ANONYMOUS_CLASS")
             public void afterGameScreenLoad(ToGameEvent.Post e) {
                 Pane gameRoot = (Pane) e.getGameScene().getRoot();
                 Pane boardGrid = (Pane) e.getGameScene().lookup("#board");
