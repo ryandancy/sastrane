@@ -35,7 +35,7 @@ public abstract class Game {
     public String getPackage() { return pkg; }
     
     public String getResourceBundleName() {
-        return getName() + ".i18n." + getPackage();
+        return getPackage() + ".i18n." + getName();
     }
     
     public String getI18nName() {
