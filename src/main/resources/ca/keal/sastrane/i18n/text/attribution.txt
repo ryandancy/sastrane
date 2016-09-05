@@ -48,8 +48,6 @@
 
     "Cello Sonata in G minor, Op. 65 - III. Largo" <https://musopen.org/music/2633/frederic-chopin/cello-sonata-in-g-minor-op-65> by Fredéric Chopin, performed by Yeonjin Kim and Christopher Harding, found at src/main/resources/ca/keal/sastrane/audio/music/chopin-cello-sonata-65-iii.mp3, is in the public domain and free of known copyright restrictions.
 
-    
     "Violin Concerto in E major, RV 269 'Spring' - II. Largo" <https://musopen.org/music/2213/antonio-vivaldi/the-four-seasons> by Antonio Vivaldi, performed by John Harrison, found at src/main/resources/ca/keal/sastrane/audio/music/vivaldi-spring-ii.mp3, is licensed under CC-BY-SA 3.0 <https://creativecommons.org/licenses/by-sa/3.0/legalcode>.
-
 
     "Piano Sonata No. 8 in C minor 'Pathétique', Op. 13 - II. Adagio Cantabile" <https://musopen.org/music/778/ludwig-van-beethoven/piano-sonata-no-8-in-c-minor-pathetique-op-13> by Ludwig van Beethoven, performed by Paul Pitman, found at src/main/resources/ca/keal/sastrane/audio/music/beethove-pathetique-ii.mp3, is in the public domain and free of known copyright restrictions.

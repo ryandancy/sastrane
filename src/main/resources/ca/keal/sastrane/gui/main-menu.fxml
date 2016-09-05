@@ -35,10 +35,10 @@
     </center>
     <bottom>
         <StackPane>
-            <ImageView id="change-lang-icon" styleClass="img-button" fitHeight="${mainMenu.height * 0.15}"
+            <ImageView id="change-lang-icon" styleClass="img-button" fitHeight="65"
                        preserveRatio="true" StackPane.alignment="center_left" onMouseClicked="#onChangeLanguage"
                        pickOnBounds="true" />
-            <ImageView id="settings-icon" styleClass="img-button" fitHeight="${mainMenu.height * 0.15}"
+            <ImageView id="settings-icon" styleClass="img-button" fitHeight="65"
                        preserveRatio="true" StackPane.alignment="center_right" onMouseClicked="#onSettings"
                        pickOnBounds="true" />
         </StackPane>
