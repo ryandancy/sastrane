@@ -28,6 +28,7 @@ import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import lombok.EqualsAndHashCode;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.ToString;
 
@@ -36,6 +37,7 @@ import java.text.Collator;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 @EqualsAndHashCode
 @ToString
 public class MainMenuController implements Initializable {
@@ -47,16 +49,6 @@ public class MainMenuController implements Initializable {
     private final SoundEffects soundFX;
     private final GameTile.Factory gameTileFactory;
     private final GuiUtils guiUtils;
-    
-    @Inject
-    public MainMenuController(GameRegistrar registrar, I18n i18n, SoundEffects soundFX,
-                              GameTile.Factory gameTileFactory, GuiUtils guiUtils) {
-        this.registrar = registrar;
-        this.i18n = i18n;
-        this.soundFX = soundFX;
-        this.gameTileFactory = gameTileFactory;
-        this.guiUtils = guiUtils;
-    }
     
     @Override
     public void initialize(URL location, ResourceBundle resources) {

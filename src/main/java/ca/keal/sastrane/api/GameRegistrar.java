@@ -17,6 +17,7 @@ import ca.keal.sastrane.util.I18n;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import lombok.EqualsAndHashCode;
+import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.Delegate;
 
@@ -24,6 +25,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 @Singleton
 @EqualsAndHashCode
 @ToString
@@ -38,11 +40,6 @@ public class GameRegistrar {
     private final Set<Game> impl = new HashSet<>();
     
     private final I18n i18n;
-    
-    @Inject
-    public GameRegistrar(I18n i18n) {
-        this.i18n = i18n;
-    }
     
     public boolean add(Game game) {
         i18n.load(game.getResourceBundleName());
