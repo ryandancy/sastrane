@@ -16,17 +16,10 @@ package ca.keal.sastrane.api;
 import ca.keal.sastrane.api.move.MovingMove;
 import ca.keal.sastrane.api.piece.MovingPiece;
 import ca.keal.sastrane.api.piece.OwnedPieceFactory;
-import ca.keal.sastrane.api.piece.PlacingPiece;
-import com.google.common.eventbus.EventBus;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.testng.annotations.BeforeMethod;
+import ca.keal.sastrane.test.RoundConstructingTestFixture;
 import org.testng.annotations.Test;
 
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Consumer;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
@@ -38,42 +31,7 @@ import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
 @Test
-public class RoundTest {
-    
-    @Mock private Player player1, player2;
-    @Mock private Mover mover1, mover2;
-    private Map<Player, Mover> playersToMovers;
-    
-    @Mock private Board board;
-    @Mock private Board.Factory boardFactory;
-    
-    @Mock private Arbitrator arbitrator;
-    @Mock private Notater notater;
-    
-    @Mock private Game game;
-    
-    @SuppressWarnings("unchecked")
-    private Consumer<EventBus> defaultsRegistrator = mock(Consumer.class);
-    
-    private static final String NAME = "__TEST__";
-    
-    @BeforeMethod(alwaysRun = true)
-    public void before() {
-        MockitoAnnotations.initMocks(this);
-        
-        playersToMovers = new HashMap<>();
-        playersToMovers.put(player1, mover1);
-        playersToMovers.put(player2, mover2);
-        
-        when(boardFactory.bus(any())).thenReturn(boardFactory);
-        when(boardFactory.build()).thenReturn(board);
-        
-        when(game.getBoardFactory()).thenReturn(boardFactory);
-        when(game.getPlayers()).thenReturn(new Player[] {player1, player2});
-        when(game.getName()).thenReturn(NAME);
-        when(game.getDefaultsRegistrator()).thenReturn(defaultsRegistrator);
-        when(game.getPlacingPieces()).thenReturn(new PlacingPiece[0]);
-    }
+public class RoundTest extends RoundConstructingTestFixture {
     
     // Constructor
     
