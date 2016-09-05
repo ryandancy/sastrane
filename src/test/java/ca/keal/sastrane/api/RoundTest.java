@@ -16,6 +16,7 @@ package ca.keal.sastrane.api;
 import ca.keal.sastrane.api.move.MovingMove;
 import ca.keal.sastrane.api.piece.MovingPiece;
 import ca.keal.sastrane.api.piece.OwnedPieceFactory;
+import ca.keal.sastrane.api.piece.PlacingPiece;
 import com.google.common.eventbus.EventBus;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -34,6 +35,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertTrue;
 
 @Test
 public class RoundTest {
@@ -48,6 +50,13 @@ public class RoundTest {
     @Mock private Arbitrator arbitrator;
     @Mock private Notater notater;
     
+    @Mock private Game game;
+    
+    @SuppressWarnings("unchecked")
+    private Consumer<EventBus> defaultsRegistrator = mock(Consumer.class);
+    
+    private static final String NAME = "__TEST__";
+    
     @BeforeMethod(alwaysRun = true)
     public void before() {
         MockitoAnnotations.initMocks(this);
@@ -58,50 +67,39 @@ public class RoundTest {
         
         when(boardFactory.bus(any())).thenReturn(boardFactory);
         when(boardFactory.build()).thenReturn(board);
+        
+        when(game.getBoardFactory()).thenReturn(boardFactory);
+        when(game.getPlayers()).thenReturn(new Player[] {player1, player2});
+        when(game.getName()).thenReturn(NAME);
+        when(game.getDefaultsRegistrator()).thenReturn(defaultsRegistrator);
+        when(game.getPlacingPieces()).thenReturn(new PlacingPiece[0]);
     }
     
     // Constructor
     
     public void constructor_withGame_setsGame() {
-        Game game = mock(Game.class);
         Round round = new Round(game, playersToMovers);
         assertEquals(round.getGame(), game);
     }
     
     public void constructor_withPlayersToMovers_setsPlayersToMovers() {
-        Round round = new Round(mock(Game.class), playersToMovers);
+        Round round = new Round(game, playersToMovers);
         assertEquals(round.getPlayersToMovers(), playersToMovers);
     }
     
     public void constructor_withBoardFactory_setsBoardBuiltByFactory() {
-        Game game = mock(Game.class);
-        when(game.getBoardFactory()).thenReturn(boardFactory);
         Round round = new Round(game, playersToMovers);
         assertEquals(round.getBoard(), board);
     }
     
     public void constructor_withName_setsEventBusWithName() {
-        String name = "__TEST__";
-        Game game = mock(Game.class);
-        when(game.getName()).thenReturn(name);
         Round round = new Round(game, playersToMovers);
-        assertEquals(round.getBus().identifier(), name);
+        assertEquals(round.getBus().identifier(), NAME);
     }
     
+    @SuppressWarnings("unchecked")
     public void constructor_withDefaultsRegistrator_callsItOnce() {
-        Game game = mock(Game.class);
-        Consumer<EventBus> defaultsRegistrator = bus -> {};
-        when(game.getDefaultsRegistrator()).thenReturn(defaultsRegistrator);
         verify(defaultsRegistrator, times(1)).accept(any());
-    }
-    
-    // Copy constructor
-    
-    public void copyConstructor_copies() {
-        Round round = new Round(mock(Game.class), playersToMovers);
-        Round copy = new Round(round);
-        assertFalse(round == copy); // not returning the same object
-        assertEquals(round, copy);
     }
     
     // willAutoPass()
@@ -111,7 +109,6 @@ public class RoundTest {
         when(piece.getPossibleMoves(any(), any(), any()))
                 .thenReturn(Collections.singletonList(new MovingMove(new Square(0, 0), new Square(1, 0))));
         
-        Game game = mock(Game.class);
         when(game.getBoardFactory()).thenReturn(Board.factory()
                 .row("a ")
                 .piece('a', new OwnedPieceFactory(() -> piece, player1)));
@@ -120,6 +117,43 @@ public class RoundTest {
         assertFalse(round.willAutoPass(player1));
     }
     
-    // TODO more tests...
+    public void willAutoPass_withAutoPassFalseAndNoMovesLeft_returnsFalse() {
+        MovingPiece piece = mock(MovingPiece.class);
+        when(piece.getPossibleMoves(any(), any(), any())).thenReturn(Collections.emptyList());
+        
+        when(game.getBoardFactory()).thenReturn(Board.factory()
+                .row("a")
+                .piece('a', new OwnedPieceFactory(() -> piece, player1)));
+        
+        Round round = new Round(game, playersToMovers);
+        assertFalse(round.willAutoPass(player1));
+    }
+    
+    public void willAutoPass_withAutoPassTrueAndMovesLeft_returnsFalse() {
+        MovingPiece piece = mock(MovingPiece.class);
+        when(piece.getPossibleMoves(any(), any(), any()))
+                .thenReturn(Collections.singletonList(new MovingMove(new Square(0, 0), new Square(1, 0))));
+        
+        when(game.getBoardFactory()).thenReturn(Board.factory()
+                .row("a ")
+                .piece('a', new OwnedPieceFactory(() -> piece, player1)));
+        when(game.isAutoPassingEnabled()).thenReturn(true);
+        
+        Round round = new Round(game, playersToMovers);
+        assertFalse(round.willAutoPass(player1));
+    }
+    
+    public void willAutoPass_withAutoPassTrueAndNoMovesLeft_returnsTrue() {
+        MovingPiece piece = mock(MovingPiece.class);
+        when(piece.getPossibleMoves(any(), any(), any())).thenReturn(Collections.emptyList());
+        
+        when(game.getBoardFactory()).thenReturn(Board.factory()
+                .row("a")
+                .piece('a', new OwnedPieceFactory(() -> piece, player1)));
+        when(game.isAutoPassingEnabled()).thenReturn(true);
+        
+        Round round = new Round(game, playersToMovers);
+        assertTrue(round.willAutoPass(player1));
+    }
     
 }
