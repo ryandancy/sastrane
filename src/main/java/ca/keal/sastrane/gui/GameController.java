@@ -307,11 +307,10 @@ public class GameController extends GoBacker implements Initializable {
         Square square = new Square(x, y);
         if (selection.size() > 0 && selectionBase != null) {
             if (selection.contains(square)) {
-                soundFX.play("click");
-                round.getBus().post(new UserMoveEvent(round, selectionMoves.stream()
+                postMove(selectionMoves.stream()
                         .filter(move -> move.getEndPos().equals(square))
                         .collect(Collectors.toList())
-                        .get(0)));
+                        .get(0));
             }
             deselect();
             return;
@@ -333,10 +332,14 @@ public class GameController extends GoBacker implements Initializable {
             // placing
             PlacingMove move = placingPiece.getMoveAt(square, round, round.getCurrentTurn());
             if (move != null) {
-                soundFX.play("click");
-                round.getBus().post(new UserMoveEvent(round, move));
+                postMove(move);
             }
         }
+    }
+    
+    private void postMove(Move move) {
+        soundFX.play("click");
+        round.getBus().post(new UserMoveEvent(round, move));
     }
     
     @FXML
