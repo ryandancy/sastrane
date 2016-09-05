@@ -19,8 +19,6 @@ import ca.keal.sastrane.api.Round;
 import ca.keal.sastrane.api.Square;
 import ca.keal.sastrane.api.piece.OwnedPiece;
 import ca.keal.sastrane.api.piece.Piece;
-import com.google.inject.Inject;
-import com.google.inject.assistedinject.Assisted;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
@@ -45,8 +43,7 @@ class XiangqiAI extends AI {
         pieceToNaiveValue.put(General.class, 1e6); // not Double.MAX_VALUE to avoid overflow
     }
     
-    @Inject
-    XiangqiAI(@Assisted double difficulty) {
+    XiangqiAI(double difficulty) {
         super(difficulty);
     }
     

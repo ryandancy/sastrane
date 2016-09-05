@@ -16,8 +16,6 @@ package ca.keal.sastrane.tictactoe;
 import ca.keal.sastrane.api.AI;
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.Round;
-import com.google.inject.Inject;
-import com.google.inject.assistedinject.Assisted;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
@@ -27,8 +25,7 @@ import java.util.Set;
 @ToString
 class TicTacToeAI extends AI {
     
-    @Inject
-    TicTacToeAI(@Assisted double difficulty) {
+    TicTacToeAI(double difficulty) {
         super(difficulty);
     }
     

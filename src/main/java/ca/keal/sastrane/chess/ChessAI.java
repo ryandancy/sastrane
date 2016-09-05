@@ -19,8 +19,6 @@ import ca.keal.sastrane.api.Round;
 import ca.keal.sastrane.api.Square;
 import ca.keal.sastrane.api.piece.OwnedPiece;
 import ca.keal.sastrane.api.piece.Piece;
-import com.google.inject.Inject;
-import com.google.inject.assistedinject.Assisted;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
@@ -43,8 +41,7 @@ class ChessAI extends AI {
         pieceToNaiveValue.put(King.class, 1e9); // not Double.MAX_VALUE to avoid overflow
     }
     
-    @Inject
-    ChessAI(@Assisted double difficulty) {
+    ChessAI(double difficulty) {
         super(difficulty);
     }
     

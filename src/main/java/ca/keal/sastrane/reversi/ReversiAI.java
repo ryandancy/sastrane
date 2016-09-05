@@ -18,8 +18,6 @@ import ca.keal.sastrane.api.GameUtils;
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.Round;
 import com.google.common.collect.Multiset;
-import com.google.inject.Inject;
-import com.google.inject.assistedinject.Assisted;
 import lombok.EqualsAndHashCode;
 import lombok.SneakyThrows;
 import lombok.ToString;
@@ -30,8 +28,7 @@ import java.util.Set;
 @ToString
 class ReversiAI extends AI {
     
-    @Inject
-    ReversiAI(@Assisted double difficulty) {
+    ReversiAI(double difficulty) {
         super(difficulty);
     }
     
