@@ -39,6 +39,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
+import java.awt.SplashScreen;
 import java.util.List;
 import java.util.Set;
 
@@ -70,8 +71,6 @@ public class Main extends GuiceApplication {
     
     @Override
     public void start(Stage primaryStage) throws Exception {
-        // TODO splash screen
-        
         setStage(primaryStage);
         
         // No-good very bad hack to kill the process when the window is closed
@@ -100,7 +99,13 @@ public class Main extends GuiceApplication {
         primaryStage.setScene(guiUtils.getScene(new Resource("ca.keal.sastrane.gui", "main-menu.fxml"), 410, 410));
         primaryStage.setMinWidth(425); // This works for some reason
         primaryStage.setMinHeight(500);
+        
         primaryStage.show();
+        
+        SplashScreen splash = SplashScreen.getSplashScreen();
+        if (splash != null) {
+            splash.close();
+        }
     }
     
     @Override

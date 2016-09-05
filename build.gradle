@@ -13,6 +13,7 @@
 
 plugins {
     id 'com.github.johnrengelman.shadow' version '1.2.3'
+    id 'edu.sc.seis.launch4j' version '1.6.2'
 }
 
 group 'ca.keal.sastrane'
@@ -20,6 +21,8 @@ version '0.0.1'
 
 apply plugin: 'java'
 apply plugin: 'idea'
+
+def MAIN_CLASS = 'ca.keal.sastrane.main.Main'
 
 //noinspection GroovyUnusedAssignment
 sourceCompatibility = 1.8
@@ -37,9 +40,9 @@ dependencies {
     provided 'com.google.code.findbugs:findbugs-annotations:3.0.1'
     provided 'com.google.code.findbugs:jsr305:3.0.1'
     compile 'com.google.guava:guava:19.0'
-    compile 'com.google.inject:guice:3.0.0'
-    compile 'com.google.inject.extensions:guice-multibindings:3.0.0'
-    compile 'com.google.inject.extensions:guice-assistedinject:3.0.0'
+    compile 'com.google.inject:guice:3.0'
+    compile 'com.google.inject.extensions:guice-multibindings:3.0'
+    compile 'com.google.inject.extensions:guice-assistedinject:3.0'
     compile 'com.cathive.fx:fx-guice:8.0.0'
     compile 'org.aeonbits.owner:owner:1.0.9'
     testCompile 'org.testng:testng:6.8'
@@ -70,9 +73,31 @@ idea {
     }
 }
 
+task copyResources(type: Copy) {
+    from 'src/main/launch4j-resources'
+    into 'build/launch4j'
+}
+
+copyL4jLib {
+    //noinspection GroovyAssignabilityCheck
+    dependsOn copyResources
+}
+
+launch4j {
+    mainClassName = MAIN_CLASS
+    icon = 'icon.ico'
+    copyright = 'Copyright (C) 2016 Ryan Dancy'
+    headerType = 'gui'
+}
+
+afterEvaluate {
+    //noinspection GroovyAssignabilityCheck
+    tasks.copyL4jLib.dependsOn copyResources
+}
+
 jar {
     manifest {
-        attributes 'Main-Class': 'ca.keal.sastrane.main.Main'
+        attributes 'Main-Class': MAIN_CLASS
     }
 }
 
