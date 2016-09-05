@@ -16,7 +16,6 @@ package ca.keal.sastrane.tictactoe;
 import ca.keal.sastrane.api.AI;
 import ca.keal.sastrane.api.Board;
 import ca.keal.sastrane.api.Game;
-import ca.keal.sastrane.util.Utils;
 
 class TicTacToe extends Game {
     
@@ -31,7 +30,7 @@ class TicTacToe extends Game {
     
     @Override
     public AI.Factory getAIFactory() {
-        return Utils.instantiateFactory(AI.Factory.class, TicTacToeAI.class);
+        return TicTacToeAI::new;
     }
     
     @Override

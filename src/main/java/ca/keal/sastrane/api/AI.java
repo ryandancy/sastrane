@@ -144,6 +144,8 @@ public abstract class AI implements Mover {
     
     protected abstract double heuristic(Round round, Set<Player> players);
     
+    /** Previously for DI, now a functional interface (that can be used for DI) */
+    @FunctionalInterface
     public interface Factory {
         AI create(double difficulty);
     }

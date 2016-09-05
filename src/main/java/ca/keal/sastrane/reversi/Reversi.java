@@ -17,7 +17,6 @@ import ca.keal.sastrane.api.AI;
 import ca.keal.sastrane.api.Board;
 import ca.keal.sastrane.api.Game;
 import ca.keal.sastrane.api.piece.OwnedPieceFactory;
-import ca.keal.sastrane.util.Utils;
 
 class Reversi extends Game {
     
@@ -32,7 +31,7 @@ class Reversi extends Game {
     
     @Override
     public AI.Factory getAIFactory() {
-        return Utils.instantiateFactory(AI.Factory.class, ReversiAI.class);
+        return ReversiAI::new;
     }
     
     @Override
