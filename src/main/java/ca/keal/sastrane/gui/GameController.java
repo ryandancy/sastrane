@@ -19,6 +19,7 @@ import ca.keal.sastrane.api.Decision;
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.Round;
 import ca.keal.sastrane.api.Square;
+import ca.keal.sastrane.api.event.MoveEvent;
 import ca.keal.sastrane.api.event.TurnEvent;
 import ca.keal.sastrane.api.event.UserDecideEvent;
 import ca.keal.sastrane.api.event.UserMoveEvent;
@@ -107,6 +108,8 @@ public class GameController extends GoBacker implements Initializable {
     @Setter private boolean inputting = false;
     private boolean deciding = false;
     
+    private long turnTimeStart;
+    
     @Nullable private Square selectionBase = null;
     private List<Square> selection = new ArrayList<>();
     private List<Move> selectionMoves = new ArrayList<>();
@@ -149,11 +152,13 @@ public class GameController extends GoBacker implements Initializable {
             pieceChooser.setVisible(true);
         }
         
-        boolean fullAIGame = round.getPlayersToMovers().values().stream().allMatch(m -> m instanceof AI);
+        // Hide the pass button if it's a full-AI game
+        boolean fullAIGame = round.getPlayersToMovers().values().stream().allMatch(m -> !(m instanceof HumanMover));
         if (!fullAIGame && round.getGame().allowPassing()) {
             passBtn.setVisible(true);
         }
         
+        // Generate the board
         for (int y = 0; y <= round.getBoard().getMaxY(); y++) {
             for (int x = 0; x <= round.getBoard().getMaxX(); x++) {
                 Node cell;
@@ -430,6 +435,7 @@ public class GameController extends GoBacker implements Initializable {
     
     @Subscribe
     public void beforeTurn(TurnEvent.Pre e) {
+        // Change the pieces in the piece chooser to the current player's pieces
         Player current = e.getRound().getCurrentTurn();
         if (playersToPieceChooserGroups != null
                 && e.getRound().getPlayersToMovers().get(current) instanceof HumanMover) {
@@ -437,6 +443,26 @@ public class GameController extends GoBacker implements Initializable {
             pieceChooser.getChildren().addAll(playersToPieceChooserGroups.get(current).getToggles().stream()
                     .map(toggle -> (Node) toggle)
                     .collect(Collectors.toList()));
+        }
+        
+        // Start timing how long it takes to generate the move
+        turnTimeStart = System.currentTimeMillis();
+    }
+    
+    @Subscribe
+    @SneakyThrows
+    public void afterGenerateTurn(MoveEvent.Pre e) {
+        // Add a delay if the AI generated the turn in less than 600ms
+        if (e.getMover() instanceof AI) {
+            long timeDelta = System.currentTimeMillis() - turnTimeStart;
+            if (timeDelta < 600) {
+                Thread.sleep(600 - timeDelta);
+            }
+        }
+        
+        // Click if it's not a human who moved (defensive for introduction of networking)
+        if (!(e.getMover() instanceof HumanMover)) {
+            soundFX.play("click");
         }
     }
     
