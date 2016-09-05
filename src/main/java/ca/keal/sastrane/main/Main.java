@@ -89,8 +89,14 @@ public class Main extends GuiceApplication {
         games.forEach(registrar::register);
         
         guiUtils.setTitleToDefault();
-        // Multiple icon sizes???
-        primaryStage.getIcons().add(new Image(new Resource("ca.keal.sastrane.icon", "logo.png").get().openStream()));
+        
+        // Due to a bug in JavaFX, the wrong taskbar icon is chosen, so it looks blurry
+        primaryStage.getIcons().addAll(
+                new Image(new Resource("ca.keal.sastrane.icon", "logo-16.png").getFilename()),
+                new Image(new Resource("ca.keal.sastrane.icon", "logo-32.png").getFilename()),
+                new Image(new Resource("ca.keal.sastrane.icon", "logo-48.png").getFilename()),
+                new Image(new Resource("ca.keal.sastrane.icon", "logo-64.png").getFilename()));
+        
         primaryStage.setScene(guiUtils.getScene(new Resource("ca.keal.sastrane.gui", "main-menu.fxml"), 410, 410));
         primaryStage.setMinWidth(425); // This works for some reason
         primaryStage.setMinHeight(500);
