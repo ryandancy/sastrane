@@ -63,7 +63,6 @@ public class VolumeSelector extends VBox implements Initializable {
         hasInitialized = true;
         
         titleLabel.setText(title);
-        // TODO save settings, load
         volumeProperty().addListener((ov, v, nv) -> img.setImage(new Image(getVolumeIcon((double) nv).getFilename())));
         
         Platform.runLater(() -> img.setImage(new Image(getVolumeIcon(getVolume()).getFilename())));

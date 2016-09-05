@@ -63,7 +63,6 @@ public class Round {
         this.board = game.getBoardFactory().bus(bus).build();
     }
     
-    // TODO make this a static method and use the factory
     public Round(Round round) {
         this(round.game, ImmutableMap.copyOf(round.playersToMovers), new Board(round.board), round.bus, round.moveNum,
                 round.lastMovePass, round.ended, new ArrayList<>(round.moves));
