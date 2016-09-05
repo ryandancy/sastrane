@@ -46,8 +46,6 @@
 
     "Humoresque No. 7 in G flat major, Op. 101/7 (Violin and Piano arr.)" <https://musopen.org/music/2072/antonin-dvorak/humoresque-no-7-in-gb-op-1017-violin-and-piano-arr> by Antonín Dvořák, performed by Oliver Colbentson, found at src/main/resources/ca/keal/sastrane/audio/music/dvorak-humoresque-7.mp3, is in the public domain and free of known copyright restrictions.
 
-    "Violin Concerto in F minor, RV 297 'Winter'" <https://musopen.org/music/2213/antonio-vivaldi/the-four-seasons> by Antonio Vivaldi, performed by John Harrison, found at src/main/resources/ca/keal/sastrane/audio/music/vivaldi-winter.mp3, is a combination of three files, each bearing the name of the entire piece, plus a suffix — " - I. Allegro non molto", " - II. Largo", and " - III. Allegro" — and can each be found at the same page as the whole piece. Each individual piece is licensed under CC-BY-SA 3.0 <https://creativecommons.org/licenses/by-sa/3.0/legalcode>; the combination of them is therefore, in compliance with the license, released under the same license. Modifications: combined.
-
     "Gymnopédie No. 1" <https://musopen.org/music/2034/erik-satie/gymnopedie-no-1-guitar-arr> by Erik Satie, performed by Accou <https://musopen.org/music/performer/accou>, found at src/main/resources/ca/keal/sastrane/audio/music/satie-gymnopedie-1.mp3, is in the public domain and free of known copyright restrictions.
 
     "Cello Sonata in G minor, Op. 65 - III. Largo" <https://musopen.org/music/2633/frederic-chopin/cello-sonata-in-g-minor-op-65> by Fredéric Chopin, performed by Yeonjin Kim and Christopher Harding, found at src/main/resources/ca/keal/sastrane/audio/music/chopin-cello-sonata-65-iii.mp3, is in the public domain and free of known copyright restrictions.
