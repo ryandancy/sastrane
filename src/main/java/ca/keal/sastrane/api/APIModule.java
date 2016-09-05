@@ -14,7 +14,6 @@
 package ca.keal.sastrane.api;
 
 import com.google.inject.AbstractModule;
-import com.google.inject.assistedinject.FactoryModuleBuilder;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
@@ -25,7 +24,6 @@ public class APIModule extends AbstractModule {
     @Override
     public void configure() {
         bind(GameRegistrar.class);
-        install(new FactoryModuleBuilder().build(Round.Factory.class));
     }
     
 }

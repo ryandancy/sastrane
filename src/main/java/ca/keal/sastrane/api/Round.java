@@ -24,8 +24,6 @@ import ca.keal.sastrane.api.piece.PlacingPiece;
 import ca.keal.sastrane.util.Utils;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.eventbus.EventBus;
-import com.google.inject.Inject;
-import com.google.inject.assistedinject.Assisted;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -54,8 +52,7 @@ public class Round {
     @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
     @Getter private List<StateChange> moves = new ArrayList<>();
     
-    @Inject
-    public Round(@Assisted Game game, @Assisted Map<Player, Mover> playersToMovers) {
+    public Round(Game game, Map<Player, Mover> playersToMovers) {
         if (!Utils.areElementsEqual(playersToMovers.keySet(), Arrays.asList(game.getPlayers()))) {
             throw new IllegalArgumentException("Round: playersToMovers.keySet() must = players");
         }
@@ -147,11 +144,6 @@ public class Round {
     
     public StateChange getLastMove(int n) {
         return moves.get(moves.size() - 1 - n);
-    }
-    
-    /** For AssistedInject */
-    public interface Factory {
-        Round create(Game game, Map<Player, Mover> playersToMovers);
     }
     
 }

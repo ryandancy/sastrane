@@ -56,18 +56,16 @@ public class NewGameController extends GoBacker {
     private final SoundEffects soundFX;
     
     private final PlayerSettings.Factory playerSettingsFactory;
-    private final Round.Factory roundFactory;
     
     @Inject
     public NewGameController(GuiUtils guiUtils, I18n i18n, SoundEffects soundFX,
-                             PlayerSettings.Factory playerSettingsFactory, Round.Factory roundFactory) {
+                             PlayerSettings.Factory playerSettingsFactory) {
         super(new Resource("ca.keal.sastrane.gui", "main-menu.fxml"), guiUtils);
         
         this.i18n = i18n;
         this.soundFX = soundFX;
         
         this.playerSettingsFactory = playerSettingsFactory;
-        this.roundFactory = roundFactory;
     }
     
     void setGame(Game game) {
@@ -102,7 +100,7 @@ public class NewGameController extends GoBacker {
                         return new HumanMover(controller);
                     }
                 }));
-        Round round = roundFactory.create(game, playersToMovers);
+        Round round = new Round(game, playersToMovers);
         
         round.getBus().post(new ToGameEvent.Pre(previousScene, scene, round, playersToMovers));
         controller.setRound(round);
