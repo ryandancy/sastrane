@@ -14,6 +14,7 @@
 package ca.keal.sastrane.chess;
 
 import ca.keal.sastrane.api.Arbitrator;
+import ca.keal.sastrane.api.GameUtils;
 import ca.keal.sastrane.api.Player;
 import ca.keal.sastrane.api.Result;
 import ca.keal.sastrane.api.Round;
@@ -28,6 +29,11 @@ class ChessArbitrator implements Arbitrator {
     public Result arbitrate(Round round) {
         Player player = ChessPlayer.WHITE;
         Player opponent = ChessPlayer.BLACK;
+        
+        if (GameUtils.countPlayers(round.getBoard()).size() == 2) {
+            // Only kings - it's a draw
+            return Result.DRAW;
+        }
         
         for (int i = 0; i < 2; i++) {
             if (round.getAllPossibleMoves(player).size() == 0) {
