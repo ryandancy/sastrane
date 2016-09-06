@@ -20,6 +20,7 @@ import ca.keal.sastrane.api.move.PlacingMove;
 import ca.keal.sastrane.api.piece.OwnedPiece;
 import ca.keal.sastrane.api.piece.OwnedPieceFactory;
 import ca.keal.sastrane.test.RoundConstructingTestFixture;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import static org.mockito.Mockito.mock;
@@ -31,6 +32,7 @@ public class MarkTest extends RoundConstructingTestFixture {
     
     private Mark mark;
     
+    @BeforeMethod
     @Override
     public void before() {
         super.before();
