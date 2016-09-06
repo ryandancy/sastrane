@@ -81,11 +81,11 @@ class GridNotater implements Notater {
                         break;
                     }
                     case PRE_WHITE: {
-                        squareRepr = "○";
+                        squareRepr = "\u25CB"; // white circle
                         break;
                     }
                     case PRE_BLACK: {
-                        squareRepr = "●";
+                        squareRepr = "\u25CF"; // black circle
                         break;
                     }
                     default: {
