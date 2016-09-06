@@ -64,4 +64,9 @@ class Reversi extends Game {
         return new GridNotater();
     }
     
+    @Override
+    public boolean isAutoPassingEnabled() {
+        return true;
+    }
+    
 }
