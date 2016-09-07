@@ -56,7 +56,8 @@ to PNG.
 
     white.png and black.png in src/main/resources/ca/keal/sastrane/chess/icon and all images in src/main/resources/ca/
 keal/sastrane/chess/piece have been extracted and modified from the Chess Merida font <http://www.chessvariants.com/
-index/zipfile.php?itemid=FontMerida2> by Armando Hdez. Modifications: extracted images, changed colours.
+index/zipfile.php?itemid=FontMerida2> by Armando Hdez, which has been released as freeware by its author. Modifications:
+extracted images, changed colours.
 
     In src/main/resources/ca/keal/sastrane/xiangqi/piece, advisor_black.png and advisor_red.png have been extracted from
 "Xiangqi Advisor.png", cannon_black.png and cannon_red.png from "Xiangqi Cannon.png", chariot_black.png and
