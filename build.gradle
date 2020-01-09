@@ -21,8 +21,10 @@ version '0.0.1'
 
 apply plugin: 'java'
 apply plugin: 'idea'
+apply plugin: 'application'
 
 def MAIN_CLASS = 'ca.keal.sastrane.main.Main'
+mainClassName = MAIN_CLASS
 
 //noinspection GroovyUnusedAssignment
 sourceCompatibility = 1.8
